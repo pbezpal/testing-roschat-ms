@@ -5,5 +5,5 @@
 /build/
 /gradle/
 gradlew
-gradle.bat
+gradlew.bat
 settings.gradle
