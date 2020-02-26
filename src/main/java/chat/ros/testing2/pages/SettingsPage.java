@@ -1,38 +1,29 @@
 package chat.ros.testing2.pages;
 
+import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
-public class SettingsPage extends MonitoringPage {
+public class SettingsPage extends MonitoringPage implements MSGeneralElements {
 
     private String headSection = "Настройки";
     private String buttonSetting = "Настроить";
     private String buttonCheck = "Проверить";
     private String buttonRestartServices = "Перезапустить";
 
-    private SelenideElement formSettings = $("form.v-form");
-    private SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
     private SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
     private SelenideElement formConformActions = $("div.dialog-header h3");
     private SelenideElement divCheckSettings = $("div.msg-body h4");
     private SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
 
-    public static SettingsPage settingsPage = new SettingsPage();
-    public static SettingsPage getInstance() { return settingsPage; }
-
-    /*public void goSectionSettingsPage(){
-        if( ! isSectionPage(headSection.toUpperCase())){
-            clickItemMenu(headSection);
-        }
-    }*/
+    public SettingsPage () {};
 
     public String getButtonSetting(){
         return buttonSetting;
@@ -82,46 +73,6 @@ public class SettingsPage extends MonitoringPage {
         $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']")).scrollIntoView(false);
         $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']" +
                 "//div[text()='" + button + "']")).click();
-        return this;
-    }
-
-    @Step(value = "Проверяем, что появилась форма настроек")
-    public boolean isFormSettings(){
-        try{
-            formSettings.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
-    }
-
-    @Step(value = "Вводим в поле {field} значение {value}")
-    public SettingsPage sendInputForm(String field, String value){
-        $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input")).sendKeys(Keys.CONTROL + "a");
-        $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input")).sendKeys(Keys.BACK_SPACE);
-        $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input")).sendKeys(value);
-
-        return this;
-    }
-
-    @Step(value = "Проверяем, активна ли кнопка Сохранить")
-    public boolean isActiveButtonSave(){
-        try{
-            buttonSave.shouldBe(Condition.enabled);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
-    }
-
-    @Step(value = "Нажимаем нопку Сохранить")
-    public SettingsPage clickButtonSave(){
-        buttonSave.click();
         return this;
     }
 

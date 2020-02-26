@@ -30,12 +30,10 @@ public class TelephonyPage extends SettingsPage {
     private String inputSecret = "Секрет";
     private String valueSecret = "Secret";
 
+    public TelephonyPage () {}
+
 
     public TelephonyPage setNetwork(){
-        //Переходим в раздел Настройки
-        //goSectionSettingsPage();
-        //Переходим в секцию Сервер, в разделе Настройки
-        //if(isNotSectionSettings(telephoneSection)){ clickItemSettings(telephoneSection); }
         //Проверяем, настрена ли сеть
         if(isNotValueInField(inputPublicAddress, valuePublicAddress)
                 || isNotValueInField(inputFrondEnd, valueFrontEnd)
@@ -43,7 +41,7 @@ public class TelephonyPage extends SettingsPage {
             //Нажимаем кнопку Настроить
             clickButtonSettings(titleFormNetwork, getButtonSetting());
             //Проверяем, появилась ли форма редактирования
-            assertTrue(isFormSettings(), "Форма для редактирования не появилась");
+            assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим публичный адрес
             sendInputForm(inputPublicAddress, valuePublicAddress);
             //Вводим внешний интерфейс
@@ -74,15 +72,12 @@ public class TelephonyPage extends SettingsPage {
     }
 
     public TelephonyPage setSipServer(){
-        //Переходим в раздел Настройки
-        //goSectionSettingsPage();
-        //Переходим в секцию Сервер, в разделе Настройки
-        //if(isNotSectionSettings(telephoneSection)){ clickItemSettings(telephoneSection); }
+        //Проверяем настроен ли SIP сервер
         if(isNotValueInField(nameSpeechPorts, valueMinimalPort) && isNotValueInField(nameSpeechPorts, valueMinimalPort)){
             //Нажимаем кнопку Настроить
             clickButtonSettings(titleFormSipServer, getButtonSetting());
             //Проверяем, появилась ли форма редактирования
-            assertTrue(isFormSettings(), "Форма для редактирования не появилась");
+            assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим минимальный порт
             sendInputForm(inputMinimapPort, valueMinimalPort);
             //Вводим максимальный порт
@@ -105,7 +100,7 @@ public class TelephonyPage extends SettingsPage {
             //Нажимаем кнопку Настроить
             clickButtonSettings(titleFormTurnserver, getButtonSetting());
             //Проверяем, появилась ли форма редактирования
-            assertTrue(isFormSettings(), "Форма для редактирования не появилась");
+            assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим значение в поле Секрет
             sendInputForm(inputSecret, valueSecret);
             //Проверяем, что кнопка Сохранить активна

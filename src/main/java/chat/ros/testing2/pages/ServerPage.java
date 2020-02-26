@@ -17,7 +17,7 @@ public class ServerPage extends SettingsPage{
 
     //Переменные для настроек подключения
     private String titleFormConnect = "Подключение";
-    private String fieldPublicNetwork = "Внешний адрес сервера";
+    private String inputPublicNetwork = "Внешний адрес сервера";
     private String hostPublickNetwork = "testing2.ros.chat";
     private String textCheckServer = "Настройки сервера корректны";
 
@@ -43,18 +43,14 @@ public class ServerPage extends SettingsPage{
     public static ServerPage getInstance() { return serverPage; }
 
     public ServerPage setPublicNetwork(){
-        //Переходим в раздел Настройки
-        //goSectionSettingsPage();
-        //Переходим в секцию Сервер, в разделе Настройки
-        //if(isNotSectionSettings(serverSection)){ clickItemSettings(serverSection); }
         //Настраиваем внешний адрес сервера
-        if(isNotValueInField(fieldPublicNetwork, hostPublickNetwork)){
+        if(isNotValueInField(inputPublicNetwork, hostPublickNetwork)){
             //Нажимаем кнопку Настроить
             clickButtonSettings(titleFormConnect, getButtonSetting());
             //Проверяем, появилась ли форма редактирования Подключения
-            assertTrue(isFormSettings(), "Форма для редактирования не появилась");
+            assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим в поле Внешний адрес сети публичный host сервера
-            sendInputForm(fieldPublicNetwork, hostPublickNetwork);
+            sendInputForm(inputPublicNetwork, hostPublickNetwork);
             //Проверяем, что кнопка Сохранить активна
             assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
@@ -79,10 +75,6 @@ public class ServerPage extends SettingsPage{
 
 
     public ServerPage setCertificate(){
-        //Переходим в раздел Настройки
-        //goSectionSettingsPage();
-        //Переходим в секцию Сервер, в разделе Настройки
-        //if(isNotSectionSettings(serverSection)){ clickItemSettings(serverSection); }
         //Нажиаем кнопку Настроить в форме Сертификат
         clickButtonSettings(titleFormCertificate, getButtonSetting());
         //Загружаем SSL сертификат
@@ -108,14 +100,10 @@ public class ServerPage extends SettingsPage{
     }
 
     public ServerPage setPushService(){
-        //Переходим в раздел Настройки
-        //goSectionSettingsPage();
-        //Переходим в секцию Сервер, в разделе Настройки
-        //if(isNotSectionSettings(serverSection)){ clickItemSettings(serverSection); }
         //Нажимаем кнопку Настроить в форме Лицензирование и обсуживание
         clickButtonSettings(titleFormLicenseAndService, getButtonSetting());
         //Проверяем, что появилась форма редактирования Лицензии
-        assertTrue(isFormSettings(), "Форма для редактирования не появилась");
+        assertTrue(isFormChange(), "Форма для редактирования не появилась");
         //Вводим IP адрес для Push сервера
         sendInputForm(inputHostPushServer, valueHostPushServer);
         //Вводим логин для Push сервера

@@ -1,5 +1,6 @@
 package chat.ros.testing2.pages;
 
+import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -7,19 +8,12 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class LoginPage {
+public class LoginPage implements MSGeneralElements {
 
-    private static SelenideElement formLogin = $("form.v-form");
-    private static SelenideElement inputLogin = formLogin.find("input[type='text']");
-    private static SelenideElement inputPassword = formLogin.find("input[type='password']");
-    private static SelenideElement buttonLogin = formLogin.find("button");
+    private static SelenideElement buttonLogin = formChange.find("button");
     private SelenideElement navSuccessLogin = $("nav.v-toolbar.theme--light");
 
-    public static LoginPage loginPage = new LoginPage();
-    public static LoginPage getInstance() { return loginPage; }
-
-    @Step(value = "Проверяем, что есть форма авторизации")
-    public static SelenideElement getLoginForm(){ return formLogin;}
+    public LoginPage () {}
 
     @Step(value = "Авторизуемся на сервере с пользователем {login} и паролем {password}")
     public void loginOnServer(String login, String password){

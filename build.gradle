@@ -26,8 +26,6 @@ repositories {
 }
 
 dependencies {
-    //dependencies for testing
-    //testCompile group: 'junit', name: 'junit', version: '4.12'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
@@ -93,5 +91,7 @@ test {
         includeTestsMatching "*.ServerPageTest"
 
         includeTestsMatching "*.TelephonePageTest"
+
+        includeTestsMatching "*.ContactsPageTest"
     }
 }

@@ -10,8 +10,7 @@ public class MonitoringPage extends LoginPage{
 
     private SelenideElement headingPage = $("div.v-toolbar__title.headline.layout.align-center h1");
 
-    public static MonitoringPage monitoringPage = new MonitoringPage();
-    public static MonitoringPage getInstance() { return monitoringPage; }
+    public MonitoringPage () {}
 
     @Step(value = "Проверяем, что находимся в разделе {heading}")
     public boolean isSectionPage(String heading){
