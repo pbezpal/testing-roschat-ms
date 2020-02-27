@@ -49,7 +49,7 @@ public class TelephonyPage extends SettingsPage {
             //Вводим внутренний интерфес
             sendInputForm(inputInsideInterface, valueInsideInterface);
             //Проверяем, что кнопка Сохранить активна
-            assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
+            assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
             clickButtonSave();
             //Проверяем, появилась ли форма для перезагрузки сервисов
@@ -83,7 +83,7 @@ public class TelephonyPage extends SettingsPage {
             //Вводим максимальный порт
             sendInputForm(inputMaximumPort, valueMaximumPort);
             //Проверяем, что кнопка Сохранить активна
-            assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
+            assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
             clickButtonSave();
             //Проверяем, появилась ли форма для перезагрузки сервисов
@@ -104,7 +104,7 @@ public class TelephonyPage extends SettingsPage {
             //Вводим значение в поле Секрет
             sendInputForm(inputSecret, valueSecret);
             //Проверяем, что кнопка Сохранить активна
-            assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
+            assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
             clickButtonSave();
             //Проверяем, появилась ли форма для перезагрузки сервисов

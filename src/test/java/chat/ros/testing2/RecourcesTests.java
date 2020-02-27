@@ -58,8 +58,8 @@ public class RecourcesTests implements BeforeAllCallback, AfterEachCallback {
 
         assertTrue(loginPage.isLoginMS(), "Не удалось авторизоваться");
 
-        if(classTest.contains("ServerPage")) open("/settings/web-server");
-        else if (classTest.contains("TelefonyPage")) open("/settings/telephony");
+        if(classTest.contains("ServerPageTest")) open("/settings/web-server");
+        else if (classTest.contains("TelephonyPageTest")) open("/settings/telephony");
     }
 
     @Override

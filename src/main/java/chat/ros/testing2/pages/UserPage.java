@@ -29,35 +29,6 @@ public class UserPage implements MSGeneralElements {
 
     public UserPage() {}
 
-    //Добавляем учётную запись пользователю
-    public UserPage addUserAccount(String number, String password, String itemMenu) {
-        String username = number + "@ros.chat";
-        //Проверяем, что находимся на странице пользователя
-        assertTrue(isDivWrapperUser(), "Не удалось перейти на страницу пользователя");
-        //Переходим в раздел учётная запись
-        clickMenuItem(itemMenu);
-        //Нажимаем кнопку создать аккаунт
-        clickButtonAddAccount();
-        //Проверяем, появилась ли форма для редактирования
-        assertTrue(isFormChange(), "Форма для добавления учётной записи не появилась");
-        //Вводим имя пользователя
-        sendInputForm(inputUsername, username);
-        //Вводим пароль
-        sendInputsPassword(password);
-        //Вводим номер SIP
-        sendInputForm(inputNumberSIP, number);
-        //Проверяем, что кнопка Сохранить активна
-        assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки аккаунта, кнопка 'Сохранить' не активна");
-        //Нажимаем кнопку Сохранить
-        clickButtonSave();
-        //Ждем, когда пропадёт прогрессбар и проверяем добавлен ли аккаунт
-        assertTrue(isWaitInvisibleProgressbar(), "Прогрессбар завис");
-        //Проверяем, появилась ли учётная запись пользователя
-        assertTrue(isExistsAccount(username), "Учётная запись не добавлена");
-
-        return this;
-    }
-
     @Step(value = "Проверяем, что мы на странице Пользователь")
     public boolean isDivWrapperUser(){
         try{
@@ -108,6 +79,35 @@ public class UserPage implements MSGeneralElements {
             return false;
         }
         return true;
+    }
+
+    //Добавляем учётную запись пользователю
+    public UserPage addUserAccount(String number, String password, String itemMenu) {
+        String username = number + "@ros.chat";
+        //Проверяем, что находимся на странице пользователя
+        assertTrue(isDivWrapperUser(), "Не удалось перейти на страницу пользователя");
+        //Переходим в раздел учётная запись
+        clickMenuItem(itemMenu);
+        //Нажимаем кнопку создать аккаунт
+        clickButtonAddAccount();
+        //Проверяем, появилась ли форма для редактирования
+        assertTrue(isFormChange(), "Форма для добавления учётной записи не появилась");
+        //Вводим имя пользователя
+        sendInputForm(inputUsername, username);
+        //Вводим пароль
+        sendInputsPassword(password);
+        //Вводим номер SIP
+        sendInputForm(inputNumberSIP, number);
+        //Проверяем, что кнопка Сохранить активна
+        assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки аккаунта, кнопка 'Сохранить' не активна");
+        //Нажимаем кнопку Сохранить
+        clickButtonSave();
+        //Ждем, когда пропадёт прогрессбар и проверяем добавлен ли аккаунт
+        assertTrue(isWaitInvisibleProgressbar(), "Прогрессбар завис");
+        //Проверяем, появилась ли учётная запись пользователя
+        assertTrue(isExistsAccount(username), "Учётная запись не добавлена");
+
+        return this;
     }
 
 }

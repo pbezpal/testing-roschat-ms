@@ -1,5 +1,6 @@
 package chat.ros.testing2.pages;
 
+import chat.ros.testing2.helpers.SSHManager;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -39,6 +40,9 @@ public class ServerPage extends SettingsPage{
     private String buttonUpdateLicense = "Обновить лицензию";
     private String textCheckLicense = "Лицензия успешно обновлена";
 
+    //Проверки на сервере по ssh
+    private String commandCheckEsteblishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
+
     public static ServerPage serverPage = new ServerPage();
     public static ServerPage getInstance() { return serverPage; }
 
@@ -52,7 +56,7 @@ public class ServerPage extends SettingsPage{
             //Вводим в поле Внешний адрес сети публичный host сервера
             sendInputForm(inputPublicNetwork, hostPublickNetwork);
             //Проверяем, что кнопка Сохранить активна
-            assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
+            assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
             clickButtonSave();
             //Проверяем, появилась ли форма для перезагрузки сервисов
@@ -99,7 +103,14 @@ public class ServerPage extends SettingsPage{
         return true;
     }
 
+    @Step(value = "Проверяем, установилось ли соединение с Push сервером")
+    public boolean isEsteblishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEsteblishedPush); }
+
     public ServerPage setPushService(){
+
+        boolean result = true;
+        String error = "";
+
         //Нажимаем кнопку Настроить в форме Лицензирование и обсуживание
         clickButtonSettings(titleFormLicenseAndService, getButtonSetting());
         //Проверяем, что появилась форма редактирования Лицензии
@@ -120,8 +131,21 @@ public class ServerPage extends SettingsPage{
         assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
         //Нажимаем кнопку для перезагрузки сервисов
         clickButtonRestartServices(getButtonRestartServices());
+
+        //Определяем результат настроек push сервера
+        if(isCheckUpdateLicense() && ! isEsteblishedPush()){
+            result = false;
+            error = "СУ показывает, что соединение с сервером push установлено, а по факту соединение не установлено";
+        }else if( ! isCheckUpdateLicense() && isEsteblishedPush()){
+            result = false;
+            error = "СУ показывает, что соединение с сервером push не установлено, а по факту соединение установлено";
+        }else if( ! isCheckUpdateLicense() && ! isEsteblishedPush()){
+            result = false;
+            error = "СУ честно показывает, что соединение с сервером push не установлено";
+        }
+
         //Ждём, когда настройки применятся
-        assertTrue(isCheckUpdateLicense(), "Настройки не применились");
+        assertTrue(result, error);
         //Прокручиваем страницу вниз
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
@@ -133,5 +157,8 @@ public class ServerPage extends SettingsPage{
 
         return this;
     }
+
+
+
 
 }
