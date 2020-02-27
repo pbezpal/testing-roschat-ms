@@ -90,7 +90,7 @@ test {
     filter{
         includeTestsMatching "*.ServerPageTest"
 
-        includeTestsMatching "*.TelephonePageTest"
+        includeTestsMatching "*.TelephonyPageTest"
 
         includeTestsMatching "*.ContactsPageTest"
     }
