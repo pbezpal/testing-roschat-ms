@@ -133,7 +133,7 @@ public class ServerPage extends SettingsPage{
         clickButtonRestartServices(getButtonRestartServices());
 
         //Определяем результат настроек push сервера
-        if(isCheckUpdateLicense() && ! isEsteblishedPush()){
+        /*if(isCheckUpdateLicense() && ! isEsteblishedPush()){
             result = false;
             error = "СУ показывает, что соединение с сервером push установлено, а по факту соединение не установлено";
         }else if( ! isCheckUpdateLicense() && isEsteblishedPush()){
@@ -142,10 +142,10 @@ public class ServerPage extends SettingsPage{
         }else if( ! isCheckUpdateLicense() && ! isEsteblishedPush()){
             result = false;
             error = "СУ честно показывает, что соединение с сервером push не установлено";
-        }
+        }*/
 
         //Ждём, когда настройки применятся
-        assertTrue(result, error);
+        assertTrue(isCheckUpdateLicense(), "Настройки не применились");
         //Прокручиваем страницу вниз
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
