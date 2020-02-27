@@ -15,7 +15,7 @@ pipeline{
                 deleteDir();
             }
         }
-        stage("Клонировиние GIT"){
+        /*stage("Клонировиние GIT"){
             steps{
                 script{
                     try{
@@ -26,7 +26,7 @@ pipeline{
                     }
                 }
             }
-        }
+        }*/
         stage("Тестирование"){
             steps{
                 script{
@@ -47,7 +47,7 @@ pipeline{
     post{
         always{
             echo "${SERVER_VER}"
-            emailext body: "Тестируемая версия - ${SERVER_VER} \n Результат тестирования - ${STATUS} \n Отчет - ${BUILD_URL}/allure", subject: 'Тестирование Росчат сервера', to: 'bezpalko'
+            emailext body: "Тестируемая версия - ${SERVER_VER} \n Результат тестирования - ${STATUS} \n Отчет - ${BUILD_URL}/allure", subject: 'Тестирование Росчат сервера', to: 'bezpalko', from: 'jenkins@ros.chat'
         }
     }
 }
