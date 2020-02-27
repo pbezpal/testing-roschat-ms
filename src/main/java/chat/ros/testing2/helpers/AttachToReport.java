@@ -3,7 +3,13 @@ package chat.ros.testing2.helpers;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import io.qameta.allure.Attachment;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 
@@ -12,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class ScreenshotTests {
+public class AttachToReport {
 
     @Attachment(type = "image/png")
     public static byte[] AttachScreen(File screenshot) {
@@ -67,6 +73,25 @@ public class ScreenshotTests {
             e.printStackTrace();
         }
         AttachScreen(currentScreenshot);
+    }
+
+    @Attachment(value = "Browser network log", type = "text/plain")
+    public static String ABrowserLogToReport() {
+        LogEntries logs = WebDriverRunner.getWebDriver().manage().logs().get("performance");
+        String logsBrowser = "";
+
+        for (LogEntry le : logs) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonParser jp = new JsonParser();
+            JsonElement je = jp.parse(le.getMessage());
+
+            //String prettyJsonString = gson.toJson(je);
+            if (gson.toJson(je).contains("webSocketFrame"))  logsBrowser = logsBrowser + gson.toJson(je);
+
+
+        }
+
+        return logsBrowser;
     }
 
 }

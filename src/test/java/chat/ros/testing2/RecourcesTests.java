@@ -3,26 +3,37 @@ package chat.ros.testing2;
 import chat.ros.testing2.pages.LoginPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
-import org.junit.jupiter.api.extension.AfterEachCallback;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import io.qameta.allure.Attachment;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.logging.Level;
 
-import static chat.ros.testing2.helpers.ScreenshotTests.AScreenshot;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RecourcesTests implements BeforeAllCallback, AfterEachCallback {
+public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private LoginPage loginPage = new LoginPage();
     private String classTest = "";
+    private StringBuilder logs = new StringBuilder();
+    private LogEntries logEntries;
 
     @Override
     public void beforeAll(ExtensionContext context){
@@ -30,11 +41,14 @@ public class RecourcesTests implements BeforeAllCallback, AfterEachCallback {
         classTest = String.valueOf(context.getTestClass());
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("firefox");
-        capabilities.setVersion("72.0");
+        capabilities.setBrowserName("chrome");
+        capabilities.setVersion("80.0");
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", false);
         capabilities.setCapability("acceptInsecureCerts", true);
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+        capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
         WebDriver driver = null;
         try {
@@ -63,8 +77,35 @@ public class RecourcesTests implements BeforeAllCallback, AfterEachCallback {
     }
 
     @Override
+    public void beforeEach(ExtensionContext context){
+        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")){
+            open("/contacts");
+        }
+    }
+
+    /*@Override
     public void afterEach(ExtensionContext context){
         String filename = String.valueOf(context.getTestMethod());
         AScreenshot(filename);
+        addConsoleLogToReport();
+    }*/
+
+    @Attachment(value = "Browser console log", type = "text/plain")
+    private String addConsoleLogToReport() {
+        LogEntries logs = WebDriverRunner.getWebDriver().manage().logs().get("performance");
+        String logsBrowser = "";
+
+        for (LogEntry le : logs) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonParser jp = new JsonParser();
+            JsonElement je = jp.parse(le.getMessage());
+
+            //String prettyJsonString = gson.toJson(je);
+            if (gson.toJson(je).contains("webSocketFrame"))  logsBrowser = logsBrowser + gson.toJson(je);
+
+
+        }
+
+        return logsBrowser;
     }
 }

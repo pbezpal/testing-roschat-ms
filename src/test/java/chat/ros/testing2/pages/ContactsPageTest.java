@@ -1,6 +1,7 @@
 package chat.ros.testing2.pages;
 
 import chat.ros.testing2.RecourcesTests;
+import chat.ros.testing2.WatcherTests;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -14,6 +15,7 @@ import static com.codeborne.selenide.Selenide.open;
 @Epic(value = "Справочник")
 @Feature(value = "Добавление контактов")
 @ExtendWith(RecourcesTests.class)
+@ExtendWith(WatcherTests.class)
 public class ContactsPageTest extends ContactsPage {
 
     private UserPage userPage;
