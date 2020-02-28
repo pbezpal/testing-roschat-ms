@@ -1,5 +1,6 @@
 package chat.ros.testing2.helpers;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.google.common.io.Files;
@@ -10,6 +11,7 @@ import com.google.gson.JsonParser;
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 
@@ -17,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class AttachToReport {
 
@@ -76,7 +79,7 @@ public class AttachToReport {
     }
 
     @Attachment(value = "Browser network log", type = "text/plain")
-    public static String ABrowserLogToReport() {
+    public static String ABrowserLogNetwork() {
         LogEntries logs = WebDriverRunner.getWebDriver().manage().logs().get("performance");
         String logsBrowser = "";
 
@@ -92,6 +95,20 @@ public class AttachToReport {
         }
 
         return logsBrowser;
+    }
+
+    @Attachment(value = "Browser console log", type = "text/plain")
+    public static String ABrowserLogConsole() {
+
+        List logList = Selenide.getWebDriverLogs(LogType.BROWSER);
+        StringBuilder sb = new StringBuilder();
+
+        for(Object line : logList) {
+            sb.append(line);
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
 }
