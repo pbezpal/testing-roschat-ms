@@ -3,11 +3,6 @@ package chat.ros.testing2;
 import chat.ros.testing2.pages.LoginPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import io.qameta.allure.Attachment;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -15,7 +10,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -81,31 +75,5 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")){
             open("/contacts");
         }
-    }
-
-    /*@Override
-    public void afterEach(ExtensionContext context){
-        String filename = String.valueOf(context.getTestMethod());
-        AScreenshot(filename);
-        addConsoleLogToReport();
-    }*/
-
-    @Attachment(value = "Browser console log", type = "text/plain")
-    private String addConsoleLogToReport() {
-        LogEntries logs = WebDriverRunner.getWebDriver().manage().logs().get("performance");
-        String logsBrowser = "";
-
-        for (LogEntry le : logs) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonParser jp = new JsonParser();
-            JsonElement je = jp.parse(le.getMessage());
-
-            //String prettyJsonString = gson.toJson(je);
-            if (gson.toJson(je).contains("webSocketFrame"))  logsBrowser = logsBrowser + gson.toJson(je);
-
-
-        }
-
-        return logsBrowser;
     }
 }
