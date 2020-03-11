@@ -1,5 +1,6 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.pages.settings;
 
+import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class TelephonyPage extends SettingsPage {
@@ -7,47 +8,24 @@ public class TelephonyPage extends SettingsPage {
     //Общие переменные
     private String telephoneSection = "Телефония";
 
-    //Переменные для настроек сети
-    private String titleFormNetwork = "Сеть";
-    private String inputPublicAddress = "Публичный адрес";
-    private String valuePublicAddress = "188.170.5.169";
-    private String inputFrondEnd = "Внешний интерфейс";
-    private String valueFrontEnd = "10.10.199.47";
-    private String inputInsideInterface = "Внутренний интерфейс";
-    private String valueInsideInterface = "10.10.199.47";
-    private String textCheckTelephone = "Настройки телефонии корректны.";
-
-    //Параметры для настроек SIP-сервера
-    private String titleFormSipServer = "SIP-сервер";
-    private String nameSpeechPorts = "Речевые порты";
-    private String inputMinimapPort = "Минимальный порт";
-    private String valueMinimalPort = "49000";
-    private String inputMaximumPort = "Максимальный порт";
-    private String valueMaximumPort = "49150";
-
-    //Параметры для настройки Turnserver
-    private String titleFormTurnserver = "TURN/STUN";
-    private String inputSecret = "Секрет";
-    private String valueSecret = "Secret";
-
     public TelephonyPage () {}
 
 
     public TelephonyPage setNetwork(){
         //Проверяем, настрена ли сеть
-        if(isNotValueInField(inputPublicAddress, valuePublicAddress)
-                || isNotValueInField(inputFrondEnd, valueFrontEnd)
-                || isNotValueInField(inputInsideInterface, valueInsideInterface)){
+        if(isNotValueInField(TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS, TELEPHONY_NETWORK_PUBLIC_ADDRESS)
+                || isNotValueInField(TELEPHONY_NETWORK_INPUT_FRONT_DEV, TELEPHONY_NETWORK_FRONT_IP)
+                || isNotValueInField(TELEPHONY_NETWORK_INPUT_INSIDE_DEV, TELEPHONY_NETWORK_INSIDE_IP)){
             //Нажимаем кнопку Настроить
-            clickButtonSettings(titleFormNetwork, getButtonSetting());
+            clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_SETTING);
             //Проверяем, появилась ли форма редактирования
             assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим публичный адрес
-            sendInputForm(inputPublicAddress, valuePublicAddress);
+            sendInputForm(TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS, TELEPHONY_NETWORK_PUBLIC_ADDRESS);
             //Вводим внешний интерфейс
-            sendInputForm(inputFrondEnd, valueFrontEnd);
+            sendInputForm(TELEPHONY_NETWORK_INPUT_FRONT_DEV, TELEPHONY_NETWORK_FRONT_IP);
             //Вводим внутренний интерфес
-            sendInputForm(inputInsideInterface, valueInsideInterface);
+            sendInputForm(TELEPHONY_NETWORK_INPUT_INSIDE_DEV, TELEPHONY_NETWORK_INSIDE_IP);
             //Проверяем, что кнопка Сохранить активна
             assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
@@ -55,15 +33,15 @@ public class TelephonyPage extends SettingsPage {
             //Проверяем, появилась ли форма для перезагрузки сервисов
             assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
             //Нажимаем кнопку для перезагрузки сервисов
-            clickButtonRestartServices(getButtonRestartServices());
+            clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
         }
 
         //Нажимаем кнопку Проверить
-        clickButtonSettings(titleFormNetwork, getButtonCheck());
+        clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK);
         //Проверяем, появилась ли форма проверки настроек
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(textCheckTelephone), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(TELEPHONY_NETWORK_TEXT_CHECK), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 
@@ -73,15 +51,15 @@ public class TelephonyPage extends SettingsPage {
 
     public TelephonyPage setSipServer(){
         //Проверяем настроен ли SIP сервер
-        if(isNotValueInField(nameSpeechPorts, valueMinimalPort) && isNotValueInField(nameSpeechPorts, valueMinimalPort)){
+        if(isNotValueInField(TELEPHONY_SIP_INPUT_SPEECH_PORTS, TELEPHONY_SIP_MIN_PORT) && isNotValueInField(TELEPHONY_SIP_INPUT_SPEECH_PORTS, TELEPHONY_SIP_MAX_PORT)){
             //Нажимаем кнопку Настроить
-            clickButtonSettings(titleFormSipServer, getButtonSetting());
+            clickButtonSettings(TELEPHONY_SIP_TITLE_FORM, SETTINGS_BUTTON_SETTING);
             //Проверяем, появилась ли форма редактирования
             assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим минимальный порт
-            sendInputForm(inputMinimapPort, valueMinimalPort);
+            sendInputForm(TELEPHONY_SIP_INPUT_MIN_PORT, TELEPHONY_SIP_MIN_PORT);
             //Вводим максимальный порт
-            sendInputForm(inputMaximumPort, valueMaximumPort);
+            sendInputForm(TELEPHONY_SIP_INPUT_MAX_PORT, TELEPHONY_SIP_MAX_PORT);
             //Проверяем, что кнопка Сохранить активна
             assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
@@ -89,20 +67,20 @@ public class TelephonyPage extends SettingsPage {
             //Проверяем, появилась ли форма для перезагрузки сервисов
             assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
             //Нажимаем кнопку для перезагрузки сервисов
-            clickButtonRestartServices(getButtonRestartServices());
+            clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
         }
 
         return this;
     }
 
     public TelephonyPage setTurnserver(){
-        if(isNotValueInField(inputSecret, valueSecret)){
+        if(isNotValueInField(TELEPHONY_TURN_INPUT_SECRET, TELEPHONY_TURN_SECRET)){
             //Нажимаем кнопку Настроить
-            clickButtonSettings(titleFormTurnserver, getButtonSetting());
+            clickButtonSettings(TELEPHONY_TURN_TITLE_FORM, SETTINGS_BUTTON_SETTING);
             //Проверяем, появилась ли форма редактирования
             assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим значение в поле Секрет
-            sendInputForm(inputSecret, valueSecret);
+            sendInputForm(TELEPHONY_TURN_INPUT_SECRET, TELEPHONY_TURN_SECRET);
             //Проверяем, что кнопка Сохранить активна
             assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
@@ -110,7 +88,7 @@ public class TelephonyPage extends SettingsPage {
             //Проверяем, появилась ли форма для перезагрузки сервисов
             assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
             //Нажимаем кнопку для перезагрузки сервисов
-            clickButtonRestartServices(getButtonRestartServices());
+            clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
         }
 
         return this;

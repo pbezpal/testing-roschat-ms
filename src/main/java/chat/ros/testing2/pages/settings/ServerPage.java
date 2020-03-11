@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.pages.settings;
 
 import chat.ros.testing2.helpers.SSHManager;
 import com.codeborne.selenide.Condition;
@@ -8,37 +8,17 @@ import io.qameta.allure.Step;
 
 import java.io.File;
 
+import static chat.ros.testing2.data.LoginData.HOST_SERVER;
+import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class ServerPage extends SettingsPage{
 
-    //Общие переменные
-    private String serverSection = "Сервер";
-
-    //Переменные для настроек подключения
-    private String titleFormConnect = "Подключение";
-    private String inputPublicNetwork = "Внешний адрес сервера";
-    private String hostPublickNetwork = "testing2.ros.chat";
-    private String textCheckServer = "Настройки сервера корректны";
-
     //Переменные для настроек сертификата ssl
     private String titleFormCertificate = "Сертификат";
     private SelenideElement inputSSLCertificate = $("label[for='sertUpload'] i");
     private SelenideElement inputPrivateKey = $("label[for='keyUpload'] i");
-
-    //Переменные для настроек лицензирования и обслуживания
-    private String titleFormLicenseAndService = "Лицензирование и обсуживание";
-    private String inputHostPushServer = "IP адрес";
-    private String valueHostPushServer = "firelink.me";
-    private String inputLoginPushServer = "Логин";
-    private String valueLoginPushServer = "testing2";
-    private String inputPortPushServer = "Порт";
-    private String valuePortPushServer = "8088";
-    private String inputPasswordPushServer = "Пароль";
-    private String valuePasswordPushServer = "lJddfDnwycX0ag7o";
-    private String buttonUpdateLicense = "Обновить лицензию";
-    private String textCheckLicense = "Лицензия успешно обновлена";
 
     //Проверки на сервере по ssh
     private String commandCheckEsteblishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
@@ -48,13 +28,13 @@ public class ServerPage extends SettingsPage{
 
     public ServerPage setPublicNetwork(){
         //Настраиваем внешний адрес сервера
-        if(isNotValueInField(inputPublicNetwork, hostPublickNetwork)){
+        if(isNotValueInField(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER)){
             //Нажимаем кнопку Настроить
-            clickButtonSettings(titleFormConnect, getButtonSetting());
+            clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
             //Проверяем, появилась ли форма редактирования Подключения
             assertTrue(isFormChange(), "Форма для редактирования не появилась");
             //Вводим в поле Внешний адрес сети публичный host сервера
-            sendInputForm(inputPublicNetwork, hostPublickNetwork);
+            sendInputForm(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
             //Проверяем, что кнопка Сохранить активна
             assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
             //Нажимаем кнопку Сохранить
@@ -62,15 +42,15 @@ public class ServerPage extends SettingsPage{
             //Проверяем, появилась ли форма для перезагрузки сервисов
             assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
             //Нажимаем кнопку для перезагрузки сервисов
-            clickButtonRestartServices(getButtonRestartServices());
+            clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
         }
 
         //Нажимаем кнопку Проверить
-        clickButtonSettings(titleFormConnect, getButtonCheck());
+        clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
         //Проверяем, появилась ли форма проверки настроек
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(textCheckServer), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(SERVER_CONNECT_TEXT_CHECK_SERVER), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 
@@ -80,7 +60,7 @@ public class ServerPage extends SettingsPage{
 
     public ServerPage setCertificate(){
         //Нажиаем кнопку Настроить в форме Сертификат
-        clickButtonSettings(titleFormCertificate, getButtonSetting());
+        clickButtonSettings(titleFormCertificate, SETTINGS_BUTTON_SETTING);
         //Загружаем SSL сертификат
         inputSSLCertificate.uploadFile(new File("/opt/license/cert.crt"));
         //Загружаем приватный ключ
@@ -112,17 +92,17 @@ public class ServerPage extends SettingsPage{
         String error = "";
 
         //Нажимаем кнопку Настроить в форме Лицензирование и обсуживание
-        clickButtonSettings(titleFormLicenseAndService, getButtonSetting());
+        clickButtonSettings(SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         //Проверяем, что появилась форма редактирования Лицензии
         assertTrue(isFormChange(), "Форма для редактирования не появилась");
         //Вводим IP адрес для Push сервера
-        sendInputForm(inputHostPushServer, valueHostPushServer);
+        sendInputForm(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
         //Вводим логин для Push сервера
-        sendInputForm(inputLoginPushServer, valueLoginPushServer);
+        sendInputForm(SERVER_PUSH_INPUT_LOGIN, SERVER_PUSH_LOGIN_SERVER);
         //Вводим порт для Push сервера
-        sendInputForm(inputPortPushServer, valuePortPushServer);
+        sendInputForm(SERVER_PUSH_INPUT_PORT, SERVER_PUSH_PORT_SERVER);
         //Вводим пароль для Push сервера
-        sendInputForm(inputPasswordPushServer, valuePasswordPushServer);
+        sendInputForm(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
         //Проверяем, что кнопка Сохранить активна
         assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
         //Нажимаем кнопку Сохранить
@@ -130,28 +110,15 @@ public class ServerPage extends SettingsPage{
         //Проверяем, появилась ли форма для перезагрузки сервисов
         assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
         //Нажимаем кнопку для перезагрузки сервисов
-        clickButtonRestartServices(getButtonRestartServices());
-
-        //Определяем результат настроек push сервера
-        /*if(isCheckUpdateLicense() && ! isEsteblishedPush()){
-            result = false;
-            error = "СУ показывает, что соединение с сервером push установлено, а по факту соединение не установлено";
-        }else if( ! isCheckUpdateLicense() && isEsteblishedPush()){
-            result = false;
-            error = "СУ показывает, что соединение с сервером push не установлено, а по факту соединение установлено";
-        }else if( ! isCheckUpdateLicense() && ! isEsteblishedPush()){
-            result = false;
-            error = "СУ честно показывает, что соединение с сервером push не установлено";
-        }*/
-
+        clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
         //Ждём, когда настройки применятся
         assertTrue(isCheckUpdateLicense(), "Настройки не применились");
         //Прокручиваем страницу вниз
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
-        clickButtonSettings(titleFormLicenseAndService, buttonUpdateLicense);
+        clickButtonSettings(SERVER_PUSH_TITLE_FORM, SERVER_PUSH_BUTTON_UPDATE_LICENSE);
         //Проверяем, что лицензия успешно обновлена
-        assertTrue(isCheckSettings(textCheckLicense), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(SERVER_PUSH_TEXT_CHECK_LICENSE), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 

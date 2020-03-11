@@ -93,5 +93,7 @@ test {
         includeTestsMatching "*.TelephonyPageTest"
 
         includeTestsMatching "*.ContactsPageTest"
+
+        includeTestsMatching "*.MailPageTest"
     }
 }

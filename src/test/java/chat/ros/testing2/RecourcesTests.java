@@ -21,10 +21,13 @@ import java.util.logging.Level;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static chat.ros.testing2.data.LoginData.*;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private LoginPage loginPage = new LoginPage();
+    private String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
+    private String hostClient = "https://" + HOST_SERVER;
     private String classTest = "";
     private StringBuilder logs = new StringBuilder();
     private LogEntries logEntries;
@@ -46,7 +49,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         WebDriver driver = null;
         try {
-            driver = WebDriverPool.DEFAULT.getDriver(URI.create("http://10.10.199.45:4444/wd/hub").toURL(), capabilities);
+            driver = WebDriverPool.DEFAULT.getDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -55,14 +58,14 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         driver.manage().window().setPosition(new Point(2,2));
         WebDriverRunner.setWebDriver(driver);
 
-        Configuration.baseUrl = "https://testing2.ros.chat:1110";
+        Configuration.baseUrl = hostServer;
         Configuration.screenshots = false;
 
-        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains("https://testing2.ros.chat:1110")) open("/");
+        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
 
 
 
-        if( ! loginPage.isLoginMS()) loginPage.loginOnServer("admin", "123456");
+        if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
 
         assertTrue(loginPage.isLoginMS(), "Не удалось авторизоваться");
 
@@ -72,8 +75,9 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context){
-        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")){
-            open("/contacts");
-        }
+        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")) open("/contacts");
+        else if (classTest.contains("MailPageTest")) open("/settings/mail");
+
+        System.out.println(context.getRequiredTestMethod());
     }
 }

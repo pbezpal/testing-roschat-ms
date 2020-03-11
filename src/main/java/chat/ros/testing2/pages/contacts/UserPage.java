@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.pages.contacts;
 
 import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.ElementsCollection;
@@ -6,7 +6,9 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
+import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_INPUT_USERNAME;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -22,10 +24,7 @@ public class UserPage implements MSGeneralElements {
     private ElementsCollection inputsPassword = $$("form.v-form input[type='password']");
     private SelenideElement divProgressBar = $("div.v-progress-circular__info");
     private ElementsCollection spanValueAccount = $$("div.v-window__container span");
-
-    //Данные раздела пользователь
-    private String inputUsername = "Имя пользователя";
-    private String inputNumberSIP = "Номер SIP";
+    private SelenideElement buttonsAddService = $(By.xpath("//div[@class='service']//ancestor::div[@class='main-block']//button"));
 
     public UserPage() {}
 
@@ -93,11 +92,11 @@ public class UserPage implements MSGeneralElements {
         //Проверяем, появилась ли форма для редактирования
         assertTrue(isFormChange(), "Форма для добавления учётной записи не появилась");
         //Вводим имя пользователя
-        sendInputForm(inputUsername, username);
+        sendInputForm(USER_ACCOUNT_INPUT_USERNAME, username);
         //Вводим пароль
         sendInputsPassword(password);
         //Вводим номер SIP
-        sendInputForm(inputNumberSIP, number);
+        //sendInputForm(inputNumberSIP, number);
         //Проверяем, что кнопка Сохранить активна
         assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки аккаунта, кнопка 'Сохранить' не активна");
         //Нажимаем кнопку Сохранить
@@ -109,5 +108,13 @@ public class UserPage implements MSGeneralElements {
 
         return this;
     }
+
+    @Step(value = "Нажимаем кнопку добавить в разделе Сервисы")
+    public UserPage clickButtonService(){
+        buttonsAddService.click();
+        return this;
+    }
+
+
 
 }

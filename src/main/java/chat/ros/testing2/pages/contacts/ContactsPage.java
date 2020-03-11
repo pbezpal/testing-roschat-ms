@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.pages.contacts;
 
 import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;
@@ -9,6 +9,8 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_LASTNAME;
+import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -22,10 +24,6 @@ public class ContactsPage implements MSGeneralElements {
     private SelenideElement buttonSaveContact = formNewContact.find("button.v-btn.theme--light.primary");
     private SelenideElement inputSearchContact = $("input[aria-label='Найти']");
     private ElementsCollection tdSearchContact = $$("table.v-datatable.v-table.theme--light td");
-
-    //Название полей
-    private String inputLastname = "Фамилия";
-    private String inputWorkPohone = "Номер";
 
     public ContactsPage () {}
 
@@ -97,9 +95,9 @@ public class ContactsPage implements MSGeneralElements {
             //Проверяем, появилась ли форма для добавления контакта
             assertTrue(isFormNewContact(), "Форма для добаления контакта не появилась");
             //Запилняет поле фамилия
-            sendInputContact(inputLastname, contact);
+            sendInputContact(CONTACT_INPUT_LASTNAME, contact);
             //Заполняем номер рабочего телефона
-            sendInputContact(inputWorkPohone, contact);
+            sendInputContact(CONTACT_INPUT_PHONE_JOB, contact);
             //Нажимаем кнопку Сохранить
             clickButtonSaveContact();
             //Вводим фамилию в поле поиска
@@ -109,7 +107,6 @@ public class ContactsPage implements MSGeneralElements {
         assertTrue(isSearchContact(contact), "Контакт " + contact + " не добавлен в БД контактов");
         //Переходим к настройкам учётной записи контакта
         tdSearchContact.findBy(text(contact)).click();
-
 
         return new UserPage();
     }

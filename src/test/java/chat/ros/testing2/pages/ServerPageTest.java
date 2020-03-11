@@ -2,6 +2,7 @@ package chat.ros.testing2.pages;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.pages.settings.ServerPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -10,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @Epic(value = "Настройки")
-@Feature(value = "Настройки->Сервер")
+@Feature(value = "Сервер")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-class ServerPageTest extends ServerPage{
-
-
+class ServerPageTest extends ServerPage {
 
     @Story(value = "Настраиваем внешний адрес сервера")
     @Description(value = "Настраиваем внешний адрес сервера в разделе Подключение")

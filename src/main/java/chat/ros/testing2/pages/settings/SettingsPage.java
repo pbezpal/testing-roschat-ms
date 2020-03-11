@@ -1,6 +1,7 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.pages.settings;
 
 import chat.ros.testing2.data.MSGeneralElements;
+import chat.ros.testing2.pages.MonitoringPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -9,33 +10,17 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class SettingsPage extends MonitoringPage implements MSGeneralElements {
-
-    private String headSection = "Настройки";
-    private String buttonSetting = "Настроить";
-    private String buttonCheck = "Проверить";
-    private String buttonRestartServices = "Перезапустить";
 
     private SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
     private SelenideElement formConformActions = $("div.dialog-header h3");
     private SelenideElement divCheckSettings = $("div.msg-body h4");
     private SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
 
-    public SettingsPage () {};
-
-    public String getButtonSetting(){
-        return buttonSetting;
-    }
-
-    public String getButtonRestartServices(){
-        return buttonRestartServices;
-    }
-
-    public String getButtonCheck(){
-        return buttonCheck;
-    }
+    public SettingsPage () {}
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     public boolean isNotSectionSettings(String itemContainer){
@@ -114,7 +99,8 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     @Step(value = "Проверяем, что проверка настроек прошла успешно")
     public boolean isCheckSettings(String value){
         try{
-            divCheckSettings.text().contains(value);
+            divCheckSettings.waitUntil(text(value), 30000);
+            successCheckSettings.shouldBe(visible);
         }catch (ElementNotFound element){
             return false;
         }

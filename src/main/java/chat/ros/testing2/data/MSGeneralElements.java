@@ -15,6 +15,7 @@ public interface MSGeneralElements {
     SelenideElement inputLogin = formChange.find("input[type='text']");
     SelenideElement inputPassword = formChange.find("input[type='password']");
     SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
+    SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
