@@ -13,6 +13,8 @@ public interface ContactsData {
     /***** Параметры контактов ******/
     String CONTACT_NUMBER_7010 = getProperty("CONTACT_NUMBER_7010", config);
     String CONTACT_NUMBER_7011 = getProperty("CONTACT_NUMBER_7011", config);
+    String CONTACT_NUMBER_7012 = getProperty("CONTACT_NUMBER_7012", config); //Контакт для проверки каналов
+    String CONTACT_NUMBER_7013 = getProperty("CONTACT_NUMBER_7013", config); //Контакт для проверки каналов
 
     /******************************************** Раздел Польхователь ************************************************/
 

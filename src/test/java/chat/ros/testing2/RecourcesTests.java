@@ -1,6 +1,8 @@
 package chat.ros.testing2;
 
+import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.pages.LoginPage;
+import chat.ros.testing2.pages.contacts.ContactsPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -19,9 +21,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.logging.Level;
 
+import static chat.ros.testing2.data.ContactsData.*;
+import static chat.ros.testing2.data.LoginData.*;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static chat.ros.testing2.data.LoginData.*;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
@@ -31,6 +34,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     private String classTest = "";
     private StringBuilder logs = new StringBuilder();
     private LogEntries logEntries;
+    private String sshCommandIsContact = "/var/db/roschat-db/userlist.sh | grep ";
 
     @Override
     public void beforeAll(ExtensionContext context){
@@ -77,7 +81,29 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     public void beforeEach(ExtensionContext context){
         if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")) open("/contacts");
         else if (classTest.contains("MailPageTest")) open("/settings/mail");
-
-        System.out.println(context.getRequiredTestMethod());
+        else if(classTest.contains("ChannelsPageTest")) {
+            if (String.valueOf(context.getRequiredTestMethod()).contains("test_Create_Channel") ||
+                    String.valueOf(context.getRequiredTestMethod()).contains("test_Check_Status_Tested_Channel_7012")) {
+                if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7012)) {
+                    ContactsPage contactsPage = new ContactsPage();
+                    open("/contacts");
+                    contactsPage.addContact(CONTACT_NUMBER_7012).addUserAccount(CONTACT_NUMBER_7012, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+                }
+                Configuration.baseUrl = hostClient;
+                open("/");
+            } else if(String.valueOf(context.getRequiredTestMethod()).contains("test_Tested_Channel")) {
+                Configuration.baseUrl = hostServer;
+                open("/admin/channels");
+            }else if(String.valueOf(context.getRequiredTestMethod()).contains("test_Check_Status_Tested_Channel_7013")) {
+                if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7013)) {
+                    ContactsPage contactsPage = new ContactsPage();
+                    Configuration.baseUrl = hostServer;
+                    open("/contacts");
+                    contactsPage.addContact(CONTACT_NUMBER_7013).addUserAccount(CONTACT_NUMBER_7013, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+                }
+                Configuration.baseUrl = hostClient;
+                open("/");
+            }
+        }
     }
 }
