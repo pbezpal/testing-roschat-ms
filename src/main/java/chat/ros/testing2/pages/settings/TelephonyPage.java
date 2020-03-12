@@ -41,7 +41,7 @@ public class TelephonyPage extends SettingsPage {
         //Проверяем, появилась ли форма проверки настроек
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(TELEPHONY_NETWORK_TEXT_CHECK), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 

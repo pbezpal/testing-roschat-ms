@@ -104,7 +104,7 @@ public class MailPage extends SettingsPage {
         //Проверяем, появилась ли форма проверки настроек
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(MAIL_CONNECT_TEXT_CHECK), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 

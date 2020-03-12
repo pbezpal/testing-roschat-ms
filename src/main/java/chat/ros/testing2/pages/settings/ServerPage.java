@@ -4,7 +4,9 @@ import chat.ros.testing2.helpers.SSHManager;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import io.qameta.allure.model.Status;
 
 import java.io.File;
 
@@ -50,7 +52,7 @@ public class ServerPage extends SettingsPage{
         //Проверяем, появилась ли форма проверки настроек
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(SERVER_CONNECT_TEXT_CHECK_SERVER), "Настройки сервера некорректны");
+        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
 
@@ -86,6 +88,13 @@ public class ServerPage extends SettingsPage{
     @Step(value = "Проверяем, установилось ли соединение с Push сервером")
     public boolean isEsteblishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEsteblishedPush); }
 
+    private boolean isUpdateLicense(){
+        clickButtonSettings(SERVER_PUSH_TITLE_FORM, SERVER_PUSH_BUTTON_UPDATE_LICENSE);
+        boolean update = isCheckSettings();
+        clickButtonCloseCheckSettingsForm();
+        return update;
+    }
+
     public ServerPage setPushService(){
 
         boolean result = true;
@@ -116,16 +125,9 @@ public class ServerPage extends SettingsPage{
         //Прокручиваем страницу вниз
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
-        clickButtonSettings(SERVER_PUSH_TITLE_FORM, SERVER_PUSH_BUTTON_UPDATE_LICENSE);
-        //Проверяем, что лицензия успешно обновлена
-        assertTrue(isCheckSettings(SERVER_PUSH_TEXT_CHECK_LICENSE), "Настройки сервера некорректны");
-        //Нажимаем кнопку закрыть
-        clickButtonCloseCheckSettingsForm();
+        if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
+        assertTrue(isUpdateLicense(), "Error: Не удалось обновить лицензию");
 
         return this;
     }
-
-
-
-
 }

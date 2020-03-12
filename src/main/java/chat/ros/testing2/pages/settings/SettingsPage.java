@@ -97,10 +97,9 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     }
 
     @Step(value = "Проверяем, что проверка настроек прошла успешно")
-    public boolean isCheckSettings(String value){
+    public boolean isCheckSettings(){
         try{
-            divCheckSettings.waitUntil(text(value), 30000);
-            successCheckSettings.shouldBe(visible);
+            successCheckSettings.waitUntil(visible, 15000);
         }catch (ElementNotFound element){
             return false;
         }
