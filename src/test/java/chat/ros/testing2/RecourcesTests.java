@@ -62,48 +62,47 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         driver.manage().window().setPosition(new Point(2,2));
         WebDriverRunner.setWebDriver(driver);
 
-        Configuration.baseUrl = hostServer;
         Configuration.screenshots = false;
 
-        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
-
-
-
-        if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-
-        assertTrue(loginPage.isLoginMS(), "Не удалось авторизоваться");
-
-        if(classTest.contains("ServerPageTest")) open("/settings/web-server");
-        else if (classTest.contains("TelephonyPageTest")) open("/settings/telephony");
+        if(classTest.contains("ServerPageTest")) openMS("/settings/web-server");
+        else if (classTest.contains("TelephonyPageTest")) openMS("/settings/telephony");
     }
 
     @Override
     public void beforeEach(ExtensionContext context){
-        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")) open("/contacts");
-        else if (classTest.contains("MailPageTest")) open("/settings/mail");
+        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")) openMS("/contacts");
+        else if (classTest.contains("MailPageTest")) openMS("/settings/mail");
         else if(classTest.contains("ChannelsPageTest")) {
-            if (String.valueOf(context.getRequiredTestMethod()).contains("test_Create_Channel") ||
-                    String.valueOf(context.getRequiredTestMethod()).contains("test_Check_Status_Tested_Channel_7012")) {
+            if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7012")) {
                 if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7012)) {
                     ContactsPage contactsPage = new ContactsPage();
-                    open("/contacts");
+                    openMS("/contacts");
                     contactsPage.addContact(CONTACT_NUMBER_7012).addUserAccount(CONTACT_NUMBER_7012, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }
-                Configuration.baseUrl = hostClient;
-                open("/");
-            } else if(String.valueOf(context.getRequiredTestMethod()).contains("test_Tested_Channel")) {
-                Configuration.baseUrl = hostServer;
-                open("/admin/channels");
-            }else if(String.valueOf(context.getRequiredTestMethod()).contains("test_Check_Status_Tested_Channel_7013")) {
+                openClient();
+            } else if(String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
+                openMS("/admin/channels");
+            }else if(String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")) {
                 if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7013)) {
                     ContactsPage contactsPage = new ContactsPage();
-                    Configuration.baseUrl = hostServer;
-                    open("/contacts");
+                    openMS("/contacts");
                     contactsPage.addContact(CONTACT_NUMBER_7013).addUserAccount(CONTACT_NUMBER_7013, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }
-                Configuration.baseUrl = hostClient;
-                open("/");
+                openClient();
             }
         }
+    }
+
+    private void openMS(String page){
+        Configuration.baseUrl = hostServer;
+        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
+        if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
+        assertTrue(loginPage.isLoginMS(), "Не удалось авторизоваться");
+        open(page);
+    }
+
+    private void openClient(){
+        Configuration.baseUrl = hostClient;
+        open("/");
     }
 }

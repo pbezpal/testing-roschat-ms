@@ -19,12 +19,16 @@ public class ChannelsPage extends LoginPage {
     public ChannelsPage () {}
 
     //Создаём новый канал
-    public ClientPage createNewChannel(String login, String password, String name, String item){
-        return sendDataLogin(login, password).createNewChannel(name, item);
+    public ClientPage createNewChannel(String login, String password, String name, String item, String type){
+        return sendDataLogin(login, password).createNewChannel(name, item, type);
     }
 
     public ClientPage checkStatusTestedChannel(String login, String password, String item){
         return sendDataLogin(login, password).checkStatusTestedChannel(item);
+    }
+
+    public ClientPage searchChannel(String login, String password, String name, String type){
+        return sendDataLogin(login, password).searchChannel(name, type);
     }
 
     @Step(value = "Проверяем, что новый канал отображается в СУ")

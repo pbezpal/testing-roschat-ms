@@ -22,7 +22,7 @@ public class LoginPage {
     @Step(value = "Проверяем, появилось ли окно авторизации")
     private boolean isLoginWindow(){
         try{
-            divLogin.shouldBe(Condition.visible);
+            divLogin.waitUntil(Condition.visible, 30000);
         }catch (ElementNotFound elementNotFound){
             return false;
         }
@@ -32,7 +32,7 @@ public class LoginPage {
 
     @Step(value = "Нажимаем кнопку 'Ввести логин и пароль'")
     private LoginPage clickButtonPencil(){
-        buttonPencil.click();
+        if(isLoginWindow()) buttonPencil.click();
         return this;
     }
 

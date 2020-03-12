@@ -29,7 +29,7 @@ public class UserPage implements MSGeneralElements {
     public UserPage() {}
 
     @Step(value = "Проверяем, что мы на странице Пользователь")
-    public boolean isDivWrapperUser(){
+    protected boolean isDivWrapperUser(){
         try{
             divWrapperUser.shouldBe(visible);
         }catch (ElementNotFound element){
@@ -39,7 +39,7 @@ public class UserPage implements MSGeneralElements {
     }
 
     @Step(value = "Переходим в раздел {itemMenu}")
-    public UserPage clickMenuItem(String itemMenu){
+    protected UserPage clickMenuItem(String itemMenu){
         if( ! activeItemMenu.text().contains(itemMenu)) {
             inactiveItemMenu.findBy(text(itemMenu)).click();
         }
@@ -47,15 +47,16 @@ public class UserPage implements MSGeneralElements {
     }
 
     @Step(value = "Нажимаем кнопку Создать аккаунт")
-    public UserPage clickButtonAddAccount(){
+    protected UserPage clickButtonAddAccount(){
+        buttonNewAccount.shouldBe(visible);
         buttonNewAccount.click();
         return this;
     }
 
     @Step(value = "Ждём, когда пропадёт прогрессбар при добавлении аккаунта")
-    public boolean isWaitInvisibleProgressbar(){
+    protected boolean isWaitInvisibleProgressbar(){
         try{
-            divProgressBar.waitUntil(not(visible), 30000);
+            divProgressBar.waitUntil(not(visible), 10000);
         }catch (ElementShould elementShould){
             return false;
         }
@@ -64,14 +65,14 @@ public class UserPage implements MSGeneralElements {
     }
 
     @Step(value = "Вводим пароль и подтверждение пароля")
-    public UserPage sendInputsPassword(String password){
+    protected UserPage sendInputsPassword(String password){
         inputsPassword.first().sendKeys(password);
         inputsPassword.last().sendKeys(password);
         return this;
     }
 
     @Step(value = "Проверяем, добавлена лм учётная запись")
-    public boolean isExistsAccount(String account){
+    protected boolean isExistsAccount(String account){
         try{
             spanValueAccount.findBy(text(account)).shouldBe(visible);
         }catch (ElementShould elementShould){
@@ -81,7 +82,7 @@ public class UserPage implements MSGeneralElements {
     }
 
     //Добавляем учётную запись пользователю
-    public UserPage addUserAccount(String number, String password, String itemMenu) {
+    public ContactsPage addUserAccount(String number, String password, String itemMenu) {
         String username = number + "@ros.chat";
         //Проверяем, что находимся на странице пользователя
         assertTrue(isDivWrapperUser(), "Не удалось перейти на страницу пользователя");
@@ -106,7 +107,7 @@ public class UserPage implements MSGeneralElements {
         //Проверяем, появилась ли учётная запись пользователя
         assertTrue(isExistsAccount(username), "Учётная запись не добавлена");
 
-        return this;
+        return new ContactsPage();
     }
 
     @Step(value = "Нажимаем кнопку добавить в разделе Сервисы")

@@ -38,13 +38,13 @@ public class ContactsPage implements MSGeneralElements {
     }
 
     @Step(value = "Нажимаем кнопку Добавить")
-    private ContactsPage clickButtonAddContact(){
+    protected ContactsPage clickButtonAddContact(){
         buttonAddContact.click();
         return this;
     }
 
     @Step(value = "Проверяем, появилась ли форма для добавления нового контакта")
-    private boolean isFormNewContact(){
+    protected boolean isFormNewContact(){
         try{
             formNewContact.shouldBe(Condition.visible);
         }catch (ElementNotFound element){
@@ -55,19 +55,19 @@ public class ContactsPage implements MSGeneralElements {
     }
 
     @Step(value = "Вводим в поле {field} значение {value}")
-    public ContactsPage sendInputContact(String field, String value){
+    protected ContactsPage sendInputContact(String field, String value){
         formNewContact.find("input[aria-label='" + field + "']").sendKeys(value);
         return this;
     }
 
     @Step(value = "Нажимаем кнопку Сохранить")
-    public ContactsPage clickButtonSaveContact(){
+    protected ContactsPage clickButtonSaveContact(){
         buttonSaveContact.click();
         return this;
     }
 
     @Step(value = "Вводим в поле поиска значение {value}")
-    public ContactsPage sendInputSearchContact(String value){
+    protected ContactsPage sendInputSearchContact(String value){
         inputSearchContact.sendKeys(Keys.CONTROL + "a");
         inputSearchContact.sendKeys(Keys.BACK_SPACE);
         inputSearchContact.sendKeys(value);
@@ -75,7 +75,7 @@ public class ContactsPage implements MSGeneralElements {
     }
 
     @Step(value = "Проверяем, появился ли контакт {contact} в таблице")
-    public boolean isSearchContact(String contact){
+    protected boolean isSearchContact(String contact){
         try{
             tdSearchContact.findBy(text(contact)).shouldBe(Condition.visible);
         }catch (ElementNotFound element){
