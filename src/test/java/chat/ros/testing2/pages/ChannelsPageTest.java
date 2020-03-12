@@ -42,8 +42,8 @@ public class ChannelsPageTest extends ChannelsPage {
         doTestedChannel(CLIENT_NAME_CHANNEL_PUBLIC);
     }
 
-    @Story(value = "Проверяем, что у клиента 7012 у канала появился статус Проверенный")
-    @Description(value = "Авторизуемся на клиенте под учётной записью 7012 и проверяем, что у канала появился статус Проверенный")
+    @Story(value = "Проверяем статус пудличного канала под учёткой 7012")
+    @Description(value = "Авторизуемся на клиенте под учётной записью 7012. Проверяем, что у канала появился статус Проверенный")
     @Order(3)
     @Test
     void test_Check_Status_Public_Tested_Channel_7012(){
@@ -51,7 +51,7 @@ public class ChannelsPageTest extends ChannelsPage {
     }
 
     @Story(value = "Ищем на клиенте 7013 публичный канал")
-    @Description(value = "Авторизуемся на клиенте под учётной записью 7013 и вводим в поле поиска имя публичного канала и проверяем, что у канала статус Проверенный")
+    @Description(value = "Авторизуемся на клиенте под учётной записью 7013 и вводим в поле поиска имя публичного канала. Проверяем, что у канала статус Проверенный")
     @Order(4)
     @Test
     void test_Search_Public_Channel_7013(){
@@ -67,7 +67,7 @@ public class ChannelsPageTest extends ChannelsPage {
     }
 
     @Story(value = "Ищем на клиенте 7013 закрытый канал")
-    @Description(value = "Авторизуемся на клиенте под учётной записью 7013 и вводим в поле поиска имя закрытого канала и проверяем, что канал не отоюражается в списке каналов")
+    @Description(value = "Авторизуемся на клиенте под учётной записью 7013 и вводим в поле поиска имя закрытого канала. Проверяем, что канал не отображается в списке каналов")
     @Order(6)
     @Test
     void test_Search_Closed_Channel_7013(){
