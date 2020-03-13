@@ -42,7 +42,7 @@ public class ChannelsPageTest extends ChannelsPage {
         doTestedChannel(CLIENT_NAME_CHANNEL_PUBLIC);
     }
 
-    @Story(value = "Проверяем статус пудличного канала под учёткой 7012")
+    @Story(value = "Проверяем статус публичного канала под учёткой 7012")
     @Description(value = "Авторизуемся на клиенте под учётной записью 7012. Проверяем, что у канала появился статус Проверенный")
     @Order(3)
     @Test
