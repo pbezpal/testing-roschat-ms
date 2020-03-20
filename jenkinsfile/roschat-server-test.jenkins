@@ -31,7 +31,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh '/var/jenkins_home/tools/hudson.plugins.gradle.GradleInstallation/Gradle-5/bin/gradle clean test'
+                        sh './gradlew clean test'
                     }catch(err){
                         STATUS="Провал";
                     }
