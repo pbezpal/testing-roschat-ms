@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.server;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;

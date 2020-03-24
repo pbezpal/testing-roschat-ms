@@ -1,8 +1,8 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.server;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.pages.settings.MailPage;
+import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,7 @@ import static chat.ros.testing2.data.SettingsData.*;
 @Feature(value = "Почта")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class MailPageTest extends MailPage {
+public class MS_MailPageTest extends MailPage {
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
     @Description(value = "Вводим параметры почтового сервера infotek с незащищённым соединением и проверяем настройки")

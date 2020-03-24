@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages.contacts;
+package chat.ros.testing2.server.contacts;
 
 import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;
@@ -8,6 +8,9 @@ import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_LASTNAME;
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
@@ -54,9 +57,21 @@ public class ContactsPage implements MSGeneralElements {
         return true;
     }
 
+    protected Map<String, String> getMapInputsValueContact(String lastName, String phoneJob){
+        Map<String, String> mapInputValueContact = new HashMap() {{
+            put(CONTACT_INPUT_LASTNAME, lastName);
+            put(CONTACT_INPUT_PHONE_JOB, phoneJob);
+        }};
+        return mapInputValueContact;
+    }
+
     @Step(value = "Вводим в поле {field} значение {value}")
-    protected ContactsPage sendInputContact(String field, String value){
-        formNewContact.find("input[aria-label='" + field + "']").sendKeys(value);
+    protected ContactsPage sendInputsContact(Map<String, String> mapInputValueContact){
+        for(Map.Entry<String, String> entry : mapInputValueContact.entrySet()){
+            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(Keys.CONTROL + "a");
+            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(Keys.BACK_SPACE);
+            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(entry.getValue());
+        }
         return this;
     }
 
@@ -67,7 +82,7 @@ public class ContactsPage implements MSGeneralElements {
     }
 
     @Step(value = "Вводим в поле поиска значение {value}")
-    protected ContactsPage sendInputSearchContact(String value){
+    public ContactsPage sendInputSearchContact(String value){
         inputSearchContact.sendKeys(Keys.CONTROL + "a");
         inputSearchContact.sendKeys(Keys.BACK_SPACE);
         inputSearchContact.sendKeys(value);
@@ -84,6 +99,12 @@ public class ContactsPage implements MSGeneralElements {
         return true;
     }
 
+    @Step(value = "Переходим в раздел Пользователь контакта {contact}")
+    public UserPage clickContact(String contact){
+        tdSearchContact.findBy(text(contact)).click();
+        return new UserPage();
+    }
+
     //Добавляем контакт
     public UserPage addContact(String contact){
         //Вводим фамилию в поле поиска
@@ -94,11 +115,8 @@ public class ContactsPage implements MSGeneralElements {
             clickButtonAddContact();
             //Проверяем, появилась ли форма для добавления контакта
             assertTrue(isFormNewContact(), "Форма для добаления контакта не появилась");
-            //Запилняет поле фамилия
-            sendInputContact(CONTACT_INPUT_LASTNAME, contact);
-            //Заполняем номер рабочего телефона
-            sendInputContact(CONTACT_INPUT_PHONE_JOB, contact);
-            //Нажимаем кнопку Сохранить
+            //Вводим данные контакта
+            sendInputsContact(getMapInputsValueContact(contact, contact));
             clickButtonSaveContact();
             //Вводим фамилию в поле поиска
             sendInputSearchContact(contact);
@@ -106,9 +124,7 @@ public class ContactsPage implements MSGeneralElements {
         //Проверяем, добавился ли контакт в БД контактов
         assertTrue(isSearchContact(contact), "Контакт " + contact + " не добавлен в БД контактов");
         //Переходим к настройкам учётной записи контакта
-        tdSearchContact.findBy(text(contact)).click();
-
-        return new UserPage();
+        return clickContact(contact);
     }
 
 }

@@ -25,4 +25,12 @@ public interface ContactsData {
 
     /****** Параметры сервисов ******/
     String USER_SERVICES_ITEM_MENU = getProperty("USER_SERVICES_ITEM_MENU", config);
+    String USER_SERVICES_BUTTON_ADD = getProperty("USER_SERVICES_BUTTON_ADD", config);
+    String USER_SERVICES_TYPE_RADIO = getProperty("USER_SERVICES_TYPE_RADIO", config);
+    String USER_SERVICES_TYPE_DX500 = getProperty("USER_SERVICES_TYPE_DX500", config);
+    String USER_SERVICES_TYPE_TETRA = getProperty("USER_SERVICES_TYPE_TETRA", config);
+    String USER_SERVICES_INPUT_TETRA_SSI = getProperty("USER_SERVICES_INPUT_TETRA_SSI", config);
+    String USER_SERVICES_TYPE_SIP = getProperty("USER_SERVICES_TYPE_SIP", config);
+    String USER_SERVICE_INPUT_SIP = getProperty("USER_SERVICE_INPUT_SIP", config);
+
 }

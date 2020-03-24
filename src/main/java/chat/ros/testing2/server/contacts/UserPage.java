@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages.contacts;
+package chat.ros.testing2.server.contacts;
 
 import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.ElementsCollection;
@@ -8,7 +8,7 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_INPUT_USERNAME;
+import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -25,6 +25,10 @@ public class UserPage implements MSGeneralElements {
     private SelenideElement divProgressBar = $("div.v-progress-circular__info");
     private ElementsCollection spanValueAccount = $$("div.v-window__container span");
     private SelenideElement buttonsAddService = $(By.xpath("//div[@class='service']//ancestor::div[@class='main-block']//button"));
+    private ElementsCollection servicesMenuContent = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
+    private ElementsCollection listServices = $$("div.service-info h4.service-name");
+    private SelenideElement inputSelectServerTetra = $("div.v-select__selections");
+    private ElementsCollection divListServerTetra = $$("div.v-select-list.v-card.theme--light div.v-list__tile__title");
 
     public UserPage() {}
 
@@ -71,7 +75,7 @@ public class UserPage implements MSGeneralElements {
         return this;
     }
 
-    @Step(value = "Проверяем, добавлена лм учётная запись")
+    @Step(value = "Проверяем, добавлена ли учётная запись")
     protected boolean isExistsAccount(String account){
         try{
             spanValueAccount.findBy(text(account)).shouldBe(visible);
@@ -82,7 +86,7 @@ public class UserPage implements MSGeneralElements {
     }
 
     //Добавляем учётную запись пользователю
-    public ContactsPage addUserAccount(String number, String password, String itemMenu) {
+    public UserPage addUserAccount(String number, String password, String itemMenu) {
         String username = number + "@ros.chat";
         //Проверяем, что находимся на странице пользователя
         assertTrue(isDivWrapperUser(), "Не удалось перейти на страницу пользователя");
@@ -107,15 +111,92 @@ public class UserPage implements MSGeneralElements {
         //Проверяем, появилась ли учётная запись пользователя
         assertTrue(isExistsAccount(username), "Учётная запись не добавлена");
 
-        return new ContactsPage();
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку добавить в разделе Сервисы")
-    public UserPage clickButtonService(){
+    private UserPage clickButtonService(){
         buttonsAddService.click();
         return this;
     }
 
+    @Step(value = "Проверяем, что сервис {service} доступен для добавления")
+    private boolean isNotDisabledService(String service){
+        try{
+            servicesMenuContent.findBy(text(service)).shouldBe(enabled);
+        }catch (ElementNotFound e){
+            return false;
+        }
+        return true;
+    }
 
+    @Step(value = "Выбираем тип сервиса {service}")
+    private UserPage clickAddTypeService(String service){
+        servicesMenuContent.findBy(text(service)).click();
+        return this;
+    }
 
+    @Step(value = "Настраиваем сервис SIP. Прописываем абоненту SIP номер {number}")
+    private UserPage sendSipNumber(String number){
+        sendInputForm(USER_SERVICE_INPUT_SIP, number);
+        return this;
+    }
+
+    @Step(value = "Выбираем сервер Тетра {server}")
+    private UserPage selectServerTetra(String server){
+        inputSelectServerTetra.click();
+        divListServerTetra.findBy(text(server)).click();
+        return this;
+    }
+
+    @Step(value = "Вводим номер SSI {number}")
+    private UserPage sendInputNumberSSI(String number){
+        sendInputForm(USER_SERVICES_INPUT_TETRA_SSI, number);
+        return this;
+    }
+
+    @Step(value = "Проверяем, появился сервир в списке сервисов")
+    public boolean isShowService(String service){
+        try{
+            listServices.findBy(text(service)).shouldBe(visible);
+        }catch (ElementNotFound e){
+            return false;
+        }
+        return true;
+    }
+
+    //Добавляем сервисы
+    public UserPage addServices(String itemMenu, String type){
+        //Переходим в раздел Сервисы
+        clickMenuItem(itemMenu);
+        clickButtonService();
+        clickAddTypeService(type);
+        return this;
+    }
+
+    //Добавляем сервис Тетра
+    public UserPage addServices(String itemMenu, String type, String server, String ssi){
+        //Переходим в раздел Сервисы
+        clickMenuItem(itemMenu);
+        clickButtonService();
+        clickAddTypeService(type);
+        selectServerTetra(server);
+        sendInputNumberSSI(ssi);
+        clickButtonSave();
+        return this;
+    }
+
+    //Добавляем сервис SIP
+    public UserPage addServices(String itemMenu, String type, String number){
+        //Переходим в раздел Сервисы
+        clickMenuItem(itemMenu);
+        clickButtonService();
+        clickAddTypeService(type);
+        sendSipNumber(number);
+        clickButtonSave();
+        return this;
+    }
+
+    //assertTrue(isNotDisabledService(service), "Сервис " + service + " недоступен для выбора");
+    //assertTrue(isShowService(USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
 }

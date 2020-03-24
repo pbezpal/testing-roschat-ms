@@ -1,8 +1,8 @@
 package chat.ros.testing2;
 
 import chat.ros.testing2.helpers.SSHManager;
-import chat.ros.testing2.pages.LoginPage;
-import chat.ros.testing2.pages.contacts.ContactsPage;
+import chat.ros.testing2.server.LoginPage;
+import chat.ros.testing2.server.contacts.ContactsPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -47,6 +47,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", false);
         capabilities.setCapability("acceptInsecureCerts", true);
+
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
         capabilities.setCapability("goog:loggingPrefs", logPrefs);
@@ -64,31 +65,25 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         Configuration.screenshots = false;
 
-        if(classTest.contains("ServerPageTest")) openMS("/settings/web-server");
-        else if (classTest.contains("TelephonyPageTest")) openMS("/settings/telephony");
+        if(classTest.contains("MS_ServerPageTest")) openMS("/settings/web-server");
+        else if (classTest.contains("MS_TelephonyPageTest")) openMS("/settings/telephony");
     }
 
     @Override
     public void beforeEach(ExtensionContext context){
-        if(String.valueOf(context.getTestClass()).contains("ContactsPageTest")) openMS("/contacts");
-        else if (classTest.contains("MailPageTest")) openMS("/settings/mail");
-        else if(classTest.contains("ChannelsPageTest")) {
+        if (classTest.contains("MS_MailPageTest")) openMS("/settings/mail");
+        else if (classTest.contains("MS_IntegrationPageTest")) openMS("/settings/integration");
+        else if (classTest.contains("MS_ServicePageTest")) {
+            addContactAndAccount(CONTACT_NUMBER_7012);
+            openMS("/contacts");
+        }
+        else if(classTest.contains("MS_ChannelsPageTest")) {
             if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7012")) {
-                if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7012)) {
-                    ContactsPage contactsPage = new ContactsPage();
-                    openMS("/contacts");
-                    contactsPage.addContact(CONTACT_NUMBER_7012).addUserAccount(CONTACT_NUMBER_7012, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
-                }
-                openClient();
+                addContactAndAccount(CONTACT_NUMBER_7012);
             } else if(String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
                 openMS("/admin/channels");
-            }else if(String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")) {
-                if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + CONTACT_NUMBER_7013)) {
-                    ContactsPage contactsPage = new ContactsPage();
-                    openMS("/contacts");
-                    contactsPage.addContact(CONTACT_NUMBER_7013).addUserAccount(CONTACT_NUMBER_7013, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
-                }
-                openClient();
+            }else if(String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")){
+                addContactAndAccount(CONTACT_NUMBER_7013);
             }
         }
     }
@@ -101,8 +96,11 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         open(page);
     }
 
-    private void openClient(){
-        Configuration.baseUrl = hostClient;
-        open("/");
+    private void addContactAndAccount(String number){
+        if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
+            ContactsPage contactsPage = new ContactsPage();
+            openMS("/contacts");
+            contactsPage.addContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+        }
     }
 }

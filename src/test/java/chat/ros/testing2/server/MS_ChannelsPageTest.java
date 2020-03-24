@@ -1,12 +1,15 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.server;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.pages.administration.ChannelsPage;
+import chat.ros.testing2.webclient.comments.ClientChannelsPage;
+import chat.ros.testing2.webclient.comments.ClientCommentsPage;
+import chat.ros.testing2.server.administration.ChannelsPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.gen5.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -15,23 +18,27 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.data.ChannelsData.*;
 import static chat.ros.testing2.data.ContactsData.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Epic(value = "Администрирование")
+@Epic(value = "Web Клиент")
 @Feature(value = "Каналы")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class ChannelsPageTest extends ChannelsPage {
+public class MS_ChannelsPageTest extends ChannelsPage implements ClientCommentsPage {
 
     private String login7012 = CONTACT_NUMBER_7012 + "@ros.chat";
     private String login7013 = CONTACT_NUMBER_7013 + "@ros.chat";
+    private ClientChannelsPage clientChannelsPage;
 
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем 7012 и создаём новый публичный канал")
     @Order(1)
     @Test
     void test_Create_Public_Channel_7012(){
-        createNewChannel(login7012, USER_ACCOUNT_PASSWORD, CLIENT_NAME_CHANNEL_PUBLIC, CLIENT_ITEM_NEW_CHANNEL, CLIENT_TYPE_CHANNEL_PUBLIC);
+        clientChannelsPage = getClientChannelsPage(login7012);
+        assertTrue(clientChannelsPage.createNewChannel(CLIENT_NAME_CHANNEL_PUBLIC, CLIENT_ITEM_NEW_CHANNEL, CLIENT_TYPE_CHANNEL_PUBLIC).isExistComments(CLIENT_NAME_CHANNEL_PUBLIC, "Yes"),
+                "Канал не найден в списке бесед");
     }
 
     @Story(value = "Делаем публичному каналу статус Проверенный")
@@ -47,7 +54,12 @@ public class ChannelsPageTest extends ChannelsPage {
     @Order(3)
     @Test
     void test_Check_Status_Public_Tested_Channel_7012(){
-        checkStatusTestedChannel(login7012, USER_ACCOUNT_PASSWORD, CLIENT_ITEM_NEW_CHANNEL);
+        clientChannelsPage = getClientChannelsPage(login7012);
+        clientChannelsPage.clickItemComments();
+        Assertions.assertTrue(clientChannelsPage.isStatusTestedChannelListChat(),
+                "Отсутствует статус Проверенный у канала в разделе Беседы");
+        Assertions.assertTrue(clientChannelsPage.isStatusTestedChannelMainHeader(),
+                "Отсутствует статус Проверенный в заголовке канала");
     }
 
     @Story(value = "Ищем на клиенте 7013 публичный канал")
@@ -55,7 +67,9 @@ public class ChannelsPageTest extends ChannelsPage {
     @Order(4)
     @Test
     void test_Search_Public_Channel_7013(){
-        searchChannel(login7013, USER_ACCOUNT_PASSWORD, CLIENT_NAME_CHANNEL_PUBLIC, CLIENT_TYPE_CHANNEL_PUBLIC);
+        clientChannelsPage = getClientChannelsPage(login7013);
+        assertTrue(clientChannelsPage.searchChannel(CLIENT_NAME_CHANNEL_PUBLIC, CLIENT_TYPE_CHANNEL_PUBLIC),
+                "У канала отсутствует статус проверенный");
     }
 
     @Story(value = "Создаём новый закрытый канал")
@@ -63,7 +77,9 @@ public class ChannelsPageTest extends ChannelsPage {
     @Order(5)
     @Test
     void test_Create_Closed_Channel_7012(){
-        createNewChannel(login7012, USER_ACCOUNT_PASSWORD, CLIENT_NAME_CHANNEL_CLOSED, CLIENT_ITEM_NEW_CHANNEL, CLIENT_TYPE_CHANNEL_CLOSED);
+        clientChannelsPage = getClientChannelsPage(login7012);
+        assertTrue(clientChannelsPage.createNewChannel(CLIENT_NAME_CHANNEL_CLOSED, CLIENT_ITEM_NEW_CHANNEL, CLIENT_TYPE_CHANNEL_CLOSED).isExistComments(CLIENT_NAME_CHANNEL_CLOSED, "Yes"),
+                "Канал не найден в списке бесед");
     }
 
     @Story(value = "Ищем на клиенте 7013 закрытый канал")
@@ -71,6 +87,12 @@ public class ChannelsPageTest extends ChannelsPage {
     @Order(6)
     @Test
     void test_Search_Closed_Channel_7013(){
-        searchChannel(login7013, USER_ACCOUNT_PASSWORD, CLIENT_NAME_CHANNEL_CLOSED, CLIENT_TYPE_CHANNEL_CLOSED);
+        clientChannelsPage = getClientChannelsPage(login7013);
+        assertTrue(clientChannelsPage.searchChannel(CLIENT_NAME_CHANNEL_CLOSED, CLIENT_TYPE_CHANNEL_CLOSED),
+                "Канал отображается в списке бесед");
+    }
+
+    private ClientChannelsPage getClientChannelsPage(String login){
+        return (ClientChannelsPage) getInstanceClient(login, USER_ACCOUNT_PASSWORD, CLIENT_TYPE_COMMENTS_CHANNELS);
     }
 }

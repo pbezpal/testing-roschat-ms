@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.server;
 
 import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;

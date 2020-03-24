@@ -34,6 +34,8 @@ dependencies {
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.0'
     // https://mvnrepository.com/artifact/org.junit/junit5-engine
     compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.6.1'
 
     //dependencies for selenium
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
@@ -77,25 +79,13 @@ allure {
 }
 
 test {
+
     useJUnitPlatform()
 
-    // Always run tests, even when nothing changed.
     dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
-    }
-
-    filter{
-        includeTestsMatching "*.ServerPageTest"
-
-        includeTestsMatching "*.TelephonyPageTest"
-
-        includeTestsMatching "*.ContactsPageTest"
-
-        includeTestsMatching "*.MailPageTest"
-
-        includeTestsMatching "*.ChannelsPageTest"
     }
 }

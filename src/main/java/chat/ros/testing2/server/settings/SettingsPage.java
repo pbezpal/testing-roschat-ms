@@ -1,7 +1,7 @@
-package chat.ros.testing2.pages.settings;
+package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.data.MSGeneralElements;
-import chat.ros.testing2.pages.MonitoringPage;
+import chat.ros.testing2.server.MonitoringPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -9,9 +9,11 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import java.util.Map;
+
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class SettingsPage extends MonitoringPage implements MSGeneralElements {
 
@@ -19,6 +21,7 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     private SelenideElement formConformActions = $("div.dialog-header h3");
     private SelenideElement divCheckSettings = $("div.msg-body h4");
     private SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
+    private SelenideElement elementLoaderSettings = $("div.loader-wrapper i.loader");
 
     public SettingsPage () {}
 
@@ -53,7 +56,7 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
         return true;
     }
 
-    @Step(value = "Нажимаем кнопку {button}")
+    @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     public SettingsPage clickButtonSettings(String form, String button){
         $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']")).scrollIntoView(false);
         $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']" +
@@ -79,7 +82,8 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     }
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
-    public SettingsPage clickButtonRestartServices(String button){
+    public SettingsPage clickButtonConfirmAction(String button){
+        assertTrue(isFormConfirmActions(), "Отсутствует форма для подтверждения действий");
         $(By.xpath("//div[@class='actions-wrapper']" +
                 "//div[@class='v-btn__content' and contains(text(), '" + button + "')]")).click();
         return this;
@@ -110,6 +114,35 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     @Step(value = "Нажимаем кнопку Закрыть на форме проверки настроек")
     public SettingsPage clickButtonCloseCheckSettingsForm(){
         buttonCloseCheckSettingsForm.click();
+        return this;
+    }
+
+    @Step(value = "Ждём, когда пропадёт элемент загрузки настроек")
+    public boolean isNotShowLoaderSettings(){
+        try{
+            elementLoaderSettings.waitUntil(not(visible), 30000);
+        }catch (ElementShould e){
+            return false;
+        }
+
+        return true;
+    }
+
+    public SettingsPage setSettingsServer(Map<String, String> mapInputValue, String form, String button){
+        clickButtonSettings(form, button);
+        sendInputsForm(mapInputValue);
+        return this;
+    }
+
+    public SettingsPage checkSettingsServer(String form, String button){
+        //Нажимаем кнопку Проверить
+        clickButtonSettings(form, button);
+        //Проверяем, появилась ли форма проверки настроек
+        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
+        //Проверяем, что настройки сервера корректны
+        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        //Нажимаем кнопку закрыть
+        clickButtonCloseCheckSettingsForm();
         return this;
     }
 }

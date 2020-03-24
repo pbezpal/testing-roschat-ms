@@ -7,7 +7,10 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 
+import java.util.Map;
+
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface MSGeneralElements {
 
@@ -38,6 +41,19 @@ public interface MSGeneralElements {
                 "//ancestor::li[@class='layout modal-item']//input")).sendKeys(value);
     }
 
+    default void sendInputsForm(Map<String, String> mapInputValue){
+        for(Map.Entry<String, String> entry : mapInputValue.entrySet()){
+            String input = entry.getKey();
+            String value = entry.getValue();
+            $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
+                    "//ancestor::li[@class='layout modal-item']//input")).sendKeys(Keys.CONTROL + "a");
+            $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
+                    "//ancestor::li[@class='layout modal-item']//input")).sendKeys(Keys.BACK_SPACE);
+            $(By.xpath("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
+                    "//ancestor::li[@class='layout modal-item']//input")).sendKeys(value);
+        }
+    }
+
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
     default boolean isActiveButtonSave(){
         try{
@@ -51,6 +67,7 @@ public interface MSGeneralElements {
 
     @Step(value = "Нажимаем нопку Сохранить")
     default void clickButtonSave(){
+        assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
         buttonSave.click();
     }
 

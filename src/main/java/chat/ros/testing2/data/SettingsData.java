@@ -97,4 +97,11 @@ public interface SettingsData {
     String MAIL_GOOGLE_PASSWORD = getProperty("MAIL_GOOGLE_PASSWORD", config);
     String MAIL_GOOGLE_FROM_USER = getProperty("MAIL_GOOGLE_FROM_USER", config);
     String MAIL_GOOGLE_FROM_MAIL = getProperty("MAIL_GOOGLE_FROM_MAIL", config);
+
+    /********************************************* Раздел Интеграция *************************************************/
+
+    /****** Параметры настройки сервера Тетра ******/
+    String INTEGRATION_SERVICE_TETRA_TYPE = getProperty("INTEGRATION_SERVICE_TETRA_TYPE", config);
+    String INTEGRATION_SERVICE_TETRA_NAME = getProperty("INTEGRATION_SERVICE_TETRA_NAME", config);
+    String INTEGRATION_SERVICE_TETRA_DESCRIPTION = getProperty("INTEGRATION_SERVICE_TETRA_DESCRIPTION", config);
 }

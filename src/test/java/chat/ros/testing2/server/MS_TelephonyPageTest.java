@@ -1,8 +1,8 @@
-package chat.ros.testing2.pages;
+package chat.ros.testing2.server;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.pages.settings.TelephonyPage;
+import chat.ros.testing2.server.settings.TelephonyPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Feature(value = "Телефония")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class TelephonyPageTest extends TelephonyPage {
+public class MS_TelephonyPageTest extends TelephonyPage {
 
     @Story(value = "Настройка сети")
     @Description(value = "Настраиваем сеть для телефонии и проверяем корректность натсроек")

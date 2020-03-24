@@ -1,4 +1,4 @@
-package chat.ros.testing2.pages.settings;
+package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.helpers.SSHManager;
 import com.codeborne.selenide.Condition;
@@ -9,6 +9,8 @@ import io.qameta.allure.Step;
 import io.qameta.allure.model.Status;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
@@ -25,28 +27,27 @@ public class ServerPage extends SettingsPage{
     //Проверки на сервере по ssh
     private String commandCheckEsteblishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
 
+    private Map<String, String> mapInputValueConnect = new HashMap() {{
+        put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+    }};
+
+    private Map<String, String> mapInputValuePush = new HashMap() {{
+        put(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
+        put(SERVER_PUSH_INPUT_LOGIN, SERVER_PUSH_LOGIN_SERVER);
+        put(SERVER_PUSH_INPUT_PORT, SERVER_PUSH_PORT_SERVER);
+        put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
+    }};
+
     public static ServerPage serverPage = new ServerPage();
     public static ServerPage getInstance() { return serverPage; }
 
     public ServerPage setPublicNetwork(){
         //Настраиваем внешний адрес сервера
         if(isNotValueInField(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER)){
-            //Нажимаем кнопку Настроить
-            clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-            //Проверяем, появилась ли форма редактирования Подключения
-            assertTrue(isFormChange(), "Форма для редактирования не появилась");
-            //Вводим в поле Внешний адрес сети публичный host сервера
-            sendInputForm(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
-            //Проверяем, что кнопка Сохранить активна
-            assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
-            //Нажимаем кнопку Сохранить
+            setSettingsServer(mapInputValueConnect, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
             clickButtonSave();
-            //Проверяем, появилась ли форма для перезагрузки сервисов
-            assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
-            //Нажимаем кнопку для перезагрузки сервисов
-            clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
+            clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         }
-
         //Нажимаем кнопку Проверить
         clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
         //Проверяем, появилась ли форма проверки настроек
@@ -55,7 +56,6 @@ public class ServerPage extends SettingsPage{
         assertTrue(isCheckSettings(), "Настройки сервера некорректны");
         //Нажимаем кнопку закрыть
         clickButtonCloseCheckSettingsForm();
-
         return this;
     }
 
@@ -96,30 +96,9 @@ public class ServerPage extends SettingsPage{
     }
 
     public ServerPage setPushService(){
-
-        boolean result = true;
-        String error = "";
-
-        //Нажимаем кнопку Настроить в форме Лицензирование и обсуживание
-        clickButtonSettings(SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        //Проверяем, что появилась форма редактирования Лицензии
-        assertTrue(isFormChange(), "Форма для редактирования не появилась");
-        //Вводим IP адрес для Push сервера
-        sendInputForm(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
-        //Вводим логин для Push сервера
-        sendInputForm(SERVER_PUSH_INPUT_LOGIN, SERVER_PUSH_LOGIN_SERVER);
-        //Вводим порт для Push сервера
-        sendInputForm(SERVER_PUSH_INPUT_PORT, SERVER_PUSH_PORT_SERVER);
-        //Вводим пароль для Push сервера
-        sendInputForm(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
-        //Проверяем, что кнопка Сохранить активна
-        assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
-        //Нажимаем кнопку Сохранить
+        setSettingsServer(mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         clickButtonSave();
-        //Проверяем, появилась ли форма для перезагрузки сервисов
-        assertTrue(isFormConfirmActions(), "Форма для перезагрузки сервисов не появилась");
-        //Нажимаем кнопку для перезагрузки сервисов
-        clickButtonRestartServices(SETTINGS_BUTTON_RESTART);
+        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         //Ждём, когда настройки применятся
         assertTrue(isCheckUpdateLicense(), "Настройки не применились");
         //Прокручиваем страницу вниз
