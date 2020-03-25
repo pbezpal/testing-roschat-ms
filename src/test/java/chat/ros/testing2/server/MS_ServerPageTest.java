@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Feature(value = "Сервер")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-class MS_PageTest extends ServerPage {
+class MS_ServerPageTest extends ServerPage {
 
     @Story(value = "Настраиваем внешний адрес сервера")
     @Description(value = "Настраиваем внешний адрес сервера в разделе Подключение")
