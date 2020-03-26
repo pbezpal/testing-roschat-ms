@@ -11,8 +11,6 @@ public interface ContactsData {
     String CONTACT_INPUT_PHONE_JOB = getProperty("CONTACT_INPUT_PHONE_JOB", config);
 
     /***** Параметры контактов ******/
-    String CONTACT_NUMBER_7010 = getProperty("CONTACT_NUMBER_7010", config);
-    String CONTACT_NUMBER_7011 = getProperty("CONTACT_NUMBER_7011", config);
     String CONTACT_NUMBER_7012 = getProperty("CONTACT_NUMBER_7012", config); //Контакт для проверки каналов
     String CONTACT_NUMBER_7013 = getProperty("CONTACT_NUMBER_7013", config); //Контакт для проверки каналов
 

@@ -13,7 +13,7 @@ plugins {
     id 'idea'
 }
 
-group 'org.example'
+group 'chat.ros.testing2'
 version '1.0'
 
 compileJava.options.encoding = 'UTF-8'
@@ -23,6 +23,16 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    mavenLocal()
+}
+
+apply plugin: 'io.qameta.allure'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+jar {
+    baseName = 'roschat-ms'
+    version = '1.0'
 }
 
 dependencies {
@@ -64,7 +74,11 @@ dependencies {
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.55'
 }
 
-apply plugin: 'io.qameta.allure'
+
+jar{
+    enabled = true
+}
+
 
 allure {
     version = '2.8.1'
