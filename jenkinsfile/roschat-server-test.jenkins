@@ -49,8 +49,8 @@ pipeline{
                     try{
                         build(job: "roschat-web-client-testing",
                                               parameters: [
-                                                string(name: 'VER', value: "${SERVER_VER}")
-                                                string(name: 'REZULT', value: "${STATUS}")
+                                                string(name: 'VER', value: "${SERVER_VER}"),
+                                                string(name: 'REZULT', value: "${STATUS}"),
                                                 string(name: 'REPORT', value "${BUILD_URL}allure")
                                                 ])
                     }catch(err){
