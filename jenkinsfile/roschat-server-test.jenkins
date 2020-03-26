@@ -48,8 +48,11 @@ pipeline{
                 script{
                     try{
                         build(job: "roschat-web-client-testing",
-                                              parameters:
-                                              [string(name: 'VER', value: "${SERVER_VER}")])
+                                              parameters: [
+                                                string(name: 'VER', value: "${SERVER_VER}")
+                                                string(name: 'REZULT', value: "${STATUS}")
+                                                string(name: 'REPORT', value "${BUILD_URL}allure")
+                                                ])
                     }catch(err){
                         echo 'Провал'
                     }
@@ -58,10 +61,10 @@ pipeline{
 
         }
     }
-    post{
+    /*post{
         always{
             emailext body: "Тестируемая версия - ${SERVER_VER} \n Результат тестирования системы управления - ${STATUS} \n Отчет - ${BUILD_URL}allure", subject: 'Тестирование Росчат сервера', to: 'bezpalko', from: 'jenkins@ros.chat'
 
         }
-    }
+    }*/
 }
