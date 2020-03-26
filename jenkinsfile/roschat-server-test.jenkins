@@ -47,12 +47,14 @@ pipeline{
             steps{
                 script{
                     try{
-                        build(job: "roschat-web-client-testing",
-                                              parameters: [
-                                                string(name: 'VER', value: "${SERVER_VER}"),
-                                                string(name: 'REZULT', value: "${STATUS}"),
-                                                string(name: 'REPORT', value: "${BUILD_URL}allure")
-                                                ])
+                        timeout(time:1, unit: 'MINUTES'){
+                            build(job: "roschat-web-client-testing",
+                                                  parameters: [
+                                                    string(name: 'VER', value: "${SERVER_VER}"),
+                                                    string(name: 'REZULT', value: "${STATUS}"),
+                                                    string(name: 'REPORT', value: "${BUILD_URL}allure")
+                                                    ])
+                        }
                     }catch(err){
                         echo 'При тестировании WEB клиента были ошибки'
                     }
