@@ -54,17 +54,11 @@ pipeline{
                                                 string(name: 'REPORT', value: "${BUILD_URL}allure")
                                                 ])
                     }catch(err){
-                        echo 'Провал'
+                        echo 'При тестировании WEB клиента были ошибки'
                     }
                 }
             }
 
         }
     }
-    /*post{
-        always{
-            emailext body: "Тестируемая версия - ${SERVER_VER} \n Результат тестирования системы управления - ${STATUS} \n Отчет - ${BUILD_URL}allure", subject: 'Тестирование Росчат сервера', to: 'bezpalko', from: 'jenkins@ros.chat'
-
-        }
-    }*/
 }
