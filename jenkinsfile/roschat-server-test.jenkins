@@ -43,14 +43,25 @@ pipeline{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
+        stage("Запускаю тестирование WEB клиента"){
+            steps{
+                script{
+                    try{
+                        build(job: "roschat-web-client-testing",
+                                              parameters:
+                                              [string(name: 'VER', value: "${SERVER_VER}")])
+                    }catch(err){
+                        echo 'Провал'
+                    }
+                }
+            }
+
+        }
     }
     post{
         always{
-            echo "${SERVER_VER}"
             emailext body: "Тестируемая версия - ${SERVER_VER} \n Результат тестирования системы управления - ${STATUS} \n Отчет - ${BUILD_URL}allure", subject: 'Тестирование Росчат сервера', to: 'bezpalko', from: 'jenkins@ros.chat'
-            build(job: "roschat-web-client-testing",
-                      parameters:
-                      [string(name: 'VER', value: "${SERVER_VER}")])
+
         }
     }
 }
