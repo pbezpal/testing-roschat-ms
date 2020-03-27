@@ -33,6 +33,10 @@ apply plugin: 'maven'
 jar {
     baseName = 'roschat-ms'
     version = '1.0'
+    exclude ("chat/ros/testing2/server/MonitoringPage.class")
+    exclude ("chat/ros/testing2/data/SettingsData.class")
+    exclude ("chat/ros/testing2/server/settings/**")
+    enabled = true
 }
 
 dependencies {
@@ -73,12 +77,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.jcraft/jsch
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.55'
 }
-
-
-jar{
-    enabled = true
-}
-
 
 allure {
     version = '2.8.1'
