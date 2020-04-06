@@ -52,7 +52,7 @@ public class IntegrationPage extends SettingsPage {
 
     public IntegrationPage addIntegrationService(String service){
         clickButtonAddService();
-        assertTrue(isAvailableTypeService(service));
+        assertTrue(isAvailableTypeService(service), service + " недоступно для выбора");
         clickTypeService(service);
         if(service.equals(INTEGRATION_SERVICE_TETRA_TYPE)){
             buttonAddService.click();
