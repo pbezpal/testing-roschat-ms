@@ -2,17 +2,20 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.server.contacts.ContactsPage;
+import chat.ros.testing2.server.contacts.UserPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static chat.ros.testing2.data.ContactsData.*;
+import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME;
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_TYPE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Сервер")
 @Feature(value = "Настройка -> Интеграция")
@@ -29,4 +32,22 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
     }
 
+    @Epic(value = "Сервер")
+    @Feature(value = "Справочник -> Пользователь -> Сервисы")
+    @ExtendWith(RecourcesTests.class)
+    @ExtendWith(WatcherTests.class)
+    @Nested
+    class MS_ServiceTetraTest extends ContactsPage {
+
+        private UserPage userPage;
+
+        @Story(value = "Добавляем сервис Рация у контакта 7012")
+        @Description(value = "Переходим в раздель Пользователь контакта 7012 и добавляем сервис Рация")
+        @Test
+        void test_Add_Service_Tetra_Contact_7012(){
+            userPage = sendInputSearchContact(CONTACT_NUMBER_7012).clickContact(CONTACT_NUMBER_7012);
+            userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
+            assertTrue(userPage.isShowService(USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
+        }
+    }
 }

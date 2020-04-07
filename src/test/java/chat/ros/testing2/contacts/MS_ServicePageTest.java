@@ -1,4 +1,4 @@
-package chat.ros.testing2.server;
+package chat.ros.testing2.contacts;
 
 import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
