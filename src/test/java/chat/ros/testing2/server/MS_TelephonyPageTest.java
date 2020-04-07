@@ -10,7 +10,7 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@Epic(value = "Настройки")
+@Epic(value = "Насройки")
 @Feature(value = "Телефония")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)

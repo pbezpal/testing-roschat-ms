@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static chat.ros.testing2.data.ContactsData.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Epic(value = "Сервер")
-@Feature(value = "Справочник -> Пользователь -> Сервисы")
+@Epic(value = "Справочник")
+@Feature(value = "Пользователь -> Сервисы")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
 public class MS_ServicePageTest extends ContactsPage {

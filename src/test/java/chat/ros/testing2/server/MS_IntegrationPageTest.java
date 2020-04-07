@@ -17,8 +17,8 @@ import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_TYPE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Epic(value = "Сервер")
-@Feature(value = "Настройка -> Интеграция")
+@Epic(value = "Настройка")
+@Feature(value = "Интеграция")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
@@ -32,8 +32,8 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
     }
 
-    @Epic(value = "Сервер")
-    @Feature(value = "Справочник -> Пользователь -> Сервисы")
+    @Epic(value = "Справочник")
+    @Feature(value = "Пользователь -> Сервисы")
     @ExtendWith(RecourcesTests.class)
     @ExtendWith(WatcherTests.class)
     @Nested
