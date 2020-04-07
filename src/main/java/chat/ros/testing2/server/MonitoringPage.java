@@ -2,9 +2,10 @@ package chat.ros.testing2.server;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
+
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class MonitoringPage extends LoginPage{
 
@@ -20,6 +21,6 @@ public class MonitoringPage extends LoginPage{
 
     @Step(value = "Переходим в раздел {itemMenu}")
     public void clickItemMenu(String itemMenu){
-            $(By.xpath("//div[@class='v-list__tile__title' and contains(text(),'" + itemMenu + "')]")).click();
+            $x("//div[@class='v-list__tile__title' and contains(text(),'" + itemMenu + "')]").click();
     }
 }

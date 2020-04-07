@@ -10,8 +10,7 @@ import org.openqa.selenium.By;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class UserPage implements MSGeneralElements {
@@ -24,7 +23,7 @@ public class UserPage implements MSGeneralElements {
     private ElementsCollection inputsPassword = $$("form.v-form input[type='password']");
     private SelenideElement divProgressBar = $("div.v-progress-circular__info");
     private ElementsCollection spanValueAccount = $$("div.v-window__container span");
-    private SelenideElement buttonsAddService = $(By.xpath("//div[@class='service']//ancestor::div[@class='main-block']//button"));
+    private SelenideElement buttonsAddService = $x("//div[@class='service']//ancestor::div[@class='main-block']//button");
     private ElementsCollection servicesMenuContent = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     private ElementsCollection listServices = $$("div.service-info h4.service-name");
     private SelenideElement inputSelectServerTetra = $("div.v-select__selections");

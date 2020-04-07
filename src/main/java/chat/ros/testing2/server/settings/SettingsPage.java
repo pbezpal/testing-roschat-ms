@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class SettingsPage extends MonitoringPage implements MSGeneralElements {
@@ -38,17 +39,17 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
 
     @Step(value = "Переходим в раздел {itemContainer}")
     public SettingsPage clickItemSettings(String itemContainer){
-            $(By.xpath("//a[@class='v-tabs__item' and contains(text(), '" + itemContainer + "')]")).click();
+            $x("//a[@class='v-tabs__item' and contains(text(), '" + itemContainer + "')]").click();
             return this;
     }
 
     @Step(value = "Проверяем, что в поле {field} значение {value}")
     public static boolean isNotValueInField(String field, String value){
-        $(By.xpath("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li//span[@class='v-chip__content']")).scrollIntoView(false);
+        $x("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
+                "//ancestor::li//span[@class='v-chip__content']").scrollIntoView(false);
         try{
-            $(By.xpath("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
-                    "//ancestor::li//span[@class='v-chip__content']")).waitUntil(Condition.not(text(value)), 10000);
+            $x("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
+                    "//ancestor::li//span[@class='v-chip__content']").waitUntil(Condition.not(text(value)), 10000);
         }catch (ElementShould element){
             return false;
         }
@@ -58,9 +59,9 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     public SettingsPage clickButtonSettings(String form, String button){
-        $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']")).scrollIntoView(false);
-        $(By.xpath("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']" +
-                "//div[text()='" + button + "']")).click();
+        $x("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']").scrollIntoView(false);
+        $x("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']" +
+                "//div[text()='" + button + "']").click();
         return this;
     }
 
@@ -84,8 +85,8 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
     public SettingsPage clickButtonConfirmAction(String button){
         assertTrue(isFormConfirmActions(), "Отсутствует форма для подтверждения действий");
-        $(By.xpath("//div[@class='actions-wrapper']" +
-                "//div[@class='v-btn__content' and contains(text(), '" + button + "')]")).click();
+        $x("//div[@class='actions-wrapper']" +
+                "//div[@class='v-btn__content' and contains(text(), '" + button + "')]").click();
         return this;
     }
 
