@@ -17,7 +17,7 @@ import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_TYPE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Epic(value = "Настройка")
+@Epic(value = "Настройки")
 @Feature(value = "Интеграция")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(RecourcesTests.class)
