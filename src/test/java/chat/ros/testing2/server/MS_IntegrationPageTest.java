@@ -5,6 +5,8 @@ import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import chat.ros.testing2.server.contacts.UserPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
+import chat.ros.testing2.server.settings.integration.OfficeMonitorPage;
+import chat.ros.testing2.server.settings.integration.TetraPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -13,8 +15,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.data.ContactsData.*;
-import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME;
-import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_TYPE;
+import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Настройки")
@@ -24,12 +25,36 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(WatcherTests.class)
 public class MS_IntegrationPageTest extends IntegrationPage {
 
+    private TetraPage tetraPage;
+    private OfficeMonitorPage officeMonitorPage;
+
     @Story(value = "Добавляем сервис МиниКом TETRA")
     @Description(value = "Переходим в раздел Интеграция, добавляем сервис МиниКом TETRA и проверяем," +
             " что сервис был успешно добавлен на сервер")
     @Test
+    @Order(1)
     void test_Add_Service_Tetra(){
-        addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
+        tetraPage = (TetraPage) addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
+        tetraPage.addTetraServer();
+    }
+
+    @Story(value = "Добавляем сервис Офис-Монитор")
+    @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис Офис-Монитор и проверяем," +
+            " что сервис был успешно добавлен на сервер")
+    @Test
+    @Order(2)
+    void test_Add_Service_Office_Monitor(){
+        officeMonitorPage = (OfficeMonitorPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
+        officeMonitorPage.settingsOfficeMonitor();
+    }
+
+    @Story(value = "Синхронизация контактов в Офис-Монитор")
+    @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
+    @Test
+    @Order(3)
+    void test_Sync_Contacts_Office_Monitor(){
+        officeMonitorPage = (OfficeMonitorPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
+        assertTrue(officeMonitorPage.syncContacts(), "Ошибка при сихронизации контактов");
     }
 
     @Epic(value = "Справочник")

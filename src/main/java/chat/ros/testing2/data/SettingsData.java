@@ -100,4 +100,10 @@ public interface SettingsData {
     String INTEGRATION_SERVICE_TETRA_TYPE = "МиниКом TETRA";
     String INTEGRATION_SERVICE_TETRA_NAME = "Тестовый сервер ТЕТРА";
     String INTEGRATION_SERVICE_TETRA_DESCRIPTION = "Это тестовый сервер ТЕТРА для РОСЧАТА";
+
+    /****** Параметры настройки Офис-Монитора ******/
+    String INTEGRATION_SERVICE_OM_TYPE = "Офис-Монитор";
+    String INTEGRATION_SERVICE_OM_IP_ADDRESS = "192.168.254.3";
+    String INTEGRATION_SERVICE_OM_PORT_BD = "3306";
+    String INTEGRATION_SERVICE_OM_LOGIN_DB = "root";
 }
