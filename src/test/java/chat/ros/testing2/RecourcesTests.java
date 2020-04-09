@@ -101,6 +101,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     }
 
     private void addContactAndAccount(String number){
+        System.out.println("ПРОВЕРЯЕМ КОНТАКТЫ");
         if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
+import static chat.ros.testing2.data.LoginData.HOST_SERVER;
+
 public class SSHManager {
 
     private static JSch ssh = new JSch();
@@ -16,7 +18,7 @@ public class SSHManager {
 
     public static boolean isCheckQuerySSH(String command){
         try {
-            Session s = ssh.getSession("root", "testing2.ros.chat", 2222);
+            Session s = ssh.getSession("root", HOST_SERVER, 2222);
             s.setPassword("Art7Tykx78Dp");
             Properties config = new Properties();
             config.put("StrictHostKeyChecking", "no");

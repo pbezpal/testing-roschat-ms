@@ -106,4 +106,12 @@ public interface SettingsData {
     String INTEGRATION_SERVICE_OM_IP_ADDRESS = "192.168.254.3";
     String INTEGRATION_SERVICE_OM_PORT_BD = "3306";
     String INTEGRATION_SERVICE_OM_LOGIN_DB = "root";
+
+    /****** Параметры настройки Active Directory ******/
+    String INTEGRATION_SERVICE_AD_TYPE = "Active Directory";
+    String INTEGRATION_SERVICE_AD_SERVER = "192.168.254.254";
+    String INTEGRATION_SERVICE_AD_PORT = "3268";
+    String INTEGRATION_SERVICE_AD_BASE_DN = "DC=infotek,DC=lan";
+    String INTEGRATION_SERVICE_AD_USERNAME = "infotek\\scan";
+    String INTEGRATION_SERVICE_AD_PASSWORD = "123456";
 }

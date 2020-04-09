@@ -1,10 +1,7 @@
 package chat.ros.testing2.server.settings.integration;
 
 import chat.ros.testing2.data.MSGeneralElements;
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
@@ -18,7 +15,6 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 public class TetraPage extends IntegrationPage implements MSGeneralElements {
 
     SelenideElement buttonSaveTetra = $("div.modal-wrapper button.v-btn.primary--text");
-    ElementsCollection listServersTetra = $$("table td");
 
     private Map<String, String> mapInputValueTetra = new HashMap() {{
         put("Название", INTEGRATION_SERVICE_TETRA_NAME);
@@ -48,15 +44,6 @@ public class TetraPage extends IntegrationPage implements MSGeneralElements {
         buttonSaveTetra.click();
     }
 
-    @Step(value = "Проверяем, что сервер Tetra {server} был добавлен")
-    public boolean isServerTetra(String server){
-        try{
-            listServersTetra.findBy(Condition.text(server)).shouldBe(Condition.visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
-    }
 
     public IntegrationPage addTetraServer(){
         clickButtonAddService();
@@ -64,7 +51,7 @@ public class TetraPage extends IntegrationPage implements MSGeneralElements {
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         assertTrue(isNotShowLoaderSettings(), "Элемент загрузки не пропал");
-        assertTrue(isServerTetra(INTEGRATION_SERVICE_TETRA_NAME), "Сервер тетра");
+        assertTrue(isService(INTEGRATION_SERVICE_TETRA_NAME), "Сервис тетра не был добавлен");
         return new IntegrationPage();
     }
 }

@@ -4,6 +4,7 @@ import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import chat.ros.testing2.server.contacts.UserPage;
+import chat.ros.testing2.server.settings.integration.ActiveDirectoryPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.OfficeMonitorPage;
 import chat.ros.testing2.server.settings.integration.TetraPage;
@@ -27,6 +28,7 @@ public class MS_IntegrationPageTest extends IntegrationPage {
 
     private TetraPage tetraPage;
     private OfficeMonitorPage officeMonitorPage;
+    private ActiveDirectoryPage activeDirectoryPage;
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
     @Description(value = "Переходим в раздел Интеграция, добавляем сервис МиниКом TETRA и проверяем," +
@@ -48,10 +50,29 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         officeMonitorPage.settingsOfficeMonitor();
     }
 
+    @Story(value = "Добавляем сервис Active Directory")
+    @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис Active Directory и проверяем," +
+            " что сервис был успешно добавлен на сервер")
+    @Test
+    @Order(3)
+    void test_Add_Service_Active_Directory(){
+        activeDirectoryPage = (ActiveDirectoryPage) addIntegrationService(INTEGRATION_SERVICE_AD_TYPE);
+        activeDirectoryPage.settingsActiveDirectory();
+    }
+
+    @Story(value = "Синхронизация контактов c Active Directory")
+    @Description(value = "Переходим в раздел Интеграция, заходим в сервис Active Directory и нажимаем Синхронизировать")
+    @Test
+    @Order(4)
+    void test_Sync_Contacts_Active_Directory(){
+        activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
+        assertTrue(activeDirectoryPage.syncContacts(), "Ошибка при сихронизации контактов");
+    }
+
     @Story(value = "Синхронизация контактов в Офис-Монитор")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
     @Test
-    @Order(3)
+    @Order(4)
     void test_Sync_Contacts_Office_Monitor(){
         officeMonitorPage = (OfficeMonitorPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(officeMonitorPage.syncContacts(), "Ошибка при сихронизации контактов");
@@ -76,10 +97,10 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         }
 
         @Story(value = "Проверяем количество пользователей")
-        @Description(value = "Переходим в раздел Справочник и проверяем, что количество пользователей больше 2")
+        @Description(value = "Переходим в раздел Справочник и проверяем, что количество контактов больше 700")
         @Test
         void test_Count_Contacts_After_Sync_Office_Monitor(){
-            assertTrue(countContacts() > 2, "Контакты из Офис-Монитора не были загружены");
+            assertTrue(countContacts() > 700, "Контакты из Офис-Монитора и/или Active Directory не были синхронизированы");
         }
     }
 }
