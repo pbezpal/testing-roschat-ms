@@ -72,8 +72,12 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext context){
         if (classTest.contains("MS_MailPageTest")) openMS("/settings/mail");
-        else if (classTest.contains("MS_ServicePageTest") || classTest.contains("MS_ServiceTetraTest")) {
+        else if (classTest.contains("MS_ServicePageTest") ||
+                String.valueOf(context.getRequiredTestMethod()).contains(("test_Add_Service_Tetra_Contact_7012"))) {
             addContactAndAccount(CONTACT_NUMBER_7012);
+            openMS("/contacts");
+        }
+        else if (String.valueOf(context.getRequiredTestMethod()).contains("test_Count_Contacts_After_Sync_Office_Monitor")) {
             openMS("/contacts");
         }
         else if (classTest.contains("MS_IntegrationPageTest")) openMS("/settings/integration");

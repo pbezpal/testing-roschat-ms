@@ -62,7 +62,7 @@ public class MS_IntegrationPageTest extends IntegrationPage {
     @ExtendWith(RecourcesTests.class)
     @ExtendWith(WatcherTests.class)
     @Nested
-    class MS_ServiceTetraTest extends ContactsPage {
+    class MS_ContactsPageTest extends ContactsPage {
 
         private UserPage userPage;
 
@@ -73,6 +73,13 @@ public class MS_IntegrationPageTest extends IntegrationPage {
             userPage = sendInputSearchContact(CONTACT_NUMBER_7012).clickContact(CONTACT_NUMBER_7012);
             userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
             assertTrue(userPage.isShowService(USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
+        }
+
+        @Story(value = "Проверяем количество пользователей")
+        @Description(value = "Переходим в раздел Справочник и проверяем, что количество пользователей больше 2")
+        @Test
+        void test_Count_Contacts_After_Sync_Office_Monitor(){
+            assertTrue(countContacts() > 2, "Контакты из Офис-Монитора не были загружены");
         }
     }
 }

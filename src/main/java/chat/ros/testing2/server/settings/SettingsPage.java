@@ -121,7 +121,7 @@ public class SettingsPage extends MonitoringPage implements MSGeneralElements {
     @Step(value = "Ждём, когда пропадёт элемент загрузки настроек")
     public boolean isNotShowLoaderSettings(){
         try{
-            elementLoaderSettings.waitUntil(not(visible), 30000);
+            elementLoaderSettings.waitUntil(not(visible), 10000);
         }catch (ElementShould e){
             return false;
         }

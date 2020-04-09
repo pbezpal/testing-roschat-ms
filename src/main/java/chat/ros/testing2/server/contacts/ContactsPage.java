@@ -27,6 +27,7 @@ public class ContactsPage implements MSGeneralElements {
     private SelenideElement buttonSaveContact = formNewContact.find("button.v-btn.theme--light.primary");
     private SelenideElement inputSearchContact = $("input[aria-label='Найти']");
     private ElementsCollection tdSearchContact = $$("table.v-datatable.v-table.theme--light td");
+    private ElementsCollection trCountContacts = $$("table.v-datatable.v-table.theme--light tr");
 
     public ContactsPage () {}
 
@@ -103,6 +104,11 @@ public class ContactsPage implements MSGeneralElements {
     public UserPage clickContact(String contact){
         tdSearchContact.findBy(text(contact)).click();
         return new UserPage();
+    }
+
+    @Step(value = "Проверяем количество количество пользователей")
+    public int countContacts(){
+        return trCountContacts.size();
     }
 
     //Добавляем контакт

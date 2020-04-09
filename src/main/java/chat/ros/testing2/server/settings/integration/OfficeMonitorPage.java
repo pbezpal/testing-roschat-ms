@@ -43,9 +43,7 @@ public class OfficeMonitorPage extends IntegrationPage {
 
     @Step(value = "Нажимаем кнопку сохранить")
     private OfficeMonitorPage clickSaveContacts(){
-        buttonSaveContacts.waitUntil(Condition.enabled, 300000);
-        buttonSaveContacts.scrollIntoView(false);
-        buttonSaveContacts.click();
+        buttonSaveContacts.waitUntil(Condition.enabled, 300000).click();
         return this;
     }
 
