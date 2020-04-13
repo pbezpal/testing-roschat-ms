@@ -67,6 +67,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         if(classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
         else if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
+        else if(classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
     }
 
     @Override

@@ -114,4 +114,10 @@ public interface SettingsData {
     String INTEGRATION_SERVICE_AD_BASE_DN = "DC=infotek,DC=lan";
     String INTEGRATION_SERVICE_AD_USERNAME = "infotek\\scan";
     String INTEGRATION_SERVICE_AD_PASSWORD = "123456";
+
+    /************************************************ Раздел SNMP ****************************************************/
+
+    String SNMP_TITLE_FORM = "SNMP-мониторинг";
+    String SNMP_ADDRESS_SERVER = "10.10.199.249";
+    String SNMP_PORT_SERVER = "10051";
 }
