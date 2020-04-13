@@ -120,4 +120,13 @@ public interface SettingsData {
     String SNMP_TITLE_FORM = "SNMP-мониторинг";
     String SNMP_ADDRESS_SERVER = "10.10.199.249";
     String SNMP_PORT_SERVER = "10051";
+
+    /******************************************** Раздел Настройка СУ ************************************************/
+
+    String USER_FIRST_NAME = "Тестовый";
+    String USER_LAST_NAME = "Тест";
+    String USER_PATRON_NAME = "Тестович";
+    String USER_LOGIN = "Testuser";
+    String USER_PASSWORD = "12345678";
+    String USER_BUTTON_CONTINUE = "Продолжить";
 }

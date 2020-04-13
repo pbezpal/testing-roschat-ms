@@ -3,6 +3,7 @@ package chat.ros.testing2;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
+import chat.ros.testing2.server.contacts.UserPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -28,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
-    private LoginPage loginPage = new LoginPage();
     private String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
     private String hostClient = "https://" + HOST_SERVER;
     private String classTest = "";
@@ -65,9 +65,10 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         Configuration.screenshots = false;
 
-        if(classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
+        if (classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
         else if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
-        else if(classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
+        else if (classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
+        else if (classTest.contains("Test_A_UserPage")) openMS("/settings/users");
     }
 
     @Override
@@ -94,6 +95,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     }
 
     private void openMS(String page){
+        LoginPage loginPage = new LoginPage();
         Configuration.baseUrl = hostServer;
         if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
