@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @Feature(value = "Телефония")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class MS_TelephonyPageTest extends TelephonyPage {
+public class Test_A_TelephonyPage extends TelephonyPage {
 
     @Story(value = "Настройка сети")
     @Description(value = "Настраиваем сеть для телефонии и проверяем корректность натсроек")

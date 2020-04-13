@@ -14,7 +14,7 @@ import static chat.ros.testing2.data.SettingsData.*;
 @Feature(value = "Почта")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class MS_MailPageTest extends MailPage {
+public class Test_A_MailPage extends MailPage {
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
     @Description(value = "Вводим параметры почтового сервера infotek с незащищённым соединением и проверяем настройки")

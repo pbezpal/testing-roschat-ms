@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class MS_IntegrationPageTest extends IntegrationPage {
+public class Test_A_IntegrationPage extends IntegrationPage {
 
     private TetraPage tetraPage;
     private OfficeMonitorPage officeMonitorPage;

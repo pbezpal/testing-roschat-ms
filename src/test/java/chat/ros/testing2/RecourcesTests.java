@@ -77,7 +77,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
             addContactAndAccount(CONTACT_NUMBER_7012);
             openMS("/contacts");
         }
-        else if (String.valueOf(context.getRequiredTestMethod()).contains("test_Count_Contacts_After_Sync_Office_Monitor")) {
+        else if (String.valueOf(context.getRequiredTestMethod()).contains("test_Count_Contacts_After_Sync_Integrations")) {
             openMS("/contacts");
         }
         else if (classTest.contains("MS_IntegrationPageTest")) openMS("/settings/integration");

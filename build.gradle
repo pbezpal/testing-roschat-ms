@@ -92,28 +92,11 @@ allure {
 
 test {
 
-    useJUnitPlatform{
-        excludeTags 'contacts'
-    }
+    useJUnitPlatform()
 
     dependsOn 'cleanTest'
 
     // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-
-}
-
-task contactsTest(type: Test) {
-
-    useJUnitPlatform{
-        includeTags 'contacts'
-    }
-
-    check.dependsOn it
-    shouldRunAfter 'test'
-
     testLogging {
         events "passed", "skipped", "failed"
     }

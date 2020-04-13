@@ -17,10 +17,9 @@ import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Справочник")
-@Tag(value = "contacts")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class MS_ServicePageTest extends ContactsPage {
+public class Test_B_ServicePage extends ContactsPage {
 
     private UserPage userPage;
 
@@ -54,7 +53,7 @@ public class MS_ServicePageTest extends ContactsPage {
     @Story(value = "Проверяем количество пользователей")
     @Description(value = "Переходим в раздел Справочник и проверяем, что количество контактов больше 700")
     @Test
-    void test_Count_Contacts_After_Sync_Office_Monitor(){
+    void test_Count_Contacts_After_Sync_Integrations(){
         assertTrue(countContacts() > 700, "Контакты из Офис-Монитора и/или Active Directory не были синхронизированы");
     }
 
