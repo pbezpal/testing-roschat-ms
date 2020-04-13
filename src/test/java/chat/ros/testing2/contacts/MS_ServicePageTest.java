@@ -17,7 +17,6 @@ import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Справочник")
-@Feature(value = "Пользователь -> Сервисы")
 @Tag(value = "contacts")
 @ExtendWith(RecourcesTests.class)
 @ExtendWith(WatcherTests.class)
