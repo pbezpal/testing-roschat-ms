@@ -90,9 +90,11 @@ allure {
     }
 }
 
-test {
+/*test {
 
-    useJUnitPlatform()
+    useJUnitPlatform(
+            excludeTags 'contacts'
+    )
 
     dependsOn 'cleanTest'
 
@@ -101,4 +103,18 @@ test {
         events "passed", "skipped", "failed"
     }
 
+}*/
+
+tasks.withType(Test) { Test task ->
+    task.useJUnitPlatform { org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions options ->
+        options.excludeTags 'contacts'
+    }
+}
+
+task contactsTest(type: Test) { Test task ->
+    task.useJUnitPlatform { org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions options ->
+        options.includeTags 'contacts'
+    }
+    tasks.check.dependsOn task
+    task.shouldRunAfter tasks.test
 }

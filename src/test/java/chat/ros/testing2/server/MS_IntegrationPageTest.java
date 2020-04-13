@@ -78,7 +78,7 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         assertTrue(officeMonitorPage.syncContacts(), "Ошибка при сихронизации контактов");
     }
 
-    @Epic(value = "Справочник")
+    /*@Epic(value = "Справочник")
     @Feature(value = "Пользователь -> Сервисы")
     @ExtendWith(RecourcesTests.class)
     @ExtendWith(WatcherTests.class)
@@ -102,5 +102,5 @@ public class MS_IntegrationPageTest extends IntegrationPage {
         void test_Count_Contacts_After_Sync_Office_Monitor(){
             assertTrue(countContacts() > 700, "Контакты из Офис-Монитора и/или Active Directory не были синхронизированы");
         }
-    }
+    }*/
 }
