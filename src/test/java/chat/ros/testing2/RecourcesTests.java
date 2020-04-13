@@ -65,14 +65,14 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         Configuration.screenshots = false;
 
-        if(classTest.contains("MS_ServerPageTest")) openMS("/settings/web-server");
-        else if (classTest.contains("MS_TelephonyPageTest")) openMS("/settings/telephony");
+        if(classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
+        else if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
     }
 
     @Override
     public void beforeEach(ExtensionContext context){
-        if (classTest.contains("MS_MailPageTest")) openMS("/settings/mail");
-        else if (classTest.contains("MS_ServicePageTest") ||
+        if (classTest.contains("Test_A_MailPage")) openMS("/settings/mail");
+        else if (classTest.contains("Test_B_ServicePage") ||
                 String.valueOf(context.getRequiredTestMethod()).contains(("test_Add_Service_Tetra_Contact_7012"))) {
             addContactAndAccount(CONTACT_NUMBER_7012);
             openMS("/contacts");
@@ -80,8 +80,8 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         else if (String.valueOf(context.getRequiredTestMethod()).contains("test_Count_Contacts_After_Sync_Integrations")) {
             openMS("/contacts");
         }
-        else if (classTest.contains("MS_IntegrationPageTest")) openMS("/settings/integration");
-        else if(classTest.contains("MS_ChannelsPageTest")) {
+        else if (classTest.contains("Test_A_IntegrationPage")) openMS("/settings/integration");
+        else if(classTest.contains("Test_A_ChannelsPage")) {
             if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7012")) {
                 addContactAndAccount(CONTACT_NUMBER_7012);
             } else if(String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
@@ -101,7 +101,6 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     }
 
     private void addContactAndAccount(String number){
-        System.out.println("ПРОВЕРЯЕМ КОНТАКТЫ");
         if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");
