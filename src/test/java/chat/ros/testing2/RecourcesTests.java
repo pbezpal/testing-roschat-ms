@@ -86,9 +86,9 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         else if(classTest.contains("Test_A_ChannelsPage")) {
             if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7012")) {
                 addContactAndAccount(CONTACT_NUMBER_7012);
-            } else if(String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
+            } else if (String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
                 openMS("/admin/channels");
-            }else if(String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")){
+            } else if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")) {
                 addContactAndAccount(CONTACT_NUMBER_7013);
             }
         }
