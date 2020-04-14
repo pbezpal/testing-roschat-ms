@@ -21,7 +21,6 @@ public interface SettingsPage extends MSGeneralElements {
     SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper i.loader");
-    SelenideElement buttonAdd = $("div.table-box button.primary");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -38,12 +37,6 @@ public interface SettingsPage extends MSGeneralElements {
     default SettingsPage clickItemSettings(String itemContainer){
             $x("//a[@class='v-tabs__item' and contains(text(), '" + itemContainer + "')]").click();
             return this;
-    }
-
-    @Step(value = "Нажимаем кнопку Добавить")
-    default SettingsPage clickButtonAdd(){
-        buttonAdd.waitUntil(visible, 5000).click();
-        return this;
     }
 
     @Step(value = "Проверяем, что в поле {field} значение {value}")

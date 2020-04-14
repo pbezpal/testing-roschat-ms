@@ -22,7 +22,6 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 public class ContactsPage implements MSGeneralElements {
 
     //Элементы раздела Справочник
-    private SelenideElement buttonAddContact = $("div.action-bar button.v-btn.theme--light.primary");
     private SelenideElement formNewContact = $("div#new-contact");
     private SelenideElement buttonSaveContact = formNewContact.find("button.v-btn.theme--light.primary");
     private SelenideElement inputSearchContact = $("input[aria-label='Найти']");
@@ -41,12 +40,6 @@ public class ContactsPage implements MSGeneralElements {
             return false;
         }
         return true;
-    }
-
-    @Step(value = "Нажимаем кнопку Добавить")
-    protected ContactsPage clickButtonAddContact(){
-        buttonAddContact.click();
-        return this;
     }
 
     @Step(value = "Проверяем, появилась ли форма для добавления нового контакта")
@@ -113,7 +106,7 @@ public class ContactsPage implements MSGeneralElements {
         //Проверяем, что контакта нет в таблице
         if(isNotSearchContact(contact)) {
             //Нажимаем кнопку добавить
-            clickButtonAddContact();
+            clickButtonAdd();
             //Проверяем, появилась ли форма для добавления контакта
             assertTrue(isFormNewContact(), "Форма для добаления контакта не появилась");
             //Вводим данные контакта

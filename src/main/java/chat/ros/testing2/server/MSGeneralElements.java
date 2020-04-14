@@ -1,5 +1,6 @@
 package chat.ros.testing2.server;
 
+import chat.ros.testing2.server.settings.SettingsPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -10,6 +11,7 @@ import org.openqa.selenium.Keys;
 
 import java.util.Map;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
@@ -20,7 +22,8 @@ public interface MSGeneralElements {
     SelenideElement inputPassword = formChange.find("input[type='password']");
     SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
     SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
-    ElementsCollection tdUserList = $$("table.v-datatable td");
+    ElementsCollection tdTableList = $$("table.v-datatable td");
+    SelenideElement buttonAdd = $("div.action-bar button.v-btn.theme--light.primary");
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
@@ -57,6 +60,12 @@ public interface MSGeneralElements {
         }
     }
 
+    @Step(value = "Нажимаем кнопку Добавить")
+    default MSGeneralElements clickButtonAdd(){
+        buttonAdd.waitUntil(visible, 5000).click();
+        return this;
+    }
+
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
     default boolean isActiveButtonSave(){
         try{
@@ -77,7 +86,7 @@ public interface MSGeneralElements {
     @Step(value = "Проверяем, появилась ли запись {text} в таблице")
     default boolean isExistsTableText(String text){
         try{
-            tdUserList.findBy(Condition.text(text)).shouldBe(Condition.visible);
+            tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible);
         }catch (ElementNotFound elementNotFound){
             return false;
         }
@@ -88,7 +97,7 @@ public interface MSGeneralElements {
     @Step(value = "Проверяем, отсутствует ли запись {text} в таблице")
     default boolean isNotExistsTableText(String user){
         try{
-            tdUserList.findBy(Condition.text(user)).shouldBe(Condition.not(Condition.visible));
+            tdTableList.findBy(Condition.text(user)).shouldBe(Condition.not(Condition.visible));
         }catch (ElementShould elementShould){
             return false;
         }
