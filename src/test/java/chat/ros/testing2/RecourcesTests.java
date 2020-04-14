@@ -99,7 +99,6 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         Configuration.baseUrl = hostServer;
         if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-        assertTrue(loginPage.isLoginMS(), "Не удалось авторизоваться");
         open(page);
     }
 
