@@ -3,7 +3,6 @@ package chat.ros.testing2;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
-import chat.ros.testing2.server.contacts.UserPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -67,6 +66,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         if (classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
         else if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
+        else if (classTest.contains("Test_A_GeozonesPage")) openMS("/settings/geozones");
         else if (classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
         else if (classTest.contains("Test_A_UserPage")) openMS("/settings/users");
     }

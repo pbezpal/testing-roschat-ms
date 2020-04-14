@@ -1,6 +1,5 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.data.MSGeneralElements;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;

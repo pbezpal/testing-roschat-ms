@@ -1,12 +1,11 @@
 package chat.ros.testing2.server.contacts;
 
-import chat.ros.testing2.data.MSGeneralElements;
+import chat.ros.testing2.server.MSGeneralElements;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;

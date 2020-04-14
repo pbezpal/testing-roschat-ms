@@ -1,17 +1,12 @@
 package chat.ros.testing2.server.settings;
 
-import chat.ros.testing2.data.MSGeneralElements;
-import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
 
-public class SNMPPage extends SettingsPage implements MSGeneralElements {
+public class SNMPPage implements SettingsPage {
 
     private SelenideElement spanSNMPAddress = $("div.bottom-content span.adress");
     private SelenideElement inputAddressServer = $("input[placeholder='225.225.25.5']");

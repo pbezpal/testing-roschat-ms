@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.contacts;
 
-import chat.ros.testing2.data.MSGeneralElements;
+import chat.ros.testing2.server.MSGeneralElements;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -92,16 +92,6 @@ public class ContactsPage implements MSGeneralElements {
         return this;
     }
 
-    @Step(value = "Проверяем, появился ли контакт {contact} в таблице")
-    protected boolean isSearchContact(String contact){
-        try{
-            tdSearchContact.findBy(text(contact)).shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-        return true;
-    }
-
     @Step(value = "Переходим в раздел Пользователь контакта {contact}")
     public UserPage clickContact(String contact){
         tdSearchContact.findBy(text(contact)).click();
@@ -133,7 +123,7 @@ public class ContactsPage implements MSGeneralElements {
             sendInputSearchContact(contact);
         }
         //Проверяем, добавился ли контакт в БД контактов
-        assertTrue(isSearchContact(contact), "Контакт " + contact + " не добавлен в БД контактов");
+        assertTrue(isExistsTableText(contact), "Контакт " + contact + " не добавлен в БД контактов");
         //Переходим к настройкам учётной записи контакта
         return clickContact(contact);
     }

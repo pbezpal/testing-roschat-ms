@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 
-public class TelephonyPage extends SettingsPage {
+public class TelephonyPage implements SettingsPage {
 
     //Общие переменные
     private String telephoneSection = "Телефония";

@@ -4,7 +4,6 @@ import chat.ros.testing2.RecourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.*;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

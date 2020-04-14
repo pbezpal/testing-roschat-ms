@@ -94,6 +94,17 @@ public interface SettingsData {
     String MAIL_GOOGLE_FROM_USER = "testroschat";
     String MAIL_GOOGLE_FROM_MAIL= "testroschat@gmail.com";
 
+    /*********************************************** Раздел Геозоны **************************************************/
+    String GEOZONES_NAME_ZONA = "test";
+    String GEOZONES_WIDTH_ZONA = "67";
+    String GEOZONES_LENGHT_ZONA = "34";
+    String GEOZONES_RADIUS_ZONA = "543";
+
+    /***** Параметры добавления бекона ******/
+    String GEOZONES_BEACONE_INDICATOR = "b9407f30-f5f8-466e-aff9-25556b57fe6d";
+    String GEOZONES_BEACONE_MINOR = "7686";
+    String GEOZONES_BEACONE_MAJOR = "1239";
+
     /********************************************* Раздел Интеграция *************************************************/
 
     /****** Параметры настройки сервера Тетра ******/

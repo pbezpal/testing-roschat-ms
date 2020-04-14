@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
-public class MailPage extends SettingsPage {
+public class MailPage implements SettingsPage {
 
     //Элементы для раздела Подключение
     private SelenideElement elementListTypeSecurity = $("div[role='combobox'] i.v-icon.material-icons.theme--light");

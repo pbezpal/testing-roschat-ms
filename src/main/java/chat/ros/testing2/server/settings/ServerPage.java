@@ -17,7 +17,7 @@ import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
-public class ServerPage extends SettingsPage{
+public class ServerPage implements SettingsPage{
 
     //Переменные для настроек сертификата ssl
     private String titleFormCertificate = "Сертификат";
