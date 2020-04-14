@@ -21,7 +21,7 @@ public interface SettingsPage extends MSGeneralElements {
     SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper i.loader");
-    SelenideElement buttonAdd = $("div.table-box button");
+    SelenideElement buttonAdd = $("div.table-box button.primary");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
