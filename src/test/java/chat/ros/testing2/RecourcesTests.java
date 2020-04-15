@@ -24,7 +24,6 @@ import java.util.logging.Level;
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.LoginData.*;
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 

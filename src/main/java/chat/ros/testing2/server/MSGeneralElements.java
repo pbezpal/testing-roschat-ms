@@ -11,6 +11,7 @@ import org.openqa.selenium.Keys;
 
 import java.util.Map;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
@@ -23,7 +24,7 @@ public interface MSGeneralElements {
     SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
     SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
     ElementsCollection tdTableList = $$("table.v-datatable td");
-    SelenideElement buttonAdd = $("div.action-bar button.v-btn.theme--light.primary");
+    SelenideElement buttonAdd = $("div.action-bar button.v-btn.theme--light.primary div");
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
@@ -62,7 +63,7 @@ public interface MSGeneralElements {
 
     @Step(value = "Нажимаем кнопку Добавить")
     default MSGeneralElements clickButtonAdd(){
-        buttonAdd.waitUntil(visible, 5000).click();
+        buttonAdd.shouldHave(text("Добавить")).click();
         return this;
     }
 
