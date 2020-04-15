@@ -15,6 +15,7 @@ import java.util.Map;
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_LASTNAME;
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.junit.gen5.api.Assertions.assertTrue;
@@ -96,6 +97,7 @@ public class ContactsPage implements MSGeneralElements {
         selectShowCountContacts.scrollIntoView(false);
         selectShowCountContacts.click();
         listCountShowContacts.findBy(text("Все")).click();
+        inputSearchContact.waitUntil(visible, 10000);
         return trCountContacts.size();
     }
 
