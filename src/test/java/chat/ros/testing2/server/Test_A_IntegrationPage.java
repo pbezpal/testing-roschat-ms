@@ -53,6 +53,7 @@ public class Test_A_IntegrationPage implements IntegrationPage {
     @Order(1)
     void test_Add_Service_Tetra(){
         tetraPage = (TetraPage) addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
+        tetraPage.clickServiceType(INTEGRATION_SERVICE_TETRA_TYPE);
         assertTrue(tetraPage.addTetraServer(mapInputValueTetra), "Сервис тетра не был добавлен");
     }
 
