@@ -24,7 +24,7 @@ public interface MSGeneralElements {
     SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
     SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
     ElementsCollection tdTableList = $$("table.v-datatable td");
-    SelenideElement buttonAdd = $("div.action-bar button.v-btn.theme--light.primary div");
+    SelenideElement buttonAdd = $("div.action-bar button div");
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
@@ -62,9 +62,8 @@ public interface MSGeneralElements {
     }
 
     @Step(value = "Нажимаем кнопку Добавить")
-    default MSGeneralElements clickButtonAdd(){
-        buttonAdd.shouldHave(text("Добавить")).click();
-        return this;
+    default void clickButtonAdd(){
+        buttonAdd.shouldBe(text("Добавить")).click();
     }
 
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
