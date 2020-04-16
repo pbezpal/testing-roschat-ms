@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -29,10 +28,7 @@ import static com.codeborne.selenide.Selenide.sleep;
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
-    private String hostClient = "https://" + HOST_SERVER;
     private String classTest = "";
-    private StringBuilder logs = new StringBuilder();
-    private LogEntries logEntries;
     private String sshCommandIsContact = "/var/db/roschat-db/userlist.sh | grep ";
 
     @Override
