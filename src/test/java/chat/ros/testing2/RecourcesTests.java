@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.LoginData.*;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
@@ -72,6 +73,9 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context){
+
+
+
         if (classTest.contains("Test_A_MailPage")) openMS("/settings/mail");
         else if (classTest.contains("Test_B_ServicePage") ||
                 String.valueOf(context.getRequiredTestMethod()).contains(("test_Add_Service_Tetra_Contact_7012"))) {
@@ -98,10 +102,12 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         Configuration.baseUrl = hostServer;
         if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
+        sleep(30000);
         open(page);
     }
 
     private void addContactAndAccount(String number){
+        sleep(30000);
         if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");
