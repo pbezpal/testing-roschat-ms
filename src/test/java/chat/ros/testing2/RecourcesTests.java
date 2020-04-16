@@ -73,9 +73,6 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context){
-
-
-
         if (classTest.contains("Test_A_MailPage")) openMS("/settings/mail");
         else if (classTest.contains("Test_B_ServicePage") ||
                 String.valueOf(context.getRequiredTestMethod()).contains(("test_Add_Service_Tetra_Contact_7012"))) {
