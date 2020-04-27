@@ -194,7 +194,4 @@ public class UserPage implements MSGeneralElements {
         clickButtonSave();
         return this;
     }
-
-    //assertTrue(isNotDisabledService(service), "Сервис " + service + " недоступен для выбора");
-    //assertTrue(isShowService(USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
 }

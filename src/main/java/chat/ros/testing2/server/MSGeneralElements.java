@@ -1,6 +1,5 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.server.settings.SettingsPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -12,7 +11,6 @@ import org.openqa.selenium.Keys;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
