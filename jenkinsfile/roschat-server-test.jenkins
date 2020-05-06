@@ -38,7 +38,7 @@ pipeline{
                 }
             }
         }
-        stage("Формирование отчёта"){
+        /*stage("Формирование отчёта"){
             steps{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
@@ -60,6 +60,6 @@ pipeline{
                 }
             }
 
-        }
+        }*/
     }
 }
