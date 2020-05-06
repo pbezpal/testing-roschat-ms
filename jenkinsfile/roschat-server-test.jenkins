@@ -38,12 +38,12 @@ pipeline{
                 }
             }
         }
-        /*stage("Формирование отчёта"){
+        stage("Формирование отчёта"){
             steps{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
-        stage("Запускаю тестирование WEB клиента"){
+        /*stage("Запускаю тестирование WEB клиента"){
             steps{
                 script{
                     try{

@@ -73,10 +73,10 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         if (classTest.contains("Test_A_MailPage")) openMS("/settings/mail");
         else if (classTest.contains("Test_A_ServerPage")) {
             if(String.valueOf(context.getRequiredTestMethod()).contains(("test_B_Client_Connect_With_Other_Port"))){
-                addContactAndAccount(CONTACT_NUMBER_7012 + "@ros.chat");
+                addContactAndAccount(CONTACT_NUMBER_7012);
                 openClient("http://" + HOST_SERVER + ":" + SERVER_CONNECT_HTTP_OTHER_PORT);
             }else if(String.valueOf(context.getRequiredTestMethod()).contains(("test_D_Client_Connect_With_Standard_Port"))){
-                addContactAndAccount(CONTACT_NUMBER_7012 + "@ros.chat");
+                addContactAndAccount(CONTACT_NUMBER_7012);
                 openClient("http://" + HOST_SERVER);
             }else openMS("/settings/web-server");
         }
