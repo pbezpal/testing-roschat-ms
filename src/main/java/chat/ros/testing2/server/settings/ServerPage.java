@@ -12,7 +12,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
 import static org.junit.gen5.api.Assertions.assertTrue;
@@ -25,11 +24,7 @@ public class ServerPage implements SettingsPage{
     private SelenideElement inputPrivateKey = $("label[for='keyUpload'] i");
 
     //Проверки на сервере по ssh
-    private String commandCheckEsteblishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
-
-    private Map<String, String> mapInputValueConnect = new HashMap() {{
-        put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
-    }};
+    private String commandCheckEstablishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
 
     private Map<String, String> mapInputValuePush = new HashMap() {{
         put(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
@@ -41,13 +36,12 @@ public class ServerPage implements SettingsPage{
     public static ServerPage serverPage = new ServerPage();
     public static ServerPage getInstance() { return serverPage; }
 
-    public ServerPage setPublicNetwork(){
-        //Настраиваем внешний адрес сервера
-        if(isNotValueInField(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER)){
-            setSettingsServer(mapInputValueConnect, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-            clickButtonSave();
-            clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        }
+    public ServerPage setSectionConnect(Map<String, String> mapInputValueConnect){
+        //Настраиваем внешний адрес сервера, HTTP порт, HTTPS порт, WebSocket порт
+        setSettingsServer(mapInputValueConnect, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
+        clickButtonSave();
+        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+
         //Нажимаем кнопку Проверить
         clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
         //Проверяем, появилась ли форма проверки настроек
@@ -86,7 +80,7 @@ public class ServerPage implements SettingsPage{
     }
 
     @Step(value = "Проверяем, установилось ли соединение с Push сервером")
-    public boolean isEsteblishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEsteblishedPush); }
+    public boolean isEsteblishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEstablishedPush); }
 
     private boolean isUpdateLicense(){
         clickButtonSettings(SERVER_PUSH_TITLE_FORM, SERVER_PUSH_BUTTON_UPDATE_LICENSE);

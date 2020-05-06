@@ -3,6 +3,7 @@ package chat.ros.testing2;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
+import client.ClientPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -22,14 +23,16 @@ import java.util.logging.Level;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.LoginData.*;
+import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_HTTP_OTHER_PORT;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
     private String classTest = "";
-    private String sshCommandIsContact = "/var/db/roschat-db/userlist.sh | grep ";
+    private String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep ";
 
     @Override
     public void beforeAll(ExtensionContext context){
@@ -60,8 +63,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
         Configuration.screenshots = false;
 
-        if (classTest.contains("Test_A_ServerPage")) openMS("/settings/web-server");
-        else if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
+        if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
         else if (classTest.contains("Test_A_GeozonesPage")) openMS("/settings/geozones");
         else if (classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
         else if (classTest.contains("Test_A_UserPage")) openMS("/settings/users");
@@ -70,6 +72,15 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext context){
         if (classTest.contains("Test_A_MailPage")) openMS("/settings/mail");
+        else if (classTest.contains("Test_A_ServerPage")) {
+            if(String.valueOf(context.getRequiredTestMethod()).contains(("test_B_Client_Connect_With_Other_Port"))){
+                addContactAndAccount(CONTACT_NUMBER_7012 + "@ros.chat");
+                openClient("http://" + HOST_SERVER + ":" + SERVER_CONNECT_HTTP_OTHER_PORT);
+            }else if(String.valueOf(context.getRequiredTestMethod()).contains(("test_D_Client_Connect_With_Standard_Port"))){
+                addContactAndAccount(CONTACT_NUMBER_7012 + "@ros.chat");
+                openClient("http://" + HOST_SERVER);
+            }else openMS("/settings/web-server");
+        }
         else if (classTest.contains("Test_B_ServicePage") ||
                 String.valueOf(context.getRequiredTestMethod()).contains(("test_Add_Service_Tetra_Contact_7012"))) {
             addContactAndAccount(CONTACT_NUMBER_7012);
@@ -91,16 +102,22 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
     }
 
     private void openMS(String page){
+        sleep(5000);
         LoginPage loginPage = new LoginPage();
         Configuration.baseUrl = hostServer;
         if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-        sleep(30000);
         open(page);
     }
 
+    private void openClient(String host){
+        sleep(5000);
+        Configuration.baseUrl = host;
+        open("/");
+    }
+
     private void addContactAndAccount(String number){
-        sleep(30000);
+        sleep(5000);
         if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");

@@ -14,6 +14,15 @@ public interface SettingsData {
     /****** Параметры для настройки раздела Подключение ******/
     String SERVER_CONNECT_TITLE_FORM = "Подключение";
     String SERVER_CONNECT_INPUT_PUBLIC_NETWORK = "Внешний адрес сервера";
+    String SERVER_CONNECT_INPUT_HTTP_PORT = "HTTP порт";
+    String SERVER_CONNECT_HTTP_PORT = "80";
+    String SERVER_CONNECT_HTTP_OTHER_PORT = "88";
+    String SERVER_CONNECT_INPUT_HTTPS_PORT = "HTTPS порт";
+    String SERVER_CONNECT_HTTPS_PORT = "443";
+    String SERVER_CONNECT_HTTPS_OTHER_PORT = "446";
+    String SERVER_CONNECT_INPUT_WEBSOCKET_PORT = "WebSocket порт";
+    String SERVER_CONNECT_WEBSOCKET_PORT = "8080";
+    String SERVER_CONNECT_WEBSOCKET_OTHER_PORT = "8088";
     String SERVER_CONNECT_TEXT_CHECK_SERVER = "Настройки сервера корректны.";
 
     /****** Параметры для настройки Push сервера ******/
