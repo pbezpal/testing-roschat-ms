@@ -58,7 +58,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestsPa
 
     @Story(value = "Меняем тип канала с публичного на закрытый")
     @Description(value = "Авторизуемся под администратором канала и меняем тип с публичного на закрытый канал")
-    @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
+    @Test(priority = 1, dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Edit_Type_With_Public_On_Closed_Channel_7012(){
         softAssert.assertTrue(
                 editTypeChannel(
@@ -85,7 +85,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestsPa
 
     @Story(value = "Удаляем закртытый канал")
     @Description(value = "Авторизуемся под пользователем администратором канала и удаляем канал")
-    @Test(priority = 2, dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel_7012"})
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Delete_Public_Channel_7012(){
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),

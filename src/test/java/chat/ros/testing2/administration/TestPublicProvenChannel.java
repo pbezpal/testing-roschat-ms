@@ -73,7 +73,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем статус проверенного канала, под учётной записью администратора канала")
     @Description(value = "Авторизуемся на клиенте под учётной записью администратора канала." +
             " Проверяем, что у канала появился статус Проверенный")
-    @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
+    @Test(priority = 1, dependsOnMethods = {"test_Create_Public_Channel_7012, test_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_Check_Status_Closed_Channel_7012(){
         clickItemComments();
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
@@ -88,8 +88,8 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем под пользователем, что у канала статус проверенного")
     @Description(value = "Авторизуемся на клиенте под учётной записью пользователя и вводим в поле поиска имя" +
             " публичного канала. Проверяем, что у канала статус Проверенный")
-    @Test(priority = 1, dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
-    void test_Search_Closed_2_Channel_7013(){
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel_7012, test_Do_Proven_Channel_After_Create_Public_Channel"})
+    void test_Search_Closed_Channel_7013(){
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
@@ -103,7 +103,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
 
     @Story(value = "Удаляем публичный проверенный канал")
     @Description(value = "Авторизуемся под администароторм канала и удаляем канал")
-    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel_7012"})
+    @Test(priority = 3, dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Delete_Public_Proven_Channel_7012(){
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),

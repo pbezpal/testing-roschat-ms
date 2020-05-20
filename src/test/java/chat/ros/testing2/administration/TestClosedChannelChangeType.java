@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 @Feature(value = "Закрытый канал. Смена типа канала.")
 public class TestClosedChannelChangeType extends ChannelsPage implements TestsParallelBase {
 
-    private String nameChannel = "CHCCT%1$s_1";
+    private String nameChannel = "CHCCT%1$s";
     private SoftAssert softAssert;
 
     @BeforeClass
@@ -117,7 +117,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestsPa
     @Story(value = "Проверяем под пользователем, что у канала статус проверенного")
     @Description(value = "Авторизуемся на клиенте под учётной записью пользователя и вводим в поле поиска имя" +
             " публичного канала. Проверяем, что у канала статус Проверенный")
-    @Test(priority = 1, dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
+    @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
     void test_Search_Closed_Channel_7013(){
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
@@ -131,8 +131,9 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestsPa
     }
 
     @Story(value = "Удаляем публичный проверенный канал")
-    @Description(value = "Авторизуемся под пользователем user_1 и удаляем публичный проверенный канал")
-    @Test(priority = 2, dependsOnMethods = {"test_Edit_Type_With_Closed_On_Public_Channel_7012"})
+    @Description(value = "Авторизуемся на клиенте под учётной записью администратора канала и удаляем публичный" +
+            " проверенный канал")
+    @Test(priority = 3, dependsOnMethods = {"test_Create_Closed_Channel_7012"})
     void test_Delete_Closed_Channel_7012(){
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),
