@@ -13,8 +13,6 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.asserts.SoftAssert;
 import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.lang.reflect.Method;
@@ -84,7 +82,7 @@ public class TestsBase {
     }
 
     protected void openMS(String page){
-        sleep(1000);
+        sleep(5000);
         LoginPage loginPage = new LoginPage();
         Configuration.baseUrl = hostServer;
         if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
@@ -93,7 +91,7 @@ public class TestsBase {
     }
 
     protected void addContactAndAccount(String number){
-        sleep(1000);
+        sleep(5000);
         if (!SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");

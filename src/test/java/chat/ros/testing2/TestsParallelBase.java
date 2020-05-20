@@ -11,6 +11,7 @@ import org.testng.asserts.SoftAssert;
 import java.lang.reflect.Method;
 
 import static chat.ros.testing2.data.ContactsData.*;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertTrue;
 
 public interface TestsParallelBase {
@@ -56,6 +57,7 @@ public interface TestsParallelBase {
     default void tearDown(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().contains("Channels")){
+            sleep(10000);
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();
