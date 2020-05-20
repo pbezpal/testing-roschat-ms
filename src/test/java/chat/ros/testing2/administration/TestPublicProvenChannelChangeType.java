@@ -38,7 +38,7 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
-    void test_2_Create_Public_Channel_7012(){
+    void test_Create_Public_Channel_7012(){
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -62,8 +62,8 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Story(value = "Делаем проверенным публичный канал")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы, делаем " +
             "публичный канал проверенным")
-    @Test(dependsOnMethods = {"test_2_Create_Public_Channel_7012"})
-    void test_2_Do_Proven_Channel_After_Create_Public_Channel(){
+    @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
+    void test_Do_Proven_Channel_After_Create_Public_Channel(){
         assertTrue(isShowChannel(nameChannel, true),
                 "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
@@ -75,8 +75,8 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
 
     @Story(value = "Меняем тип канала с публичного на закрытый")
     @Description(value = "Авторизуемся под администратором канала и меняем тип с публичного на закрытый канал")
-    @Test(dependsOnMethods = {"test_2_Do_Proven_Channel_After_Create_Public_Channel"})
-    void test_2_Edit_Type_With_Public_On_Closed_Channel_7012(){
+    @Test(priority = 1, dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
+    void test_Edit_Type_With_Public_On_Closed_Channel_7012(){
         softAssert.assertTrue(
                 editTypeChannel(
                         nameChannel, CLIENT_TYPE_CHANNEL_CLOSED).
@@ -95,16 +95,16 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Story(value = "Проверяем, отображается ли закрытый канал в СУ после изменения типа канала")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
-    @Test(priority = 1, dependsOnMethods = {"test_2_Edit_Type_With_Public_On_Closed_Channel_7012"})
-    void test_2_Show_Public_Channel_In_MS_After_Change_Type(){
+    @Test(dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel_7012"})
+    void test_Show_Public_Channel_In_MS_After_Change_Type(){
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
 
     @Story(value = "Удаляем закртытый канал")
     @Description(value = "Авторизуемся под пользователем администратором канала и удаляем канал")
-    @Test(priority = 1, dependsOnMethods = {"test_2_Create_Public_Channel_7012"})
-    void test_2_Delete_Public_Channel_7012(){
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel_7012"})
+    void test_Delete_Public_Channel_7012(){
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),
                 "Канал найден в списке бесед после удаления");
@@ -116,8 +116,8 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Story(value = "Проверяем, отображается ли закртытый канал в СУ после удаления")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов после удаления")
-    @Test(dependsOnMethods = {"test_2_Delete_Public_Channel_7012"})
-    void test_2_Show_Public_Channel_In_MS_After_Delete(){
+    @Test(dependsOnMethods = {"test_Delete_Public_Channel_7012"})
+    void test_Show_Public_Channel_In_MS_After_Delete(){
         assertTrue(isShowChannel(nameChannel, false),
                 "Канал " + nameChannel + " отображается в СУ после удаления");
     }
