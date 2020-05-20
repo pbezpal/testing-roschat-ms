@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 @Feature(value = "Закрытый канал. Смена типа канала.")
 public class TestClosedChannelChangeType extends ChannelsPage implements TestsParallelBase {
 
-    private String nameChannel = "CHCCT%1$s_1";
+    private String nameChannel = "CHCCT%1$s";
     private SoftAssert softAssert;
 
     @BeforeClass
@@ -119,7 +119,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestsPa
     @Story(value = "Проверяем под пользователем, что у канала статус проверенного")
     @Description(value = "Авторизуемся на клиенте под учётной записью пользователя и вводим в поле поиска имя" +
             " публичного канала. Проверяем, что у канала статус Проверенный")
-    @Test(priority = 1, dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
+    @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
     void test_Search_Closed_Channel_7013(){
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");

@@ -76,7 +76,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся на клиенте под учётной записью администратора канала." +
             " Проверяем, что у канала появился статус Проверенный")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
-    void test_Check_Status_Closed_Channel_7012(){
+    void test_Check_Status_Proven_Channel_7012(){
         clickItemComments();
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
                 "Отсутствует статус Проверенный у канала в разделе Беседы");
@@ -90,8 +90,8 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем под пользователем, что у канала статус проверенного")
     @Description(value = "Авторизуемся на клиенте под учётной записью пользователя и вводим в поле поиска имя" +
             " публичного канала. Проверяем, что у канала статус Проверенный")
-    @Test(priority = 1, dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
-    void test_Search_Closed_2_Channel_7013(){
+    @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
+    void test_Search_Status_Proven_Channel_7013(){
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
