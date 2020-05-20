@@ -1,7 +1,6 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.RecourcesTests;
-import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.integration.ActiveDirectoryPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.OfficeMonitorPage;
@@ -11,7 +10,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(RecourcesTests.class)
-@ExtendWith(WatcherTests.class)
-public class Test_A_IntegrationPage implements IntegrationPage {
+public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
 
     private TetraPage tetraPage;
     private OfficeMonitorPage officeMonitorPage;

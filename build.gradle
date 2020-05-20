@@ -40,6 +40,10 @@ jar {
 }
 
 dependencies {
+    //Testing framework
+    // https://search.maven.org/artifact/org.testng/testng
+    compile 'org.testng:testng:7.1.0'
+
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
@@ -86,16 +90,24 @@ allure {
     autoconfigure = true
     aspectjweaver = true
 
-    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.8.1/allure-commandline-2.8.1.zip'
+    //downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.8.1/allure-commandline-2.8.1.zip'
 
     useJUnit5 {
         version = '2.13.1'
+    }
+
+    useTestNG {
+        version = '2.13.3'
     }
 }
 
 test {
 
-    useJUnitPlatform()
+    useTestNG(){
+        suites 'src/test/resources/testng.xml'
+    }
+
+    //useJUnitPlatform()
 
     dependsOn 'cleanTest'
 

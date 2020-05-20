@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Suites" parallel="classes" thread-count="3" >
+    <test name="Channels" >
+        <classes>
+            <class name="chat.ros.testing2.administration.TestClosedChannelPage" />
+            <class name="chat.ros.testing2.administration.TestPublicChannelPage" />
+            <class name="chat.ros.testing2.administration.TestPublicProvenChannelPage" />
+        </classes>
+    </test>
+</suite>

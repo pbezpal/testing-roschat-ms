@@ -9,12 +9,17 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.*;
 
-public class ChannelsPage{
+public class ChannelsPage extends client.comments.ChannelsPage {
 
     private ElementsCollection spanNameChannel = $$("table.v-datatable.v-table.theme--light tbody td.name-td span");
     private SelenideElement buttonContinueAction = $("div.actions-wrapper button.primary--text");
 
     public ChannelsPage () {}
+
+    @Step(value = "Возвращаем количество каналов")
+    public int getCountChannels(){
+        return spanNameChannel.size();
+    }
 
     @Step(value = "Проверяем, отображается ли канал {channel}")
     public boolean isShowChannel(String channel, boolean show){
@@ -41,7 +46,7 @@ public class ChannelsPage{
     }
 
     @Step(value = "Нажимаем кнопку 'Продолжить'")
-    private ChannelsPage clicckButtonContinueAction(){
+    private ChannelsPage clickButtonContinueAction(){
         buttonContinueAction.click();
         return this;
     }
@@ -49,7 +54,7 @@ public class ChannelsPage{
     public ChannelsPage doTestedChannel(String name){
         spanNameChannel.findBy(Condition.text(name)).shouldBe(Condition.visible);
         clickButtonTestedChannel(name);
-        clicckButtonContinueAction();
+        clickButtonContinueAction();
         return this;
     }
 }

@@ -1,6 +1,6 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.RecourcesTests;
+import chat.ros.testing2.JUnitRecourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.*;
@@ -11,9 +11,9 @@ import static chat.ros.testing2.data.SettingsData.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Почта")
-@ExtendWith(RecourcesTests.class)
+@ExtendWith(JUnitRecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class Test_A_MailPage extends MailPage {
+public class TestMailPage extends MailPage {
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
     @Description(value = "Вводим параметры почтового сервера infotek с незащищённым соединением и проверяем настройки")

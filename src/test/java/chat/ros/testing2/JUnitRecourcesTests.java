@@ -25,13 +25,12 @@ import static chat.ros.testing2.data.LoginData.*;
 import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_HTTP_OTHER_PORT;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
+public class JUnitRecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
     private String classTest = "";
-    private String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep ";
+    private String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
 
     @Override
     public void beforeAll(ExtensionContext context){
@@ -63,7 +62,7 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
         Configuration.screenshots = false;
 
         if (classTest.contains("Test_A_TelephonyPage")) openMS("/settings/telephony");
-        else if (classTest.contains("Test_A_GeozonesPage")) openMS("/settings/geozones");
+        else if (classTest.contains("chat.ros.testing2.server.Test_A_GeozonesPage")) openMS("/settings/geozones");
         else if (classTest.contains("Test_A_SNMPPage")) openMS("/settings/snmp");
         else if (classTest.contains("Test_A_UserPage")) openMS("/settings/users");
     }
@@ -89,14 +88,12 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
             openMS("/contacts");
         }
         else if (classTest.contains("Test_A_IntegrationPage")) openMS("/settings/integration");
-        else if(classTest.contains("Test_A_ChannelsPage")) {
+        else if(classTest.contains("Test_ChannelsPage")) {
             if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7012")) {
                 addContactAndAccount(CONTACT_NUMBER_7012);
-            } else if (String.valueOf(context.getRequiredTestMethod()).contains("Do_Tested_Channel")) {
-                openMS("/admin/channels");
             } else if (String.valueOf(context.getRequiredTestMethod()).contains("Channel_7013")) {
                 addContactAndAccount(CONTACT_NUMBER_7013);
-            }
+            } else openMS("/admin/channels");
         }
     }
 
@@ -117,10 +114,10 @@ public class RecourcesTests implements BeforeAllCallback, BeforeEachCallback {
 
     private void addContactAndAccount(String number){
         sleep(5000);
-        if (!SSHManager.isCheckQuerySSH(sshCommandIsContact + number)) {
+        if (SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");
-            contactsPage.addContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+            contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
         }
     }
 }

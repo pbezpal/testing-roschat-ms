@@ -102,7 +102,7 @@ public class ContactsPage implements MSGeneralElements {
     }
 
     //Добавляем контакт
-    public UserPage addContact(String contact){
+    public UserPage actionsContact(String contact){
         //Вводим фамилию в поле поиска
         sendInputSearchContact(contact);
         //Проверяем, что контакта нет в таблице

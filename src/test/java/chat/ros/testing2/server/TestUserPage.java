@@ -1,6 +1,6 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.RecourcesTests;
+import chat.ros.testing2.JUnitRecourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
 import io.qameta.allure.Description;
@@ -25,9 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic(value = "Настройки")
 @Feature(value = "Настройки СУ")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(RecourcesTests.class)
+@ExtendWith(JUnitRecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class Test_A_UserPage extends UserPage {
+public class TestUserPage extends UserPage {
 
     private Map<String, String> mapInputValueUser = new HashMap() {{
         put("Фамилия", USER_FIRST_NAME);

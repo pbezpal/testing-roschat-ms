@@ -1,6 +1,6 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.RecourcesTests;
+import chat.ros.testing2.JUnitRecourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import io.qameta.allure.Description;
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
-@ExtendWith(RecourcesTests.class)
+@ExtendWith(JUnitRecourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class Test_A_TelephonyPage extends TelephonyPage {
+public class TestTelephonyPage extends TelephonyPage {
 
     @Story(value = "Настройка сети")
     @Description(value = "Настраиваем сеть для телефонии и проверяем корректность натсроек")
