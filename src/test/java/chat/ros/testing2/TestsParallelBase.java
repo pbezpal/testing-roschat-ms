@@ -55,7 +55,7 @@ public interface TestsParallelBase {
     @AfterSuite
     default void tearDown(ITestContext c){
         ITestContext context = c;
-        if(context.getCurrentXmlTest().getName().equals("Channels")){
+        if(context.getCurrentXmlTest().getName().contains("Channels")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();
