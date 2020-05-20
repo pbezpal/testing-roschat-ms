@@ -101,25 +101,22 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
 
-    @Story(value = "Удаляем закртытый канал")
-    @Description(value = "Авторизуемся под пользователем администратором канала и удаляем канал")
-    @Test(priority = 1, dependsOnMethods = {"test_2_Create_Public_Channel_7012"})
-    void test_2_Delete_Public_Channel_7012(){
+    @Story(value = "Удаляем закрытый канал и проверяем отображается ли канал в СУ после удаления")
+    @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. " +
+            "2. Проверяем на СУ, что канал не отображается после удаления канала")
+    @AfterClass
+    void deleteChannel(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        softAssert = new SoftAssert();
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),
                 "Канал найден в списке бесед после удаления");
         softAssert.assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " осталась в БД postgres после удаления");
         softAssert.assertAll();
-    }
 
-    @Story(value = "Проверяем, отображается ли закртытый канал в СУ после удаления")
-    @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
-            "канал в списке каналов после удаления")
-    @Test(dependsOnMethods = {"test_2_Delete_Public_Channel_7012"})
-    void test_2_Show_Public_Channel_In_MS_After_Delete(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
-                "Канал " + nameChannel + " отображается в СУ после удаления");
+                "Публичный канал " + nameChannel + " отображается в СУ после удаления");
     }
-
 }
