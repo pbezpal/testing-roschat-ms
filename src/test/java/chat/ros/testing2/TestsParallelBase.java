@@ -21,6 +21,11 @@ public interface TestsParallelBase {
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
 
+    @BeforeSuite
+    default void setUp(){
+        sleep(5000);
+    }
+
     @BeforeClass
     default void beforeClass(){
         testBase.init();
