@@ -7,11 +7,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;

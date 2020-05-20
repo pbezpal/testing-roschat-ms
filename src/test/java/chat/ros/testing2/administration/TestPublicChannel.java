@@ -7,11 +7,13 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertTrue;
 
@@ -59,29 +61,27 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Проверяем, отображается ли публичный канал в СУ")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов")
-    @Test(priority = 1, dependsOnMethods = {"test_Create_Public_Channel_7012"})
+    @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Show_Public_Channel_In_MS(){
         assertTrue(isShowChannel(nameChannel, true),
                 "Публичный канал " + nameChannel + " не отображается в СУ");
     }
 
-    @Story(value = "Удаляем публичный канал")
-    @Description(value = "Авторизуемся под администароторм канала и удаляем канал")
-    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel_7012"})
-    void test_Delete_Public_Channel_7012(){
+    @Story(value = "Удаляем публичный канал и проверяем отображается ли канал в СУ после удаления")
+    @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. " +
+            "2. Проверяем на СУ, что канал не отображается после удаления канала")
+    @AfterClass
+    void deleteChannel(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        softAssert = new SoftAssert();
         softAssert.assertTrue(
                 deleteChannel(nameChannel).isExistComments(nameChannel, false),
                 "Канал найден в списке бесед после удаления");
         softAssert.assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " осталась в БД postgres после удаления");
         softAssert.assertAll();
-    }
 
-    @Story(value = "Проверяем, отображается ли публичный канал в СУ после удаления")
-    @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
-            "канал в списке каналов после удаления")
-    @Test(dependsOnMethods = {"test_Delete_Public_Channel_7012"})
-    void test_Show_Public_Channel_In_MS_After_Delete(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
                 "Публичный канал " + nameChannel + " отображается в СУ после удаления");
     }

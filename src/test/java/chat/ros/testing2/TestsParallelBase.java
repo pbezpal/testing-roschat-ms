@@ -29,19 +29,22 @@ public interface TestsParallelBase {
     @BeforeClass
     default void beforeClass(){
         testBase.init();
+        String className = this.getClass().getName();
+        if(className.contains("Channel")) {
+            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+            testBase.addContactAndAccount(CONTACT_NUMBER_7013);
+        }
     }
 
     @BeforeMethod(alwaysRun = true)
-    default void beforeTestMethod(Method testMethod){
+    default void beforeTest(Method testMethod){
         String className = this.getClass().getName();
         Method method = testMethod;
         if(className.contains("Channel")){
             if(method.toString().contains("7012")) {
-                testBase.addContactAndAccount(CONTACT_NUMBER_7012);
                 testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             }
             else if(method.toString().contains("7013")) {
-                testBase.addContactAndAccount(CONTACT_NUMBER_7013);
                 testBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
             }
             else testBase.openMS("/admin/channels");
@@ -54,12 +57,12 @@ public interface TestsParallelBase {
     }
 
     @AfterClass
-    default void afterClass(){
+    default void destroyWebDriver(){
         WebDriverRunner.closeWebDriver();
     }
 
     @AfterSuite
-    default void tearDown(ITestContext c){
+    default void afterSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().contains("Channels")){
             sleep(10000);

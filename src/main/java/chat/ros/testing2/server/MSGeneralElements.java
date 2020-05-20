@@ -81,7 +81,7 @@ public interface MSGeneralElements {
         buttonSave.click();
     }
 
-    @Step(value = "Проверяем, появилась ли запись {text} в таблице")
+    @Step(value = "Проверяем, есть ли запись {text} в таблице контактов")
     default boolean isExistsTableText(String text){
         try{
             tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible);

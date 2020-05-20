@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestsBase {
 
-    protected final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
-    protected final String hostClient = "https://" + HOST_SERVER;
-    protected final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
+    public final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
+    public final String hostClient = "https://" + HOST_SERVER;
+    public final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
 
     public TestsBase(){}
 
-    protected void init(){
+    public void init(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("chrome");
         capabilities.setVersion("80.0");
@@ -62,7 +62,7 @@ public class TestsBase {
         Configuration.screenshots = false;
     }
 
-    protected void afterTestMethod(Method m, ITestResult testResult){
+    public void afterTestMethod(Method m, ITestResult testResult){
         Method filename = m;
         ITestResult result = testResult;
         if(!result.isSuccess()){
@@ -72,7 +72,7 @@ public class TestsBase {
         }
     }
 
-    protected void openClient(String login, boolean staySystem) {
+    public void openClient(String login, boolean staySystem) {
         Configuration.baseUrl = hostClient;
         open("/");
         if (ClientPage.isLoginWindow()) {
@@ -81,7 +81,7 @@ public class TestsBase {
         }
     }
 
-    protected void openMS(String page){
+    public void openMS(String page){
         sleep(5000);
         LoginPage loginPage = new LoginPage();
         Configuration.baseUrl = hostServer;
@@ -90,12 +90,14 @@ public class TestsBase {
         open(page);
     }
 
-    protected void addContactAndAccount(String number){
+    public void addContactAndAccount(String number){
         sleep(5000);
         if (!SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
             openMS("/contacts");
-            contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+            if(contactsPage.isNotExistsTableText(number)) {
+                contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Suites" parallel="classes" thread-count="2" >
+<suite name="Suites" verbose="1" parallel="classes" thread-count="2" >
     <test name="Channels-Closed" >
         <classes>
             <class name="chat.ros.testing2.administration.TestClosedChannel" />
