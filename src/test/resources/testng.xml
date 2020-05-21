@@ -1,12 +1,12 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<!--<suite name="Suites" >
+<suite name="Suites" >
     <suite-files>
         <suite-file path="channel-closed-tests.xml" />
         <suite-file path="channel-public-tests.xml" />
         <suite-file path="channel-public-proven-tests.xml" />
     </suite-files>
-</suite>-->
+</suite>
 
 <!--<suite name="Suites" >
     <suite-files>
@@ -14,7 +14,7 @@
     </suite-files>
 </suite>-->
 
-<suite name="Suites" verbose="1" preserve-order="true">
+<!--<suite name="Suites" verbose="1" preserve-order="true">
     <test name="Channels" >
         <classes>
             <class name="chat.ros.testing2.administration.TestClosedChannel" />
@@ -25,4 +25,4 @@
             <class name="chat.ros.testing2.administration.TestPublicProvenChannelChangeType"></class>
         </classes>
     </test>
-</suite>
+</suite>-->

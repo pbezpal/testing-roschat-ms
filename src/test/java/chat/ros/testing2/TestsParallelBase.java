@@ -18,8 +18,7 @@ public interface TestsParallelBase {
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
 
-    //@BeforeClass
-    @BeforeSuite
+    @BeforeClass
     default void beforeClass(){
         testBase.init();
         String className = this.getClass().getName();
@@ -54,18 +53,18 @@ public interface TestsParallelBase {
         WebDriverRunner.closeWebDriver();
     }*/
 
-    @AfterSuite
+    /*@AfterSuite
     default void afterSuite(ITestContext c){
         ITestContext context = c;
         String className = this.getClass().getName();
         //if(context.getCurrentXmlTest().getName().equals("Channels-Public-Proven")){
-        /*if(className.contains("TestPublicProvenChannelChangeType")){
+        if(className.contains("TestPublicProvenChannelChangeType")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
-        }*/
+        }
         WebDriverRunner.closeWebDriver();
-    }
+    }*/
 }
