@@ -49,22 +49,23 @@ public interface TestsParallelBase {
         testBase.afterTestMethod(m, testResult);
     }
 
-    @AfterClass
+    /*@AfterClass
     default void destroyWebDriver(){
         WebDriverRunner.closeWebDriver();
-    }
+    }*/
 
     @AfterSuite
     default void afterSuite(ITestContext c){
         ITestContext context = c;
         String className = this.getClass().getName();
         //if(context.getCurrentXmlTest().getName().equals("Channels-Public-Proven")){
-        if(className.contains("TestPublicProvenChannelChangeType")){
+        /*if(className.contains("TestPublicProvenChannelChangeType")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
-        }
+        }*/
+        WebDriverRunner.closeWebDriver();
     }
 }
