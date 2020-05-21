@@ -26,7 +26,7 @@ import static chat.ros.testing2.data.LoginData.*;
 import static chat.ros.testing2.helpers.AttachToReport.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class TestsBase {
 

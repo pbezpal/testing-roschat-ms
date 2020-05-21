@@ -1,24 +1,20 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.JUnitRecourcesTests;
-import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.SNMPPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.annotations.Test;
 
 import static chat.ros.testing2.data.SettingsData.SNMP_ADDRESS_SERVER;
 import static chat.ros.testing2.data.SettingsData.SNMP_PORT_SERVER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 @Epic(value = "Настройки")
 @Feature(value = "SNMP")
-@ExtendWith(JUnitRecourcesTests.class)
-@ExtendWith(WatcherTests.class)
-public class TestSNMPPage extends SNMPPage {
+public class TestSNMPPage extends SNMPPage implements TestSuiteBase {
 
     @Story(value = "Настраиваем SNMP сервер")
     @Description(value = "Переходим в раздел Настройки -> SNMP и прописываем парамететры для настройки SNMP сервера")

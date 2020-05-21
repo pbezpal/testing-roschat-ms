@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public interface IntegrationPage extends SettingsPage {
 
@@ -20,6 +20,7 @@ public interface IntegrationPage extends SettingsPage {
     SelenideElement buttonSaveContacts = $("div.sync-wrapper button.primary");
     SelenideElement divLoading = $("div.loader-wrapper");
     SelenideElement msgError = $("div.msg-header h3");
+    String locatorButton = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button";
 
     @Step(value = "Проверяем, доступен ли сервис {service} для выбора")
     default boolean isAvailableTypeService(String service){
@@ -80,7 +81,7 @@ public interface IntegrationPage extends SettingsPage {
     }
 
     default Object clickServiceType(String service){
-        $x("//table//td[contains(text(),'" + service + "')]//ancestor::tr//button").click();
+        $x(String.format(locatorButton,service)).click();
         switch(service){
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();

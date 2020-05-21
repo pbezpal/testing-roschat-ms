@@ -12,10 +12,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class ServerPage implements SettingsPage{
 
@@ -45,12 +44,6 @@ public class ServerPage implements SettingsPage{
 
         //Нажимаем кнопку Проверить
         clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
-        //Проверяем, появилась ли форма проверки настроек
-        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        //Проверяем, что настройки сервера корректны
-        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
-        //Нажимаем кнопку закрыть
-        clickButtonCloseCheckSettingsForm();
         return this;
     }
 
@@ -100,7 +93,7 @@ public class ServerPage implements SettingsPage{
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
         if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
-        assertTrue(isUpdateLicense(), "Error: Не удалось обновить лицензию");
+        assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
 
         return this;
     }

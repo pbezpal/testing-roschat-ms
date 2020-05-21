@@ -1,30 +1,22 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.JUnitRecourcesTests;
-import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.GeozonesPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Геозоны")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(JUnitRecourcesTests.class)
-@ExtendWith(WatcherTests.class)
-public class TestGeozonesPage extends GeozonesPage {
+public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
 
     private Map<String,String> mapInputValueGeozone = new HashMap() {{
         put("Название", GEOZONES_NAME_ZONA);
@@ -42,7 +34,6 @@ public class TestGeozonesPage extends GeozonesPage {
     @Description(value = "Переходим в раздел Геозоны, добавляем геозону и проверяем," +
             " что геозона была успешно добавлена на сервер")
     @Test
-    @Order(1)
     void test_Add_Geozone(){
         assertTrue(addGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
                 "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер");
@@ -51,8 +42,7 @@ public class TestGeozonesPage extends GeozonesPage {
     @Story(value = "Добавляем Beacon")
     @Description(value = "Переходим в раздел Геозоны, открываем Геозону, добавляем Beacon и проверяем," +
             " что Beacon был успешно добавлен на сервер")
-    @Test
-    @Order(2)
+    @Test(dependsOnMethods = {"test_Add_Geozone"})
     void test_Add_Beacon(){
         assertTrue(addBeacon(GEOZONES_NAME_ZONA, mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
                 "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер");

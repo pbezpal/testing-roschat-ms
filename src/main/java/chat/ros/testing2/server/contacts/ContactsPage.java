@@ -14,11 +14,10 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_LASTNAME;
 import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class ContactsPage implements MSGeneralElements {
 
@@ -30,13 +29,14 @@ public class ContactsPage implements MSGeneralElements {
     private SelenideElement selectShowCountContacts = $("div.v-input__append-inner");
     private ElementsCollection listCountShowContacts = $$("div.v-select-list.v-card div.v-list__tile__title");
     private ElementsCollection trCountContacts = $$("table.v-datatable.v-table.theme--light tr");
+    private String locatorInputContactForm = "input[aria-label='%1$s']";
 
     public ContactsPage () {}
 
     @Step(value = "Проверяем, что контакта {contact} нет в таблице")
     public boolean isNotSearchContact(String contact){
         try{
-            tdSearchContact.findBy(text(contact)).shouldNotBe(Condition.visible);
+            tdSearchContact.findBy(text(contact)).shouldBe(not(Condition.visible));
         }catch (ElementShould element){
             return false;
         }
@@ -65,9 +65,10 @@ public class ContactsPage implements MSGeneralElements {
     @Step(value = "Вводим в поле {field} значение {value}")
     protected ContactsPage sendInputsContact(Map<String, String> mapInputValueContact){
         for(Map.Entry<String, String> entry : mapInputValueContact.entrySet()){
-            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(Keys.CONTROL + "a");
-            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(Keys.BACK_SPACE);
-            formNewContact.find("input[aria-label='" + entry.getKey() + "']").sendKeys(entry.getValue());
+            String input = String.format(locatorInputContactForm,entry.getKey());
+            formNewContact.find(input).sendKeys(Keys.CONTROL + "a");
+            formNewContact.find(input).sendKeys(Keys.BACK_SPACE);
+            formNewContact.find(input).sendKeys(entry.getValue());
         }
         return this;
     }

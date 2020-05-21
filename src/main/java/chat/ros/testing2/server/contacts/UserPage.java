@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class UserPage implements MSGeneralElements {
 
@@ -24,7 +24,9 @@ public class UserPage implements MSGeneralElements {
     private ElementsCollection spanValueAccount = $$("div.v-window__container span");
     private SelenideElement buttonsAddService = $x("//div[@class='service']//ancestor::div[@class='main-block']//button");
     private ElementsCollection servicesMenuContent = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
-    private ElementsCollection listServices = $$("div.service-info h4.service-name");
+    private ElementsCollection listTitleServices = $$("div.service-info %1$s");
+    private String locatorServiceInfo = "div.service-info %1$s";
+
     private SelenideElement inputSelectServerTetra = $("div.v-select__selections");
     private ElementsCollection divListServerTetra = $$("div.v-select-list.v-card.theme--light div.v-list__tile__title");
 
@@ -154,9 +156,9 @@ public class UserPage implements MSGeneralElements {
     }
 
     @Step(value = "Проверяем, появился сервир в списке сервисов")
-    public boolean isShowService(String service){
+    public boolean isShowService(String element, String text){
         try{
-            listServices.findBy(text(service)).shouldBe(visible);
+            $$(String.format(locatorServiceInfo,element)).findBy(text(text)).shouldBe(visible);
         }catch (ElementNotFound e){
             return false;
         }

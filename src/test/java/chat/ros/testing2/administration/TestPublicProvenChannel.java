@@ -48,7 +48,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
                         isExistComments(nameChannel, true),
                 "Канал не найден в списке бесед");
         clickChat(nameChannel);
-        softAssert.assertTrue(getTextInfoClosedChannel(false),
+        softAssert.assertTrue(isTextInfoClosedChannel(false),
                 "Присутствует надпись Закрытый в разделе 'Информация о канале'");
         softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " не найден в БД postgres");

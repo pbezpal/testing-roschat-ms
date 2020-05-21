@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Suites" parallel="classes" thread-count="2" >
-    <test name="Channels-Closed" >
+<suite name="Channel-Public-Proven" parallel="classes" thread-count="2" >
+    <test name="Tests-Channel-Public-Proven" >
         <classes>
             <class name="chat.ros.testing2.administration.TestPublicProvenChannel" />
             <class name="chat.ros.testing2.administration.TestPublicProvenChannelChangeType" />

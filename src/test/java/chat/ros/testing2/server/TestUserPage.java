@@ -1,17 +1,12 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.JUnitRecourcesTests;
-import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.UserPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,14 +15,11 @@ import static chat.ros.testing2.data.LoginData.LOGIN_ADMIN_MS;
 import static chat.ros.testing2.data.LoginData.PASSWORD_ADMIN_MS;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Настройки СУ")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(JUnitRecourcesTests.class)
-@ExtendWith(WatcherTests.class)
-public class TestUserPage extends UserPage {
+public class TestUserPage extends UserPage implements TestSuiteBase {
 
     private Map<String, String> mapInputValueUser = new HashMap() {{
         put("Фамилия", USER_FIRST_NAME);
@@ -39,7 +31,6 @@ public class TestUserPage extends UserPage {
 
     @Story(value = "Добавляем нового пользователя в систему")
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и добавляем новго пользователя")
-    @Order(1)
     @Test
     void test_Add_New_User(){
         assertTrue(addUser(mapInputValueUser, USER_LOGIN), "Пользователь " + USER_LOGIN + " не был добавлен в систему");
@@ -47,8 +38,7 @@ public class TestUserPage extends UserPage {
 
     @Story(value = "Входим в систему под новым пользователем")
     @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
-    @Order(2)
-    @Test
+    @Test(priority = -1, dependsOnMethods = {"test_Add_New_User"})
     void test_Login_New_User(){
         logoutMS();
         loginOnServer(USER_LOGIN, USER_PASSWORD);
@@ -57,8 +47,7 @@ public class TestUserPage extends UserPage {
 
     @Story(value = "Удаляем нового пользователя")
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
-    @Order(3)
-    @Test
+    @Test(priority = 1, dependsOnMethods = {"test_Add_New_User"})
     void test_Delete_New_User(){
         logoutMS();
         loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);

@@ -10,7 +10,7 @@ public class ActiveDirectoryPage implements IntegrationPage {
 
     public boolean settingsActiveDirectory(Map<String, String> mapInputValueAD){
         clickButtonSettings();
-        sendH4InputsForm(mapInputValueAD);
+        sendInputsForm(mapInputValueAD);
         clickButtonSave();
         return isExistsTableText(INTEGRATION_SERVICE_AD_TYPE);
     }

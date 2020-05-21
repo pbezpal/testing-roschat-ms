@@ -47,7 +47,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestsPa
                         isExistComments(nameChannel, true),
                 "Канал не найден в списке бесед");
         clickChat(nameChannel);
-        softAssert.assertTrue(getTextInfoClosedChannel(false),
+        softAssert.assertTrue(isTextInfoClosedChannel(false),
                 "Присутствует надпись Закрытый в разделе 'Информация о канале'");
         softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " не найден в БД postgres");
@@ -67,7 +67,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestsPa
                         nameChannel, CLIENT_TYPE_CHANNEL_CLOSED).
                         isExistComments(nameChannel, true),
                 "Канал не найден в списке бесед");
-        softAssert.assertTrue(getTextInfoClosedChannel(true),
+        softAssert.assertTrue(isTextInfoClosedChannel(true),
                 "Не отображается тип канала Закрытый в разделе 'Информация о канале'");
         softAssert.assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
                         replaceAll(" ", ""),

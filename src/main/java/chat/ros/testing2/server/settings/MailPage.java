@@ -12,7 +12,7 @@ import java.util.Map;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class MailPage implements SettingsPage {
 
@@ -46,38 +46,28 @@ public class MailPage implements SettingsPage {
         return this;
     }
 
-    public Map<String, String> getConnectionMailServer(String server, String username, String password, String port){
+    public Map<String, String> getSettingsMailServer(String server, String username, String password, String port,
+                                                     String fromUser, String fromMail){
         Map<String, String> dataConnectionMailServer = new HashMap() {{
             put(MAIL_CONNECT_INPUT_EMAIL_SERVER, server);
             put(MAIL_CONNECT_INPUT_USERNAME, username);
             put(MAIL_CONNECT_INPUT_PASSWORD, password);
             put(MAIL_CONNECT_INPUT_EMAIL_PORT, port);
+            put(MAIL_CONTACT_INPUT_FROM_USER, fromUser);
+            put(MAIL_CONTACT_INPUT_FROM_MAIL, fromMail);
         }};
         return dataConnectionMailServer;
     }
 
-    public Map<String, String> getContactInfoMail(String fromUser, String fromMail){
-        Map<String, String> dataContactInfoMail = new HashMap() {{
-            put(MAIL_CONTACT_INPUT_FROM_USER, fromUser);
-            put(MAIL_CONTACT_INPUT_FROM_MAIL, fromMail);
-        }};
-        return dataContactInfoMail;
-    }
-
-    public MailPage checkSettingsMailServer(String server, String username, String password, String port, String security, String fromUser, String fromMail){
+    public MailPage settingsMailServer(Map<String, String> settingsMainServer, String security){
         //Настраиваем раздел Подключение
-        setSettingsServer(getConnectionMailServer(server, username, password, port), SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
+        setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         setInputSecurity(security);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
 
-        //Настраиваем раздел Контактная информация
-        setSettingsServer(getContactInfoMail(fromUser, fromMail), MAIL_CONTACT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        clickButtonSave();
+        //Нажимаем кнопку проверить
         clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
-        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        assertTrue(isCheckSettings(), "Настройки сервера некорректны");
-        clickButtonCloseCheckSettingsForm();
 
         return this;
     }

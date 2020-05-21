@@ -10,7 +10,7 @@ public class OfficeMonitorPage implements IntegrationPage {
 
     public boolean settingsOfficeMonitor(Map<String, String> mapInputValueOM){
         clickButtonSettings();
-        sendH4InputsForm(mapInputValueOM);
+        sendInputsForm(mapInputValueOM);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         return isExistsTableText(INTEGRATION_SERVICE_OM_TYPE);

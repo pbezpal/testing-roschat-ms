@@ -1,7 +1,6 @@
 package chat.ros.testing2;
 
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -48,23 +47,15 @@ public interface TestsParallelBase {
         testBase.afterTestMethod(m, testResult);
     }
 
-    /*@AfterClass
-    default void destroyWebDriver(){
-        WebDriverRunner.closeWebDriver();
-    }*/
-
-    /*@AfterSuite
+    @AfterSuite
     default void afterSuite(ITestContext c){
         ITestContext context = c;
-        String className = this.getClass().getName();
-        //if(context.getCurrentXmlTest().getName().equals("Channels-Public-Proven")){
-        if(className.contains("TestPublicProvenChannelChangeType")){
+        if(context.getCurrentXmlTest().getName().equals("Channels-Public-Proven")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
         }
-        WebDriverRunner.closeWebDriver();
-    }*/
+    }
 }

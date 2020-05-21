@@ -11,18 +11,22 @@ import org.openqa.selenium.Keys;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface MSGeneralElements {
 
     SelenideElement formChange = $("form.v-form");
     SelenideElement inputLogin = formChange.find("input[type='text']");
     SelenideElement inputPassword = formChange.find("input[type='password']");
-    SelenideElement buttonSave = $("div.modal-wrapper button.v-btn.theme--light.primary");
+    SelenideElement buttonSave = $(".modal-wrapper .primary");
+    SelenideElement buttonClose = $(".modal-wrapper .secondary--text");
     SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
     ElementsCollection tdTableList = $$("table.v-datatable td");
     SelenideElement buttonAdd = $("div.action-bar button div");
+    SelenideElement textWrong = $(".v-messages__message");
+    String locatorInput = "//div[@class='modal-item__title']/h4[contains(text(),'%1$s')]//ancestor::" +
+            "li[@class='layout modal-item']//input";
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
@@ -35,27 +39,21 @@ public interface MSGeneralElements {
         return true;
     }
 
-    @Step(value = "Вводим в поле {field} значение {value}")
-    default void sendInputForm(String field, String value){
-        $x("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input").sendKeys(Keys.CONTROL + "a");
-        $x("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input").sendKeys(Keys.BACK_SPACE);
-        $x("//div[@class='modal-item__title']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li[@class='layout modal-item']//input").sendKeys(value);
+    @Step(value = "Вводим в поле {input} значение {value}")
+    default void sendInputForm(String input, String value){
+        $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
+        $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
+        $x(String.format(locatorInput,input)).sendKeys(value);
     }
 
     @Step(value = "Заполняем поля формы")
-    default void sendH4InputsForm(Map<String, String> mapInputValue){
+    default void sendInputsForm(Map<String, String> mapInputValue){
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()){
             String input = entry.getKey();
             String value = entry.getValue();
-            $x("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
-                    "//ancestor::li[@class='layout modal-item']//input").sendKeys(Keys.CONTROL + "a");
-            $x("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
-                    "//ancestor::li[@class='layout modal-item']//input").sendKeys(Keys.BACK_SPACE);
-            $x("//div[@class='modal-item__title']/h4[contains(text(),'" + input + "')]" +
-                    "//ancestor::li[@class='layout modal-item']//input").sendKeys(value);
+            $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
+            $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
+            $x(String.format(locatorInput,input)).sendKeys(value);
         }
     }
 
@@ -77,8 +75,12 @@ public interface MSGeneralElements {
 
     @Step(value = "Нажимаем нопку Сохранить")
     default void clickButtonSave(){
-        assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки, кнопка 'Сохранить' не активна");
         buttonSave.click();
+    }
+
+    @Step(value = "Нажимаем кнопку Закрыть")
+    default void clickButtonClose(){
+        buttonClose.click();
     }
 
     @Step(value = "Проверяем, есть ли запись {text} в таблице контактов")
@@ -101,6 +103,17 @@ public interface MSGeneralElements {
         }
 
         return true;
+    }
+
+    @Step(value = "Проверяем, есть ли надпись об ошибке {text}")
+    default String getTextWrong(){
+        try{
+            textWrong.shouldBe(visible);
+        }catch (ElementNotFound e){
+            return "Не найден элемент с текстом об ошибке";
+        }
+
+        return textWrong.text();
     }
 
 }

@@ -24,6 +24,7 @@ public interface SettingsData {
     String SERVER_CONNECT_WEBSOCKET_PORT = "8080";
     String SERVER_CONNECT_WEBSOCKET_OTHER_PORT = "8088";
     String SERVER_CONNECT_TEXT_CHECK_SERVER = "Настройки сервера корректны.";
+    String SERVER_CONNECT_FIELD_PORTS = "Порты (http, https, websocket):";
 
     /****** Параметры для настройки Push сервера ******/
     String SERVER_PUSH_TITLE_FORM = "Лицензирование и обсуживание";
@@ -41,6 +42,8 @@ public interface SettingsData {
 
     /********************************************** Раздел Телефония *************************************************/
 
+    String TELEPHONY_INPUT_SPEECH_PORTS = "Речевые порты";
+
     /****** Параметры для настройки Сети ******/
     String TELEPHONY_NETWORK_TITLE_FORM = "Сеть";
     String TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS = "Публичный адрес";
@@ -53,14 +56,19 @@ public interface SettingsData {
 
     /****** Параметры для настройки SIP-сервера ******/
     String TELEPHONY_SIP_TITLE_FORM = "SIP-сервер";
-    String TELEPHONY_SIP_INPUT_SPEECH_PORTS = "Речевые порты";
     String TELEPHONY_SIP_INPUT_MIN_PORT = "Минимальный порт";
     String TELEPHONY_SIP_MIN_PORT = "49000";
+    String TELEPHONY_SIP_MIN_PORT_MORE_MAX_PORT = "50000";
     String TELEPHONY_SIP_INPUT_MAX_PORT = "Максимальный порт";
     String TELEPHONY_SIP_MAX_PORT = "49150";
 
     /****** Параметры для настройки TURN сервера ******/
     String TELEPHONY_TURN_TITLE_FORM = "TURN/STUN";
+    String TELEPHONY_TURN_INPUT_MIN_PORT = "Минимальный порт";
+    String TELEPHONY_TURN_MIN_PORT = "49153";
+    String TELEPHONY_TURN_MIN_PORT_MORE_MAX_PORT = "50000";
+    String TELEPHONY_TURN_INPUT_MAX_PORT = "Максимальный порт";
+    String TELEPHONY_TURN_MAX_PORT = "49183";
     String TELEPHONY_TURN_INPUT_SECRET = "Секрет";
     String TELEPHONY_TURN_SECRET = "Secret";
 
@@ -72,12 +80,10 @@ public interface SettingsData {
     String MAIL_CONNECT_INPUT_USERNAME = "Имя пользователя";
     String MAIL_CONNECT_INPUT_PASSWORD = "Пароль пользователя";
     String MAIL_CONNECT_INPUT_EMAIL_PORT = "Порт почтового сервера";
-    String MAIL_CONNECT_TEXT_CHECK= "Настройки почты корректны.";
-
-    /****** Параметры для настройки раздела Контактная информация ******/
-    String MAIL_CONTACT_TITLE_FORM = "Контактная информация";
     String MAIL_CONTACT_INPUT_FROM_USER = "Имя отправителя";
     String MAIL_CONTACT_INPUT_FROM_MAIL = "Почтовый адрес";
+    String MAIL_CONNECT_TEXT_CHECK= "Настройки почты корректны.";
+
 
     /****** Порты почтового сервера ******/
     String MAIL_PORT_NO_SECURITY = "25";

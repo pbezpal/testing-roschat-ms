@@ -12,21 +12,20 @@ import static com.codeborne.selenide.Selenide.*;
 public class TetraPage implements IntegrationPage {
 
     SelenideElement buttonSaveTetra = $("div.modal-wrapper button.v-btn.primary--text");
+    private String locatorInput = "//div[@class='naming' and contains(text(), '%1$s')]" +
+            "//ancestor::div[@class='modal-fields']//input";
 
     public TetraPage() {}
 
     @Step(value = "Заполняем поля для добавления сервера")
     @Override
-    public void sendH4InputsForm(Map<String, String> mapInputValue){
+    public void sendInputsForm(Map<String, String> mapInputValue){
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()) {
             String input = entry.getKey();
             String value = entry.getValue();
-            $x("//div[@class='naming' and contains(text(), '" + input + "')]" +
-                    "//ancestor::div[@class='modal-fields']//input").sendKeys(Keys.CONTROL + "a");
-            $x("//div[@class='naming' and contains(text(), '" + input + "')]" +
-                    "//ancestor::div[@class='modal-fields']//input").sendKeys(Keys.BACK_SPACE);
-            $x("//div[@class='naming' and contains(text(), '" + input + "')]" +
-                    "//ancestor::div[@class='modal-fields']//input").sendKeys(value);
+            $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
+            $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
+            $x(String.format(locatorInput,input)).sendKeys(value);
         }
     }
 
@@ -39,7 +38,7 @@ public class TetraPage implements IntegrationPage {
 
     public boolean addTetraServer(Map<String, String> mapInputValueTetra){
         clickButtonAdd();
-        sendH4InputsForm(mapInputValueTetra);
+        sendInputsForm(mapInputValueTetra);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         isNotShowLoaderSettings();

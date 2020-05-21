@@ -10,9 +10,8 @@ import io.qameta.allure.Step;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static com.codeborne.selenide.Selenide.*;
+import static org.testng.Assert.assertTrue;
 
 public interface SettingsPage extends MSGeneralElements {
 
@@ -21,6 +20,10 @@ public interface SettingsPage extends MSGeneralElements {
     SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper i.loader");
+    String labelField = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']//div[@class='block-content__item-name']" +
+            "/h4[contains(text(),'%2$s')]//ancestor::li//span[@class='v-chip__content']";
+    String buttonFormAction = "//div[@class='actions-wrapper']//div[@class='v-btn__content' " +
+            "and contains(text(), '%1$s')]";
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -39,15 +42,45 @@ public interface SettingsPage extends MSGeneralElements {
             return this;
     }
 
-    @Step(value = "Проверяем, что в поле {field} значение {value}")
-    default boolean isNotValueInField(String field, String value){
-        $x("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
-                "//ancestor::li//span[@class='v-chip__content']").scrollIntoView(false);
+    @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
+    default boolean isShowValueInField(String form, String field, String value, boolean show){
         try{
-            $x("//div[@class='block-content__item-name']/h4[contains(text(),'" + field + "')]" +
-                    "//ancestor::li//span[@class='v-chip__content']").waitUntil(Condition.not(text(value)), 10000);
-        }catch (ElementShould element){
+            $x(String.format(labelField,form,field)).should(enabled);
+        }catch (ElementNotFound e){
             return false;
+        }
+
+        $x(String.format(labelField,form,field)).scrollIntoView(false);
+
+        if(show){
+            return $x(String.format(labelField,form,field)).text().equals(value);
+        }else {
+            return ! $x(String.format(labelField,form,field)).text().equals(value);
+        }
+    }
+
+    @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
+    default boolean isShowValuesInField(String form, String field, String value, boolean show){
+        try{
+            $x(String.format(labelField,form,field)).should(enabled);
+        }catch (ElementNotFound e){
+            return false;
+        }
+
+        $x(String.format(labelField,form,field)).scrollIntoView(false);
+
+        if(show){
+           try {
+               $$x(String.format(labelField,form,field)).findBy(text(value));
+           }catch (ElementNotFound e){
+               return false;
+           }
+        }else {
+            try {
+                $$x(String.format(labelField,form,field)).findBy(not(text(value)));
+            }catch (ElementShould e){
+                return false;
+            }
         }
 
         return true;
@@ -90,9 +123,7 @@ public interface SettingsPage extends MSGeneralElements {
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
     default SettingsPage clickButtonConfirmAction(String button){
-        assertTrue(isFormConfirmActions(), "Отсутствует форма для подтверждения действий");
-        $x("//div[@class='actions-wrapper']" +
-                "//div[@class='v-btn__content' and contains(text(), '" + button + "')]").click();
+        $x(String.format(buttonFormAction,button)).click();
         return this;
     }
 
@@ -137,7 +168,7 @@ public interface SettingsPage extends MSGeneralElements {
 
     default SettingsPage setSettingsServer(Map<String, String> mapInputValue, String form, String button){
         clickButtonSettings(form, button);
-        sendH4InputsForm(mapInputValue);
+        sendInputsForm(mapInputValue);
         return this;
     }
 

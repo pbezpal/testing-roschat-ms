@@ -44,17 +44,6 @@ dependencies {
     // https://search.maven.org/artifact/org.testng/testng
     compile 'org.testng:testng:7.1.0'
 
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.0'
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.0'
-    // https://mvnrepository.com/artifact/org.junit/junit5-engine
-    compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
-    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
-    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.6.1'
-
     //dependencies for selenium
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
@@ -90,12 +79,6 @@ allure {
     autoconfigure = true
     aspectjweaver = true
 
-    //downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.8.1/allure-commandline-2.8.1.zip'
-
-    useJUnit5 {
-        version = '2.13.1'
-    }
-
     useTestNG {
         version = '2.13.3'
     }
@@ -106,8 +89,6 @@ test {
     useTestNG(){
         suites 'src/test/resources/testng.xml'
     }
-
-    //useJUnitPlatform()
 
     dependsOn 'cleanTest'
 

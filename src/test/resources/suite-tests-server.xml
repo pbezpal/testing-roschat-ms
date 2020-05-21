@@ -1,15 +1,22 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="JUnit suite tests" >
-    <test name="JUnit tests" junit="true" >
+<suite name="Server" verbose="1">
+    <test name="Server settings" >
+        <groups>
+            <dependencies>
+                <group name="Service Tetra" depends-on="Tetra"></group>
+                <group name="After Sync" depends-on="Sync"></group>
+            </dependencies>
+        </groups>
         <classes>
-            <class name="chat.ros.testing2.server.TestGeozonesPage" />
-            <class name="chat.ros.testing2.server.TestIntegrationPage" />
+            <class name="chat.ros.testing2.server.TestGeozonesPage"/>
+            <class name="chat.ros.testing2.server.TestIntegrationPage"/>
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestServerPage" />
             <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
             <class name="chat.ros.testing2.server.TestUserPage" />
+            <class name="chat.ros.testing2.contacts.TestServicePage"/>
         </classes>
     </test>
 </suite>
