@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный канал")
-public class TestPublicChannel extends ChannelsPage implements TestSuiteBase {
+public class TestPublicChannel extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHP%1$s";
     private SoftAssert softAssert = new SoftAssert();
@@ -39,6 +39,7 @@ public class TestPublicChannel extends ChannelsPage implements TestSuiteBase {
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Public_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -64,6 +65,7 @@ public class TestPublicChannel extends ChannelsPage implements TestSuiteBase {
             "канал в списке каналов")
     @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Show_Public_Channel_In_MS(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, true),
                 "Публичный канал " + nameChannel + " не отображается в СУ");
     }

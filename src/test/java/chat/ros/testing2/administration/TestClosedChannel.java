@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Закрытый канал")
-public class TestClosedChannel extends ChannelsPage implements TestSuiteBase {
+public class TestClosedChannel extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHC%1$s";
     private SoftAssert softAssert;
@@ -39,6 +39,7 @@ public class TestClosedChannel extends ChannelsPage implements TestSuiteBase {
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый закрытый канал")
     @Test
     void test_Create_Closed_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -64,6 +65,7 @@ public class TestClosedChannel extends ChannelsPage implements TestSuiteBase {
             "закрытый канал в списке каналов после создания")
     @Test(dependsOnMethods = {"test_Create_Closed_Channel_7012"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }

@@ -3,7 +3,6 @@
 <suite name="Channels" >
     <test name="Tests-Channel" >
         <classes>
-            <class name="chat.ros.testing2.server.TestServerPage" />
             <class name="chat.ros.testing2.administration.TestClosedChannel" />
             <class name="chat.ros.testing2.administration.TestClosedChannelChangeType" />
             <class name="chat.ros.testing2.administration.TestPublicChannel" />

@@ -73,8 +73,7 @@ public class TestsBase {
     }
 
     public void openClient(String login, boolean staySystem) {
-        Configuration.baseUrl = hostClient;
-        open("/");
+        open(hostClient);
         if (ClientPage.isLoginWindow()) {
             assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
                     "авторизации");
@@ -84,10 +83,9 @@ public class TestsBase {
     public void openMS(String page){
         sleep(5000);
         LoginPage loginPage = new LoginPage();
-        Configuration.baseUrl = hostServer;
-        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
+        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open(hostServer);
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-        open(page);
+        open(hostServer + page);
     }
 
     public void addContactAndAccount(String number){

@@ -21,7 +21,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный проверенный канал. Смена типа канала.")
-public class TestPublicProvenChannelChangeType extends ChannelsPage implements TestSuiteBase {
+public class TestPublicProvenChannelChangeType extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHPPCT%1$s";
     private SoftAssert softAssert;
@@ -40,6 +40,7 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_2_Create_Public_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -65,6 +66,7 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
             "публичный канал проверенным")
     @Test(dependsOnMethods = {"test_2_Create_Public_Channel_7012"})
     void test_2_Do_Proven_Channel_After_Create_Public_Channel(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, true),
                 "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
@@ -78,6 +80,7 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
     @Description(value = "Авторизуемся под администратором канала и меняем тип с публичного на закрытый канал")
     @Test(dependsOnMethods = {"test_2_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_2_Edit_Type_With_Public_On_Closed_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         softAssert.assertTrue(
                 editTypeChannel(
                         nameChannel, CLIENT_TYPE_CHANNEL_CLOSED).
@@ -98,6 +101,7 @@ public class TestPublicProvenChannelChangeType extends ChannelsPage implements T
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
     @Test(priority = 1, dependsOnMethods = {"test_2_Edit_Type_With_Public_On_Closed_Channel_7012"})
     void test_2_Show_Public_Channel_In_MS_After_Change_Type(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }

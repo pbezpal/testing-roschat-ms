@@ -20,7 +20,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный канал. Смена типа канала.")
-public class TestPublicChannelChangeType extends ChannelsPage implements TestSuiteBase {
+public class TestPublicChannelChangeType extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHPCT%1$s";
     private SoftAssert softAssert = new SoftAssert();
@@ -39,6 +39,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestSui
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Public_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -63,6 +64,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestSui
     @Description(value = "Авторизуемся под администратором канала и меняем тип с публичного на закрытый канал")
     @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Edit_Type_With_Public_On_Closed_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         softAssert.assertTrue(
                 editTypeChannel(
                         nameChannel, CLIENT_TYPE_CHANNEL_CLOSED).
@@ -82,6 +84,7 @@ public class TestPublicChannelChangeType extends ChannelsPage implements TestSui
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
     @Test(dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel_7012"})
     void test_Show_Public_Channel_In_MS_After_Change_Type(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }

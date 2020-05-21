@@ -11,6 +11,7 @@
         <classes>
             <class name="chat.ros.testing2.server.TestGeozonesPage"/>
             <class name="chat.ros.testing2.server.TestIntegrationPage"/>
+            <class name="chat.ros.testing2.server.TestServerPage" />
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />

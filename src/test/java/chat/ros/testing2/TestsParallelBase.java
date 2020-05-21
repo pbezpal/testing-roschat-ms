@@ -27,7 +27,7 @@ public interface TestsParallelBase {
         }
     }
 
-    @BeforeMethod(alwaysRun = true)
+    /*@BeforeMethod(alwaysRun = true)
     default void beforeTest(Method testMethod){
         String className = this.getClass().getName();
         Method method = testMethod;
@@ -40,7 +40,7 @@ public interface TestsParallelBase {
             }
             else testBase.openMS("/admin/channels");
         }
-    }
+    }*/
 
     @AfterMethod(alwaysRun = true)
     default void afterTestMethod(Method m, ITestResult testResult){
@@ -50,7 +50,7 @@ public interface TestsParallelBase {
     @AfterSuite
     default void afterSuite(ITestContext c){
         ITestContext context = c;
-        if(context.getCurrentXmlTest().getName().equals("Tests-Channel")){
+        if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();

@@ -15,13 +15,14 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Закрытый канал. Смена типа канала.")
-public class TestClosedChannelChangeType extends ChannelsPage implements TestSuiteBase {
+public class TestClosedChannelChangeType extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHCCT%1$s";
     private SoftAssert softAssert;
@@ -40,6 +41,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый закрытый канал")
     @Test
     void test_Create_Closed_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -65,6 +67,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
             "закрытый канал в списке каналов после создания")
     @Test(priority = 1, dependsOnMethods = {"test_Create_Closed_Channel_7012"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
@@ -73,6 +76,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
     @Description(value = "Авторизуемся под пользователем user_1 и меняем тип у закрытого каналана на публичный")
     @Test(priority = 2, dependsOnMethods = {"test_Create_Closed_Channel_7012"})
     void test_Edit_Type_With_Closed_On_Public_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         softAssert.assertTrue(
                 editTypeChannel(
                         nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC).
@@ -93,6 +97,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
             " делаем публичный канал проверенным")
     @Test(dependsOnMethods = {"test_Edit_Type_With_Closed_On_Public_Channel_7012"})
     void test_Do_Proven_Channel_After_Edit_Type_Closed_Channel(){
+        testBase.openMS("/admin/channels");
         assertTrue(isShowChannel(nameChannel, true),
                 "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
@@ -107,6 +112,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
             " Проверяем, что у канала появился статус Проверенный")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
     void test_Check_Status_Closed_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         clickItemComments();
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
                 "Отсутствует статус Проверенный у канала в разделе Беседы");
@@ -122,6 +128,7 @@ public class TestClosedChannelChangeType extends ChannelsPage implements TestSui
             " публичного канала. Проверяем, что у канала статус Проверенный")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Edit_Type_Closed_Channel"})
     void test_Search_Closed_Channel_7013(){
+        testBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),

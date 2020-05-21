@@ -15,13 +15,14 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный проверенный канал")
-public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBase {
+public class TestPublicProvenChannel extends ChannelsPage implements TestsParallelBase {
 
     private String nameChannel = "CHPP%1$s";
     private SoftAssert softAssert;
@@ -40,6 +41,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBa
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Public_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -65,7 +67,9 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBa
             "публичный канал проверенным")
     @Test(dependsOnMethods = {"test_Create_Public_Channel_7012"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
-        assertTrue(isShowChannel(nameChannel, true));
+        testBase.openMS("/admin/channels");
+        assertTrue(isShowChannel(nameChannel, true),
+                "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
         assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckProvedChannel, nameChannel)).
                         replaceAll(" ", ""),
@@ -78,6 +82,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBa
             " Проверяем, что у канала появился статус Проверенный")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_Check_Status_Proven_Channel_7012(){
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         clickItemComments();
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
                 "Отсутствует статус Проверенный у канала в разделе Беседы");
@@ -93,6 +98,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBa
             " публичного канала. Проверяем, что у канала статус Проверенный")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_Search_Status_Proven_Channel_7013(){
+        testBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
         softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
