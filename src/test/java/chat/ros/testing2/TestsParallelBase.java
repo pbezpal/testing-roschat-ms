@@ -50,7 +50,7 @@ public interface TestsParallelBase {
     @AfterSuite
     default void afterSuite(ITestContext c){
         ITestContext context = c;
-        if(context.getCurrentXmlTest().getName().equals("Channels-Public-Proven")){
+        if(context.getCurrentXmlTest().getName().equals("Tests-Channel")){
             testBase.init();
             testBase.openMS("/admin/channels");
             ChannelsPage channelsPage = new ChannelsPage();

@@ -21,8 +21,8 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
     private UserPage userPage;
     private SoftAssert softAssert;
 
-    @Story(value = "Добавляем сервис Рация у контакта 7012")
-    @Description(value = "Переходим в раздель Пользователь контакта 7012 и добавляем сервис Рация")
+    @Story(value = "Добавляем у контакта  сервис Рация")
+    @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Radio_Contact_7012(){
         userPage = actionsContact(CONTACT_NUMBER_7012);
@@ -30,8 +30,8 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
     }
 
-    @Story(value = "Добавляем сервис SIP у контакта 7012")
-    @Description(value = "Переходим в раздель Пользователь контакта 7012 и добавляем сервис SIP")
+    @Story(value = "Добавляем у контакта сервис SIP")
+    @Description(value = "Переходим в раздель Пользователь и добавляем сервис SIP. Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_SIP_Contact_7012(){
         softAssert = new SoftAssert();
@@ -46,8 +46,8 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
         softAssert.assertAll();
     }
 
-    @Story(value = "Добавляем сервис Рация у контакта 7012")
-    @Description(value = "Переходим в раздель Пользователь контакта 7012 и добавляем сервис Рация")
+    @Story(value = "Добавляем у контакта сервис Тетра")
+    @Description(value = "Переходим в раздел Пользователь и добавляем сервис Тетра.  Проверяем, что сервис был добавлен")
     @Test(groups = {"Service Tetra"})
     void test_Add_Service_Tetra_Contact_7012(){
         userPage = sendInputSearchContact(CONTACT_NUMBER_7012).clickContact(CONTACT_NUMBER_7012);

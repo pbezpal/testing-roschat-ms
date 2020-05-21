@@ -1,5 +1,6 @@
 package chat.ros.testing2.administration;
 
+import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
@@ -20,7 +21,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный проверенный канал")
-public class TestPublicProvenChannel extends ChannelsPage implements TestsParallelBase {
+public class TestPublicProvenChannel extends ChannelsPage implements TestSuiteBase {
 
     private String nameChannel = "CHPP%1$s";
     private SoftAssert softAssert;
