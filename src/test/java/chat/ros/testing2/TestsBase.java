@@ -131,7 +131,7 @@ public class TestsBase {
         sleep(1000);
         Configuration.baseUrl = hostServer;
         LoginPage loginPage = new LoginPage();
-        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
+        open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
         if(itemMenu.length == 2){
             BasePage.clickItemMenu(itemMenu[0]);
