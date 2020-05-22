@@ -18,9 +18,4 @@ public class MonitoringPage extends LoginPage{
         if(headingPage.text().equals(heading) ) return true;
         return false;
     }
-
-    @Step(value = "Переходим в раздел {itemMenu}")
-    public void clickItemMenu(String itemMenu){
-            $x("//div[@class='v-list__tile__title' and contains(text(),'" + itemMenu + "')]").click();
-    }
 }

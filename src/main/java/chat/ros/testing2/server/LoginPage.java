@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class LoginPage implements MSGeneralElements {
+public class LoginPage implements BasePage {
 
     private static SelenideElement buttonLogin = formChange.find("button");
     private SelenideElement navSuccessLogin = $("nav.v-toolbar.theme--light");

@@ -26,7 +26,8 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
                 MAIL_INFOTEK_PASSWORD, MAIL_PORT_NO_SECURITY, MAIL_INFOTEK_FROM_USER, MAIL_INFOTEK_FROM_MAIL);
         settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_NO);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertAll();
     }
@@ -40,7 +41,8 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_SSL, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
         settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_SSL);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertAll();
     }
@@ -54,7 +56,8 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_STARTTLS, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
         settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_STARTTLS);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertAll();
     }

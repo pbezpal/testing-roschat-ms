@@ -39,7 +39,8 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         }};
         setSectionConnect(mapInputOtherValueConnect);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(),"Настройки сервера корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertTrue(isShowValueInField(
                 SERVER_CONNECT_TITLE_FORM,
@@ -80,7 +81,8 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         }};
         setSectionConnect(mapInputValueConnect);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(),"Настройки сервера корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertTrue(isShowValueInField(
                 SERVER_CONNECT_TITLE_FORM,

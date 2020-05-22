@@ -2,6 +2,7 @@ package chat.ros.testing2;
 
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.LoginPage;
+import chat.ros.testing2.server.BasePage;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import client.ClientPage;
@@ -126,19 +127,23 @@ public class TestsBase {
         }
     }
 
-    public void openMS(String page){
-        sleep(10000);
+    public void openMS(String... itemMenu){
+        sleep(1000);
         Configuration.baseUrl = hostServer;
         LoginPage loginPage = new LoginPage();
-        if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
+        //if( ! WebDriverRunner.getWebDriver().getCurrentUrl().contains(hostServer)) open("/");
+        open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-        open(page);
+        if(itemMenu.length == 2){
+            BasePage.clickItemMenu(itemMenu[0]);
+            BasePage.clickItemSettings(itemMenu[1]);
+        }else if(itemMenu.length == 1) BasePage.clickItemMenu(itemMenu[0]);
     }
 
     public void addContactAndAccount(String number){
         if (!SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
-            openMS("/contacts");
+            openMS();
             if(contactsPage.isNotExistsTableText(number)) {
                 contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
             }
@@ -163,7 +168,7 @@ public class TestsBase {
                         "Запись о канале " + channel + " осталась в БД postgres после удаления");
                 softAssert.assertAll();
 
-                openMS("/admin/channels");
+                openMS("Администрирование","Каналы");
                 assertTrue(channelsPage.isShowChannel(channel, false),
                         "Закрытый канал " + channel + " отображается в СУ после удаления");
             }

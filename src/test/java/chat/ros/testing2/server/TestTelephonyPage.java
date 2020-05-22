@@ -52,7 +52,8 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
         setNetwork(mapInputValueNetwork);
         clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK);
         softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertTrue(isCheckSettings(), "Настройки сервера некорректны");
+        softAssert.assertEquals(isCheckSuccessAction(), "Настройки телефонии корректны.",
+                "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         for(Map.Entry<String, String> entry : mapInputValueNetwork.entrySet()){
             softAssert.assertTrue(isShowValueInField(

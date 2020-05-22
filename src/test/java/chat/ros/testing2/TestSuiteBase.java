@@ -20,10 +20,10 @@ public interface TestSuiteBase {
     @BeforeClass
     default void beforeAll(){
         String className = this.getClass().getName();
-        if (className.contains("TestTelephonyPage")) testBase.openMS("/settings/telephony");
-        else if (className.contains("TestGeozonesPage")) testBase.openMS("/settings/geozones");
-        else if (className.contains("TestSNMPPage")) testBase.openMS("/settings/snmp");
-        else if (className.contains("TestUserPage")) testBase.openMS("/settings/users");
+        if (className.contains("TestTelephonyPage")) testBase.openMS("Настройки","Телефония");
+        else if (className.contains("TestGeozonesPage")) testBase.openMS("Настройки","Геозоны");
+        else if (className.contains("TestSNMPPage")) testBase.openMS("Настройки","SNMP");
+        else if (className.contains("TestUserPage")) testBase.openMS("Настройки","Настройка СУ");
     }
 
     @BeforeMethod
@@ -34,12 +34,12 @@ public interface TestSuiteBase {
             if(method.toString().contains("Client")) {
                 testBase.addContactAndAccount(CONTACT_NUMBER_7012);
                 testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-            }else testBase.openMS("/settings/web-server");
-        }else if(className.contains("TestMailPage")) testBase.openMS("/settings/mail");
+            }else testBase.openMS("Настройки","Сервер");
+        }else if(className.contains("TestMailPage")) testBase.openMS("Настройки","Почта");
         else if (className.contains("TestServicePage")) {
             testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-            testBase.openMS("/contacts");
-        }else if(className.contains("TestIntegrationPage")) testBase.openMS("/settings/integration");
+            testBase.openMS("Справочник");
+        }else if(className.contains("TestIntegrationPage")) testBase.openMS("Настройки","Интеграция");
     }
 
     @AfterMethod(alwaysRun = true)

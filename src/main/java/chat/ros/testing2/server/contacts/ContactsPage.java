@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.contacts;
 
-import chat.ros.testing2.server.MSGeneralElements;
+import chat.ros.testing2.server.BasePage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -19,7 +19,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static org.testng.Assert.assertTrue;
 
-public class ContactsPage implements MSGeneralElements {
+public class ContactsPage implements BasePage {
 
     //Элементы раздела Справочник
     private SelenideElement formNewContact = $("div#new-contact");

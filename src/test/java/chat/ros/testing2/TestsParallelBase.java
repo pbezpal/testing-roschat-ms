@@ -52,7 +52,7 @@ public interface TestsParallelBase {
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
             testBase.init();
-            testBase.openMS("/admin/channels");
+            testBase.openMS("Администрирование","Каналы");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
@@ -63,7 +63,7 @@ public interface TestsParallelBase {
         if (!SSHManager.isCheckQuerySSH(String.format(testBase.sshCommandIsContact, number))) {
             testBase.init();
             ContactsPage contactsPage = new ContactsPage();
-            testBase.openMS("/contacts");
+            testBase.openMS("Справочник");
             if (contactsPage.isNotExistsTableText(number)) {
                 contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
             }

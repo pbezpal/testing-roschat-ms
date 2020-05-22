@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.contacts;
 
-import chat.ros.testing2.server.MSGeneralElements;
+import chat.ros.testing2.server.BasePage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.testng.Assert.assertTrue;
 
-public class UserPage implements MSGeneralElements {
+public class UserPage implements BasePage {
 
     //Элементы раздела пользователь
     private SelenideElement divWrapperUser = $("div.main-wrapper.user");

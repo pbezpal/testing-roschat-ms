@@ -14,19 +14,31 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
-public interface MSGeneralElements {
+public interface BasePage {
 
     SelenideElement formChange = $("form.v-form");
     SelenideElement inputLogin = formChange.find("input[type='text']");
     SelenideElement inputPassword = formChange.find("input[type='password']");
     SelenideElement buttonSave = $(".modal-wrapper .primary");
     SelenideElement buttonClose = $(".modal-wrapper .secondary--text");
-    SelenideElement successCheckSettings = $("div.msg-wrapper.modal-wrapper i.v-icon.material-icons.theme--light.success--text");
+    SelenideElement modalSuccessCheckAction = $("div.msg-wrapper.modal-wrapper");
     ElementsCollection tdTableList = $$("table.v-datatable td");
     SelenideElement buttonAdd = $("div.action-bar button div");
     SelenideElement textWrong = $(".v-messages__message");
+    ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
+    ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
     String locatorInput = "//div[@class='modal-item__title']/h4[contains(text(),'%1$s')]//ancestor::" +
             "li[@class='layout modal-item']//input";
+
+    @Step(value = "Переходим в раздел {itemMenu} меню слева")
+    static void clickItemMenu(String itemMenu){
+        $$(listLeftItemMenu).findBy(text(itemMenu)).click();
+    }
+
+    @Step(value = "Переходим в раздел {itemContainer}")
+    static void clickItemSettings(String itemContainer){
+        $$(listItemMenuSettings).findBy(text(itemContainer)).click();
+    }
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
     default boolean isFormChange(){
