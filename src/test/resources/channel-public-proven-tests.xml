@@ -4,7 +4,7 @@
     <test name="Tests-Channel-Public-Proven" >
         <classes>
             <class name="chat.ros.testing2.administration.TestPublicProvenChannel" />
-            <class name="chat.ros.testing2.administration.TestPublicProvenChannelChangeType" />
+            <class name="chat.ros.testing2.administration.TestPublicProvenChannelChange" />
         </classes>
     </test>
 </suite>

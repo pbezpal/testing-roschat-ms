@@ -60,7 +60,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     @Story(value = "Проверяем, подключается ли клиент с нестандарными портами")
     @Description(value = "В адресной строке браузера вводим адрес web клиента с нестандартным портом 88")
-    @Test(dependsOnMethods = {"test_Other_Settings_Connect"})
+    @Test(priority = 2, dependsOnMethods = {"test_Other_Settings_Connect"})
     void test_Client_Connect_With_Other_Port(){
         assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
                 "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);
@@ -69,7 +69,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Story(value = "Настраиваем стандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(priority = 2)
+    @Test(priority = 3)
     void test_Settings_Connect_Standard_Ports(){
         softAssert = new SoftAssert();
         Map<String, String> mapInputValueConnect = new HashMap() {{
@@ -101,7 +101,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     @Story(value = "Проверяем, подключается ли клиент со стандарными портами")
     @Description(value = "В адресной строке браузера вводим адрес web клиента со стандартным портом 80")
-    @Test(dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
+    @Test(priority = 4, dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
     void test_Client_Connect_With_Standard_Port(){
         assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
                 "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);

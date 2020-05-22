@@ -1,6 +1,9 @@
 package chat.ros.testing2;
 
+import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
+import chat.ros.testing2.server.contacts.ContactsPage;
+import com.codeborne.selenide.WebDriverRunner;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -17,30 +20,19 @@ public interface TestsParallelBase {
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
 
-    @BeforeClass
-    default void beforeClass(){
-        testBase.init();
-        String className = this.getClass().getName();
-        if(className.contains("Channel")) {
-            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-            testBase.addContactAndAccount(CONTACT_NUMBER_7013);
+    @BeforeSuite
+    default void beforeSuite(ITestContext c){
+        ITestContext context = c;
+        if(context.getCurrentXmlTest().getName().contains("Channel")) {
+            isCheckContact(CONTACT_NUMBER_7012);
+            isCheckContact(CONTACT_NUMBER_7013);
         }
     }
 
-    /*@BeforeMethod(alwaysRun = true)
-    default void beforeTest(Method testMethod){
-        String className = this.getClass().getName();
-        Method method = testMethod;
-        if(className.contains("Channel")){
-            if(method.toString().contains("7012")) {
-                testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-            }
-            else if(method.toString().contains("7013")) {
-                testBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
-            }
-            else testBase.openMS("/admin/channels");
-        }
-    }*/
+    @BeforeClass
+    default void beforeClass(){
+        testBase.init();
+    }
 
     @AfterMethod(alwaysRun = true)
     default void afterTestMethod(Method m, ITestResult testResult){
@@ -56,6 +48,18 @@ public interface TestsParallelBase {
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
+        }
+    }
+
+    default void isCheckContact(String number){
+        if (!SSHManager.isCheckQuerySSH(String.format(testBase.sshCommandIsContact, number))) {
+            testBase.init();
+            ContactsPage contactsPage = new ContactsPage();
+            testBase.openMS("/contacts");
+            if (contactsPage.isNotExistsTableText(number)) {
+                contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+            }
+            WebDriverRunner.closeWebDriver();
         }
     }
 }

@@ -4,7 +4,7 @@
     <test name="Tests-Channel-Closed" >
         <classes>
             <class name="chat.ros.testing2.administration.TestClosedChannel" />
-            <class name="chat.ros.testing2.administration.TestClosedChannelChangeType" />
+            <class name="chat.ros.testing2.administration.TestClosedChannelChange" />
         </classes>
     </test>
 </suite>
