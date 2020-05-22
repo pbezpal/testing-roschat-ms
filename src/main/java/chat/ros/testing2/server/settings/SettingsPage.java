@@ -25,6 +25,9 @@ public interface SettingsPage extends BasePage {
             "/h4[contains(text(),'%2$s')]//ancestor::li//span[@class='v-chip__content']";
     String buttonFormAction = "//div[@class='actions-wrapper']//div[@class='v-btn__content' " +
             "and contains(text(), '%1$s')]";
+    String locatorForm = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']";
+    String locatorButtonForm = locatorForm + "//div[text()='%2$s']";
+    String locatorInputForm = "input[aria-label='%1$s']";
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -83,9 +86,8 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
-        $x("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']").scrollIntoView(false);
-        $x("//h2[text()='" + form + "']//ancestor::div[@class='block-wrapper']" +
-                "//div[text()='" + button + "']").click();
+        $x(String.format(locatorForm,form)).scrollIntoView(false);
+        $x(String.format(locatorButtonForm,form,button)).click();
         return this;
     }
 
@@ -94,8 +96,8 @@ public interface SettingsPage extends BasePage {
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()) {
             String input = entry.getKey();
             String value = entry.getValue();
-            $("input[aria-label='" + input + "']").click();
-            $("input[aria-label='" + input + "']").sendKeys(value);
+            $(String.format(locatorInputForm,input)).click();
+            $(String.format(locatorInputForm,input)).sendKeys(value);
         }
     }
 

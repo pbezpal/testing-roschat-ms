@@ -13,6 +13,7 @@ public class UserPage extends LoginPage implements SettingsPage {
 
     private SelenideElement buttonUserAvatar = $("div.user-avatar button");
     private SelenideElement divLogoutMS = $("div.menuable__content__active div.v-list__tile__title.item-title");
+    private String locatorDeleteUser = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='delete']";
 
     public UserPage() {}
 
@@ -30,7 +31,7 @@ public class UserPage extends LoginPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку удалить у пользователя {user}")
     public UserPage clickDeleteUser(String user){
-        $x("//table//td[contains(text(),'" + user +"')]//ancestor::tr//button//i[text()='delete']").click();
+        $x(String.format(locatorDeleteUser,user)).click();
         return this;
     }
 

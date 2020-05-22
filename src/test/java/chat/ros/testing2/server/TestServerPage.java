@@ -30,13 +30,10 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @BeforeMethod
     public void beforeTest(Method m){
         Method method = m;
-        String className = this.getClass().getName();
-        if(className.contains("TestServerPage")) {
-            if (method.toString().contains("Client")) {
-                testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-                testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-            } else testBase.openMS("Настройки", "Сервер");
-        }
+        if (method.toString().contains("Client")) {
+            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+            testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        } else testBase.openMS("Настройки", "Сервер");
     }
 
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
