@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -28,6 +29,11 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
         put("Логин", USER_LOGIN);
         put("Пароль", USER_PASSWORD);
     }};
+
+    @BeforeClass
+    public void beforeAll(){
+        testBase.openMS("Настройки","Настройка СУ");
+    }
 
     @Story(value = "Добавляем нового пользователя в систему")
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и добавляем новго пользователя")

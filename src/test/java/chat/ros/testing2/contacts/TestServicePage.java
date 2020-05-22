@@ -7,8 +7,11 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
+import java.lang.reflect.Method;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME;
@@ -20,6 +23,12 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
 
     private UserPage userPage;
     private SoftAssert softAssert;
+
+    @BeforeMethod
+    public void beforeTest(){
+        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+        testBase.openMS("Справочник");
+    }
 
     @Story(value = "Добавляем у контакта  сервис Рация")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")

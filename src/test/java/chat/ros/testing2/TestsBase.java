@@ -73,23 +73,23 @@ public class TestsBase {
     }
 
     public void getChannelName(String classTest){
-        if(classTest.contains("TestClosedChannel")) {
-            nameChannel = "CHC" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestClosedChannelChange")){
+        if(classTest.contains("TestClosedChannelChange")){
             nameChannel = "CHCCCH" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestPublicChannel")){
-            nameChannel = "CHP" + System.currentTimeMillis();
+        }else if(classTest.contains("TestClosedChannel")) {
+            nameChannel = "CHC" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
         }else if(classTest.contains("TestPublicChannelChange")){
             nameChannel = "CHPCCH" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestPublicProvenChannel")){
-            nameChannel = "CHPP" + System.currentTimeMillis();
+        }else if(classTest.contains("TestPublicChannel")){
+            nameChannel = "CHP" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
         }else if(classTest.contains("TestPublicProvenChannelChange")){
             nameChannel = "CHPPCH" + System.currentTimeMillis();
+            newNameChannel = nameChannel + System.currentTimeMillis();
+        }else if(classTest.contains("TestPublicProvenChannel")){
+            nameChannel = "CHPP" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
         }
     }
@@ -143,7 +143,7 @@ public class TestsBase {
     public void addContactAndAccount(String number){
         if (!SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
-            openMS();
+            openMS("Справочник");
             if(contactsPage.isNotExistsTableText(number)) {
                 contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
             }

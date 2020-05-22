@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static chat.ros.testing2.data.SettingsData.SNMP_ADDRESS_SERVER;
@@ -15,6 +16,11 @@ import static org.testng.Assert.assertEquals;
 @Epic(value = "Настройки")
 @Feature(value = "SNMP")
 public class TestSNMPPage extends SNMPPage implements TestSuiteBase {
+
+    @BeforeClass
+    public void beforeAll(){
+        testBase.openMS("Настройки","SNMP");
+    }
 
     @Story(value = "Настраиваем SNMP сервер")
     @Description(value = "Переходим в раздел Настройки -> SNMP и прописываем парамететры для настройки SNMP сервера")

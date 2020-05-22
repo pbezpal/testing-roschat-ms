@@ -58,7 +58,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
             "публичный канал проверенным")
     @Test(dependsOnMethods = {"test_Create_Public_Channel"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.nameChannel, true),
                 "Канал " + testBase.nameChannel + " не найден в списке каналов");
         doTestedChannel(testBase.nameChannel);
@@ -134,7 +134,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
             "канал в списке каналов после смены имени и описания канала")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.newNameChannel, true),
                 "Публичный канал " + testBase.newNameChannel + " не отображается в СУ");
     }

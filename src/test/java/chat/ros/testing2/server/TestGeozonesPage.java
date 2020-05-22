@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -29,6 +30,11 @@ public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
         put("Minor", GEOZONES_BEACONE_MINOR);
         put("Major", GEOZONES_BEACONE_MAJOR);
     }};
+
+    @BeforeClass
+    public void beforeAll(){
+        testBase.openMS("Настройки","Геозоны");
+    }
 
     @Story(value = "Добавляем геозону")
     @Description(value = "Переходим в раздел Геозоны, добавляем геозону и проверяем," +

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertTrue;
 
 public class ServerPage implements SettingsPage{
@@ -93,6 +94,7 @@ public class ServerPage implements SettingsPage{
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
         if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
+        sleep(30000);
         assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
 
         return this;

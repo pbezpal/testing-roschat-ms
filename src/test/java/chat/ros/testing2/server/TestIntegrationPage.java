@@ -9,11 +9,14 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.testng.Assert.assertTrue;
 
@@ -40,6 +43,11 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
         put("Имя пользователя (Bind DN)", INTEGRATION_SERVICE_AD_USERNAME);
         put("Пароль", INTEGRATION_SERVICE_AD_PASSWORD);
     }};
+
+    @BeforeMethod
+    public void beforeTest(){
+        testBase.openMS("Настройки","Интеграция");
+    }
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
     @Description(value = "Переходим в раздел Интеграция, добавляем сервис МиниКом TETRA и проверяем," +

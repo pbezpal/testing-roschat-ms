@@ -3,11 +3,14 @@ package chat.ros.testing2.server;
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.*;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.SettingsData.*;
 
 @Epic(value = "Настройки")
@@ -16,6 +19,11 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
 
     private Map<String, String> getSettingsMailServer;
     private SoftAssert softAssert;
+
+    @BeforeMethod
+    public void beforeTest(){
+        testBase.openMS("Настройки","Почта");
+    }
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
     @Description(value = "Вводим параметры почтового сервера infotek с незащищённым соединением и проверяем настройки")

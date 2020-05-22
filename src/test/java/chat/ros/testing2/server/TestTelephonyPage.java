@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -13,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
@@ -43,6 +43,11 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
         put(TELEPHONY_TURN_INPUT_MIN_PORT, TELEPHONY_TURN_MIN_PORT_MORE_MAX_PORT);
         put(TELEPHONY_TURN_INPUT_MAX_PORT, TELEPHONY_TURN_MAX_PORT);
     }};
+
+    @BeforeClass
+    public void beforeAll(){
+        testBase.openMS("Настройки","Телефония");
+    }
 
     @Story(value = "Настройка сети")
     @Description(value = "Настраиваем сеть для телефонии и проверяем корректность настроек")

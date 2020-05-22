@@ -52,7 +52,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             "закрытый канал в списке каналов после создания")
     @Test(priority = 1, dependsOnMethods = {"test_Create_Closed_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.nameChannel, false),
                 "Закрытый канал " + testBase.nameChannel + " отображается в СУ");
     }
@@ -87,7 +87,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             "закрытый канал в списке каналов после смены названия и описания")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Change(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.newNameChannel, false),
                 "Закрытый канал " + testBase.newNameChannel + " отображается в СУ после ");
     }

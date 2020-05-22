@@ -53,7 +53,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "публичный канал проверенным")
     @Test(dependsOnMethods = {"test_Create_Public_Channel"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.nameChannel, true),
                 "Канал " + testBase.nameChannel + " не найден в списке каналов");
         doTestedChannel(testBase.nameChannel);
@@ -90,7 +90,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
     @Test(priority = 1, dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change_Type(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.nameChannel, false),
                 "Закрытый канал " + testBase.nameChannel + " отображается в СУ");
     }
@@ -125,7 +125,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "закрытый канал в списке каналов после смены названия и описания")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Change(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.newNameChannel, false),
                 "Закрытый канал " + testBase.newNameChannel + " отображается в СУ после ");
     }

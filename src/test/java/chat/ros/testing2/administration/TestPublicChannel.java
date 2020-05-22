@@ -52,7 +52,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
             "канал в списке каналов")
     @Test(priority = 1, dependsOnMethods = {"test_Create_Public_Channel"})
     void test_Show_Public_Channel_In_MS(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.nameChannel, true),
                 "Публичный канал " + testBase.nameChannel + " не отображается в СУ");
     }
@@ -88,7 +88,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
             "канал в списке каналов после смены имени и описания канала")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change(){
-        testBase.openMS("/admin/channels");
+        testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(testBase.newNameChannel, true),
                 "Публичный канал " + testBase.newNameChannel + " не отображается в СУ");
     }

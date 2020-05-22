@@ -7,9 +7,11 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,18 @@ import static org.testng.Assert.assertTrue;
 public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     private SoftAssert softAssert;
+
+    @BeforeMethod
+    public void beforeTest(Method m){
+        Method method = m;
+        String className = this.getClass().getName();
+        if(className.contains("TestServerPage")) {
+            if (method.toString().contains("Client")) {
+                testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+                testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+            } else testBase.openMS("Настройки", "Сервер");
+        }
+    }
 
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
