@@ -20,7 +20,7 @@ public interface TestsParallelBase {
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     default void beforeSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().contains("Channel")) {
@@ -29,17 +29,25 @@ public interface TestsParallelBase {
         }
     }
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     default void beforeClass(){
+        testBase.getChannelName(this.getClass().getName());
         testBase.init();
     }
 
     @AfterMethod(alwaysRun = true)
     default void afterTestMethod(Method m, ITestResult testResult){
-        testBase.afterTestMethod(m, testResult);
+        String testClass = this.getClass().getName();
+        testBase.afterTestMethod(m, testResult, testClass);
     }
 
-    @AfterSuite
+    @AfterClass(alwaysRun = true)
+    default void tearDown(){
+        String testClass = this.getClass().getName();
+        testBase.deleteChannel(testClass);
+    }
+
+    @AfterSuite(alwaysRun = true)
     default void afterSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
@@ -62,4 +70,6 @@ public interface TestsParallelBase {
             WebDriverRunner.closeWebDriver();
         }
     }
+
+
 }

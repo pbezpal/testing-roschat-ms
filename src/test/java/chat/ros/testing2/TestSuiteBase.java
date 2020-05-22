@@ -35,9 +35,9 @@ public interface TestSuiteBase {
                 testBase.addContactAndAccount(CONTACT_NUMBER_7012);
                 testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             }else testBase.openMS("/settings/web-server");
-        }else if(className.contains("TestServicePage")) testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-        else if(className.contains("TestMailPage")) testBase.openMS("/settings/mail");
+        }else if(className.contains("TestMailPage")) testBase.openMS("/settings/mail");
         else if (className.contains("TestServicePage")) {
+            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
             testBase.openMS("/contacts");
         }else if(className.contains("TestIntegrationPage")) testBase.openMS("/settings/integration");
     }
