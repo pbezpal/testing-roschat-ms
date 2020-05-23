@@ -32,7 +32,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     private boolean resultCreate;
     private boolean resultChange;
 
-    @BeforeClass(timeOut = 30000)
+    @BeforeClass
     void setUp(){
         testBase.init();
         nameChannel = "CHC" + System.currentTimeMillis();
