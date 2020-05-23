@@ -17,9 +17,7 @@ import java.lang.reflect.Method;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static chat.ros.testing2.helpers.AttachToReport.*;
-import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.*;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")

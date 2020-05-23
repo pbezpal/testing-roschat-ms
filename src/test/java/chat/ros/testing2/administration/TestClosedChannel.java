@@ -161,6 +161,5 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
         }
-        WebDriverRunner.closeWebDriver();
     }
 }

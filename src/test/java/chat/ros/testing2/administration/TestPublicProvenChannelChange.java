@@ -155,6 +155,5 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
         }
-        WebDriverRunner.closeWebDriver();
     }
 }
