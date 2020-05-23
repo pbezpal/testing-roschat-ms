@@ -44,7 +44,7 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
 
     @Story(value = "Входим в систему под новым пользователем")
     @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
-    @Test(priority = -1, dependsOnMethods = {"test_Add_New_User"})
+    @Test(priority = 1, dependsOnMethods = {"test_Add_New_User"})
     void test_Login_New_User(){
         logoutMS();
         loginOnServer(USER_LOGIN, USER_PASSWORD);
@@ -53,7 +53,7 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
 
     @Story(value = "Удаляем нового пользователя")
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
-    @Test(priority = 1, dependsOnMethods = {"test_Add_New_User"})
+    @Test(priority = 2, dependsOnMethods = {"test_Add_New_User"})
     void test_Delete_New_User(){
         logoutMS();
         loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
