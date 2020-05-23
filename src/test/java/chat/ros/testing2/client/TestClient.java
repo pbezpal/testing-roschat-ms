@@ -3,6 +3,8 @@ package chat.ros.testing2.client;
 import chat.ros.testing2.TestSuiteBase;
 import client.ClientPage;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,6 +16,8 @@ import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_HTTP_OTHER_PORT
 import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_HTTP_PORT;
 import static org.testng.Assert.assertTrue;
 
+@Epic(value = "Web-Client")
+@Feature(value = "Тестирование клиентской части")
 public class TestClient implements TestSuiteBase {
 
     @BeforeClass
