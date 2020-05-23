@@ -32,7 +32,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     private boolean resultCreate;
     private boolean resultChange;
 
-    @BeforeClass
+    @BeforeClass(timeOut = 30000)
     void setUp(){
         testBase.init();
         nameChannel = "CHPP" + System.currentTimeMillis();

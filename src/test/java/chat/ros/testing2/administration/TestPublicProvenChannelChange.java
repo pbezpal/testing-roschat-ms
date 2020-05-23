@@ -31,7 +31,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     private boolean resultCreate;
     private boolean resultChange;
 
-    @BeforeClass
+    @BeforeClass(timeOut = 30000)
     void setUp(){
         testBase.init();
         nameChannel = "CHPPCH" + System.currentTimeMillis();

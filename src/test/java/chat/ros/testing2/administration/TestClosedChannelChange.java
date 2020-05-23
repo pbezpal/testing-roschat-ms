@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static chat.ros.testing2.helpers.AttachToReport.*;
+import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -33,7 +34,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     private boolean resultCreate;
     private boolean resultChange;
 
-    @BeforeClass
+    @BeforeClass(timeOut = 30000)
     void setUp(){
         testBase.init();
         nameChannel = "CHCCH" + System.currentTimeMillis();
