@@ -36,7 +36,7 @@ public class TestsBase {
     public TestsBase(){}
 
     public void init(){
-        /*DesiredCapabilities capabilities = new DesiredCapabilities();
+        DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("chrome");
         capabilities.setVersion("80.0");
         capabilities.setCapability("enableVNC", true);
@@ -56,7 +56,7 @@ public class TestsBase {
 
         driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.manage().window().setPosition(new Point(2,2));
-        WebDriverRunner.setWebDriver(driver);*/
+        WebDriverRunner.setWebDriver(driver);
 
         Configuration.screenshots = false;
     }
