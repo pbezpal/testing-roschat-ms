@@ -19,7 +19,7 @@ import static data.CommentsData.*;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
-@Feature(value = "Публичный канал.Изменение данных канала.")
+@Feature(value = "Публичный канал. Изменение данных канала.")
 public class TestPublicChannelChange extends ChannelsPage implements TestsParallelBase {
 
     private SoftAssert softAssert;
