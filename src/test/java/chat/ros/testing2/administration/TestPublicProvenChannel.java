@@ -1,16 +1,22 @@
 package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsParallelBase;
+import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
+import java.lang.reflect.Method;
+
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
+import static chat.ros.testing2.helpers.AttachToReport.*;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertTrue;
 
@@ -18,8 +24,20 @@ import static org.testng.Assert.assertTrue;
 @Feature(value = "Публичный проверенный канал")
 public class TestPublicProvenChannel extends ChannelsPage implements TestsParallelBase {
 
-    private String newDescription = CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN + System.currentTimeMillis();
     private SoftAssert softAssert;
+    private String nameChannel;
+    private String newNameChannel;
+    private String newDescription = CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN + System.currentTimeMillis();
+    private String channel;
+    private boolean resultCreate;
+    private boolean resultChange;
+
+    @BeforeClass
+    void setUp(){
+        testBase.init();
+        nameChannel = "CHPP" + System.currentTimeMillis();
+        newNameChannel = nameChannel + System.currentTimeMillis();
+    }
 
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
@@ -28,13 +46,13 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
-                        testBase.nameChannel,
+                        nameChannel,
                         CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN,
                         CLIENT_ITEM_NEW_CHANNEL,
                         CLIENT_TYPE_CHANNEL_PUBLIC).
-                        isExistComments(testBase.nameChannel, true),
+                        isExistComments(nameChannel, true),
                 "Канал не найден в списке бесед");
-        clickChat(testBase.nameChannel);
+        clickChat(nameChannel);
         assertTrue(isTextInfoClosedChannel(false),
                 "Присутствует надпись Закрытый в разделе 'Информация о канале'");
     }
@@ -45,9 +63,9 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Test(dependsOnMethods = {"test_Create_Public_Channel"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
         testBase.openMS("Администрирование","Каналы");
-        assertTrue(isShowChannel(testBase.nameChannel, true),
-                "Канал " + testBase.nameChannel + " не найден в списке каналов");
-        doTestedChannel(testBase.nameChannel);
+        assertTrue(isShowChannel(nameChannel, true),
+                "Канал " + nameChannel + " не найден в списке каналов");
+        doTestedChannel(nameChannel);
     }
 
     @Story(value = "Проверяем статус проверенного канала, под учётной записью администратора канала")
@@ -58,11 +76,11 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
         softAssert = new SoftAssert();
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         clickItemComments();
-        softAssert.assertTrue(isStatusTestedChannelListChat(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
                 "Отсутствует статус Проверенный у канала в разделе Беседы");
-        softAssert.assertTrue(isStatusTestedChannelMainHeader(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedChannelMainHeader(nameChannel),
                 "Отсутствует статус Проверенный в заголовке канала");
-        softAssert.assertTrue(isStatusTestedInfoChannel(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedInfoChannel(nameChannel),
                 "Отсутствует статус Проверенный в разделе информация о канале");
         softAssert.assertAll();
     }
@@ -74,13 +92,13 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     void test_Search_Status_Proven_Channel(){
         softAssert = new SoftAssert();
         testBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
-        assertTrue(searchChannel(testBase.nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
+        assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
-        softAssert.assertTrue(isStatusTestedChannelListChat(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedChannelListChat(nameChannel),
                 "Отсутствует статус Проверенный у канала в разделе Беседы");
-        softAssert.assertTrue(isStatusTestedChannelMainHeader(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedChannelMainHeader(nameChannel),
                 "Отсутствует статус Проверенный в заголовке канала");
-        softAssert.assertTrue(isStatusTestedInfoChannel(testBase.nameChannel),
+        softAssert.assertTrue(isStatusTestedInfoChannel(nameChannel),
                 "Отсутствует статус Проверенный в разделе информация о канале");
         softAssert.assertAll();
     }
@@ -93,11 +111,11 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 changeDataChannel(
-                        testBase.nameChannel,true,true, false,
-                        testBase.newNameChannel, newDescription).
-                        isExistComments(testBase.newNameChannel, true),
+                        nameChannel,true,true, false,
+                        newNameChannel, newDescription).
+                        isExistComments(newNameChannel, true),
                 "Канал не найден в списке бесед после смены типа на публичный");
-        clickChat(testBase.newNameChannel);
+        clickChat(newNameChannel);
         assertTrue(isTextInfoClosedChannel(false),
                 "Присутствует надпись Закрытый в разделе 'Информация о канале'");
     }
@@ -108,7 +126,45 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change(){
         testBase.openMS("Администрирование","Каналы");
-        assertTrue(isShowChannel(testBase.newNameChannel, true),
-                "Публичный канал " + testBase.newNameChannel + " не отображается в СУ");
+        assertTrue(isShowChannel(newNameChannel, true),
+                "Публичный канал " + newNameChannel + " не отображается в СУ");
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void afterTestMethod(Method m, ITestResult testResult){
+        Method filename = m;
+        ITestResult result = testResult;
+        if(m.toString().contains("test_Create_Closed_Channel")) resultCreate = testResult.isSuccess();
+        if(m.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
+
+        if(!result.isSuccess() && !m.toString().contains("BD")){
+            AScreenshot(filename.toString());
+            ABrowserLogNetwork();
+            ABrowserLogConsole();
+        }
+    }
+
+    @Story(value = "Удаляем канал и проверяем отображается ли канал в СУ после удаления")
+    @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. " +
+            "2. Проверяем на СУ, что канал не отображается после удаления канала")
+    @AfterClass
+    public void deleteClosedChannel(String testClass){
+        if (resultCreate || resultChange) {
+            if (resultChange) channel = newNameChannel;
+            else channel = newNameChannel;
+            testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+            softAssert = new SoftAssert();
+            softAssert.assertTrue(
+                    deleteChannel(channel).isExistComments(channel, false),
+                    "Канал найден в списке бесед после удаления");
+            softAssert.assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, channel)),
+                    "Запись о канале " + channel + " осталась в БД postgres после удаления");
+            softAssert.assertAll();
+
+            testBase.openMS("Администрирование", "Каналы");
+            assertTrue(isShowChannel(channel, false),
+                    "Закрытый канал " + channel + " отображается в СУ после удаления");
+        }
+        WebDriverRunner.closeWebDriver();
     }
 }

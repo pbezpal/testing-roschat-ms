@@ -6,7 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -44,8 +44,8 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
         put(TELEPHONY_TURN_INPUT_MAX_PORT, TELEPHONY_TURN_MAX_PORT);
     }};
 
-    @BeforeClass
-    public void beforeAll(){
+    @BeforeMethod
+    public void beforeTest(){
         testBase.openMS("Настройки","Телефония");
     }
 

@@ -3,12 +3,8 @@ package chat.ros.testing2;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import org.testng.ITestContext;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
-
-import java.lang.reflect.Method;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static org.testng.Assert.assertTrue;
@@ -24,27 +20,8 @@ public interface TestsParallelBase {
     default void beforeSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().contains("Channel")) {
-            isCheckContact(CONTACT_NUMBER_7012);
-            isCheckContact(CONTACT_NUMBER_7013);
+            isCheckContacts(CONTACT_NUMBER_7012, CONTACT_NUMBER_7013);
         }
-    }
-
-    @BeforeClass(alwaysRun = true)
-    default void beforeClass(){
-        testBase.getChannelName(this.getClass().getName());
-        testBase.init();
-    }
-
-    @AfterMethod(alwaysRun = true)
-    default void afterTestMethod(Method m, ITestResult testResult){
-        String testClass = this.getClass().getName();
-        testBase.afterTestMethod(m, testResult, testClass);
-    }
-
-    @AfterClass(alwaysRun = true)
-    default void tearDown(){
-        String testClass = this.getClass().getName();
-        testBase.deleteChannel(testClass);
     }
 
     @AfterSuite(alwaysRun = true)
@@ -59,15 +36,16 @@ public interface TestsParallelBase {
         }
     }
 
-    default void isCheckContact(String number){
-        if (!SSHManager.isCheckQuerySSH(String.format(testBase.sshCommandIsContact, number))) {
-            testBase.init();
-            ContactsPage contactsPage = new ContactsPage();
-            testBase.openMS("Справочник");
-            if (contactsPage.isNotExistsTableText(number)) {
-                contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+    default void isCheckContacts(String... number){
+        for(int i = 0; i < number.length; i++){
+            if (!SSHManager.isCheckQuerySSH(String.format(testBase.getSshCommandIsContact(), number[i]))) {
+                testBase.init();
+                ContactsPage contactsPage = new ContactsPage();
+                testBase.openMS("Справочник");
+                if (contactsPage.isNotExistsTableText(number[i])) {
+                    contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+                }
             }
-            WebDriverRunner.closeWebDriver();
         }
     }
 
