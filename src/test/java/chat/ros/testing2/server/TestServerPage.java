@@ -15,8 +15,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
-import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
 import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
@@ -31,14 +29,13 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @BeforeMethod
     public void beforeTest(Method method){
         if(method.toString().contains("Open_Page")) testBase.openMS("/settings/web-server");
-        else if(method.toString().contains("Client")) testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         else testBase.openMS("Настройки","Сервер");
     }
 
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(groups = {"Connect other port"})
+    @Test(groups = {"Connect_other_port"})
     void test_Other_Settings_Connect(){
         softAssert = new SoftAssert();
         testBase.openMS("Настройки", "Сервер");
@@ -73,7 +70,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Story(value = "Настраиваем стандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(groups = {"Connect standard port"})
+    @Test(groups = {"Connect_standard_ports"})
     void test_Settings_Connect_Standard_Ports(){
         softAssert = new SoftAssert();
         testBase.openMS("Настройки", "Сервер");
