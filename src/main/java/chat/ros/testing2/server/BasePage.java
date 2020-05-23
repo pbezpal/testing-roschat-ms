@@ -6,6 +6,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
+import com.codeborne.selenide.ex.ListSizeMismatch;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
@@ -32,12 +33,32 @@ public interface BasePage {
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
-        $$(listLeftItemMenu).shouldBe(CollectionCondition.sizeNotEqual(0)).findBy(text(itemMenu)).click();
+        try {
+            $$(listLeftItemMenu).shouldBe(CollectionCondition.sizeNotEqual(0));
+        }catch (ListSizeMismatch l){
+            try{
+                $$(listLeftItemMenu).shouldBe(CollectionCondition.sizeNotEqual(0));
+            }catch (ListSizeMismatch listSizeMismatch){
+                listSizeMismatch.getStackTrace();
+                return;
+            }
+        }
+        $$(listLeftItemMenu).findBy(text(itemMenu)).click();
     }
 
     @Step(value = "Переходим в раздел {itemContainer}")
     static void clickItemSettings(String itemContainer){
-        $$(listItemMenuSettings).shouldBe(CollectionCondition.sizeNotEqual(0)).findBy(text(itemContainer)).click();
+        try {
+            $$(listItemMenuSettings).shouldBe(CollectionCondition.sizeNotEqual(0));
+        }catch (ListSizeMismatch l){
+            try{
+                $$(listItemMenuSettings).shouldBe(CollectionCondition.sizeNotEqual(0));
+            }catch (ListSizeMismatch listSizeMismatch){
+                listSizeMismatch.getStackTrace();
+                return;
+            }
+        }
+        $$(listItemMenuSettings).findBy(text(itemContainer)).click();
     }
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
