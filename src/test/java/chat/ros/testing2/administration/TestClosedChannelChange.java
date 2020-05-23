@@ -249,8 +249,8 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @AfterClass
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = nameChannel;
-            else channel = newNameChannel;
+            if (resultChange) channel = newNameChannel;
+            else channel = nameChannel;
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(

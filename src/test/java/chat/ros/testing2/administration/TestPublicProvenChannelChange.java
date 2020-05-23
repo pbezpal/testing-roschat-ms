@@ -140,8 +140,8 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @AfterClass(alwaysRun = true)
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = nameChannel;
-            else channel = newNameChannel;
+            if (resultChange) channel = newNameChannel;
+            else channel = nameChannel;
             System.out.println("Channel public proven name: " + channel);
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
