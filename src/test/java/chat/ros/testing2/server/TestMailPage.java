@@ -2,6 +2,7 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.MailPage;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -10,8 +11,9 @@ import org.testng.asserts.SoftAssert;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.sleep;
+import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Почта")
@@ -21,8 +23,9 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
     private SoftAssert softAssert;
 
     @BeforeMethod
-    public void beforeTest(){
-        testBase.openMS("Настройки","Почта");
+    public void beforeTest(Method method){
+        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/mail");
+        else testBase.openMS("Настройки","Почта");
     }
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
@@ -68,6 +71,27 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
                 "Настройки сервера некорректны");
         clickButtonCloseCheckSettingsForm();
         softAssert.assertAll();
+    }
+
+    @Story(value = "Перезагрузка страницы")
+    @Description(value = "Переходим на страницу Почта, перезагружаем страницу и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Refresh_Page(){
+        Selenide.refresh();
+        sleep(3000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
+    }
+
+    @Story(value = "Переходим на страницу через адресную строку")
+    @Description(value = "После авторизации вставляем в адресную строку страницу Почта и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Open_Page(){
+        sleep(3000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
     }
 
 }

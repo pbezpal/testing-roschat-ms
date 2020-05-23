@@ -3,6 +3,7 @@ package chat.ros.testing2;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
+import com.codeborne.selenide.WebDriverRunner;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 
@@ -45,6 +46,7 @@ public interface TestsParallelBase {
                 if (contactsPage.isNotExistsTableText(number[i])) {
                     contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }
+                WebDriverRunner.closeWebDriver();
             }
         }
     }

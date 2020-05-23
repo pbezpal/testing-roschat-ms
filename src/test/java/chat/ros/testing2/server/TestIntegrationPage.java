@@ -5,6 +5,7 @@ import chat.ros.testing2.server.settings.integration.ActiveDirectoryPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.OfficeMonitorPage;
 import chat.ros.testing2.server.settings.integration.TetraPage;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -16,8 +17,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
@@ -45,8 +46,9 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
     }};
 
     @BeforeMethod
-    public void beforeTest(){
-        testBase.openMS("Настройки","Интеграция");
+    public void beforeTest(Method method){
+        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/integration");
+        else testBase.openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
@@ -91,5 +93,26 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
     void test_Sync_Contacts_Office_Monitor(){
         officeMonitorPage = (OfficeMonitorPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(officeMonitorPage.syncContacts(), "Ошибка при сихронизации контактов");
+    }
+
+    @Story(value = "Перезагрузка страницы")
+    @Description(value = "Переходим на страницу Интеграция, перезагружаем страницу и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Refresh_Page(){
+        Selenide.refresh();
+        sleep(3000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
+    }
+
+    @Story(value = "Переходим на страницу через адресную строку")
+    @Description(value = "После авторизации вставляем в адресную строку страницу Интеграция и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Open_Page(){
+        sleep(3000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
     }
 }

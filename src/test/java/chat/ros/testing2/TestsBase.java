@@ -85,16 +85,19 @@ public class TestsBase {
         }
     }
 
-    public void openMS(String... itemMenu){
+    public void openMS(String... navigation){
         sleep(1000);
         Configuration.baseUrl = hostServer;
         LoginPage loginPage = new LoginPage();
         open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
-        if(itemMenu.length == 2){
-            BasePage.clickItemMenu(itemMenu[0]);
-            BasePage.clickItemSettings(itemMenu[1]);
-        }else if(itemMenu.length == 1) BasePage.clickItemMenu(itemMenu[0]);
+        if(navigation.length == 2){
+            BasePage.clickItemMenu(navigation[0]);
+            BasePage.clickItemSettings(navigation[1]);
+        }else if(navigation.length == 1) {
+            if(navigation[0].contains("/")) open(navigation[0]);
+            else BasePage.clickItemMenu(navigation[0]);
+        }
     }
 
     public void addContactAndAccount(String number){

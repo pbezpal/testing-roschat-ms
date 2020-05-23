@@ -19,7 +19,7 @@ public interface SettingsPage extends BasePage {
     SelenideElement formConformActions = $("div.dialog-header h3");
     SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
-    SelenideElement elementLoaderSettings = $("div.loader-wrapper i.loader");
+    SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
 
     String labelField = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']//div[@class='block-content__item-name']" +
             "/h4[contains(text(),'%2$s')]//ancestor::li//span[@class='v-chip__content']";
@@ -155,7 +155,7 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Ждём, когда пропадёт элемент загрузки настроек")
     default boolean isNotShowLoaderSettings(){
         try{
-            elementLoaderSettings.waitUntil(not(visible), 10000);
+            elementLoaderSettings.waitUntil(not(text("Идет загрузка настроек...")), 30000);
         }catch (ElementShould e){
             return false;
         }

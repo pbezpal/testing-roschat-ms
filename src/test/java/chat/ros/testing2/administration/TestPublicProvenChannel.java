@@ -148,7 +148,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. " +
             "2. Проверяем на СУ, что канал не отображается после удаления канала")
     @AfterClass
-    public void deleteClosedChannel(String testClass){
+    public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
             if (resultChange) channel = newNameChannel;
             else channel = newNameChannel;

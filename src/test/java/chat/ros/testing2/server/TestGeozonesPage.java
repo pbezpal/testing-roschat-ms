@@ -2,17 +2,20 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.GeozonesPage;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
@@ -31,9 +34,10 @@ public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
         put("Major", GEOZONES_BEACONE_MAJOR);
     }};
 
-    @BeforeClass
-    public void beforeAll(){
-        testBase.openMS("Настройки","Геозоны");
+    @BeforeMethod
+    public void beforeTest(Method method){
+        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/geozones");
+        else testBase.openMS("Настройки","Геозоны");
     }
 
     @Story(value = "Добавляем геозону")
@@ -52,5 +56,26 @@ public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
     void test_Add_Beacon(){
         assertTrue(addBeacon(GEOZONES_NAME_ZONA, mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
                 "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер");
+    }
+
+    @Story(value = "Перезагрузка страницы")
+    @Description(value = "Переходим на страницу Геозоны, перезагружаем страницу и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Refresh_Page(){
+        Selenide.refresh();
+        sleep(5000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
+    }
+
+    @Story(value = "Переходим на страницу через адресную строку")
+    @Description(value = "После авторизации вставляем в адресную строку страницу Геозоны и проверяем, появилась ли " +
+            "надпись 'Идет загрузка настроек...'")
+    @Test
+    void test_Open_Page(){
+        sleep(5000);
+        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
+                " 'Идет загрузка настроек...' не пропала");
     }
 }
