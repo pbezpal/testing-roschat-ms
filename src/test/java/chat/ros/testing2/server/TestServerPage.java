@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -27,21 +28,13 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     private SoftAssert softAssert;
 
-    @BeforeMethod
-    public void beforeTest(Method m){
-        Method method = m;
-        if (method.toString().contains("Client")) {
-            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-            testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-        } else testBase.openMS("Настройки", "Сервер");
-    }
-
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
     @Test(priority = 1)
     void test_Other_Settings_Connect(){
         softAssert = new SoftAssert();
+        testBase.openMS("Настройки", "Сервер");
         Map<String, String> mapInputOtherValueConnect = new HashMap() {{
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
             put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_OTHER_PORT);
@@ -74,6 +67,8 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Description(value = "В адресной строке браузера вводим адрес web клиента с нестандартным портом 88")
     @Test(priority = 2, dependsOnMethods = {"test_Other_Settings_Connect"})
     void test_Client_Connect_With_Other_Port(){
+        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
                 "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);
     }
@@ -84,6 +79,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Test(priority = 3)
     void test_Settings_Connect_Standard_Ports(){
         softAssert = new SoftAssert();
+        testBase.openMS("Настройки", "Сервер");
         Map<String, String> mapInputValueConnect = new HashMap() {{
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
             put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
@@ -116,6 +112,8 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Description(value = "В адресной строке браузера вводим адрес web клиента со стандартным портом 80")
     @Test(priority = 4, dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
     void test_Client_Connect_With_Standard_Port(){
+        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
                 "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);
     }
@@ -130,6 +128,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Description(value = "Настраиваем Push сервер в разделе Лицензирование и обсуживание")
     @Test
     void test_Settings_Push_Server(){
+        testBase.openMS("Настройки", "Сервер");
         setPushService();
     }
 }

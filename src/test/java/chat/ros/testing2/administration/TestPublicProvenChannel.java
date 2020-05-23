@@ -1,23 +1,17 @@
 package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsParallelBase;
-import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-
-import java.lang.reflect.Method;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static data.CommentsData.*;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Администрирование")
@@ -31,7 +25,6 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Public_Channel(){
-        softAssert = new SoftAssert();
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
@@ -42,15 +35,8 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
                         isExistComments(testBase.nameChannel, true),
                 "Канал не найден в списке бесед");
         clickChat(testBase.nameChannel);
-        softAssert.assertTrue(isTextInfoClosedChannel(false),
+        assertTrue(isTextInfoClosedChannel(false),
                 "Присутствует надпись Закрытый в разделе 'Информация о канале'");
-        softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, testBase.nameChannel)),
-                "Запись о канале " + testBase.nameChannel + " не найден в БД postgres");
-        softAssert.assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, testBase.nameChannel)).
-                        replaceAll(" ",""),
-                "0",
-                "Тип канала " + testBase.nameChannel + " в БД postgres не публичного типа");
-        softAssert.assertAll();
     }
 
     @Story(value = "Делаем проверенным публичный канал")
@@ -62,10 +48,6 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
         assertTrue(isShowChannel(testBase.nameChannel, true),
                 "Канал " + testBase.nameChannel + " не найден в списке каналов");
         doTestedChannel(testBase.nameChannel);
-        assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckProvedChannel, testBase.nameChannel)).
-                        replaceAll(" ", ""),
-                "1",
-                "Канал " + testBase.nameChannel + " в БД postgres не проверенный");
     }
 
     @Story(value = "Проверяем статус проверенного канала, под учётной записью администратора канала")
@@ -108,7 +90,6 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
             "клиенте отображается новое название и описание канала.")
     @Test(priority = 3, dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_Change_Name_And_Description_Channel(){
-        softAssert = new SoftAssert();
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 changeDataChannel(
@@ -117,16 +98,8 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
                         isExistComments(testBase.newNameChannel, true),
                 "Канал не найден в списке бесед после смены типа на публичный");
         clickChat(testBase.newNameChannel);
-        softAssert.assertTrue(isTextInfoClosedChannel(true),
-                "Есть надписи Закрытый в разделе 'Информация о канале'");
-        softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, testBase.newNameChannel)),
-                "Запись о канале " + testBase.newNameChannel + " не найден в БД postgres");
-        softAssert.assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, testBase.newNameChannel)).
-                        replaceAll(" ", ""),
-                "0",
-                "Тип канала " + testBase.newNameChannel + " в БД postgres не публичного типа");
-        softAssert.assertAll();
-
+        assertTrue(isTextInfoClosedChannel(false),
+                "Присутствует надпись Закрытый в разделе 'Информация о канале'");
     }
 
     @Story(value = "Проверяем, отображается ли публичный канал в СУ после смены имени и описания")

@@ -73,6 +73,7 @@ public class TestsBase {
     }
 
     public void getChannelName(String classTest){
+        System.out.println(classTest);
         if(classTest.contains("TestClosedChannelChange")){
             nameChannel = "CHCCCH" + System.currentTimeMillis();
             newNameChannel = nameChannel + System.currentTimeMillis();
