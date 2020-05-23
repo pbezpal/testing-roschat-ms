@@ -1,5 +1,6 @@
 package chat.ros.testing2.server;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
@@ -10,8 +11,7 @@ import org.openqa.selenium.Keys;
 
 import java.util.Map;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public interface BasePage {
@@ -32,12 +32,12 @@ public interface BasePage {
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
-        $$(listLeftItemMenu).findBy(text(itemMenu)).shouldBe(visible).click();
+        $$(listLeftItemMenu).shouldBe(CollectionCondition.sizeNotEqual(0)).findBy(text(itemMenu)).click();
     }
 
     @Step(value = "Переходим в раздел {itemContainer}")
     static void clickItemSettings(String itemContainer){
-        $$(listItemMenuSettings).findBy(text(itemContainer)).shouldBe(visible).click();
+        $$(listItemMenuSettings).shouldBe(CollectionCondition.sizeNotEqual(0)).findBy(text(itemContainer)).click();
     }
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
