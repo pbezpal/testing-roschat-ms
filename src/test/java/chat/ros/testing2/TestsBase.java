@@ -74,25 +74,18 @@ public class TestsBase {
 
     public void getChannelName(String classTest){
         System.out.println(classTest);
-        if(classTest.contains("TestClosedChannelChange")){
-            nameChannel = "CHCCCH" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestClosedChannel")) {
-            nameChannel = "CHC" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestPublicChannelChange")){
-            nameChannel = "CHPCCH" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
+        if(classTest.contains("TestClosedChannel")){
+            if(classTest.contains("Change")) nameChannel = "CHCCH";
+            else nameChannel = "CHC";
         }else if(classTest.contains("TestPublicChannel")){
-            nameChannel = "CHP" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
-        }else if(classTest.contains("TestPublicProvenChannelChange")){
-            nameChannel = "CHPPCH" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
+            if(classTest.contains("Change")) nameChannel = "CHPCH";
+            else nameChannel = "CHP";
         }else if(classTest.contains("TestPublicProvenChannel")){
-            nameChannel = "CHPP" + System.currentTimeMillis();
-            newNameChannel = nameChannel + System.currentTimeMillis();
+            if(classTest.contains("Change")) nameChannel = "CHPPCH";
+            else nameChannel = "CHPP";
         }
+        nameChannel = nameChannel + System.currentTimeMillis();
+        newNameChannel = nameChannel + System.currentTimeMillis();
     }
 
     public void afterTestMethod(Method m, ITestResult testResult){
