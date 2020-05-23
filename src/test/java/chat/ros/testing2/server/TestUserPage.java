@@ -46,6 +46,7 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
     @Test(priority = 1, dependsOnMethods = {"test_Add_New_User"})
     void test_Login_New_User(){
+        open("/");
         logoutMS();
         loginOnServer(USER_LOGIN, USER_PASSWORD);
         assertTrue(isLoginNewUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
@@ -55,6 +56,7 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
     @Test(priority = 2, dependsOnMethods = {"test_Add_New_User"})
     void test_Delete_New_User(){
+        open("/");
         logoutMS();
         loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
         open("/settings/users");
