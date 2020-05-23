@@ -3,7 +3,6 @@ package chat.ros.testing2.administration;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -16,7 +15,6 @@ import java.lang.reflect.Method;
 
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.helpers.AttachToReport.*;
-import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.*;
 import static org.testng.Assert.assertTrue;
 
@@ -42,7 +40,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Создаём новый закрытый канал")
     @Description(value = "Авторизуемся на клиенте и создаём новый закрытый канал. Проверяем, что канал был создан.")
     @Test
-    void test_Create_Closed_Channel(){
+    void test_Create_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
@@ -61,7 +59,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
             "1. Появился ли канал в БД postgres" +
             "2. Правильного ли типа канал")
-    @Test(dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(dependsOnMethods = {"test_Create_Channel"})
     void test_Check_Exist_Channel_In_BD(){
         softAssert = new SoftAssert();
         softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
@@ -76,7 +74,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Проверяем, отображается ли закрытый канал в СУ после создания")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "закрытый канал в списке каналов после создания")
-    @Test(priority = 1, dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(priority = 1, dependsOnMethods = {"test_Create_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
         testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, false),
@@ -86,7 +84,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Меняем название и описание канала")
     @Description(value = "Авторизуемся под администратором канала и меняем название и описание канала. Проверяем, что на" +
             "клиенте отображается новое название и описание канала.")
-    @Test(priority = 2, dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Channel"})
     void test_Change_Name_And_Description_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(changeDataChannel(
@@ -128,13 +126,14 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
 
     @AfterMethod(alwaysRun = true)
     public void afterTestMethod(Method m, ITestResult testResult){
-        Method filename = m;
+        Method method = m;
         ITestResult result = testResult;
-        if(m.toString().contains("test_Create_Closed_Channel")) resultCreate = testResult.isSuccess();
-        if(m.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
+
+        if(method.toString().contains("test_Create_Channel")) resultCreate = testResult.isSuccess();
+        if(method.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
 
         if(!result.isSuccess() && !m.toString().contains("BD")){
-            AScreenshot(filename.toString());
+            AScreenshot(method.toString());
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
@@ -146,7 +145,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     @AfterClass
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = newNameChannel;
+            if (resultChange) channel = nameChannel;
             else channel = newNameChannel;
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();

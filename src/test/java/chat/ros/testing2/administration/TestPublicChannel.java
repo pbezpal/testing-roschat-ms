@@ -3,7 +3,6 @@ package chat.ros.testing2.administration;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -41,7 +40,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
-    void test_Create_Public_Channel(){
+    void test_Create_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
@@ -59,7 +58,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Проверяем, отображается ли публичный канал в СУ")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов")
-    @Test(priority = 1, dependsOnMethods = {"test_Create_Public_Channel"})
+    @Test(priority = 1, dependsOnMethods = {"test_Create_Channel"})
     void test_Show_Public_Channel_In_MS(){
         testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
@@ -69,7 +68,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @Story(value = "Меняем название и описание канала")
     @Description(value = "Авторизуемся под администратором канала и меняем название и описание канала. Проверяем, что на" +
             "клиенте отображается новое название и описание канала.")
-    @Test(priority = 2, dependsOnMethods = {"test_Create_Public_Channel"})
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Channel"})
     void test_Change_Name_And_Description_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
@@ -96,13 +95,14 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
 
     @AfterMethod(alwaysRun = true)
     public void afterTestMethod(Method m, ITestResult testResult){
-        Method filename = m;
+        Method method = m;
         ITestResult result = testResult;
-        if(m.toString().contains("test_Create_Closed_Channel")) resultCreate = testResult.isSuccess();
-        if(m.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
 
-        if(!result.isSuccess() && !m.toString().contains("BD")){
-            AScreenshot(filename.toString());
+        if(method.toString().contains("test_Create_Channel")) resultCreate = testResult.isSuccess();
+        if(method.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
+
+        if(!result.isSuccess() && !method.toString().contains("BD")){
+            AScreenshot(method.toString());
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
@@ -114,7 +114,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @AfterClass
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = newNameChannel;
+            if (resultChange) channel = nameChannel;
             else channel = newNameChannel;
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();

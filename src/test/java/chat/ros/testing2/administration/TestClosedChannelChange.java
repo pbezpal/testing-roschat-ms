@@ -42,7 +42,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Story(value = "Создаём новый закрытый канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый закрытый канал")
     @Test
-    void test_Create_Closed_Channel(){
+    void test_Create_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
@@ -61,7 +61,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
             "1. Появился ли канал в БД postgres" +
             "2. Правильного ли типа канал")
-    @Test(dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(dependsOnMethods = {"test_Create_Channel"})
     void test_Check_Exist_Channel_In_BD(){
         softAssert = new SoftAssert();
         softAssert.assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
@@ -76,7 +76,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем, отображается ли закрытый канал в СУ после создания")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "закрытый канал в списке каналов после создания")
-    @Test(priority = 1, dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(priority = 1, dependsOnMethods = {"test_Create_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
         testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, false),
@@ -85,7 +85,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
 
     @Story(value = "Меняем имя, описание и тип канала с закрытого на публичный")
     @Description(value = "Авторизуемся под администратором и меняем тип у закрытого каналана на публичный")
-    @Test(priority = 2, dependsOnMethods = {"test_Create_Closed_Channel"})
+    @Test(priority = 2, dependsOnMethods = {"test_Create_Channel"})
     void test_Edit_Type_With_Closed_On_Public_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
@@ -230,13 +230,14 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
 
     @AfterMethod(alwaysRun = true)
     public void afterTestMethod(Method m, ITestResult testResult){
-        Method filename = m;
+        Method method = m;
         ITestResult result = testResult;
-        if(m.toString().contains("test_Create_Closed_Channel")) resultCreate = testResult.isSuccess();
-        if(m.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
 
-        if(!result.isSuccess() && !m.toString().contains("BD")){
-            AScreenshot(filename.toString());
+        if(method.toString().contains("test_Create_Channel")) resultCreate = testResult.isSuccess();
+        if(method.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
+
+        if(!result.isSuccess() && !method.toString().contains("BD")){
+            AScreenshot(method.toString());
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
@@ -248,7 +249,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @AfterClass
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = newNameChannel;
+            if (resultChange) channel = nameChannel;
             else channel = newNameChannel;
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();

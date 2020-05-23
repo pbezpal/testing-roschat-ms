@@ -3,7 +3,6 @@ package chat.ros.testing2.administration;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -41,7 +40,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
-    void test_Create_Public_Channel(){
+    void test_Create_Channel(){
         testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
@@ -59,7 +58,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @Story(value = "Делаем проверенным публичный канал")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы, делаем " +
             "публичный канал проверенным")
-    @Test(dependsOnMethods = {"test_Create_Public_Channel"})
+    @Test(dependsOnMethods = {"test_Create_Channel"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
         testBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
@@ -122,13 +121,14 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
 
     @AfterMethod(alwaysRun = true)
     public void afterTestMethod(Method m, ITestResult testResult){
-        Method filename = m;
+        Method method = m;
         ITestResult result = testResult;
-        if(m.toString().contains("test_Create_Closed_Channel")) resultCreate = testResult.isSuccess();
-        if(m.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = testResult.isSuccess();
 
-        if(!result.isSuccess() && !m.toString().contains("BD")){
-            AScreenshot(filename.toString());
+        if(method.toString().contains("test_Create_Channel")) resultCreate = result.isSuccess();
+        if(method.toString().contains("test_Change_Name_And_Description_Channel")) resultChange = result.isSuccess();
+
+        if(!result.isSuccess() && !method.toString().contains("BD")){
+            AScreenshot(method.toString());
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
@@ -137,11 +137,12 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @Story(value = "Удаляем канал и проверяем отображается ли канал в СУ после удаления")
     @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. " +
             "2. Проверяем на СУ, что канал не отображается после удаления канала")
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void test_Delete_Channel(){
         if (resultCreate || resultChange) {
-            if (resultChange) channel = newNameChannel;
+            if (resultChange) channel = nameChannel;
             else channel = newNameChannel;
+            System.out.println("Channel public proven name: " + channel);
             testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(
@@ -153,7 +154,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
 
             testBase.openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
-                    "Закрытый канал " + channel + " отображается в СУ после удаления");
+                    "Канал " + channel + " отображается в СУ после удаления");
         }
     }
 }
