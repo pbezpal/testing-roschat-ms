@@ -32,12 +32,12 @@ public interface BasePage {
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
-        $$(listLeftItemMenu).findBy(text(itemMenu)).click();
+        $$(listLeftItemMenu).findBy(text(itemMenu)).shouldBe(visible).click();
     }
 
     @Step(value = "Переходим в раздел {itemContainer}")
     static void clickItemSettings(String itemContainer){
-        $$(listItemMenuSettings).findBy(text(itemContainer)).click();
+        $$(listItemMenuSettings).findBy(text(itemContainer)).shouldBe(visible).click();
     }
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
