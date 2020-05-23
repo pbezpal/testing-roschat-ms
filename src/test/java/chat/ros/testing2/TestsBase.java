@@ -85,6 +85,15 @@ public class TestsBase {
         }
     }
 
+    public void openClient(String host, String login, boolean staySystem){
+        Configuration.baseUrl = host;
+        open("/");
+        if (ClientPage.isLoginWindow()) {
+            assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
+                    "авторизации");
+        }
+    }
+
     public void openMS(String... navigation){
         sleep(1000);
         Configuration.baseUrl = hostServer;

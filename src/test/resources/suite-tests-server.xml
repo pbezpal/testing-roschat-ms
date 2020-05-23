@@ -6,12 +6,15 @@
             <dependencies>
                 <group name="Service Tetra" depends-on="Tetra"></group>
                 <group name="After Sync" depends-on="Sync"></group>
+                <group name="Client standard port" depends-on="Connect standard port"></group>
+                <group name="Client other port" depends-on="Connect other port"></group>
             </dependencies>
         </groups>
         <classes>
             <class name="chat.ros.testing2.server.TestGeozonesPage"/>
             <class name="chat.ros.testing2.server.TestIntegrationPage"/>
             <class name="chat.ros.testing2.server.TestServerPage" />
+            <class name="chat.ros.testing2.client.TestClient" />
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />

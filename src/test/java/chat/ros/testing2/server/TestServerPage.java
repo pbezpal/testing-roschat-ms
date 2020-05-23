@@ -2,13 +2,11 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.ServerPage;
-import client.ClientPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -40,7 +38,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(priority = 1)
+    @Test(groups = {"Connect other port"})
     void test_Other_Settings_Connect(){
         softAssert = new SoftAssert();
         testBase.openMS("Настройки", "Сервер");
@@ -72,20 +70,10 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         softAssert.assertAll();
     }
 
-    @Story(value = "Проверяем, подключается ли клиент с нестандарными портами")
-    @Description(value = "В адресной строке браузера вводим адрес web клиента с нестандартным портом 88")
-    @Test(priority = 2, dependsOnMethods = {"test_Other_Settings_Connect"})
-    void test_Client_Connect_With_Other_Port(){
-        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-        assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
-                "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);
-    }
-
     @Story(value = "Настраиваем стандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(priority = 3)
+    @Test(groups = {"Connect standard port"})
     void test_Settings_Connect_Standard_Ports(){
         softAssert = new SoftAssert();
         testBase.openMS("Настройки", "Сервер");
@@ -115,16 +103,6 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
                 true),
                 "Значение " + ports + " нет в поле " + SERVER_CONNECT_FIELD_PORTS);
         softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем, подключается ли клиент со стандарными портами")
-    @Description(value = "В адресной строке браузера вводим адрес web клиента со стандартным портом 80")
-    @Test(priority = 4, dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
-    void test_Client_Connect_With_Standard_Port(){
-        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
-        assertTrue(ClientPage.loginClient(CONTACT_NUMBER_7012 + "@ros.chat", USER_ACCOUNT_PASSWORD, false),
-                "Не удалось авторизоваться на порту " + SERVER_CONNECT_HTTP_OTHER_PORT);
     }
 
     /*@Story(value = "Настраиваем сертификат SSL")

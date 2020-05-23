@@ -79,7 +79,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
                         isExistComments(newNameChannel, true),
                 "Канал не найден в списке бесед после смены типа на публичный");
         clickChat(newNameChannel);
-        assertTrue(isTextInfoClosedChannel(true),
+        assertTrue(isTextInfoClosedChannel(false),
                 "Есть надписи Закрытый в разделе 'Информация о канале'");
 
     }

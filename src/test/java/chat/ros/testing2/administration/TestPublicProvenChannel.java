@@ -54,7 +54,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
                 "Канал не найден в списке бесед");
         clickChat(nameChannel);
         assertTrue(isTextInfoClosedChannel(false),
-                "Присутствует надпись Закрытый в разделе 'Информация о канале'");
+                "Есть надпись Закрытый в разделе 'Информация о канале'");
     }
 
     @Story(value = "Делаем проверенным публичный канал")
@@ -117,7 +117,7 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
                 "Канал не найден в списке бесед после смены типа на публичный");
         clickChat(newNameChannel);
         assertTrue(isTextInfoClosedChannel(false),
-                "Присутствует надпись Закрытый в разделе 'Информация о канале'");
+                "Есть надпись Закрытый в разделе 'Информация о канале'");
     }
 
     @Story(value = "Проверяем, отображается ли публичный канал в СУ после смены имени и описания")
