@@ -45,19 +45,10 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
         else testBase.openMS("Настройки","Интеграция");
     }
 
-    @Story(value = "Состояние СКУД, перед добавлением СКУД PERCo")
-    @Description(value = "Переходим в раздел Монитор и проверяем, что состояние сервиса СКУД - неактивно," +
-            "до настройки СКУД в разделе Интеграция. Красный кружок.")
-    @Test(priority = 1,groups = {"Status_PERCo"})
-    void test_Status_SKUD_Before_Settings_Perco(){
-        assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
-                "Состояни СКУД - активно, либо отсуствут сервис СКУД");
-    }
-
     @Story(value = "Добавляем сервис СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД PERCo и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 2)
+    @Test(priority = 2,groups = {"PERCo"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),

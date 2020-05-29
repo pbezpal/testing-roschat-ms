@@ -39,19 +39,10 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
         else testBase.openMS("Настройки","Интеграция");
     }
 
-    @Story(value = "Состояние СКУД, перед добавлением СКУД ОРИОН")
-    @Description(value = "Переходим в раздел Монитор и проверяем, что состояние сервиса СКУД - неактивно," +
-            "до настройки СКУД в разделе Интеграция. Красный кружок.")
-    @Test(priority = 1,groups = {"Status_ORION"})
-    void test_Status_SKUD_Before_Settings_Orion(){
-        assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
-                "Состояни СКУД - активно, либо отсуствут сервис СКУД");
-    }
-
     @Story(value = "Добавляем сервис СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД ОРИОН и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 2)
+    @Test(priority = 2,groups = {"ORION"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
