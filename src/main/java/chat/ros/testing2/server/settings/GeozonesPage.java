@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$x;
 public class GeozonesPage implements SettingsPage {
 
     private String tableGeozona = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='open_in_new']";
-    private SelenideElement buttonAddBeacon = $(".table-box .primary");
+    private SelenideElement buttonAddBeacon = $(".action-bar .v-btn.theme--light.primary");
 
     public GeozonesPage() {}
 
