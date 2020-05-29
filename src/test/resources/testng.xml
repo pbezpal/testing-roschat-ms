@@ -5,6 +5,6 @@
         <suite-file path="suite-tests-server.xml" />
         <suite-file path="channel-closed-tests.xml" />
         <suite-file path="channel-public-tests.xml" />
-        <suite-file path="channel-public-proven-tests.xml" />
+        <suite-file path="channel-public-proven-tests.xml"/>
     </suite-files>
 </suite>
