@@ -9,11 +9,13 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class GeozonesPage implements SettingsPage {
 
+    private String tableGeozona = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='open_in_new']";
+
     public GeozonesPage() {}
 
     @Step(value = "Нажимаем кнопку Открыть у геозоны {geozona}")
     protected GeozonesPage clickOpenGeoZone(String geozona){
-        $x("//table//td[contains(text(),'" + geozona + "')]//ancestor::tr//button//i[text()='open_in_new']").click();
+        $x(String.format(tableGeozona,geozona)).click();
         return this;
     }
 
@@ -21,7 +23,7 @@ public class GeozonesPage implements SettingsPage {
         clickButtonAdd();
         sendLabelInputsForm(mapInputValueGeozone);
         clickButtonSave();
-        return isExistsTableText(geozone);
+        return isExistsTableText(geozone,true);
     }
 
     public boolean addBeacon(String geozone, Map<String, String> mapInputValueBeacon, String beacon){
@@ -29,6 +31,6 @@ public class GeozonesPage implements SettingsPage {
         clickButtonAdd();
         sendLabelInputsForm(mapInputValueBeacon);
         clickButtonSave();
-        return isExistsTableText(beacon);
+        return isExistsTableText(beacon, true);
     }
 }

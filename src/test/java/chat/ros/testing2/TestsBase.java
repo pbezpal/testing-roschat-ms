@@ -14,6 +14,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
+import org.testng.asserts.SoftAssert;
 import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.lang.reflect.Method;
@@ -79,19 +80,17 @@ public class TestsBase {
     public void openClient(String login, boolean staySystem) {
         Configuration.baseUrl = hostClient;
         open("/");
-        if (ClientPage.isLoginWindow()) {
-            assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
+        assertTrue(ClientPage.isLoginWindow(), "Не появилась форма авторизации на WEB клиенте");
+        assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
                     "авторизации");
-        }
     }
 
     public void openClient(String host, String login, boolean staySystem){
         Configuration.baseUrl = host;
         open("/");
-        if (ClientPage.isLoginWindow()) {
-            assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
+        assertTrue(ClientPage.isLoginWindow(), "Не появилась форма авторизации на WEB клиенте");
+        assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
                     "авторизации");
-        }
     }
 
     public void openMS(String... navigation){

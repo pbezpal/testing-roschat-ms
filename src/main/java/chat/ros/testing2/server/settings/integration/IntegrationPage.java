@@ -15,7 +15,7 @@ import static org.testng.Assert.assertTrue;
 public interface IntegrationPage extends SettingsPage {
 
     ElementsCollection listServices = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
-    SelenideElement buttonSettingsService = $("div.block-content button");
+    ElementsCollection buttonActionService = $$(".block-actions .v-btn__content");
     ElementsCollection buttonComplex = $$("div.block-content.complex button div");
     SelenideElement buttonSaveContacts = $("div.sync-wrapper button.primary");
     SelenideElement divLoading = $("div.loader-wrapper");
@@ -45,9 +45,9 @@ public interface IntegrationPage extends SettingsPage {
         return this;
     }
 
-    @Step(value = "Нажимаем кнопку 'Настроить'")
-    default IntegrationPage clickButtonSettings(){
-        buttonSettingsService.click();
+    @Step(value = "Нажимаем кнопку {button}")
+    default IntegrationPage clickButtonActionService(String button){
+        buttonActionService.findBy(Condition.text(button)).click();
         return this;
     }
 
@@ -86,7 +86,9 @@ public interface IntegrationPage extends SettingsPage {
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();
             case INTEGRATION_SERVICE_OM_TYPE:
-                return new OfficeMonitorPage();
+            case INTEGRATION_SERVICE_ORION_TYPE:
+            case INTEGRATION_SERVICE_PERCO_TYPE:
+                return new SKUDPage();
             case INTEGRATION_SERVICE_AD_TYPE:
                 return new ActiveDirectoryPage();
         }
@@ -101,7 +103,9 @@ public interface IntegrationPage extends SettingsPage {
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();
             case INTEGRATION_SERVICE_OM_TYPE:
-                return new OfficeMonitorPage();
+            case INTEGRATION_SERVICE_ORION_TYPE:
+            case INTEGRATION_SERVICE_PERCO_TYPE:
+                return new SKUDPage();
             case INTEGRATION_SERVICE_AD_TYPE:
                 return new ActiveDirectoryPage();
         }

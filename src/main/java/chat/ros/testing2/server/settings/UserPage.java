@@ -39,7 +39,7 @@ public class UserPage extends LoginPage implements SettingsPage {
         clickButtonAdd();
         sendLabelInputsForm(mapInputValueUser);
         clickButtonSave();
-        return isExistsTableText(user);
+        return isExistsTableText(user, true);
     }
 
     public boolean isDeleteUser(String user){

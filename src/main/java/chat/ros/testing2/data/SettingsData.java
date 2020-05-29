@@ -7,6 +7,8 @@ public interface SettingsData {
     String SETTINGS_BUTTON_SETTING = "Настроить";
     String SETTINGS_BUTTON_CHECK = "Проверить";
     String SETTINGS_BUTTON_RESTART = "Перезапустить";
+    String SETTINGS_BUTTON_DELETE = "Удалить";
+    String SETTINGS_BUTTON_CONTINUE = "Продолжить";
 
 
     /*********************************************** Раздел Сервер ***************************************************/
@@ -127,11 +129,29 @@ public interface SettingsData {
     String INTEGRATION_SERVICE_TETRA_NAME = "Тестовый сервер ТЕТРА";
     String INTEGRATION_SERVICE_TETRA_DESCRIPTION = "Это тестовый сервер ТЕТРА для РОСЧАТА";
 
-    /****** Параметры настройки Офис-Монитора ******/
+    /****** Параметры настройки СКУД Офис-Монитора ******/
     String INTEGRATION_SERVICE_OM_TYPE = "Офис-Монитор";
     String INTEGRATION_SERVICE_OM_IP_ADDRESS = "192.168.254.3";
+    String INTEGRATION_SERVICE_OM_WRONG_IP_ADDRESS = "192.168.254.100";
     String INTEGRATION_SERVICE_OM_PORT_BD = "3306";
     String INTEGRATION_SERVICE_OM_LOGIN_DB = "root";
+
+    /****** Параметры настройки СКУД Орион ******/
+    String INTEGRATION_SERVICE_ORION_TYPE = "Орион";
+    String INTEGRATION_SERVICE_ORION_IP_ADDRESS = "192.168.249.173";
+    String INTEGRATION_SERVICE_ORION_WRONG_IP_ADDRESS = "192.168.249.100";
+    String INTEGRATION_SERVICE_ORION_PORT = "8090";
+    String INTEGRATION_SERVICE_ORION_OUTGOING_PORT = "Дверь 1";
+
+    /****** Параметры настройки СКУД PERCo ******/
+    String INTEGRATION_SERVICE_PERCO_TYPE = "PERCo";
+    String INTEGRATION_SERVICE_PERCO_IP_MODULE = "10.10.199.142";
+    String INTEGRATION_SERVICE_PERCO_WRONG_IP_MODULE = "192.168.249.100";
+    String INTEGRATION_SERVICE_PERCO_PORT_MODULE = "8080";
+    String INTEGRATION_SERVICE_PERCO_IP_SERVER = "127.0.0.1";
+    String INTEGRATION_SERVICE_PERCO_PORT_SERVER = "211";
+    String INTEGRATION_SERVICE_PERCO_USERNAME = "admin";
+    String INTEGRATION_SERVICE_PERCO_KEY = "SECRET";
 
     /****** Параметры настройки Active Directory ******/
     String INTEGRATION_SERVICE_AD_TYPE = "Active Directory";

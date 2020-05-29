@@ -14,6 +14,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.lang.reflect.Method;
 
+import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
 import static chat.ros.testing2.helpers.AttachToReport.*;
@@ -34,6 +35,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
 
     @BeforeClass
     void setUp(){
+        assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         testBase.init();
         nameChannel = "CHCCH" + System.currentTimeMillis();
         newNameChannel = nameChannel + System.currentTimeMillis();

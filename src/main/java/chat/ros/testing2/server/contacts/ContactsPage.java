@@ -119,7 +119,7 @@ public class ContactsPage implements BasePage {
             sendInputSearchContact(contact);
         }
         //Проверяем, добавился ли контакт в БД контактов
-        assertTrue(isExistsTableText(contact), "Контакт " + contact + " не добавлен в БД контактов");
+        assertTrue(isExistsTableText(contact, true), "Контакт " + contact + " не добавлен в БД контактов");
         //Переходим к настройкам учётной записи контакта
         return clickContact(contact);
     }

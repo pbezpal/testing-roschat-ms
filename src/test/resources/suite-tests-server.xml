@@ -1,25 +1,25 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Server" verbose="1">
-    <test name="Server settings" >
+    <test name="Server tests" >
         <groups>
             <dependencies>
                 <group name="Service_Tetra" depends-on="Tetra"></group>
                 <group name="After_Sync" depends-on="Sync"></group>
-                <group name="Client_standard_port" depends-on="Connect_standard_ports"></group>
-                <group name="Client_other_port" depends-on="Connect_other_port"></group>
             </dependencies>
         </groups>
         <classes>
             <class name="chat.ros.testing2.server.TestGeozonesPage"/>
             <class name="chat.ros.testing2.server.TestIntegrationPage"/>
-            <class name="chat.ros.testing2.server.TestServerPage" />
+            <class name="chat.ros.testing2.server.TestServerPage"/>
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
             <class name="chat.ros.testing2.server.TestUserPage" />
             <class name="chat.ros.testing2.contacts.TestServicePage"/>
-            <class name="chat.ros.testing2.client.TestClient"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrion"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPerco"/>
         </classes>
     </test>
 </suite>

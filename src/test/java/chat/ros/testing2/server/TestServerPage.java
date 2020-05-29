@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static chat.ros.testing2.TestHelper.isWebServerStatus;
+import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
 import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
@@ -28,17 +30,21 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/web-server");
-        else testBase.openMS("Настройки","Сервер");
+        if(!method.toString().contains("Client")) {
+            if (method.toString().contains("Open_Page")) testBase.openMS("/settings/web-server");
+            else testBase.openMS("Настройки", "Сервер");
+        }else{
+            testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+            assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
+        }
     }
 
     @Story(value = "Настраиваем нестандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(groups = {"Connect_other_port"})
+    @Test(priority = 1)
     void test_Other_Settings_Connect(){
         softAssert = new SoftAssert();
-        testBase.openMS("Настройки", "Сервер");
         Map<String, String> mapInputOtherValueConnect = new HashMap() {{
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
             put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_OTHER_PORT);
@@ -67,13 +73,21 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         softAssert.assertAll();
     }
 
+    @Story(value = "Проверяем, подключается ли клиент с нестандарными портами")
+    @Description(value = "В адресной строке браузера вводим адрес web клиента с нестандартным портом 88")
+    @Test(priority = 2,dependsOnMethods = {"test_Other_Settings_Connect"})
+    void test_Client_Connect_With_Other_Port(){
+        sleep(5000);
+        String host = HOST_SERVER + ":" + SERVER_CONNECT_HTTP_OTHER_PORT;
+        testBase.openClient(host,CONTACT_NUMBER_7012 + "@ros.chat", false);
+    }
+
     @Story(value = "Настраиваем стандартные порты в разделе подключение")
     @Description(value = "Настраиваем в разделе Подключение внешний адрес сервера и нестандартные порты http, https" +
             " и WebSocket")
-    @Test(groups = {"Connect_standard_ports"})
+    @Test(priority = 3)
     void test_Settings_Connect_Standard_Ports(){
         softAssert = new SoftAssert();
-        testBase.openMS("Настройки", "Сервер");
         Map<String, String> mapInputValueConnect = new HashMap() {{
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
             put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
@@ -102,6 +116,14 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         softAssert.assertAll();
     }
 
+    @Story(value = "Проверяем, подключается ли клиент со стандарными портами")
+    @Description(value = "В адресной строке браузера вводим адрес web клиента со стандартным портом 80")
+    @Test(priority = 4,dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
+    void test_Client_Connect_With_Standard_Port(){
+        sleep(5000);
+        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+    }
+
     /*@Story(value = "Настраиваем сертификат SSL")
     @Description(value = "Загружаем актуальные файлы для сертификата SSL")
     @Disabled
@@ -112,7 +134,6 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Description(value = "Настраиваем Push сервер в разделе Лицензирование и обсуживание")
     @Test
     void test_Settings_Push_Server(){
-        testBase.openMS("Настройки", "Сервер");
         setPushService();
     }
 

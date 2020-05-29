@@ -3,7 +3,6 @@ package chat.ros.testing2.server;
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.integration.ActiveDirectoryPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
-import chat.ros.testing2.server.settings.integration.OfficeMonitorPage;
 import chat.ros.testing2.server.settings.integration.TetraPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -26,13 +25,7 @@ import static org.testng.Assert.assertTrue;
 public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
 
     private TetraPage tetraPage;
-    private OfficeMonitorPage officeMonitorPage;
     private ActiveDirectoryPage activeDirectoryPage;
-    private Map<String, String> mapInputValueOM = new HashMap() {{
-        put("IP адрес", INTEGRATION_SERVICE_OM_IP_ADDRESS);
-        put("Порт БД", INTEGRATION_SERVICE_OM_PORT_BD);
-        put("Имя пользователя БД", INTEGRATION_SERVICE_OM_LOGIN_DB);
-    }};
     private Map<String, String> mapInputValueTetra = new HashMap() {{
         put("Название", INTEGRATION_SERVICE_TETRA_NAME);
         put("Описание", INTEGRATION_SERVICE_TETRA_DESCRIPTION);
@@ -61,15 +54,6 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
         assertTrue(tetraPage.addTetraServer(mapInputValueTetra), "Сервис тетра не был добавлен");
     }
 
-    @Story(value = "Добавляем сервис Офис-Монитор")
-    @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис Офис-Монитор и проверяем," +
-            " что сервис был успешно добавлен на сервер")
-    @Test
-    void test_Add_Service_Office_Monitor(){
-        officeMonitorPage = (OfficeMonitorPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(officeMonitorPage.settingsOfficeMonitor(mapInputValueOM), "Сервис Офис-Монитор не был добавлен");
-    }
-
     @Story(value = "Добавляем сервис Active Directory")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис Active Directory и проверяем," +
             " что сервис был успешно добавлен на сервер")
@@ -85,14 +69,6 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
     void test_Sync_Contacts_Active_Directory(){
         activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
         assertTrue(activeDirectoryPage.syncContacts(), "Ошибка при сихронизации контактов");
-    }
-
-    @Story(value = "Синхронизация контактов в Офис-Монитор")
-    @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
-    @Test(groups = {"Sync"},dependsOnMethods = {"test_Add_Service_Office_Monitor"})
-    void test_Sync_Contacts_Office_Monitor(){
-        officeMonitorPage = (OfficeMonitorPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(officeMonitorPage.syncContacts(), "Ошибка при сихронизации контактов");
     }
 
     @Story(value = "Перезагрузка страницы")

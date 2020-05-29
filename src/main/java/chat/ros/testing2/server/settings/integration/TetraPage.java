@@ -41,6 +41,6 @@ public class TetraPage implements IntegrationPage {
         sendInputsForm(mapInputValueTetra);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        return isExistsTableText(INTEGRATION_SERVICE_TETRA_NAME);
+        return isExistsTableText(INTEGRATION_SERVICE_TETRA_NAME, true);
     }
 }

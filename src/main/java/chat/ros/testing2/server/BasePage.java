@@ -117,11 +117,19 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем, есть ли запись {text} в таблице контактов")
-    default boolean isExistsTableText(String text){
-        try{
-            tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible);
-        }catch (ElementNotFound elementNotFound){
-            return false;
+    default boolean isExistsTableText(String text, boolean show){
+        if(show) {
+            try {
+                tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible);
+            } catch (ElementNotFound elementNotFound) {
+                return false;
+            }
+        }else{
+            try {
+                tdTableList.findBy(Condition.text(text)).shouldBe(not(Condition.visible));
+            } catch (ElementShould e) {
+                return false;
+            }
         }
 
         return true;
