@@ -75,7 +75,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
 
     @Story(value = "Синхронизация контактов со СКУД Офис-Монитор")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
-    @Test(groups = {"Sync"},dependsOnMethods = {"test_Add_Service"},enabled = false)
+    @Test(groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД Офис-Монитор");
