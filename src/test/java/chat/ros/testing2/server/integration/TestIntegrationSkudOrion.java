@@ -5,6 +5,8 @@ import chat.ros.testing2.monitoring.MonitoringPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -17,6 +19,8 @@ import static chat.ros.testing2.data.MonitoringData.MONITORING_SERVICE_SKUD;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.testng.Assert.assertTrue;
 
+@Epic(value = "Настройки")
+@Feature(value = "Интеграция->Орион")
 public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase {
 
     private String classStatusServiceActive = "status active";
