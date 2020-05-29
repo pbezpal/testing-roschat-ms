@@ -12,7 +12,7 @@ public class GeozonesPage implements SettingsPage {
 
     private String tableGeozona = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='open_in_new']";
     private SelenideElement buttonAddBeacon = $x("//h2[text()='Beacons']//ancestor::" +
-            "div[@class='block-wrapper']//button[@class'v-btn theme--light primary']");
+            "div[@class='block-wrapper']//button[@class='v-btn theme--light primary']");
 
     public GeozonesPage() {}
 
