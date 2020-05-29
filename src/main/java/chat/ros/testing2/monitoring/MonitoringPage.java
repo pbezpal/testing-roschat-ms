@@ -24,7 +24,7 @@ public interface MonitoringPage extends BasePage {
 
     @Step(value = "Получаем статус сервиса {service} в разделе Сервисы")
     static boolean isStatusService(String service, String classStatus){
-        sectionServices.scrollIntoView(false);
+        sectionServices.shouldBe(Condition.visible).scrollIntoView(false);
         try{
             $x(String.format(locatorStatusService, service, classStatus)).waitUntil(Condition.visible, 60000);
         }catch (ElementNotFound e){
