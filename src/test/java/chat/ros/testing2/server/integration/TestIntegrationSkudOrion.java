@@ -97,4 +97,14 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE),
                 "После удаления, сервис СКУД ОРИОН найден в таблице Подключенные сервисы");
     }
+
+    @Story(value = "Состояние СКУД, после удаления СКУД ОРИОН")
+    @Description(value = "Переходим в разде Монитор и проверяем: \n" +
+            "1. Вместо надписи ОРИОН появилась надпись СКУД \n" +
+            "2. Состояние СКУД - неактивно. Красный кружок.")
+    @Test(dependsOnMethods = {"test_Delete_Orion"})
+    void test_Status_SKUD_After_Delete_OM(){
+        assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
+                "Состояни СКУД - подключен, либо отсутсвтует сервис СКУД");
+    }
 }
