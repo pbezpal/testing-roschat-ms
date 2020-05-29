@@ -11,7 +11,8 @@ import static com.codeborne.selenide.Selenide.$x;
 public class GeozonesPage implements SettingsPage {
 
     private String tableGeozona = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='open_in_new']";
-    private SelenideElement buttonAddBeacon = $(".action-bar .v-btn.theme--light.primary");
+    private SelenideElement buttonAddBeacon = $x("//h2[text()='Beacons']//ancestor::" +
+            "div[@class='block-wrapper']//button[@class'v-btn theme--light primary']");
 
     public GeozonesPage() {}
 
@@ -22,8 +23,7 @@ public class GeozonesPage implements SettingsPage {
     }
 
     @Step(value = "Нажимаем кнопку добавить в секции Beacons")
-    @Override
-    public void clickButtonAdd(){
+    public void clickButtonAddBeacons(){
         buttonAddBeacon.click();
     }
 
@@ -36,7 +36,7 @@ public class GeozonesPage implements SettingsPage {
 
     public boolean addBeacon(String geozone, Map<String, String> mapInputValueBeacon, String beacon){
         clickOpenGeoZone(geozone);
-        clickButtonAdd();
+        clickButtonAddBeacons();
         sendLabelInputsForm(mapInputValueBeacon);
         clickButtonSave();
         return isExistsTableText(beacon, true);
