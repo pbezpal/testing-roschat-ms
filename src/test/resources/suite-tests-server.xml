@@ -6,6 +6,8 @@
             <dependencies>
                 <group name="Service_Tetra" depends-on="Tetra"></group>
                 <group name="After_Sync" depends-on="Sync"></group>
+                <group name="Status_ORION" depends-on="Delete_OM"/>
+                <group name="Status_PERCo" depends-on="Delete_Orion"></group>
             </dependencies>
         </groups>
         <classes>
