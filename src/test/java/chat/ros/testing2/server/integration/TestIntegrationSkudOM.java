@@ -48,7 +48,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
     @Description(value = "Переходим в раздел Монитор и проверяем, что состояние сервиса СКУД - неактивно," +
             "до настройки СКУД в разделе Интеграция. Красный кружок.")
     @Test(priority = 1)
-    void test_Status_SKUD_Before_Settings_OM(){
+    void test_Status_SKUD_Before_Add_Skud(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - активно, либо отсуствут сервис СКУД");
     }
@@ -111,15 +111,4 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_OM_TYPE),
                 "После удаления, сервис СКУД Офис-Мониторинг найден в таблице Подключенные сервисы");
     }
-
-    @Story(value = "Состояние СКУД, после удаления СКУД Офис-Мониторинг")
-    @Description(value = "Переходим в разде Монитор и проверяем: \n" +
-            "1. Вместо надписи Офис-Монитор появилась надпись СКУД \n" +
-            "2. Состояние СКУД - неактивно. Красный кружок.")
-    @Test(dependsOnMethods = {"test_Delete_OM"},enabled = false)
-    void test_Status_SKUD_After_Delete_SKUD(){
-        assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
-                "Состояни СКУД - активно, либо отсутсвтует сервис СКУД");
-    }
-
 }
