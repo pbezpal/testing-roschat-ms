@@ -109,7 +109,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
             "1. Вместо надписи PERCo появилась надпись СКУД \n" +
             "2. Состояние СКУД - неактивно. Красный кружок.")
     @Test(dependsOnMethods = {"test_Delete_Perco"})
-    void test_Status_SKUD_After_Delete_OM(){
+    void test_Status_SKUD_After_Delete_SKUD(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - подключен, либо отсутсвтует сервис СКУД");
     }

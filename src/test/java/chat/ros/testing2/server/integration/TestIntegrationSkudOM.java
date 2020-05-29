@@ -116,8 +116,8 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
     @Description(value = "Переходим в разде Монитор и проверяем: \n" +
             "1. Вместо надписи Офис-Монитор появилась надпись СКУД \n" +
             "2. Состояние СКУД - неактивно. Красный кружок.")
-    @Test(dependsOnMethods = {"test_Delete_OM"},groups = {"Delete_OM"})
-    void test_Status_SKUD_After_Delete_OM(){
+    @Test(dependsOnMethods = {"test_Delete_OM"},enabled = false)
+    void test_Status_SKUD_After_Delete_SKUD(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - активно, либо отсутсвтует сервис СКУД");
     }
