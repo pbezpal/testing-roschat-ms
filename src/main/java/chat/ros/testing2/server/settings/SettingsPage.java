@@ -6,6 +6,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
+import org.openqa.selenium.Keys;
 
 import java.util.Map;
 
@@ -97,6 +98,8 @@ public interface SettingsPage extends BasePage {
             String input = entry.getKey();
             String value = entry.getValue();
             $(String.format(locatorInputForm,input)).click();
+            $(String.format(locatorInputForm,input)).sendKeys(Keys.CONTROL + "a");
+            $(String.format(locatorInputForm,input)).sendKeys(Keys.BACK_SPACE);
             $(String.format(locatorInputForm,input)).sendKeys(value);
         }
     }

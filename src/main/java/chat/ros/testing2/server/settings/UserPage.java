@@ -13,7 +13,7 @@ public class UserPage extends LoginPage implements SettingsPage {
 
     private SelenideElement buttonUserAvatar = $("div.user-avatar button");
     private SelenideElement divLogoutMS = $("div.menuable__content__active div.v-list__tile__title.item-title");
-    private String locatorDeleteUser = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='delete']";
+    private String locatorDeleteUser = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='%2$s']";
 
     public UserPage() {}
 
@@ -29,9 +29,9 @@ public class UserPage extends LoginPage implements SettingsPage {
         clickButtonConfirmAction(USER_BUTTON_CONTINUE);
     }
 
-    @Step(value = "Нажимаем кнопку удалить у пользователя {user}")
-    public UserPage clickDeleteUser(String user){
-        $x(String.format(locatorDeleteUser,user)).click();
+    @Step(value = "Нажимаем кнопку {button} у пользователя {user}")
+    public UserPage clickButtonActionUser(String user, String button){
+        $x(String.format(locatorDeleteUser,user,button)).click();
         return this;
     }
 
@@ -42,8 +42,15 @@ public class UserPage extends LoginPage implements SettingsPage {
         return isExistsTableText(user, true);
     }
 
+    public boolean changeUser(Map<String, String> mapInputValueUser, String user){
+        clickButtonActionUser(user,"edit");
+        sendLabelInputsForm(mapInputValueUser);
+        clickButtonSave();
+        return isExistsTableText(user, true);
+    }
+
     public boolean isDeleteUser(String user){
-        clickDeleteUser(user);
+        clickButtonActionUser(user,"delete");
         clickButtonConfirmAction(USER_BUTTON_CONTINUE);
         return isNotExistsTableText(user);
     }

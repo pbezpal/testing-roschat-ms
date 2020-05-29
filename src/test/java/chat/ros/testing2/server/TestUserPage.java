@@ -2,6 +2,7 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.server.settings.UserPage;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,6 +13,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +36,16 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
         put("Пароль", USER_PASSWORD);
     }};
 
-    @BeforeClass
-    public void beforeAll(){
-        testBase.openMS("Настройки","Настройка СУ");
+    @BeforeMethod
+    void beforeTest(Method method){
+        if(method.toString().contains("Login") || method.toString().contains("Delete")){
+            Configuration.baseUrl = testBase.getHostMS();
+            open("/");
+            logoutMS();
+        }else if(method.toString().contains("Open")){
+            testBase.openMS();
+            open("/settings/users");
+        }else testBase.openMS("Настройки","Настройка СУ");
     }
 
     @Story(value = "Добавляем нового пользователя в систему")
@@ -50,8 +59,6 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
     @Test(priority = 1, dependsOnMethods = {"test_Add_New_User"})
     void test_Login_New_User(){
-        open("/");
-        logoutMS();
         loginOnServer(USER_LOGIN, USER_PASSWORD);
         assertTrue(isLoginNewUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
     }
@@ -60,8 +67,6 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
     @Test(priority = 2, dependsOnMethods = {"test_Add_New_User"})
     void test_Delete_New_User(){
-        open("/");
-        logoutMS();
         loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
         open("/settings/users");
         assertTrue(isDeleteUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
@@ -72,7 +77,6 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
             "надпись 'Идет загрузка настроек...'")
     @Test
     void test_Refresh_Page(){
-        testBase.openMS("Настройки","Настройка СУ");
         Selenide.refresh();
         sleep(3000);
         assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
@@ -84,8 +88,6 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
             "надпись 'Идет загрузка настроек...'")
     @Test
     void test_Open_Page(){
-        testBase.openMS();
-        open("/settings/users");
         sleep(3000);
         assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
                 " 'Идет загрузка настроек...' не пропала");

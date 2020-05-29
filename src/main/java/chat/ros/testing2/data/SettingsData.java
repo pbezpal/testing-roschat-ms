@@ -170,9 +170,13 @@ public interface SettingsData {
     /******************************************** Раздел Настройка СУ ************************************************/
 
     String USER_FIRST_NAME = "Тестовый";
-    String USER_LAST_NAME = "Тест";
+    String USER_FIRST_NAME_1 = "Тестинг";
+    String USER_LAST_NAME = "Николай";
+    String USER_LAST_NAME_1 = "Петр";
     String USER_PATRON_NAME = "Тестович";
+    String USER_PATRON_NAME_1 = "Петрович";
     String USER_LOGIN = "Testuser";
     String USER_PASSWORD = "12345678";
+    String USER_PASSWORD_1 = "87654321";
     String USER_BUTTON_CONTINUE = "Продолжить";
 }

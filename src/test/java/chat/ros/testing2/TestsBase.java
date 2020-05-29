@@ -14,7 +14,6 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
-import org.testng.asserts.SoftAssert;
 import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.lang.reflect.Method;
@@ -64,6 +63,14 @@ public class TestsBase {
 
     public String getSshCommandIsContact(){
         return sshCommandIsContact;
+    }
+
+    public String getHostMS(){
+        return hostServer;
+    }
+
+    public String getHostClient(){
+        return hostClient;
     }
 
     public void afterTestMethod(Method m, ITestResult testResult){
