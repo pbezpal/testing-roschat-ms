@@ -116,11 +116,11 @@ public interface BasePage {
         buttonClose.click();
     }
 
-    @Step(value = "Проверяем, есть ли запись {text} в таблице контактов")
+    @Step(value = "Проверяем есть ли {show} запись {text} в таблице")
     default boolean isExistsTableText(String text, boolean show){
         if(show) {
             try {
-                tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible);
+                tdTableList.findBy(Condition.text(text)).waitUntil(Condition.visible, 60000);
             } catch (ElementNotFound elementNotFound) {
                 return false;
             }
