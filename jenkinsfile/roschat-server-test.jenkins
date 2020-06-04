@@ -15,7 +15,7 @@ pipeline{
                 deleteDir();
             }
         }
-        stage("Clonning from a git repository"){
+        stage("Cloning from a git repository"){
             steps{
                 script{
                     try{
@@ -27,7 +27,7 @@ pipeline{
                 }
             }
         }
-        stage("System control testing"){
+        stage("Testing"){
             steps{
                 script{
                     try{
