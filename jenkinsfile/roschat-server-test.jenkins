@@ -10,24 +10,24 @@ pipeline{
         label ''
     }
     stages{
-        stage("Очистка сборочной директории"){
+        stage("Cleaning the assembly directory"){
             steps{
                 deleteDir();
             }
         }
-        stage("Клонировиние GIT"){
+        stage("Clonning from a git repository"){
             steps{
                 script{
                     try{
                         git 'ssh://bezpalko_p@10.10.199.35/opt/git/firelink/test-roschat-ms'
                     }catch(err){
-                        currentBuild.result = "Failure"
-                        error("Невозможно выполниь клонированние из репозитория git")
+                        currentBuild.result = "FAILURE"
+                        error("Error copying from git repository")
                     }
                 }
             }
         }
-        stage("Тестирование"){
+        stage("System control testing"){
             steps{
                 script{
                     try{
@@ -38,12 +38,12 @@ pipeline{
                 }
             }
         }
-        stage("Формирование отчёта"){
+        stage("Report creating"){
             steps{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
-        stage("Запускаю тестирование WEB клиента"){
+        stage("Running web-client tetsting"){
             steps{
                 script{
                     try{
@@ -51,11 +51,12 @@ pipeline{
                         build(job: "roschat-web-client-testing",
                             parameters: [
                                 string(name: 'VER', value: "${SERVER_VER}"),
-                                string(name: 'REZULT', value: "${STATUS}"),
+                                string(name: 'REZULT', value: "${currentBuild.result}"),
                                 string(name: 'REPORT', value: "${BUILD_URL}allure")
                             ])
                     }catch(err){
-                        echo 'При тестировании WEB клиента были ошибки'
+                        error('web-client testing - FAILED')
+						currentBuild.result = 'FAILURE'
                     }
                 }
             }
