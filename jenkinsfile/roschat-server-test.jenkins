@@ -1,7 +1,6 @@
 #!groovy
 
 def SERVER_VER="${params.VER}"
-STATUS="Успешно"
 
 properties([disableConcurrentBuilds()])
 
@@ -10,7 +9,7 @@ pipeline{
         label ''
     }
     stages{
-        stage("Cleaning the assembly directory"){
+        stage("Cleaning the build directory"){
             steps{
                 deleteDir();
             }
@@ -33,7 +32,7 @@ pipeline{
                     try{
                         sh './gradlew clean test'
                     }catch(err){
-                        STATUS="Провал";
+                        currentBuild.result = 'FAILURE';
                     }
                 }
             }
@@ -43,7 +42,7 @@ pipeline{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
-        stage("Running web-client tetsting"){
+        stage("Running web-client testing"){
             steps{
                 script{
                     try{
