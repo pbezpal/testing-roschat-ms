@@ -81,7 +81,7 @@ public interface IntegrationPage extends SettingsPage {
     }
 
     default Object clickServiceType(String service){
-        $x(String.format(locatorButton,service)).click();
+        $x(String.format(locatorButton,service)).waitUntil(Condition.visible,60000).click();
         switch(service){
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();
