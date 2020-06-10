@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import ru.stqa.selenium.factory.WebDriverPool;
 
@@ -32,6 +33,7 @@ public class TestsBase {
     private final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
     private final String hostClient = "https://" + HOST_SERVER;
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
+    private WebDriver driver = null;
 
     public static TestsBase testsBase = new TestsBase();
     public static TestsBase getInstance() { return testsBase;}
@@ -48,9 +50,9 @@ public class TestsBase {
         logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
         capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
-        WebDriver driver = null;
         try {
             driver = WebDriverPool.DEFAULT.getDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
+            //driver = new RemoteWebDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -124,5 +126,9 @@ public class TestsBase {
                 contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
             }
         }
+    }
+
+    public void dismissWebDriver(){
+        WebDriverPool.DEFAULT.dismissAll();
     }
 }

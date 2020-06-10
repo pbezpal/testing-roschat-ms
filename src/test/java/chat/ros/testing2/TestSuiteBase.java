@@ -1,6 +1,5 @@
 package chat.ros.testing2;
 
-import com.codeborne.selenide.WebDriverRunner;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
@@ -20,7 +19,7 @@ public interface TestSuiteBase {
 
     @AfterSuite
     default void tearDown(){
-        WebDriverRunner.closeWebDriver();
+        TestsBase.getInstance().dismissWebDriver();
     }
 
 }

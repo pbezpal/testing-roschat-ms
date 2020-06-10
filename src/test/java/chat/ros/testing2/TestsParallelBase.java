@@ -45,7 +45,7 @@ public interface TestsParallelBase {
                 if (contactsPage.isNotExistsTableText(number[i])) {
                     contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }
-                WebDriverRunner.closeWebDriver();
+                TestsBase.getInstance().dismissWebDriver();
             }
         }
     }
