@@ -1,6 +1,7 @@
 package chat.ros.testing2.server.integration;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.monitoring.MonitoringPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
@@ -40,8 +41,8 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Status")) testBase.openMS("Монитор");
-        else testBase.openMS("Настройки","Интеграция");
+        if(method.toString().contains("Status")) TestsBase.getInstance().openMS("Монитор");
+        else TestsBase.getInstance().openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Состояние СКУД, перед добавлением СКУД Офис-Монитор")
