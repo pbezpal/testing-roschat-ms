@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.UserPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
@@ -8,8 +9,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,13 +38,13 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @BeforeMethod
     void beforeTest(Method method){
         if(method.toString().contains("Login") || method.toString().contains("Delete")){
-            Configuration.baseUrl = testBase.getHostMS();
+            Configuration.baseUrl = TestsBase.getInstance().getHostMS();
             open("/");
             logoutMS();
         }else if(method.toString().contains("Open")){
-            testBase.openMS();
+            TestsBase.getInstance().openMS();
             open("/settings/users");
-        }else testBase.openMS("Настройки","Настройка СУ");
+        }else TestsBase.getInstance().openMS("Настройки","Настройка СУ");
     }
 
     @Story(value = "Добавляем нового пользователя в систему")

@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.ServerPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -30,8 +31,8 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if (method.toString().contains("Open_Page")) testBase.openMS("/settings/web-server");
-        else testBase.openMS("Настройки", "Сервер");
+        if (method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/web-server");
+        else TestsBase.getInstance().openMS("Настройки", "Сервер");
 
     }
 
@@ -74,10 +75,10 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Test(priority = 2,dependsOnMethods = {"test_Other_Settings_Connect"})
     void test_Client_Connect_With_Other_Port(){
         sleep(5000);
-        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         String host = HOST_SERVER + ":" + SERVER_CONNECT_HTTP_OTHER_PORT;
-        testBase.openClient(host,CONTACT_NUMBER_7012 + "@ros.chat", false);
+        TestsBase.getInstance().openClient(host,CONTACT_NUMBER_7012 + "@ros.chat", false);
     }
 
     @Story(value = "Настраиваем стандартные порты в разделе подключение")
@@ -119,9 +120,9 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Test(priority = 4,dependsOnMethods = {"test_Settings_Connect_Standard_Ports"})
     void test_Client_Connect_With_Standard_Port(){
         sleep(5000);
-        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
+        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
     }
 
     /*@Story(value = "Настраиваем сертификат SSL")

@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.GeozonesPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -36,8 +37,8 @@ public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/geozones");
-        else testBase.openMS("Настройки","Геозоны");
+        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/geozones");
+        else TestsBase.getInstance().openMS("Настройки","Геозоны");
     }
 
     @Story(value = "Добавляем геозону")

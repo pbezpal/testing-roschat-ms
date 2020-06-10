@@ -12,7 +12,6 @@ import static org.testng.Assert.assertTrue;
 
 public interface TestsParallelBase {
 
-    TestsBase testBase = new TestsBase();
     String commandDBCheckChannel = "sudo -u roschat psql -c \"select * from channels;\" | grep '%1$s'";
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
@@ -29,8 +28,8 @@ public interface TestsParallelBase {
     default void afterSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
-            testBase.init();
-            testBase.openMS("Администрирование","Каналы");
+            TestsBase.getInstance().init();
+            TestsBase.getInstance().openMS("Администрирование","Каналы");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
@@ -39,10 +38,10 @@ public interface TestsParallelBase {
 
     default void isCheckContacts(String... number){
         for(int i = 0; i < number.length; i++){
-            if (!SSHManager.isCheckQuerySSH(String.format(testBase.getSshCommandIsContact(), number[i]))) {
-                testBase.init();
+            if (!SSHManager.isCheckQuerySSH(String.format(TestsBase.getInstance().getSshCommandIsContact(), number[i]))) {
+                TestsBase.getInstance().init();
                 ContactsPage contactsPage = new ContactsPage();
-                testBase.openMS("Справочник");
+                TestsBase.getInstance().openMS("Справочник");
                 if (contactsPage.isNotExistsTableText(number[i])) {
                     contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }

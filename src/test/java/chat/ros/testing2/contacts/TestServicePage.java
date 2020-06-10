@@ -1,6 +1,7 @@
 package chat.ros.testing2.contacts;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import chat.ros.testing2.server.contacts.UserPage;
 import io.qameta.allure.Description;
@@ -24,8 +25,8 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(){
-        testBase.addContactAndAccount(CONTACT_NUMBER_7012);
-        testBase.openMS("Справочник");
+        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
+        TestsBase.getInstance().openMS("Справочник");
     }
 
     @Story(value = "Добавляем у контакта  сервис Рация")

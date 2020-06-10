@@ -33,7 +33,8 @@ public class TestsBase {
     private final String hostClient = "https://" + HOST_SERVER;
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
 
-    public TestsBase(){}
+    public static TestsBase testsBase = new TestsBase();
+    public static TestsBase getInstance() { return testsBase;}
 
     public void init(){
         DesiredCapabilities capabilities = new DesiredCapabilities();

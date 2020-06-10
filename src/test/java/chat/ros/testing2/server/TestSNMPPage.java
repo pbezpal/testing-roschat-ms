@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.SNMPPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -25,8 +26,8 @@ public class TestSNMPPage extends SNMPPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/snmp");
-        else testBase.openMS("Настройки","SNMP");
+        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/snmp");
+        else TestsBase.getInstance().openMS("Настройки","SNMP");
     }
 
     @Story(value = "Настраиваем SNMP сервер")

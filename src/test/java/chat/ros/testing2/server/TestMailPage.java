@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.MailPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.*;
@@ -24,8 +25,8 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/mail");
-        else testBase.openMS("Настройки","Почта");
+        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/mail");
+        else TestsBase.getInstance().openMS("Настройки","Почта");
     }
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")

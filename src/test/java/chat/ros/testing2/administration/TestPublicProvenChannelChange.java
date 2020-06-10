@@ -1,5 +1,6 @@
 package chat.ros.testing2.administration;
 
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
@@ -34,7 +35,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @BeforeClass
     void setUp(){
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        testBase.init();
+        TestsBase.getInstance().init();
         nameChannel = "CHPPCH" + System.currentTimeMillis();
         newNameChannel = nameChannel + System.currentTimeMillis();
     }
@@ -43,7 +44,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Channel(){
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -62,7 +63,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "публичный канал проверенным")
     @Test(dependsOnMethods = {"test_Create_Channel"})
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
-        testBase.openMS("Администрирование","Каналы");
+        TestsBase.getInstance().openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
                 "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
@@ -72,7 +73,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @Description(value = "Авторизуемся под администратором канала и меняем тип с публичного на закрытый канал")
     @Test(dependsOnMethods = {"test_Do_Proven_Channel_After_Create_Public_Channel"})
     void test_Edit_Type_With_Public_On_Closed_Channel(){
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 changeDataChannel(
                         nameChannel,false,false,true,
@@ -89,7 +90,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
     @Test(priority = 1, dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change_Type(){
-        testBase.openMS("Администрирование","Каналы");
+        TestsBase.getInstance().openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
@@ -99,7 +100,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "клиенте отображается новое название и описание канала.")
     @Test(priority = 2, dependsOnMethods = {"test_Edit_Type_With_Public_On_Closed_Channel"})
     void test_Change_Name_And_Description_Channel(){
-        testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(changeDataChannel(
                 nameChannel,true,true, false,
                 newNameChannel, newDescription).
@@ -116,7 +117,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             "закрытый канал в списке каналов после смены названия и описания")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Change(){
-        testBase.openMS("Администрирование","Каналы");
+        TestsBase.getInstance().openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, false),
                 "Закрытый канал " + newNameChannel + " отображается в СУ после ");
     }
@@ -145,7 +146,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             if (resultChange) channel = newNameChannel;
             else channel = nameChannel;
             System.out.println("Channel public proven name: " + channel);
-            testBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+            TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(
                     deleteChannel(channel).isExistComments(channel, false),
@@ -154,7 +155,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
                     "Запись о канале " + channel + " осталась в БД postgres после удаления");
             softAssert.assertAll();
 
-            testBase.openMS("Администрирование", "Каналы");
+            TestsBase.getInstance().openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
                     "Канал " + channel + " отображается в СУ после удаления");
         }

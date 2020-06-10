@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -50,8 +51,8 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/telephony");
-        testBase.openMS("Настройки","Телефония");
+        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/telephony");
+        TestsBase.getInstance().openMS("Настройки","Телефония");
     }
 
     @Story(value = "Настройка сети")

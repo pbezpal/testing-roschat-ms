@@ -8,16 +8,14 @@ import java.lang.reflect.Method;
 
 public interface TestSuiteBase {
 
-    TestsBase testBase = new TestsBase();
-
     @BeforeSuite
     default void setUp(){
-        testBase.init();
+        TestsBase.getInstance().init();
     }
 
     @AfterMethod(alwaysRun = true)
     default void afterTestMethod(Method m, ITestResult testResult){
-        testBase.afterTestMethod(m, testResult);
+        TestsBase.getInstance().afterTestMethod(m, testResult);
     }
 
     @AfterSuite

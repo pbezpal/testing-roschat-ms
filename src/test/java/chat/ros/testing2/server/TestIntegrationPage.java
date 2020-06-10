@@ -1,6 +1,7 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.TestSuiteBase;
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.server.settings.integration.ActiveDirectoryPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.TetraPage;
@@ -40,8 +41,8 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) testBase.openMS("/settings/integration");
-        else testBase.openMS("Настройки","Интеграция");
+        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/integration");
+        else TestsBase.getInstance().openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
