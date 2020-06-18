@@ -12,12 +12,11 @@ import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertTrue;
 
 public interface SettingsPage extends BasePage {
 
     SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
-    SelenideElement formConformActions = $("div.dialog-header h3");
+    SelenideElement formConfirmActions = $("div.dialog-header h3");
     SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
@@ -29,6 +28,8 @@ public interface SettingsPage extends BasePage {
     String locatorForm = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']";
     String locatorButtonForm = locatorForm + "//div[text()='%2$s']";
     String locatorInputForm = "input[aria-label='%1$s']";
+    String locatorWrongValue = "//div[@class='modal-item__title']/h4[contains(text(),'%1$s')]//ancestor::" +
+            "li[@class='layout modal-item']//div[@class='v-messages__message']";
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -55,6 +56,23 @@ public interface SettingsPage extends BasePage {
             return $x(String.format(labelField,form,field)).text().equals(value);
         }else {
             return ! $x(String.format(labelField,form,field)).text().equals(value);
+        }
+    }
+
+    @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
+    default boolean isShowSymbolsInField(String form, String field, String value, boolean show){
+        try{
+            $x(String.format(labelField,form,field)).should(enabled);
+        }catch (ElementNotFound e){
+            return false;
+        }
+
+        $x(String.format(labelField,form,field)).scrollIntoView(false);
+
+        if(show){
+            return $x(String.format(labelField,form,field)).text().contains(value);
+        }else {
+            return ! $x(String.format(labelField,form,field)).text().contains(value);
         }
     }
 
@@ -104,6 +122,17 @@ public interface SettingsPage extends BasePage {
         }
     }
 
+    @Step(value = "Проверяем, появилась ли надпись о пустом/невалидном значении")
+    default String isShowTextWrongValue(String field){
+        try{
+            $x(String.format(locatorWrongValue,field)).shouldBe(visible);
+        }catch (ElementNotFound e){
+            return null;
+        }
+
+        return $x(String.format(locatorWrongValue,field)).text();
+    }
+
     @Step(value = "Нажимаем кнопку Закрыть")
     default SettingsPage clickButtonCloseForm(){
         buttonCloseForm.click();
@@ -111,12 +140,21 @@ public interface SettingsPage extends BasePage {
     }
 
     @Step(value = "Проверяем, что появилась форма 'Подтвердите свои действия'")
-    default boolean isFormConfirmActions(){
-        try{
-            formConformActions.shouldHave(text("Подтвердите свои действия"), Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
+    default boolean isFormConfirmActions(boolean show){
+        if(show){
+            try{
+                formConfirmActions.shouldBe(text("Подтвердите свои действия"), Condition.visible);
+            }catch (ElementNotFound element){
+                return false;
+            }
+        }else{
+            try{
+                formConfirmActions.shouldBe(not(text("Подтвердите свои действия")), not(Condition.visible));
+            }catch (ElementShould element){
+                return false;
+            }
         }
+
 
         return true;
     }
