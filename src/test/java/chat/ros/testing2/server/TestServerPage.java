@@ -233,7 +233,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Story(value = "Проверяем подключение с различными настройками портов")
     @Description(value = "Проверяем подключение Web-клиента с различными настройками портов http, https" +
             " и WebSocket")
-    @Test(priority = 5,dataProvider = "getValueConnectServer")
+    @Test(priority = 5,dataProvider = "connect")
     void test_Settings_Connect(String server, String http, String https, String websocket){
         softAssert = new SoftAssert();
         String client;
