@@ -81,14 +81,26 @@ allure {
     }
 }
 
-task roschatdb(type: Test){
+task integration(type: Test){
 
     useTestNG()
 
     include("**/server/TestIntegrationPage.class")
-    include("**/contacts/TestServicePage.class")
 
     dependsOn 'cleanTest'
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task roschatdb(type: Test){
+
+    useTestNG()
+
+    include("**/contacts/TestServicePage.class")
+
+    dependsOn 'integration'
 
     // Show test results.
     testLogging {
