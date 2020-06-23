@@ -1,8 +1,30 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Suites" >
+<suite name="roschat-ms" >
+    <test name="testing roschat-ms" >
+        <groups>
+            <dependencies>
+                <group name="Service_Tetra" depends-on="Tetra"></group>
+                <group name="After_Sync" depends-on="Sync"></group>
+                <group name="ORION" depends-on="Delete_OM"/>
+                <group name="PERCo" depends-on="Delete_Orion"></group>
+            </dependencies>
+        </groups>
+        <classes>
+            <class name="chat.ros.testing2.server.TestGeozonesPage"/>
+            <class name="chat.ros.testing2.server.TestIntegrationPage"/>
+            <class name="chat.ros.testing2.server.TestServerPage"/>
+            <class name="chat.ros.testing2.server.TestMailPage" />
+            <class name="chat.ros.testing2.server.TestSNMPPage" />
+            <class name="chat.ros.testing2.server.TestTelephonyPage" />
+            <class name="chat.ros.testing2.server.TestUserPage" />
+            <class name="chat.ros.testing2.contacts.TestServicePage"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOMMonitor"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrionMonitor"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
+        </classes>
+    </test>
     <suite-files>
-        <suite-file path="suite-tests-server.xml" />
         <suite-file path="channel-closed-tests.xml" />
         <suite-file path="channel-public-tests.xml" />
         <suite-file path="channel-public-proven-tests.xml"/>

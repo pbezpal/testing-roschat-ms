@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Parameters" verbose="2" >
+    <test name="Parameters-Tests" >
+        <classes>
+            <class name="chat.ros.testing2.parameters.TestParametersServerPage" /
+        </classes>
+    </test>
+</suite>

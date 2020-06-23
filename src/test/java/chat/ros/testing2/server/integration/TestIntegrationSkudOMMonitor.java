@@ -74,14 +74,6 @@ public class TestIntegrationSkudOMMonitor implements IntegrationPage, TestSuiteB
                 "Состояни СКУД Офис-Монитор - неактивно, либо отсутсвтует сервис Офис-Монитор");
     }
 
-    @Story(value = "Синхронизация контактов со СКУД Офис-Монитор")
-    @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
-    @Test(groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
-    void test_Sync_Contacts(){
-        skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД Офис-Монитор");
-    }
-
     @Story(value = "Настраиваем СКУД Офис-Монитор с некорректными данными")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и вводим некорректные " +
             "данные для подключения.")
@@ -122,5 +114,4 @@ public class TestIntegrationSkudOMMonitor implements IntegrationPage, TestSuiteB
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - активно, либо отсутсвтует сервис СКУД");
     }
-
 }

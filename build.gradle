@@ -81,27 +81,40 @@ allure {
     }
 }
 
-task integration(type: Test){
+task roschatdb(type: Test){
 
-    useTestNG()
-
-    include("**/server/TestIntegrationPage.class")
-    include("**/server/integration/TestIntegrationSkudOM.class")
+    useTestNG(){
+        suites 'src/test/resources/suite-roschat-db.xml'
+    }
 
     dependsOn 'cleanTest'
 
+    // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
     }
 }
 
-task roschatdb(type: Test){
+task roschatsnmp(type: Test){
 
     useTestNG()
 
-    include("**/contacts/TestServicePage.class")
+    include("**/server/TestSNMPPage.class")
 
-    dependsOn 'integration'
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task roschatserver(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/suite-roschat-server.xml'
+    }
+
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {

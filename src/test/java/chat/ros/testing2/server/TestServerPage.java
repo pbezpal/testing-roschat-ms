@@ -25,14 +25,12 @@ import static org.testng.Assert.assertTrue;
 public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     private SoftAssert softAssert;
-    private static final String wrongSymbols = " !\"/#$%&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
-    private static final String validSymbols = "1234567890";
 
     @BeforeMethod
     public void beforeTest(Method method){
+        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
         if (method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/web-server");
         else TestsBase.getInstance().openMS("Настройки", "Сервер");
-        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
     }
 
     @DataProvider(name = "connect")
@@ -48,192 +46,10 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
                 {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT}};
     }
 
-    @DataProvider(name = "empty_value")
-    public Object[][] getEmptyValueConnect(){
-        return new Object[][] {
-                {"",SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,"", SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, "", SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, ""}};
-    }
-
-    @DataProvider(name = "wrong_value")
-    public Iterator<Object[]> getWrongValueConnect(){
-        List<Object[]> list = new ArrayList<>();
-        for(char c: wrongSymbols.toCharArray()) {
-            list.add(new Object[]{SERVER_CONNECT_INPUT_HTTP_PORT,c});
-            list.add(new Object[]{SERVER_CONNECT_INPUT_HTTPS_PORT,c});
-            list.add(new Object[]{SERVER_CONNECT_INPUT_WEBSOCKET_PORT,c});
-        }
-        return list.iterator();
-    }
-
-    @DataProvider(name = "max_length_port")
-    public Object[][] getLengthValuePortConnect(){
-        return new Object[][] {
-                {SERVER_CONNECT_INPUT_HTTP_PORT,"65536"},
-                {SERVER_CONNECT_INPUT_HTTPS_PORT,"65536"},
-                {SERVER_CONNECT_INPUT_WEBSOCKET_PORT,"65536"}};
-    }
-
-    @DataProvider(name = "valid_value")
-    public Iterator<Object[]> getValidValue(){
-        List<Object[]> list = new ArrayList<>();
-        for(char c: validSymbols.toCharArray()) {
-            list.add(new Object[]{SERVER_CONNECT_INPUT_HTTP_PORT,c});
-            list.add(new Object[]{SERVER_CONNECT_INPUT_HTTPS_PORT,c});
-            list.add(new Object[]{SERVER_CONNECT_INPUT_WEBSOCKET_PORT,c});
-        }
-        return list.iterator();
-    }
-
-    @Story(value = "Проверяем функцию подключение на пустые поля")
-    @Description(value = "Вводим в поля формы подключения пустые значения и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Введите значение' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с пустым полем")
-    @Test(priority = 1, dataProvider = "empty_value")
-    void test_Settings_Connect_Empty_Value(String server, String http, String https, String websocket){
-        softAssert = new SoftAssert();
-        String field;
-        String ports = "";
-        Map<String, String> mapInputValueConnect = new HashMap() {{
-            put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, server);
-            put(SERVER_CONNECT_INPUT_HTTP_PORT, http);
-            put(SERVER_CONNECT_INPUT_HTTPS_PORT, https);
-            put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, websocket);
-        }};
-        setSettingsServer(mapInputValueConnect, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        if(server.equals("")) field = SERVER_CONNECT_INPUT_PUBLIC_NETWORK;
-        else if(http.equals("")){
-            field = SERVER_CONNECT_INPUT_HTTP_PORT;
-            ports = ", " + https + ", " + websocket;
-        }
-        else if(https.equals("")){
-            field = SERVER_CONNECT_INPUT_HTTPS_PORT;
-            ports = http + ",, " + websocket;
-        }
-        else {
-            field = SERVER_CONNECT_INPUT_WEBSOCKET_PORT;
-            ports = http + ", " + https + ",";
-        }
-        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
-                "Надпись 'Введите значение' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Формы редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        if(server.equals("")){
-            softAssert.assertTrue(isShowValueInField(
-                    SERVER_CONNECT_TITLE_FORM,
-                    SERVER_CONNECT_INPUT_PUBLIC_NETWORK + ":",
-                    server,
-                    false),
-                    "Значение " + server + " отображается в поле " + SERVER_CONNECT_INPUT_PUBLIC_NETWORK + ":");
-        }else {
-            softAssert.assertTrue(isShowValueInField(
-                    SERVER_CONNECT_TITLE_FORM,
-                    SERVER_CONNECT_FIELD_PORTS,
-                    ports,
-                    false),
-                    "Значение " + ports + " отображается в поле " + SERVER_CONNECT_FIELD_PORTS);
-        }
-        softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем невалидные значения в настройках Подключение")
-    @Description(value = "Вводим в поля формы Подключение невалидные значения и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Невалидный порт' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с невалидным значением в поле")
-    @Test(priority = 2, dataProvider = "wrong_value")
-    void test_No_Valid_Ports_Connect(String field, Character c){
-        softAssert = new SoftAssert();
-        String port = null;
-        if(field.equals(SERVER_CONNECT_INPUT_HTTP_PORT)) port = c.toString() + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_HTTPS_PORT)) port = ", " + c.toString() + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)) port = ", " + c.toString();
-        clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        sendInputForm(field, c.toString());
-        softAssert.assertEquals(isShowTextWrongValue(field),"Невалидный порт",
-                "Надпись 'Невалидный порт' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Формы редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        softAssert.assertTrue(isShowSymbolsInField(
-                SERVER_CONNECT_TITLE_FORM,
-                SERVER_CONNECT_FIELD_PORTS,
-                port,
-                false),
-                "Значение " + port + " отображается в поле " + SERVER_CONNECT_FIELD_PORTS);
-        softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем номер максимального порта в настройках Подключение")
-    @Description(value = "Вводим в поля настройки портов формы Подключение порт 65536 и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Невалидный порт' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с невалидным значением в поле")
-    @Test(priority = 3, dataProvider = "max_length_port")
-    void test_Max_Length_Ports_Connect(String field, String maxPort){
-        softAssert = new SoftAssert();
-        String port = null;
-        if(field.equals(SERVER_CONNECT_INPUT_HTTP_PORT)) port = maxPort + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_HTTPS_PORT)) port = ", " + maxPort + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)) port = ", " + maxPort;
-        clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        sendInputForm(field, maxPort);
-        softAssert.assertEquals(isShowTextWrongValue(field),"Невалидный порт",
-                "Надпись 'Невалидный порт' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Формы редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        softAssert.assertTrue(isShowSymbolsInField(
-                SERVER_CONNECT_TITLE_FORM,
-                SERVER_CONNECT_FIELD_PORTS,
-                port,
-                false),
-                "Значение " + port + " отображается в поле " + SERVER_CONNECT_FIELD_PORTS);
-        softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем валидные значения в настройках Подключение")
-    @Description(value = "Вводим в поля формы Подключение валидные значения и проверяем: \n" +
-            "Сохраняются ли настройки с валидным значением в поле")
-    @Test(priority = 4, dataProvider = "valid_value")
-    void test_Valid_Ports_Connect(String field, Character c){
-        softAssert = new SoftAssert();
-        String port = null;
-        if(field.equals(SERVER_CONNECT_INPUT_HTTP_PORT)) port = c.toString() + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_HTTPS_PORT)) port = ", " + c.toString() + ",";
-        else if(field.equals(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)) port = ", " + c.toString();
-        clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        sendInputForm(field, c.toString());
-        clickButtonSave();
-        softAssert.assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        softAssert.assertTrue(isShowSymbolsInField(
-                SERVER_CONNECT_TITLE_FORM,
-                SERVER_CONNECT_FIELD_PORTS,
-                port,
-                true),
-                "Значение " + port + " не отображается в поле " + SERVER_CONNECT_FIELD_PORTS);
-        softAssert.assertAll();
-    }
-
     @Story(value = "Проверяем подключение с различными настройками портов")
     @Description(value = "Проверяем подключение Web-клиента с различными настройками портов http, https" +
             " и WebSocket")
-    @Test(priority = 5,dataProvider = "connect")
+    @Test(dataProvider = "connect")
     void test_Settings_Connect(String server, String http, String https, String websocket){
         softAssert = new SoftAssert();
         String client;

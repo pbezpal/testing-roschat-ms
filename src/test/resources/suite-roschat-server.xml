@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Server" verbose="1">
-    <test name="Server tests" >
+<suite name="roschat-server" verbose="1">
+    <test name="testing roschat-server" >
         <groups>
             <dependencies>
                 <group name="Service_Tetra" depends-on="Tetra"></group>
@@ -15,13 +15,15 @@
             <class name="chat.ros.testing2.server.TestIntegrationPage"/>
             <class name="chat.ros.testing2.server.TestServerPage"/>
             <class name="chat.ros.testing2.server.TestMailPage" />
-            <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
-            <class name="chat.ros.testing2.server.TestUserPage" />
-            <class name="chat.ros.testing2.contacts.TestServicePage"/>
             <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOMMonitor"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrion"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPerco"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrionMonitor"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
         </classes>
     </test>
+    <suite-files>
+        <suite-file path="channel-closed-tests.xml" />
+        <suite-file path="channel-public-tests.xml" />
+        <suite-file path="channel-public-proven-tests.xml"/>
+    </suite-files>
 </suite>
