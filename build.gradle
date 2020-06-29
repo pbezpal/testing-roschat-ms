@@ -124,7 +124,7 @@ task roschatserver(type: Test){
 
 task roschatms(type: Test){
     useTestNG(){
-        suites 'src/test/resources/testng.xml'
+        suites 'src/test/resources/suite-roschat-ms.xml'
     }
 
     dependsOn 'cleanTest'
