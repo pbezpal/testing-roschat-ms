@@ -23,7 +23,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
-@Feature(value = "Сервер")
+@Feature(value = "Параметризированные тесты")
 public class TestParametersEmptyValue extends ServerPage implements IntegrationPage {
 
     private SoftAssert softAssert;

@@ -122,6 +122,45 @@ task roschatserver(type: Test){
     }
 }
 
+task roschatms(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/testng.xml'
+    }
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task channels(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/suites-channels.xml'
+    }
+
+    dependsOn roschatms
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task parametertests(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/suite-parameters-tests.xml'
+    }
+
+    dependsOn channels
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 test {
 
     useTestNG(){

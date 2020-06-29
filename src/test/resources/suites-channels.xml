@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="channels" >
+    <suite-files>
+        <suite-file path="channel-closed-tests.xml" />
+        <suite-file path="channel-public-tests.xml" />
+        <suite-file path="channel-public-proven-tests.xml"/>
+    </suite-files>
+</suite>

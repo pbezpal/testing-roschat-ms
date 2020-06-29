@@ -25,10 +25,4 @@
             <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
         </classes>
     </test>
-    <suite-files>
-        <suite-file path="channel-closed-tests.xml" />
-        <suite-file path="channel-public-tests.xml" />
-        <suite-file path="channel-public-proven-tests.xml"/>
-        <suite-file path="tests-parameters-ms.xml"></suite-file>
-    </suite-files>
 </suite>
