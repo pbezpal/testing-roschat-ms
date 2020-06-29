@@ -71,6 +71,8 @@ public interface SettingsData {
     String TELEPHONY_TURN_MIN_PORT_MORE_MAX_PORT = "50000";
     String TELEPHONY_TURN_INPUT_MAX_PORT = "Максимальный порт";
     String TELEPHONY_TURN_MAX_PORT = "49183";
+    String TELEPHONY_TURN_INPUT_REALM = "Realm";
+    String TELEPHONY_TURN_REALM = "realm";
     String TELEPHONY_TURN_INPUT_SECRET = "Секрет";
     String TELEPHONY_TURN_SECRET = "Secret";
 

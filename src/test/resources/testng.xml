@@ -19,6 +19,7 @@
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
             <class name="chat.ros.testing2.server.TestUserPage" />
             <class name="chat.ros.testing2.contacts.TestServicePage"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"></class>
             <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOMMonitor"/>
             <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrionMonitor"/>
             <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
@@ -28,5 +29,6 @@
         <suite-file path="channel-closed-tests.xml" />
         <suite-file path="channel-public-tests.xml" />
         <suite-file path="channel-public-proven-tests.xml"/>
+        <suite-file path="tests-parameters-ms.xml"></suite-file>
     </suite-files>
 </suite>

@@ -46,6 +46,13 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
                 {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT}};
     }
 
+    private Map<String, String> mapInputValuePush = new HashMap() {{
+        put(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
+        put(SERVER_PUSH_INPUT_LOGIN, SERVER_PUSH_LOGIN_SERVER);
+        put(SERVER_PUSH_INPUT_PORT, SERVER_PUSH_PORT_SERVER);
+        put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
+    }};
+
     @Story(value = "Проверяем подключение с различными настройками портов")
     @Description(value = "Проверяем подключение Web-клиента с различными настройками портов http, https" +
             " и WebSocket")
@@ -95,7 +102,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
     @Description(value = "Настраиваем Push сервер в разделе Лицензирование и обсуживание")
     @Test
     void test_Settings_Push_Server(){
-        setPushService();
+        setPushService(mapInputValuePush);
     }
 
     @Story(value = "Перезагрузка страницы")

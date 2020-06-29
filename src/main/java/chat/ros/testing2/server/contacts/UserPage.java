@@ -25,7 +25,6 @@ public class UserPage implements BasePage {
     private SelenideElement buttonsAddService = $x("//div[@class='service']//ancestor::div[@class='main-block']//button");
     private ElementsCollection servicesMenuContent = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     private ElementsCollection listTitleServices = $$("div.service-info %1$s");
-    private String locatorServiceInfo = "div.service-info %1$s";
 
     private SelenideElement inputSelectServerTetra = $("div.v-select__selections");
     private ElementsCollection divListServerTetra = $$("div.v-select-list.v-card.theme--light div.v-list__tile__title");
@@ -158,7 +157,7 @@ public class UserPage implements BasePage {
     @Step(value = "Проверяем, появился сервир в списке сервисов")
     public boolean isShowService(String element, String text){
         try{
-            $$(String.format(locatorServiceInfo,element)).findBy(text(text)).shouldBe(visible);
+            $$("div.service-info " + element).findBy(text(text)).shouldBe(visible);
         }catch (ElementNotFound e){
             return false;
         }

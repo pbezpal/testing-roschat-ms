@@ -28,8 +28,6 @@ public interface BasePage {
     SelenideElement textWrong = $(".v-messages__message");
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
-    String locatorInput = "//div[@class='modal-item__title']/h4[contains(text(),'%1$s')]//ancestor::" +
-            "li[@class='layout modal-item']//input";
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
@@ -74,9 +72,15 @@ public interface BasePage {
 
     @Step(value = "Вводим в поле {input} значение {value}")
     default void sendInputForm(String input, String value){
-        $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
-        $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
-        $x(String.format(locatorInput,input)).sendKeys(value);
+        SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input");
+        element.sendKeys(Keys.CONTROL + "a");
+        element.sendKeys(Keys.BACK_SPACE);
+        element.sendKeys(value);
+    }
+
+    @Step(value = "Кликаем на поле {input}")
+    default void clickInputForm(String input){
+        $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input").click();
     }
 
     @Step(value = "Заполняем поля формы")
@@ -84,9 +88,10 @@ public interface BasePage {
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()){
             String input = entry.getKey();
             String value = entry.getValue();
-            $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
-            $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
-            $x(String.format(locatorInput,input)).sendKeys(value);
+            SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input");
+            element.sendKeys(Keys.CONTROL + "a");
+            element.sendKeys(Keys.BACK_SPACE);
+            element.sendKeys(value);
         }
     }
 

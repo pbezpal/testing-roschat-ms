@@ -52,7 +52,6 @@ public class TestsBase {
 
         try {
             driver = WebDriverPool.DEFAULT.getDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
-            //driver = new RemoteWebDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

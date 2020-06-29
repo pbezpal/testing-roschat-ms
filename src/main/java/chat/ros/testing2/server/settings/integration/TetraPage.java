@@ -1,5 +1,6 @@
 package chat.ros.testing2.server.settings.integration;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
@@ -23,9 +24,10 @@ public class TetraPage implements IntegrationPage {
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()) {
             String input = entry.getKey();
             String value = entry.getValue();
-            $x(String.format(locatorInput,input)).sendKeys(Keys.CONTROL + "a");
-            $x(String.format(locatorInput,input)).sendKeys(Keys.BACK_SPACE);
-            $x(String.format(locatorInput,input)).sendKeys(value);
+            SelenideElement element = $$(".naming").findBy(Condition.text(input)).parent().find("input");
+            element.sendKeys(Keys.CONTROL + "a");
+            element.sendKeys(Keys.BACK_SPACE);
+            element.sendKeys(value);
         }
     }
 

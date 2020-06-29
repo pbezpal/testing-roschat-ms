@@ -88,6 +88,7 @@ public interface IntegrationPage extends SettingsPage {
             case INTEGRATION_SERVICE_OM_TYPE:
             case INTEGRATION_SERVICE_ORION_TYPE:
             case INTEGRATION_SERVICE_PERCO_TYPE:
+            case "СКУД":
                 return new SKUDPage();
             case INTEGRATION_SERVICE_AD_TYPE:
                 return new ActiveDirectoryPage();

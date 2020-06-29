@@ -27,13 +27,6 @@ public class ServerPage implements SettingsPage{
     //Проверки на сервере по ssh
     private String commandCheckEstablishedPush = "netstat -alpn | grep '8088.*ESTABLISHED'";
 
-    private Map<String, String> mapInputValuePush = new HashMap() {{
-        put(SERVER_PUSH_INPUT_HOST, SERVER_PUSH_HOST_SERVER);
-        put(SERVER_PUSH_INPUT_LOGIN, SERVER_PUSH_LOGIN_SERVER);
-        put(SERVER_PUSH_INPUT_PORT, SERVER_PUSH_PORT_SERVER);
-        put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
-    }};
-
     public static ServerPage serverPage = new ServerPage();
     public static ServerPage getInstance() { return serverPage; }
 
@@ -84,7 +77,7 @@ public class ServerPage implements SettingsPage{
         return update;
     }
 
-    public ServerPage setPushService(){
+    public ServerPage setPushService(Map<String, String> mapInputValuePush){
         setSettingsServer(mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);

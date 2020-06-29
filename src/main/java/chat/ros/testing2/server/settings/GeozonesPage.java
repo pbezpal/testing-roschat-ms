@@ -5,20 +5,21 @@ import io.qameta.allure.Step;
 
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.*;
 
 public class GeozonesPage implements SettingsPage {
 
     private String tableGeozona = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='open_in_new']";
-    private SelenideElement buttonAddBeacon = $x("//h2[text()='Beacons']//ancestor::" +
-            "div[@class='block-wrapper']//button[@class='v-btn theme--light primary']");
+    /*private SelenideElement buttonAddBeacon = $x("//h2[text()='Beacons']//ancestor::" +
+            "div[@class='block-wrapper']//button[@class='v-btn theme--light primary']");*/
+    private SelenideElement buttonAddBeacon = $$("h2").findBy(text("Beacons")).parent().find("button.primary");
 
     public GeozonesPage() {}
 
     @Step(value = "Нажимаем кнопку Открыть у геозоны {geozona}")
     protected GeozonesPage clickOpenGeoZone(String geozona){
-        $x(String.format(tableGeozona,geozona)).click();
+        $$("table td").findBy(text(geozona)).parent().$$("button i").findBy(text("open_in_new")).click();
         return this;
     }
 

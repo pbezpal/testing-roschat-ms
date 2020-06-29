@@ -1,9 +1,9 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Parameters" verbose="2" >
+<suite name="Parameters" verbose="2" parallel="methods" thread-count="4">
     <test name="Parameters-Tests" >
         <classes>
-            <class name="chat.ros.testing2.parameters.TestParametersServerPage" /
+            <class name="chat.ros.testing2.parameters.TestParametersEmptyValue" />
         </classes>
     </test>
 </suite>

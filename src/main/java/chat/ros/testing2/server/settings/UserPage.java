@@ -1,12 +1,14 @@
 package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.server.LoginPage;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class UserPage extends LoginPage implements SettingsPage {
@@ -31,7 +33,7 @@ public class UserPage extends LoginPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button} у пользователя {user}")
     public UserPage clickButtonActionUser(String user, String button){
-        $x(String.format(locatorDeleteUser,user,button)).click();
+        $$("table td").findBy(text(user)).parent().$$("button i").findBy(text(button)).click();
         return this;
     }
 

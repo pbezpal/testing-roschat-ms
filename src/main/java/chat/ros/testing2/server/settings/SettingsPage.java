@@ -2,9 +2,11 @@ package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.server.BasePage;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
+import com.codeborne.selenide.ex.ElementShouldNot;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
@@ -21,16 +23,6 @@ public interface SettingsPage extends BasePage {
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
 
-    String labelField = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']//div[@class='block-content__item-name']" +
-            "/h4[contains(text(),'%2$s')]//ancestor::li//span[@class='v-chip__content']";
-    String buttonFormAction = "//div[@class='actions-wrapper']//div[@class='v-btn__content' " +
-            "and contains(text(), '%1$s')]";
-    String locatorForm = "//h2[text()='%1$s']//ancestor::div[@class='block-wrapper']";
-    String locatorButtonForm = locatorForm + "//div[text()='%2$s']";
-    String locatorInputForm = "input[aria-label='%1$s']";
-    String locatorWrongValue = "//div[@class='modal-item__title']/h4[contains(text(),'%1$s')]//ancestor::" +
-            "li[@class='layout modal-item']//div[@class='v-messages__message']";
-
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
         try{
@@ -44,57 +36,60 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
     default boolean isShowValueInField(String form, String field, String value, boolean show){
+        SelenideElement element = $$("h2").findBy(text(form)).parent().$$(".block-content__item-name h4").
+                findBy(text(field)).closest("li").find(".v-chip__content");
         try{
-            $x(String.format(labelField,form,field)).should(enabled);
+            element.should(enabled);
         }catch (ElementNotFound e){
             return false;
         }
 
-        $x(String.format(labelField,form,field)).scrollIntoView(false);
+        element.scrollIntoView(false);
 
         if(show){
-            return $x(String.format(labelField,form,field)).text().equals(value);
+            return element.text().equals(value);
         }else {
-            return ! $x(String.format(labelField,form,field)).text().equals(value);
+            return ! element.text().equals(value);
         }
     }
 
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
     default boolean isShowSymbolsInField(String form, String field, String value, boolean show){
+        SelenideElement element = $$("h2").findBy(text(form)).parent().$$(".block-content__item-name h4").
+                findBy(text(field)).closest("li").find(".v-chip__content");
         try{
-            $x(String.format(labelField,form,field)).should(enabled);
+            element.should(enabled);
         }catch (ElementNotFound e){
             return false;
         }
 
-        $x(String.format(labelField,form,field)).scrollIntoView(false);
+        element.scrollIntoView(false);
 
         if(show){
-            return $x(String.format(labelField,form,field)).text().contains(value);
+            return element.text().contains(value);
         }else {
-            return ! $x(String.format(labelField,form,field)).text().contains(value);
+            return ! element.text().contains(value);
         }
     }
 
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
     default boolean isShowValuesInField(String form, String field, String value, boolean show){
-        try{
-            $x(String.format(labelField,form,field)).should(enabled);
-        }catch (ElementNotFound e){
-            return false;
-        }
+        ElementsCollection elements = $$("h2").findBy(text(form)).parent().$$(".block-content__item-name h4").
+                findBy(text(field)).closest("li").$$(".v-chip__content");
 
-        $x(String.format(labelField,form,field)).scrollIntoView(false);
+        if(elements.size() == 0) return false;
+
+        elements.last().scrollIntoView(false);
 
         if(show){
            try {
-               $$x(String.format(labelField,form,field)).findBy(text(value));
+               elements.findBy(text(value));
            }catch (ElementNotFound e){
                return false;
            }
         }else {
             try {
-                $$x(String.format(labelField,form,field)).findBy(not(text(value)));
+                elements.findBy(not(text(value)));
             }catch (ElementShould e){
                 return false;
             }
@@ -105,8 +100,10 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
-        $x(String.format(locatorForm,form)).scrollIntoView(false);
-        $x(String.format(locatorButtonForm,form,button)).click();
+        SelenideElement element = $$("h2").findBy(text(form)).parent();
+        SelenideElement buttonForm = element.$$(".v-btn__content").findBy(text(button));
+        element.scrollIntoView(false);
+        buttonForm.click();
         return this;
     }
 
@@ -115,22 +112,25 @@ public interface SettingsPage extends BasePage {
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()) {
             String input = entry.getKey();
             String value = entry.getValue();
-            $(String.format(locatorInputForm,input)).click();
-            $(String.format(locatorInputForm,input)).sendKeys(Keys.CONTROL + "a");
-            $(String.format(locatorInputForm,input)).sendKeys(Keys.BACK_SPACE);
-            $(String.format(locatorInputForm,input)).sendKeys(value);
+            SelenideElement element = $("input[aria-label='" + input + "']");
+            element.click();
+            element.sendKeys(Keys.CONTROL + "a");
+            element.sendKeys(Keys.BACK_SPACE);
+            element.sendKeys(value);
         }
     }
 
     @Step(value = "Проверяем, появилась ли надпись о пустом/невалидном значении")
     default String isShowTextWrongValue(String field){
+        SelenideElement element = $$(".modal-item__title h4").findBy(text(field)).closest("li").
+                find(".v-messages__message");
         try{
-            $x(String.format(locatorWrongValue,field)).shouldBe(visible);
+            element.shouldBe(visible);
         }catch (ElementNotFound e){
             return null;
         }
 
-        return $x(String.format(locatorWrongValue,field)).text();
+        return element.text();
     }
 
     @Step(value = "Нажимаем кнопку Закрыть")
@@ -161,7 +161,7 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
     default SettingsPage clickButtonConfirmAction(String button){
-        $x(String.format(buttonFormAction,button)).click();
+        $$(".actions-wrapper .v-btn__content").findBy(text(button)).click();
         return this;
     }
 
