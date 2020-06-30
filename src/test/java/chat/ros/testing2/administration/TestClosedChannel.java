@@ -154,6 +154,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
         if (resultCreate || resultChange) {
             if (resultChange) channel = newNameChannel;
             else channel = nameChannel;
+            TestsBase.getInstance().init();
             TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(

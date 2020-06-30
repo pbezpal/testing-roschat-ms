@@ -150,6 +150,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
             if (resultChange) channel = newNameChannel;
             else channel = nameChannel;
             System.out.println("Channel public proven name: " + channel);
+            TestsBase.getInstance().init();
             TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(
