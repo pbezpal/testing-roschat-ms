@@ -123,6 +123,7 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
         clickButtonActionService(SETTINGS_BUTTON_SETTING);
         sendInputsForm(mapInputValueOM);
+        clickInputForm("Пароль БД");
         if(ip.equals("")) field = "IP адрес";
         else if(port.equals("")) field = "Порт БД";
         else field = "Имя пользователя БД";
