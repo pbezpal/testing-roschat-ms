@@ -130,7 +130,7 @@ task roschatms(type: Test){
     dependsOn 'cleanTest'
 
     doLast {
-        channels
+        channelstest
         parametertests
     }
 
@@ -140,7 +140,7 @@ task roschatms(type: Test){
     }
 }
 
-task channels(type: Test){
+task channelstest(type: Test){
     useTestNG(){
         suites 'src/test/resources/suites-channels.xml'
     }
