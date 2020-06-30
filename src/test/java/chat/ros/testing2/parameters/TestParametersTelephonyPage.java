@@ -178,4 +178,9 @@ public class TestParametersTelephonyPage extends TelephonyPage {
             ABrowserLogConsole();
         }
     }
+
+    @AfterClass
+    public void tearDown(){
+        TestsBase.getInstance().dismissWebDriver();
+    }
 }

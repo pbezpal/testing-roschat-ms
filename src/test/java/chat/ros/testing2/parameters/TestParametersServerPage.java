@@ -179,4 +179,9 @@ public class TestParametersServerPage extends ServerPage {
             ABrowserLogConsole();
         }
     }
+
+    @AfterClass
+    public void tearDown(){
+        TestsBase.getInstance().dismissWebDriver();
+    }
 }

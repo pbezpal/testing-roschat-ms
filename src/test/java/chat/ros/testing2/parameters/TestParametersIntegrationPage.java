@@ -22,7 +22,7 @@ import static chat.ros.testing2.helpers.AttachToReport.*;
 import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
-@Feature(value = "Сервер")
+@Feature(value = "Интеграция")
 public class TestParametersIntegrationPage extends ServerPage implements IntegrationPage {
 
     private SKUDPage skudPage;
@@ -300,5 +300,10 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
+    }
+
+    @AfterClass
+    public void tearDown(){
+        TestsBase.getInstance().dismissWebDriver();
     }
 }
