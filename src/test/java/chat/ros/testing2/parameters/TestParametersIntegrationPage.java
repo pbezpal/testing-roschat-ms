@@ -30,6 +30,7 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
     private ServerPage serverPage = new ServerPage();
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
+    public TestsBase testsBase;
 
     @DataProvider(name = "empty_value_om")
     public Object[][] getEmptyValueOM(){
@@ -88,11 +89,16 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
         return list.iterator();
     }
 
+    @BeforeClass
+    void setUp(){
+        testsBase = new TestsBase();
+    }
+
     @BeforeMethod
     public void beforeMethod(Method method){
         field = null;
-        getInstanceTestBase().init();
-        getInstanceTestBase().openMS("Настройки", "Интеграция");
+        testsBase.init();
+        testsBase.openMS("Настройки", "Интеграция");
         if (isExistsTableText("СКУД", false)) {
         } else {
             skudPage = (SKUDPage) clickServiceType("СКУД");

@@ -28,6 +28,7 @@ public class TestParametersServerPage extends ServerPage implements TestsParalle
     private String field;
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
+    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_connect")
     public Object[][] getEmptyValueConnect(){
@@ -77,12 +78,17 @@ public class TestParametersServerPage extends ServerPage implements TestsParalle
         return list.iterator();
     }
 
+    @BeforeClass
+    void setUp(){
+        testsBase = new TestsBase();
+    }
+
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        getInstanceTestBase().init();
-        getInstanceTestBase().openMS("Настройки", "Сервер");
+        testsBase.init();
+        testsBase.openMS("Настройки", "Сервер");
     }
 
     @Story(value = "Проверяем настройки Подключение на пустые поля")

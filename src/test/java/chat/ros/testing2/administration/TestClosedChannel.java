@@ -1,5 +1,6 @@
 package chat.ros.testing2.administration;
 
+import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
@@ -30,24 +31,26 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     private SoftAssert softAssert = null;
     private boolean resultCreate;
     private boolean resultChange;
+    private TestsBase testsBase;
 
     @BeforeClass
     void setUp(){
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         nameChannel = "CHC" + System.currentTimeMillis();
-        newNameChannel = nameChannel + System.currentTimeMillis();;
+        newNameChannel = nameChannel + System.currentTimeMillis();
+        testsBase = new TestsBase();
     }
 
     @BeforeMethod
     void beforeMethod(){
-        getInstanceTestBase().init();
+        testsBase.init();
     }
 
     @Story(value = "Создаём новый закрытый канал")
     @Description(value = "Авторизуемся на клиенте и создаём новый закрытый канал. Проверяем, что канал был создан.")
     @Test
     void test_Create_Channel(){
-        getInstanceTestBase().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -82,7 +85,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             "закрытый канал в списке каналов после создания")
     @Test(priority = 1, dependsOnMethods = {"test_Create_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Create(){
-        getInstanceTestBase().openMS("Администрирование","Каналы");
+        testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
@@ -92,7 +95,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             "клиенте отображается новое название и описание канала.")
     @Test(priority = 2, dependsOnMethods = {"test_Create_Channel"})
     void test_Change_Name_And_Description_Channel(){
-        getInstanceTestBase().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(changeDataChannel(
                 nameChannel,true,true, false,
                         newNameChannel, newDescription).
@@ -125,7 +128,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
             "закрытый канал в списке каналов после смены названия и описания")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Closed_Channel_In_MS_After_Change(){
-        getInstanceTestBase().openMS("Администрирование","Каналы");
+        testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, false),
                 "Закрытый канал " + newNameChannel + " отображается в СУ после ");
     }
@@ -153,8 +156,8 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
         if (resultCreate || resultChange) {
             if (resultChange) channel = newNameChannel;
             else channel = nameChannel;
-            getInstanceTestBase().init();
-            getInstanceTestBase().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+            testsBase.init();
+            testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(
                     deleteChannel(channel).isExistComments(channel, false),
@@ -163,7 +166,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
                     "Запись о канале " + channel + " осталась в БД postgres после удаления");
             softAssert.assertAll();
 
-            getInstanceTestBase().openMS("Администрирование", "Каналы");
+            testsBase.openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
         }

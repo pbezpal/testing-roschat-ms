@@ -25,6 +25,7 @@ public class TestParametersMailPage extends MailPage implements TestsParallelBas
 
     private SoftAssert softAssert;
     private String field;
+    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_mail")
     public Object[][] getEmptyValueMail(){
@@ -37,13 +38,17 @@ public class TestParametersMailPage extends MailPage implements TestsParallelBas
                 {MAIL_INFOTEK_SERVER,MAIL_INFOTEK_USERNAME, MAIL_INFOTEK_PASSWORD, MAIL_PORT_SSL, MAIL_INFOTEK_FROM_USER, ""}};
     }
 
+    @BeforeClass
+    void setUp(){
+        testsBase = new TestsBase();
+    }
 
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        getInstanceTestBase().init();
-        getInstanceTestBase().openMS("Настройки", "Почта");
+        testsBase.init();
+        testsBase.openMS("Настройки", "Почта");
     }
 
     @Story(value = "Проверяем настройки Почты на пустые поля")
