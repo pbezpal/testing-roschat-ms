@@ -129,11 +129,6 @@ task roschatms(type: Test){
 
     dependsOn 'cleanTest'
 
-    doLast {
-        channelstest
-        parametertests
-    }
-
     // Show test results.
     testLogging {
         events "passed", "skipped", "failed"

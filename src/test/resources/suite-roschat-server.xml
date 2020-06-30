@@ -16,9 +16,9 @@
             <class name="chat.ros.testing2.server.TestServerPage"/>
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOMMonitor"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrionMonitor"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrion"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPerco"/>
         </classes>
     </test>
     <suite-files>

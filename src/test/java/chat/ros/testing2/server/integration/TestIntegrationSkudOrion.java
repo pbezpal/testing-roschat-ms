@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция->Орион")
-public class TestIntegrationSkudOrionMonitor implements IntegrationPage, TestSuiteBase {
+public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase {
 
     private String classStatusServiceActive = "status active";
     private String classStatusServiceInactive = "status inactive";

@@ -19,10 +19,15 @@
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
             <class name="chat.ros.testing2.server.TestUserPage" />
             <class name="chat.ros.testing2.contacts.TestServicePage"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"></class>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOMMonitor"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrionMonitor"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPercoMonitor"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrion"/>
+            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPerco"/>
         </classes>
     </test>
+    <suite-files>
+        <suite-file path="channel-closed-tests.xml" />
+        <suite-file path="channel-public-tests.xml" />
+        <suite-file path="channel-public-proven-tests.xml"/>
+        <suite-file path="suite-parameters-tests.xml"></suite-file>
+    </suite-files>
 </suite>

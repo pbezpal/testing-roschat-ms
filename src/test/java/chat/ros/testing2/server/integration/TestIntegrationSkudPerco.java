@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция->PERCo")
-public class TestIntegrationSkudPercoMonitor implements IntegrationPage, TestSuiteBase {
+public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase {
 
     private String classStatusServiceActive = "status active";
     private String classStatusServiceInactive = "status inactive";
