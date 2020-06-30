@@ -96,8 +96,8 @@ public class TestParametersEmptyValue extends ServerPage implements IntegrationP
     @DataProvider(name = "empty_value_orion")
     public Object[][] getEmptyValueOrion(){
         return new Object[][] {
-                /*{"",INTEGRATION_SERVICE_ORION_PORT, INTEGRATION_SERVICE_ORION_OUTGOING_PORT},
-                {INTEGRATION_SERVICE_ORION_IP_ADDRESS,"", INTEGRATION_SERVICE_ORION_OUTGOING_PORT},*/
+                {"",INTEGRATION_SERVICE_ORION_PORT, INTEGRATION_SERVICE_ORION_OUTGOING_PORT},
+                {INTEGRATION_SERVICE_ORION_IP_ADDRESS,"", INTEGRATION_SERVICE_ORION_OUTGOING_PORT},
                 {INTEGRATION_SERVICE_ORION_IP_ADDRESS,INTEGRATION_SERVICE_ORION_PORT, ""}};
     }
 
@@ -215,6 +215,36 @@ public class TestParametersEmptyValue extends ServerPage implements IntegrationP
         softAssert.assertAll();
     }
 
+    @Story(value = "Проверяем настройки СКУД Офис-Монитор на пустые поля")
+    @Description(value = "Вводим в настройках СКУД Офис-Монитор пустые значения и проверяем: \n" +
+            "1. Появилась ли красная надпись 'Введите значение' \n" +
+            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
+            "3. Сохраняются ли настройки с пустым полем")
+    @Test(dataProvider = "empty_value_om")
+    void test_Settings_OM_Empty_Value(String ip, String port, String username){
+        Map<String, String> mapInputValueOM = new HashMap() {{
+            put("IP адрес", ip);
+            put("Порт БД", port);
+            put("Имя пользователя БД", username);
+        }};
+        skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
+        clickButtonActionService(SETTINGS_BUTTON_SETTING);
+        sendInputsForm(mapInputValueOM);
+        if(ip.equals("")) field = "IP адрес";
+        else if(port.equals("")) field = "Порт БД";
+        else field = "Имя пользователя БД";
+        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave();
+        softAssert.assertTrue(isFormChange(),
+                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
+        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        else if(isFormChange()) clickButtonClose();
+        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
+        softAssert.assertAll();
+    }
+
     @Story(value = "Проверяем настройки Push сервера на пустые поля")
     @Description(value = "Вводим в поля формы Лицензирование и обслуживание пустые значения и проверяем: \n" +
             "1. Появилась ли красная надпись 'Введите значение' \n" +
@@ -276,6 +306,37 @@ public class TestParametersEmptyValue extends ServerPage implements IntegrationP
                 "",
                  false),
                  "В поле " + field + ", сохранилось пустое значение");
+        softAssert.assertAll();
+    }
+
+    @Story(value = "Проверяем настройки СКУД ОРИОН на пустые поля")
+    @Description(value = "Вводим в настройках СКУД ОРИОН пустые значения и проверяем: \n" +
+            "1. Появилась ли красная надпись 'Введите значение' \n" +
+            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
+            "3. Сохраняются ли настройки с пустым полем")
+    @Test(dataProvider = "empty_value_orion")
+    void test_Settings_Oroin_Empty_Value(String ip, String port, String outport){
+        Map<String, String> mapInputValueOrion = new HashMap() {{
+            put("IP адрес", ip);
+            put("Порт", port);
+            put("Исходящий порт", outport);
+        }};
+        skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
+        clickButtonActionService(SETTINGS_BUTTON_SETTING);
+        sendInputsForm(mapInputValueOrion);
+        if(ip.equals("")) field = "IP адрес";
+        else if(port.equals("")) field = "Порт";
+        else field = "Исходящий порт";
+        clickButtonSave();
+        softAssert.assertTrue(isFormChange(),
+                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
+        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        //if( ! isShowTextWrongValue(field).equals("Введите значение")) System.out.println("Yes");
+        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        else if(isFormChange()) clickButtonClose();
+        isExistsTableText(INTEGRATION_SERVICE_ORION_TYPE, false);
         softAssert.assertAll();
     }
 
@@ -395,67 +456,6 @@ public class TestParametersEmptyValue extends ServerPage implements IntegrationP
                     false),
                     "В поле " + field + ", сохранилось пустое значение");
         }
-        softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем настройки СКУД Офис-Монитор на пустые поля")
-    @Description(value = "Вводим в настройках СКУД Офис-Монитор пустые значения и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Введите значение' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с пустым полем")
-    @Test(dataProvider = "empty_value_om")
-    void test_Settings_OM_Empty_Value(String ip, String port, String username){
-        Map<String, String> mapInputValueOM = new HashMap() {{
-            put("IP адрес", ip);
-            put("Порт БД", port);
-            put("Имя пользователя БД", username);
-        }};
-        skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
-        clickButtonActionService(SETTINGS_BUTTON_SETTING);
-        sendInputsForm(mapInputValueOM);
-        if(ip.equals("")) field = "IP адрес";
-        else if(port.equals("")) field = "Порт БД";
-        else field = "Имя пользователя БД";
-        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
-                "Надпись 'Введите значение' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
-        softAssert.assertAll();
-    }
-
-    @Story(value = "Проверяем настройки СКУД ОРИОН на пустые поля")
-    @Description(value = "Вводим в настройках СКУД ОРИОН пустые значения и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Введите значение' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с пустым полем")
-    @Test(dataProvider = "empty_value_orion")
-    void test_Settings_Oroin_Empty_Value(String ip, String port, String outport){
-        Map<String, String> mapInputValueOrion = new HashMap() {{
-            put("IP адрес", ip);
-            put("Порт", port);
-            put("Исходящий порт", outport);
-        }};
-        skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
-        clickButtonActionService(SETTINGS_BUTTON_SETTING);
-        sendInputsForm(mapInputValueOrion);
-        if(ip.equals("")) field = "IP адрес";
-        else if(port.equals("")) field = "Порт";
-        else field = "Исходящий порт";
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
-                "Надпись 'Введите значение' не появилась");
-        //if( ! isShowTextWrongValue(field).equals("Введите значение")) System.out.println("Yes");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_ORION_TYPE, false);
         softAssert.assertAll();
     }
 
