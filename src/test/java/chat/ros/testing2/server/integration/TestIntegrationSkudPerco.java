@@ -46,8 +46,8 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Status")) TestsBase.getInstance().openMS("Монитор");
-        else TestsBase.getInstance().openMS("Настройки","Интеграция");
+        if(method.toString().contains("Status")) getInstanceTestBase().openMS("Монитор");
+        else getInstanceTestBase().openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Добавляем сервис СКУД PERCo")

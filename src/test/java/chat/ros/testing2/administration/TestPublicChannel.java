@@ -31,6 +31,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     private String channel;
     private boolean resultCreate;
     private boolean resultChange;
+    private TestsBase testsBase;
 
     @BeforeClass
     void setUp(){
@@ -41,14 +42,15 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
 
     @BeforeMethod
     void beforeMethod(){
-        TestsBase.getInstance().init();
+        testsBase = new TestsBase();
+        testsBase.init();
     }
 
     @Story(value = "Создаём новый публичный канал")
     @Description(value = "Авторизуемся под пользователем user_1 и создаём новый публичный канал")
     @Test
     void test_Create_Channel(){
-        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -67,7 +69,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
             "канал в списке каналов")
     @Test(priority = 1, dependsOnMethods = {"test_Create_Channel"})
     void test_Show_Public_Channel_In_MS(){
-        TestsBase.getInstance().openMS("Администрирование","Каналы");
+        testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
                 "Публичный канал " + nameChannel + " не отображается в СУ");
     }
@@ -77,7 +79,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
             "клиенте отображается новое название и описание канала.")
     @Test(priority = 2, dependsOnMethods = {"test_Create_Channel"})
     void test_Change_Name_And_Description_Channel(){
-        TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
         assertTrue(
                 changeDataChannel(
                         nameChannel,true,true, false,
@@ -95,7 +97,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
             "канал в списке каналов после смены имени и описания канала")
     @Test(dependsOnMethods = {"test_Change_Name_And_Description_Channel"})
     void test_Show_Public_Channel_In_MS_After_Change(){
-        TestsBase.getInstance().openMS("Администрирование","Каналы");
+        testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, true),
                 "Публичный канал " + newNameChannel + " не отображается в СУ");
     }
@@ -123,8 +125,8 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
         if (resultCreate || resultChange) {
             if (resultChange) channel = newNameChannel;
             else channel = nameChannel;
-            TestsBase.getInstance().init();
-            TestsBase.getInstance().openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+            testsBase.init();
+            testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
             softAssert = new SoftAssert();
             softAssert.assertTrue(
                     deleteChannel(channel).isExistComments(channel, false),
@@ -133,7 +135,7 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
                     "Запись о канале " + channel + " осталась в БД postgres после удаления");
             softAssert.assertAll();
 
-            TestsBase.getInstance().openMS("Администрирование", "Каналы");
+            testsBase.openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
         }

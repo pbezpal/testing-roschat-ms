@@ -25,6 +25,7 @@ public class TestParametersTelephonyPage extends TelephonyPage {
 
     private String field;
     private SoftAssert softAssert;
+    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_network")
     public Object[][] getEmptyValueNetwork(){
@@ -52,14 +53,15 @@ public class TestParametersTelephonyPage extends TelephonyPage {
 
     @BeforeClass
     void setUp(){
-        TestsBase.getInstance().init();
+        testsBase = new TestsBase();
+        testsBase.init();
     }
 
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        TestsBase.getInstance().openMS("Настройки", "Телефония");
+        testsBase.openMS("Настройки", "Телефония");
     }
 
     @Story(value = "Проверяем настройки Сети на пустые поля")
@@ -181,6 +183,6 @@ public class TestParametersTelephonyPage extends TelephonyPage {
 
     @AfterClass
     public void tearDown(){
-        TestsBase.getInstance().dismissWebDriver();
+        testsBase.dismissWebDriver();
     }
 }

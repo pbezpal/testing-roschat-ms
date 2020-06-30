@@ -35,8 +35,7 @@ public class TestsBase {
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
     private WebDriver driver = null;
 
-    public static TestsBase testsBase = new TestsBase();
-    public static TestsBase getInstance() { return testsBase;}
+    public TestsBase () {} ;
 
     public void init(){
         DesiredCapabilities capabilities = new DesiredCapabilities();

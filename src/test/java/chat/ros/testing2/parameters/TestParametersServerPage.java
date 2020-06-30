@@ -25,6 +25,7 @@ public class TestParametersServerPage extends ServerPage {
 
     private SoftAssert softAssert;
     private String field;
+    private TestsBase testsBase;
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
 
@@ -78,14 +79,15 @@ public class TestParametersServerPage extends ServerPage {
 
     @BeforeClass
     public void setUp(){
-        TestsBase.getInstance().init();
+        testsBase = new TestsBase();
+        testsBase.init();
     }
 
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        TestsBase.getInstance().openMS("Настройки", "Сервер");
+        testsBase.openMS("Настройки", "Сервер");
     }
 
     @Story(value = "Проверяем настройки Подключение на пустые поля")
@@ -182,6 +184,6 @@ public class TestParametersServerPage extends ServerPage {
 
     @AfterClass
     public void tearDown(){
-        TestsBase.getInstance().dismissWebDriver();
+        testsBase.dismissWebDriver();
     }
 }

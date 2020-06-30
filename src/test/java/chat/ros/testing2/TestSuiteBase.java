@@ -7,19 +7,25 @@ import java.lang.reflect.Method;
 
 public interface TestSuiteBase {
 
+    TestsBase testsBase = new TestsBase();
+
     @BeforeSuite
     default void setUp(){
-        TestsBase.getInstance().init();
+        getInstanceTestBase().init();
     }
 
     @AfterMethod(alwaysRun = true)
     default void afterTestMethod(Method m, ITestResult testResult){
-        TestsBase.getInstance().afterTestMethod(m, testResult);
+        getInstanceTestBase().afterTestMethod(m, testResult);
     }
 
     @AfterSuite
     default void tearDown(){
-        TestsBase.getInstance().dismissWebDriver();
+        getInstanceTestBase().dismissWebDriver();
+    }
+
+    default TestsBase getInstanceTestBase(){
+        return testsBase;
     }
 
 }

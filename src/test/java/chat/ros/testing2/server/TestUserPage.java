@@ -38,13 +38,13 @@ public class TestUserPage extends UserPage implements TestSuiteBase {
     @BeforeMethod
     void beforeTest(Method method){
         if(method.toString().contains("Login") || method.toString().contains("Delete")){
-            Configuration.baseUrl = TestsBase.getInstance().getHostMS();
+            Configuration.baseUrl = getInstanceTestBase().getHostMS();
             open("/");
             logoutMS();
         }else if(method.toString().contains("Open")){
-            TestsBase.getInstance().openMS();
+            getInstanceTestBase().openMS();
             open("/settings/users");
-        }else TestsBase.getInstance().openMS("Настройки","Настройка СУ");
+        }else getInstanceTestBase().openMS("Настройки","Настройка СУ");
     }
 
     @Story(value = "Добавляем нового пользователя в систему")

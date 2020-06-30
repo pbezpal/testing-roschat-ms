@@ -26,8 +26,8 @@ public class TestSNMPPage extends SNMPPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/snmp");
-        else TestsBase.getInstance().openMS("Настройки","SNMP");
+        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/snmp");
+        else getInstanceTestBase().openMS("Настройки","SNMP");
     }
 
     @Story(value = "Настраиваем SNMP сервер")

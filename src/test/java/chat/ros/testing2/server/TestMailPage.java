@@ -25,8 +25,8 @@ public class TestMailPage extends MailPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/mail");
-        else TestsBase.getInstance().openMS("Настройки","Почта");
+        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/mail");
+        else getInstanceTestBase().openMS("Настройки","Почта");
     }
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")

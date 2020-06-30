@@ -4,6 +4,7 @@ import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import com.codeborne.selenide.WebDriverRunner;
+import org.bouncycastle.util.test.Test;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 
@@ -15,6 +16,7 @@ public interface TestsParallelBase {
     String commandDBCheckChannel = "sudo -u roschat psql -c \"select * from channels;\" | grep '%1$s'";
     String commandDBCheckTypeChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $2}'";
     String commandDBCheckProvedChannel = commandDBCheckChannel + "| awk -F\"|\" '{print $4}'";
+    TestsBase testBase = new TestsBase();
 
     @BeforeSuite(alwaysRun = true)
     default void beforeSuite(ITestContext c){
@@ -28,8 +30,8 @@ public interface TestsParallelBase {
     default void afterSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
-            TestsBase.getInstance().init();
-            TestsBase.getInstance().openMS("Администрирование","Каналы");
+            getInstanceTestBase().init();
+            getInstanceTestBase().openMS("Администрирование","Каналы");
             ChannelsPage channelsPage = new ChannelsPage();
             assertTrue(channelsPage.getCountChannels() == 0,
                     "Отображаются записи каналов в СУ после удаления всех каналов");
@@ -38,16 +40,20 @@ public interface TestsParallelBase {
 
     default void isCheckContacts(String... number){
         for(int i = 0; i < number.length; i++){
-            if (!SSHManager.isCheckQuerySSH(String.format(TestsBase.getInstance().getSshCommandIsContact(), number[i]))) {
-                TestsBase.getInstance().init();
+            if (!SSHManager.isCheckQuerySSH(String.format(getInstanceTestBase().getSshCommandIsContact(), number[i]))) {
+                getInstanceTestBase().init();
                 ContactsPage contactsPage = new ContactsPage();
-                TestsBase.getInstance().openMS("Справочник");
+                getInstanceTestBase().openMS("Справочник");
                 if (contactsPage.isNotExistsTableText(number[i])) {
                     contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
                 }
-                TestsBase.getInstance().dismissWebDriver();
+                getInstanceTestBase().dismissWebDriver();
             }
         }
+    }
+
+    default TestsBase getInstanceTestBase(){
+        return testBase;
     }
 
 

@@ -28,9 +28,9 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        TestsBase.getInstance().addContactAndAccount(CONTACT_NUMBER_7012);
-        if (method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/web-server");
-        else TestsBase.getInstance().openMS("Настройки", "Сервер");
+        getInstanceTestBase().addContactAndAccount(CONTACT_NUMBER_7012);
+        if (method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/web-server");
+        else getInstanceTestBase().openMS("Настройки", "Сервер");
     }
 
     @DataProvider(name = "connect")
@@ -89,7 +89,7 @@ public class TestServerPage extends ServerPage implements TestSuiteBase {
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         if(https.equals(SERVER_CONNECT_HTTPS_OTHER_PORT)) client = "http://" + server + ":" + http;
         else client = "https://" + server;
-        TestsBase.getInstance().openClient(client,CONTACT_NUMBER_7012 + "@ros.chat", false);
+        getInstanceTestBase().openClient(client,CONTACT_NUMBER_7012 + "@ros.chat", false);
     }
 
     /*@Story(value = "Настраиваем сертификат SSL")

@@ -51,8 +51,8 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/telephony");
-        TestsBase.getInstance().openMS("Настройки","Телефония");
+        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/telephony");
+        getInstanceTestBase().openMS("Настройки","Телефония");
     }
 
     @Story(value = "Настройка сети")

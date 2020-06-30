@@ -37,8 +37,8 @@ public class TestGeozonesPage extends GeozonesPage implements TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/geozones");
-        else TestsBase.getInstance().openMS("Настройки","Геозоны");
+        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/geozones");
+        else getInstanceTestBase().openMS("Настройки","Геозоны");
     }
 
     @Story(value = "Добавляем геозону")

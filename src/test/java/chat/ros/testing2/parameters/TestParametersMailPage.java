@@ -24,6 +24,7 @@ public class TestParametersMailPage extends MailPage {
 
     private SoftAssert softAssert;
     private String field;
+    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_mail")
     public Object[][] getEmptyValueMail(){
@@ -38,14 +39,15 @@ public class TestParametersMailPage extends MailPage {
 
     @BeforeClass
     public void setUp(){
-        TestsBase.getInstance().init();
+        testsBase = new TestsBase();
+        testsBase.init();
     }
 
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        TestsBase.getInstance().openMS("Настройки", "Почта");
+        testsBase.openMS("Настройки", "Почта");
     }
 
     @Story(value = "Проверяем настройки Почты на пустые поля")
@@ -99,6 +101,6 @@ public class TestParametersMailPage extends MailPage {
 
     @AfterClass
     public void tearDown(){
-        TestsBase.getInstance().dismissWebDriver();
+        testsBase.dismissWebDriver();
     }
 }

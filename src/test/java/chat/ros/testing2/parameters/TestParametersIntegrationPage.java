@@ -27,6 +27,7 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
 
     private SKUDPage skudPage;
     private String field;
+    private TestsBase testsBase;
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
 
@@ -89,13 +90,14 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
 
     @BeforeClass
     public void setUp(){
-        TestsBase.getInstance().init();
+        testsBase = new TestsBase();
+        testsBase.init();
     }
 
     @BeforeMethod
     public void beforeMethod(Method method){
         field = null;
-        TestsBase.getInstance().openMS("Настройки", "Интеграция");
+        testsBase.openMS("Настройки", "Интеграция");
         if (isExistsTableText("СКУД", false)) {
         } else {
             skudPage = (SKUDPage) clickServiceType("СКУД");
@@ -111,7 +113,7 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             "3. Сохраняются ли настройки с пустым полем")
     @Test(dataProvider = "empty_value_om")
     void test_Settings_OM_Empty_Value(String ip, String port, String username){
-        TestsBase.getInstance().init();
+        testsBase.init();
         SoftAssert omAssert = new SoftAssert();
         Map<String, String> mapInputValueOM = new HashMap() {{
             put("IP адрес", ip);
@@ -143,7 +145,7 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             "3. Сохраняются ли настройки с пустым полем")
     @Test(dataProvider = "empty_value_orion")
     void test_Settings_Oroin_Empty_Value(String ip, String port, String outport){
-        TestsBase.getInstance().init();
+        testsBase.init();
         SoftAssert orionAssert = new SoftAssert();
         Map<String, String> mapInputValueOrion = new HashMap() {{
             put("IP адрес", ip);
@@ -304,6 +306,6 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
 
     @AfterClass
     public void tearDown(){
-        TestsBase.getInstance().dismissWebDriver();
+        testsBase.dismissWebDriver();
     }
 }

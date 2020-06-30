@@ -41,8 +41,8 @@ public class TestIntegrationPage implements IntegrationPage, TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) TestsBase.getInstance().openMS("/settings/integration");
-        else TestsBase.getInstance().openMS("Настройки","Интеграция");
+        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/integration");
+        else getInstanceTestBase().openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
