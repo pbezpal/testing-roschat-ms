@@ -41,8 +41,8 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
 
     @BeforeMethod
     public void beforeTest(Method method){
-        if(method.toString().contains("Status")) testsBase.openMS("Монитор");
-        else getTestBase().openMS("Настройки","Интеграция");
+        if(method.toString().contains("Status")) getInstanceTestBase().openMS("Монитор");
+        else getInstanceTestBase().openMS("Настройки","Интеграция");
     }
 
     @Story(value = "Состояние СКУД, перед добавлением СКУД Офис-Монитор")
