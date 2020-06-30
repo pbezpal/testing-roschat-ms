@@ -2,7 +2,7 @@
 
 <suite name="channels" >
     <suite-files>
-        <suite-file path="channel-closed-tests.xml" />
+        <suite-file path="suite-channel-tests.xml" />
         <suite-file path="channel-public-tests.xml" />
         <suite-file path="channel-public-proven-tests.xml"/>
     </suite-files>

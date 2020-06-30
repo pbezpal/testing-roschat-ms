@@ -2,10 +2,8 @@
 
 <suite name="roschat-ms" >
     <suite-files>
+        <suite-file path="suite-channel-tests.xml" />
         <suite-file path="suite-roschat-ms-settings.xml"></suite-file>
-        <suite-file path="channel-closed-tests.xml" />
-        <suite-file path="channel-public-tests.xml" />
-        <suite-file path="channel-public-proven-tests.xml"/>
         <suite-file path="suite-parameters-tests.xml"></suite-file>
     </suite-files>
 </suite>
