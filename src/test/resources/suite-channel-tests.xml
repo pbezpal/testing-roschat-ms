@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Channel-MS" verbose="1" parallel="classes" thread-count="3" >
+<suite name="Channel-MS" verbose="1" parallel="classes" thread-count="4" >
     <test name="Tests-Channel-MS" >
         <classes>
             <class name="chat.ros.testing2.administration.TestPublicChannel" />

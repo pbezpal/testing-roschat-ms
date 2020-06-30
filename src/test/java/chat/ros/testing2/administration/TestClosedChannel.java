@@ -1,6 +1,5 @@
 package chat.ros.testing2.administration;
 
-import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
@@ -31,13 +30,12 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     private SoftAssert softAssert = null;
     private boolean resultCreate;
     private boolean resultChange;
-    private TestsBase testsBase;
 
     @BeforeClass
     void setUp(){
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         nameChannel = "CHC" + System.currentTimeMillis();
-        newNameChannel = nameChannel + System.currentTimeMillis();
+        newNameChannel = nameChannel + System.currentTimeMillis();;
     }
 
     @BeforeMethod
@@ -165,10 +163,9 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
                     "Запись о канале " + channel + " осталась в БД postgres после удаления");
             softAssert.assertAll();
 
-            testsBase.openMS("Администрирование", "Каналы");
+            getInstanceTestBase().openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
-            getInstanceTestBase().dismissWebDriver();
         }
     }
 }

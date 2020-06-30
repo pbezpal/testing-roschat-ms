@@ -176,9 +176,4 @@ public class TestParametersServerPage extends ServerPage implements TestsParalle
             ABrowserLogConsole();
         }
     }
-
-    @AfterClass
-    public void tearDown(){
-        getInstanceTestBase().dismissWebDriver();
-    }
 }

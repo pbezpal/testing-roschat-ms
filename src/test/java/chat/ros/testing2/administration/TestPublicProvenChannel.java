@@ -1,6 +1,5 @@
 package chat.ros.testing2.administration;
 
-import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
@@ -171,7 +170,6 @@ public class TestPublicProvenChannel extends ChannelsPage implements TestsParall
             getInstanceTestBase().openMS("Администрирование", "Каналы");
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
-            getInstanceTestBase().dismissWebDriver();
         }
     }
 }

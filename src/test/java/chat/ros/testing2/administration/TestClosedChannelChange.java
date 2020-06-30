@@ -1,10 +1,8 @@
 package chat.ros.testing2.administration;
 
-import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -271,6 +269,5 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
             assertTrue(isShowChannel(channel, false),
                     "Закрытый канал " + channel + " отображается в СУ после удаления");
         }
-        getInstanceTestBase().dismissWebDriver();
     }
 }

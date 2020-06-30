@@ -94,9 +94,4 @@ public class TestParametersMailPage extends MailPage implements TestsParallelBas
             ABrowserLogConsole();
         }
     }
-
-    @AfterClass
-    public void tearDown(){
-        getInstanceTestBase().dismissWebDriver();
-    }
 }

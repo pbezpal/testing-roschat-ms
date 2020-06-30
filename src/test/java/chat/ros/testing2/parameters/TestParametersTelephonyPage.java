@@ -175,9 +175,4 @@ public class TestParametersTelephonyPage extends TelephonyPage implements TestsP
             ABrowserLogConsole();
         }
     }
-
-    @AfterClass
-    public void tearDown(){
-        getInstanceTestBase().dismissWebDriver();
-    }
 }
