@@ -135,32 +135,6 @@ task roschatms(type: Test){
     }
 }
 
-task channelstest(type: Test){
-    useTestNG(){
-        suites 'src/test/resources/suites-channels.xml'
-    }
-
-    dependsOn 'cleanTest'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
-task parametertests(type: Test){
-    useTestNG(){
-        suites 'src/test/resources/suite-parameters-tests.xml'
-    }
-
-    dependsOn 'cleanTest'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
 test {
 
     useTestNG(){
