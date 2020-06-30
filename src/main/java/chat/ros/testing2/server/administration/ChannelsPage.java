@@ -41,7 +41,8 @@ public class ChannelsPage extends client.comments.ChannelsPage {
 
     @Step(value = "Делаем канал проверенным")
     private ChannelsPage clickButtonTestedChannel(String channel){
-        $x("//table//span[contains(text(),'" + channel + "')]//ancestor::tr//button").click();
+        $$("table span").findBy(Condition.text(channel)).closest("tr").find("button").click();
+        //$x("//table//span[contains(text(),'" + channel + "')]//ancestor::tr//button").click();
         return this;
     }
 
