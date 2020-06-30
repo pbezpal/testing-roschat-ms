@@ -35,9 +35,13 @@ public class TestPublicChannel extends ChannelsPage implements TestsParallelBase
     @BeforeClass
     void setUp(){
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        TestsBase.getInstance().init();
         nameChannel = "CHP" + System.currentTimeMillis();
         newNameChannel = nameChannel + System.currentTimeMillis();
+    }
+
+    @BeforeMethod
+    void beforeMethod(){
+        TestsBase.getInstance().init();
     }
 
     @Story(value = "Создаём новый публичный канал")

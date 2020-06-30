@@ -35,9 +35,13 @@ public class TestPublicProvenChannelChange extends ChannelsPage implements Tests
     @BeforeClass
     void setUp(){
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        TestsBase.getInstance().init();
         nameChannel = "CHPPCH" + System.currentTimeMillis();
         newNameChannel = nameChannel + System.currentTimeMillis();
+    }
+
+    @BeforeMethod
+    void beforeMethod(){
+        TestsBase.getInstance().init();
     }
 
     @Story(value = "Создаём новый публичный канал")
