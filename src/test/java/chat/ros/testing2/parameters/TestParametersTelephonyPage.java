@@ -1,6 +1,7 @@
 package chat.ros.testing2.parameters;
 
 import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -21,11 +22,10 @@ import static chat.ros.testing2.helpers.AttachToReport.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
-public class TestParametersTelephonyPage extends TelephonyPage {
+public class TestParametersTelephonyPage extends TelephonyPage implements TestsParallelBase {
 
     private String field;
     private SoftAssert softAssert;
-    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_network")
     public Object[][] getEmptyValueNetwork(){
@@ -51,17 +51,12 @@ public class TestParametersTelephonyPage extends TelephonyPage {
                 {TELEPHONY_TURN_MIN_PORT,TELEPHONY_TURN_MAX_PORT, TELEPHONY_TURN_REALM, ""}};
     }
 
-    @BeforeClass
-    void setUp(){
-        testsBase = new TestsBase();
-        testsBase.init();
-    }
-
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        testsBase.openMS("Настройки", "Телефония");
+        getInstanceTestBase().init();
+        getInstanceTestBase().openMS("Настройки", "Телефония");
     }
 
     @Story(value = "Проверяем настройки Сети на пустые поля")
@@ -183,6 +178,6 @@ public class TestParametersTelephonyPage extends TelephonyPage {
 
     @AfterClass
     public void tearDown(){
-        testsBase.dismissWebDriver();
+        getInstanceTestBase().dismissWebDriver();
     }
 }

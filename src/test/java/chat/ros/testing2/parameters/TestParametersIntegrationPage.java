@@ -23,11 +23,11 @@ import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция")
-public class TestParametersIntegrationPage extends ServerPage implements IntegrationPage {
+public class TestParametersIntegrationPage extends ServerPage implements IntegrationPage, TestsParallelBase {
 
     private SKUDPage skudPage;
     private String field;
-    private TestsBase testsBase;
+    private ServerPage serverPage = new ServerPage();
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
 
@@ -88,16 +88,11 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
         return list.iterator();
     }
 
-    @BeforeClass
-    public void setUp(){
-        testsBase = new TestsBase();
-        testsBase.init();
-    }
-
     @BeforeMethod
     public void beforeMethod(Method method){
         field = null;
-        testsBase.openMS("Настройки", "Интеграция");
+        getInstanceTestBase().init();
+        getInstanceTestBase().openMS("Настройки", "Интеграция");
         if (isExistsTableText("СКУД", false)) {
         } else {
             skudPage = (SKUDPage) clickServiceType("СКУД");
@@ -113,7 +108,6 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             "3. Сохраняются ли настройки с пустым полем")
     @Test(dataProvider = "empty_value_om")
     void test_Settings_OM_Empty_Value(String ip, String port, String username){
-        testsBase.init();
         SoftAssert omAssert = new SoftAssert();
         Map<String, String> mapInputValueOM = new HashMap() {{
             put("IP адрес", ip);
@@ -145,7 +139,6 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             "3. Сохраняются ли настройки с пустым полем")
     @Test(dataProvider = "empty_value_orion")
     void test_Settings_Oroin_Empty_Value(String ip, String port, String outport){
-        testsBase.init();
         SoftAssert orionAssert = new SoftAssert();
         Map<String, String> mapInputValueOrion = new HashMap() {{
             put("IP адрес", ip);
@@ -302,10 +295,5 @@ public class TestParametersIntegrationPage extends ServerPage implements Integra
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
-    }
-
-    @AfterClass
-    public void tearDown(){
-        testsBase.dismissWebDriver();
     }
 }

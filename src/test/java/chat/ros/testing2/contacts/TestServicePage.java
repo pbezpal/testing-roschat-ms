@@ -22,13 +22,11 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
 
     private UserPage userPage;
     private SoftAssert softAssert;
-    private TestsBase testsBase;
 
     @BeforeMethod
     public void beforeTest(){
-        testsBase = new TestsBase();
-        testsBase.addContactAndAccount(CONTACT_NUMBER_7012);
-        testsBase.openMS("Справочник");
+        getInstanceTestBase().addContactAndAccount(CONTACT_NUMBER_7012);
+        getInstanceTestBase().openMS("Справочник");
     }
 
     @Story(value = "Добавляем у контакта  сервис Рация")

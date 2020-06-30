@@ -27,7 +27,7 @@ public interface TestsParallelBase {
     @AfterSuite(alwaysRun = true)
     default void afterSuite(ITestContext c){
         ITestContext context = c;
-        if(context.getCurrentXmlTest().getName().equals("Tests-Channel-Public-Proven")){
+        if(context.getCurrentXmlTest().getName().contains("Channel")){
             getInstanceTestBase().init();
             getInstanceTestBase().openMS("Администрирование","Каналы");
             ChannelsPage channelsPage = new ChannelsPage();

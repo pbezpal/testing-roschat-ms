@@ -1,6 +1,7 @@
 package chat.ros.testing2.parameters;
 
 import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.ServerPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
@@ -21,11 +22,10 @@ import static chat.ros.testing2.helpers.AttachToReport.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")
-public class TestParametersServerPage extends ServerPage {
+public class TestParametersServerPage extends ServerPage implements TestsParallelBase {
 
     private SoftAssert softAssert;
     private String field;
-    private TestsBase testsBase;
     private static final String wrongSymbols = " !\"/#$%";//&'()*+,-.:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~‘’“”—ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     private static final String validSymbols = "1234567890";
 
@@ -77,17 +77,12 @@ public class TestParametersServerPage extends ServerPage {
         return list.iterator();
     }
 
-    @BeforeClass
-    public void setUp(){
-        testsBase = new TestsBase();
-        testsBase.init();
-    }
-
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        testsBase.openMS("Настройки", "Сервер");
+        getInstanceTestBase().init();
+        getInstanceTestBase().openMS("Настройки", "Сервер");
     }
 
     @Story(value = "Проверяем настройки Подключение на пустые поля")
@@ -184,6 +179,6 @@ public class TestParametersServerPage extends ServerPage {
 
     @AfterClass
     public void tearDown(){
-        testsBase.dismissWebDriver();
+        getInstanceTestBase().dismissWebDriver();
     }
 }

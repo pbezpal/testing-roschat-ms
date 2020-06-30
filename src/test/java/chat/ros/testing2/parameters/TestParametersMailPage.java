@@ -1,6 +1,7 @@
 package chat.ros.testing2.parameters;
 
 import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -20,11 +21,10 @@ import static chat.ros.testing2.helpers.AttachToReport.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Почте")
-public class TestParametersMailPage extends MailPage {
+public class TestParametersMailPage extends MailPage implements TestsParallelBase {
 
     private SoftAssert softAssert;
     private String field;
-    private TestsBase testsBase;
 
     @DataProvider(name = "empty_value_mail")
     public Object[][] getEmptyValueMail(){
@@ -37,17 +37,13 @@ public class TestParametersMailPage extends MailPage {
                 {MAIL_INFOTEK_SERVER,MAIL_INFOTEK_USERNAME, MAIL_INFOTEK_PASSWORD, MAIL_PORT_SSL, MAIL_INFOTEK_FROM_USER, ""}};
     }
 
-    @BeforeClass
-    public void setUp(){
-        testsBase = new TestsBase();
-        testsBase.init();
-    }
 
     @BeforeMethod
     public void beforeMethod(){
         field = null;
         softAssert = new SoftAssert();
-        testsBase.openMS("Настройки", "Почта");
+        getInstanceTestBase().init();
+        getInstanceTestBase().openMS("Настройки", "Почта");
     }
 
     @Story(value = "Проверяем настройки Почты на пустые поля")
@@ -101,6 +97,6 @@ public class TestParametersMailPage extends MailPage {
 
     @AfterClass
     public void tearDown(){
-        testsBase.dismissWebDriver();
+        getInstanceTestBase().dismissWebDriver();
     }
 }
