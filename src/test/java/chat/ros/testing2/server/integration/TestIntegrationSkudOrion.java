@@ -40,19 +40,6 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
         put("Исходящий порт", INTEGRATION_SERVICE_ORION_OUTGOING_PORT);
     }};
 
-    @BeforeClass
-    public void setUp(){
-        if(SSHManager.isCheckQuerySSH(commandDBCheckSKUD)) {
-            getInstanceTestBase().openMS("Настройки", "Интеграция");
-            if (isExistsTableText("СКУД", false)) {
-            } else {
-                skudPage = (SKUDPage) clickServiceType("СКУД");
-                assertTrue(skudPage.deleteSKUD("СКУД"),
-                        "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
-            }
-        }
-    }
-
     @BeforeMethod
     public void beforeTest(Method method){
         if(method.toString().contains("Status")) getInstanceTestBase().openMS("Монитор");
