@@ -31,7 +31,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean roschatms'
+                        sh './gradlew clean roschatserver'
                     }catch(err){
                         STATUS="Провал";
                     }
