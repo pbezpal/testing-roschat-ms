@@ -11,6 +11,7 @@
     </test>
     <test name="Parameters-Tests-Skud">
         <classes>
+            <class name="chat.ros.testing2.parameters.TestParametersIntegrationOMPage"></class>
             <class name="chat.ros.testing2.parameters.TestParametersIntegrationPage" />
         </classes>
     </test>
