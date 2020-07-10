@@ -77,7 +77,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
 
     @Story(value = "Синхронизация контактов со СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД PERCo и нажимаем Синхронизировать")
-    @Test(priority = 2,groups = {"Sync"})
+    @Test(priority = 2,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД PERCo");

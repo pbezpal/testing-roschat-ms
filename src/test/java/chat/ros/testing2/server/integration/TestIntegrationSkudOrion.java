@@ -71,7 +71,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
 
     @Story(value = "Синхронизация контактов со СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД ОРИОН и нажимаем Синхронизировать")
-    @Test(priority = 2,groups = {"Sync"})
+    @Test(priority = 2,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД ОРИОН");
