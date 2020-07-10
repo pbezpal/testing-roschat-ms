@@ -68,7 +68,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
     @Story(value = "Добавляем сервис СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД PERCo и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 1,groups = {"PERCo"})
+    @Test(priority = 1,groups = {"perco"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),

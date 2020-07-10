@@ -62,7 +62,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Story(value = "Добавляем сервис СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД ОРИОН и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 1,groups = {"ORION"})
+    @Test(priority = 1,groups = {"orion"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
@@ -111,7 +111,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в раздел Настройки -> Интеграция, переходим в сервис СКУД ОРИОН, нажимаем" +
             " кнопку удалить, подтвержаем жействие и перезагружаем сервисы. Проверяем, что сервис СКУД ОРИОН" +
             " успешно удалён.")
-    @Test(priority = 5,dependsOnMethods = {"test_Add_Service"})
+    @Test(priority = 5,dependsOnMethods = {"test_Add_Service"},groups = {"delete_orion"})
     void test_Delete_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE),
@@ -122,7 +122,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в разде Монитор и проверяем: \n" +
             "1. Вместо надписи ОРИОН появилась надпись СКУД \n" +
             "2. Состояние СКУД - неактивно. Красный кружок.")
-    @Test(dependsOnMethods = {"test_Delete_Orion"})
+    @Test(dependsOnMethods = {"test_Delete_Orion"},groups = {"delete_orion"})
     void test_Status_SKUD_After_Delete_OM(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - подключен, либо отсутсвтует сервис СКУД");
