@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 public interface TestSuiteBase {
 
     TestsBase testsBase = new TestsBase();
+    String commandDBCheckSKUD = "sudo -u roschat psql -c \"select * from integrations;\" | grep acs";
 
     @BeforeSuite
     default void setUp(){
@@ -27,5 +28,4 @@ public interface TestSuiteBase {
     default TestsBase getInstanceTestBase(){
         return testsBase;
     }
-
 }

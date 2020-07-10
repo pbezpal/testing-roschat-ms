@@ -1,9 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="Parameters" verbose="2" >
-    <test name="Parameters-Tests" parallel="classes" thread-count="3">
+    <test name="Parameters-Tests" parallel="classes" thread-count="4">
         <classes>
-            <class name="chat.ros.testing2.parameters.TestParametersServerPage" />
+            <class name="chat.ros.testing2.parameters.TestParametersServerConnectPage" />
+            <class name="chat.ros.testing2.parameters.TestParametersServerPushPage" />
             <class name="chat.ros.testing2.parameters.TestParametersTelephonyPage" />
             <class name="chat.ros.testing2.parameters.TestParametersMailPage" />
         </classes>

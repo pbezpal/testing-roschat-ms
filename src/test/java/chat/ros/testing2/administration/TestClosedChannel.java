@@ -100,7 +100,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
                 nameChannel,true,true, false,
                         newNameChannel, newDescription).
                         isExistComments(newNameChannel, true),
-                "Канал не найден в списке бесед после смены типа на публичный");
+                "Канал " + newNameChannel + " не найден в списке бесед после изменения имени и описания канала");
         clickChat(newNameChannel);
         assertTrue(isTextInfoClosedChannel(true),
                 "Нет надписи Закрытый в разделе 'Информация о канале'");
@@ -130,7 +130,7 @@ public class TestClosedChannel extends ChannelsPage implements TestsParallelBase
     void test_Show_Closed_Channel_In_MS_After_Change(){
         testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, false),
-                "Закрытый канал " + newNameChannel + " отображается в СУ после ");
+                "Закрытый канал " + newNameChannel + " отображается в СУ после смены названия и описания");
     }
 
     @AfterMethod(alwaysRun = true)

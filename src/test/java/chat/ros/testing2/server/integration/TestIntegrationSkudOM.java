@@ -1,7 +1,7 @@
 package chat.ros.testing2.server.integration;
 
 import chat.ros.testing2.TestSuiteBase;
-import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.monitoring.MonitoringPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
@@ -9,6 +9,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,6 +40,19 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
         put("Имя пользователя БД", INTEGRATION_SERVICE_OM_LOGIN_DB);
     }};
 
+    @BeforeClass
+    public void setUp(){
+        if(SSHManager.isCheckQuerySSH(commandDBCheckSKUD)) {
+            getInstanceTestBase().openMS("Настройки", "Интеграция");
+            if (isExistsTableText("СКУД", false)) {
+            } else {
+                skudPage = (SKUDPage) clickServiceType("СКУД");
+                assertTrue(skudPage.deleteSKUD("СКУД"),
+                        "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
+            }
+        }
+    }
+
     @BeforeMethod
     public void beforeTest(Method method){
         if(method.toString().contains("Status")) getInstanceTestBase().openMS("Монитор");
@@ -64,28 +78,28 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
                 "Сервис СКУД Офис-Монитор не найден в тиблице 'Подключенные сервисы'");
     }
 
-    @Story(value = "Состояние СКУД Офис-Монитор, при корректных настройках подключения")
-    @Description(value = "Переходим в разде Монитор и проверяем: \n" +
-            "1. Вместо надписи СКУД появилась надпись Офис-Монитор \n" +
-            "2. Состояние Офис-Монитор - активно. Зелённый кружок.")
-    @Test(priority = 1, dependsOnMethods = {"test_Add_Service"})
-    void test_Status_OM_Active(){
-        assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_OM_TYPE, classStatusServiceActive),
-                "Состояни СКУД Офис-Монитор - неактивно, либо отсутсвтует сервис Офис-Монитор");
-    }
-
     @Story(value = "Синхронизация контактов со СКУД Офис-Монитор")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и нажимаем Синхронизировать")
-    @Test(priority = 2, groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
+    @Test(priority = 1, groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts() {
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД Офис-Монитор");
     }
 
+    @Story(value = "Состояние СКУД Офис-Монитор, при корректных настройках подключения")
+    @Description(value = "Переходим в разде Монитор и проверяем: \n" +
+            "1. Вместо надписи СКУД появилась надпись Офис-Монитор \n" +
+            "2. Состояние Офис-Монитор - активно. Зелённый кружок.")
+    @Test(priority = 1, dependsOnMethods = {"test_Add_Service","test_Sync_Contacts"})
+    void test_Status_OM_Active(){
+        assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_OM_TYPE, classStatusServiceActive),
+                "Состояни СКУД Офис-Монитор - неактивно, либо отсутсвтует сервис Офис-Монитор");
+    }
+
     @Story(value = "Настраиваем СКУД Офис-Монитор с некорректными данными")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис Офис-Монитор и вводим некорректные " +
             "данные для подключения.")
-    @Test(priority = 3, dependsOnMethods = {"test_Add_Service"})
+    @Test(priority = 2,dependsOnMethods = {"test_Sync_Contacts"})
     void test_Change_Data_Disconnect_SKUD(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectOM, INTEGRATION_SERVICE_OM_TYPE),
@@ -106,7 +120,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
     @Description(value = "Переходим в раздел Настройки -> Интеграция, переходим в сервис СКУД Офис-Монитор, нажимаем" +
             " кнопку удалить, подтвержаем жействие и перезагружаем сервисы. Проверяем, что сервис СКУД Офис-Монитор" +
             " успешно удалён.")
-    @Test(priority = 4,dependsOnMethods = {"test_Add_Service"},groups = {"Delete_OM"})
+    @Test(priority = 4,dependsOnMethods = {"test_Add_Service"})
     void test_Delete_OM(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_OM_TYPE),
