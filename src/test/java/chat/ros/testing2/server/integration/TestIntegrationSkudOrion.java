@@ -62,7 +62,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Story(value = "Добавляем сервис СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД ОРИОН и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 1,groups = {"orion"})
+    @Test(groups = {"orion"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
@@ -71,7 +71,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
 
     @Story(value = "Синхронизация контактов со СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД ОРИОН и нажимаем Синхронизировать")
-    @Test(priority = 2,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
+    @Test(priority = 1,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД ОРИОН");
@@ -81,7 +81,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в разде Монитор и проверяем: \n" +
             "1. Вместо надписи СКУД появилась надпись ОРИОН \n" +
             "2. Состояние ОРИОН - активно. Зелённый кружок.")
-    @Test(priority = 3, dependsOnMethods = {"test_Sync_Contacts"})
+    @Test(priority = 2, dependsOnMethods = {"test_Sync_Contacts"})
     void test_Status_Orion_Active(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_ORION_TYPE, classStatusServiceActive),
                 "Состояни СКУД ОРИОН - неактивно, либо отсутсвтует сервис ОРИОН");
@@ -111,7 +111,7 @@ public class TestIntegrationSkudOrion implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в раздел Настройки -> Интеграция, переходим в сервис СКУД ОРИОН, нажимаем" +
             " кнопку удалить, подтвержаем жействие и перезагружаем сервисы. Проверяем, что сервис СКУД ОРИОН" +
             " успешно удалён.")
-    @Test(priority = 5,dependsOnMethods = {"test_Add_Service"},groups = {"delete_orion"})
+    @Test(priority = 3,dependsOnMethods = {"test_Add_Service"},groups = {"delete_orion"})
     void test_Delete_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE),

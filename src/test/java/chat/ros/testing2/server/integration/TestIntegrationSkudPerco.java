@@ -68,7 +68,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
     @Story(value = "Добавляем сервис СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД PERCo и проверяем," +
             " что сервис был успешно добавлен на сервер")
-    @Test(priority = 1,groups = {"perco"})
+    @Test(groups = {"perco"})
     void test_Add_Service(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
@@ -77,7 +77,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
 
     @Story(value = "Синхронизация контактов со СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД PERCo и нажимаем Синхронизировать")
-    @Test(priority = 2,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
+    @Test(priority = 1,groups = {"Sync"},dependsOnMethods = {"test_Add_Service"})
     void test_Sync_Contacts(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД PERCo");
@@ -87,7 +87,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в разде Монитор и проверяем: \n" +
             "1. Вместо надписи СКУД появилась надпись PERCo \n" +
             "2. Состояние PERCo - активно. Зелённый кружок.")
-    @Test(priority = 3, dependsOnMethods = {"test_Sync_Contacts"})
+    @Test(priority = 2, dependsOnMethods = {"test_Sync_Contacts"})
     void test_Status_Perco_Active(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_PERCO_TYPE, classStatusServiceActive),
                 "Состояни СКУД PERCo - неактивно, либо отсутсвтует сервис ОPERCo");
@@ -96,7 +96,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
     @Story(value = "Настраиваем СКУД PERCo с некорректными данными")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис PERCo и вводим некорректные " +
             "данные для подключения.")
-    @Test(priority = 4, dependsOnMethods = {"test_Sync_Contacts"})
+    @Test(priority = 3, dependsOnMethods = {"test_Sync_Contacts"})
     void test_Change_Data_Disconnect_SKUD(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
@@ -117,7 +117,7 @@ public class TestIntegrationSkudPerco implements IntegrationPage, TestSuiteBase 
     @Description(value = "Переходим в раздел Настройки -> Интеграция, переходим в сервис СКУД PERCo, нажимаем" +
             " кнопку удалить, подтвержаем жействие и перезагружаем сервисы. Проверяем, что сервис СКУД PERCo" +
             " успешно удалён.")
-    @Test(priority = 5)
+    @Test(priority = 4,dependsOnMethods = {"test_Add_Service"})
     void test_Delete_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_PERCO_TYPE),

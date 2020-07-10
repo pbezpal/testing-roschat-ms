@@ -179,7 +179,7 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
     default SettingsPage clickButtonConfirmAction(String button){
-        $$(".actions-wrapper .v-btn__content").findBy(text(button)).click();
+        $$(".actions-wrapper .v-btn__content").findBy(text(button)).waitUntil(visible,10000).click();
         return this;
     }
 
