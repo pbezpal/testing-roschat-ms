@@ -40,7 +40,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
         put("Имя пользователя БД", INTEGRATION_SERVICE_OM_LOGIN_DB);
     }};
 
-    @BeforeClass
+    /*@BeforeClass
     public void setUp(){
         if(SSHManager.isCheckQuerySSH(commandDBCheckSKUD)) {
             getInstanceTestBase().openMS("Настройки", "Интеграция");
@@ -51,7 +51,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
                         "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
             }
         }
-    }
+    }*/
 
     @BeforeMethod
     public void beforeTest(Method method){
