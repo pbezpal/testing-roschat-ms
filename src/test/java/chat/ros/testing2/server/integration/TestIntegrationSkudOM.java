@@ -77,7 +77,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
     @Description(value = "Переходим в разде Монитор и проверяем: \n" +
             "1. Вместо надписи СКУД появилась надпись Офис-Монитор \n" +
             "2. Состояние Офис-Монитор - активно. Зелённый кружок.")
-    @Test(priority = 1, dependsOnMethods = {"test_Add_Service","test_Sync_Contacts"})
+    @Test(priority = 1, dependsOnMethods = {"test_Sync_Contacts"})
     void test_Status_OM_Active(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_OM_TYPE, classStatusServiceActive),
                 "Состояни СКУД Офис-Монитор - неактивно, либо отсутсвтует сервис Офис-Монитор");
@@ -107,7 +107,7 @@ public class TestIntegrationSkudOM implements IntegrationPage, TestSuiteBase {
     @Description(value = "Переходим в раздел Настройки -> Интеграция, переходим в сервис СКУД Офис-Монитор, нажимаем" +
             " кнопку удалить, подтвержаем жействие и перезагружаем сервисы. Проверяем, что сервис СКУД Офис-Монитор" +
             " успешно удалён.")
-    @Test(priority = 4,dependsOnMethods = {"test_Add_Service"},groups = {"delete_OM"})
+    @Test(priority = 3,dependsOnMethods = {"test_Add_Service"},groups = {"delete_OM"})
     void test_Delete_OM(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_OM_TYPE),
