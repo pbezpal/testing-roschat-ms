@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertTrue;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface IntegrationPage extends SettingsPage {
 

@@ -1,30 +1,36 @@
 package chat.ros.testing2.server;
 
+import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(ResourcesTests.class)
+@ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
 public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
 
-    private SoftAssert softAssert;
     private String field;
     private Map<String, String> mapInputValueNetwork = new HashMap() {{
         put(TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS, TELEPHONY_NETWORK_PUBLIC_ADDRESS);
@@ -49,51 +55,53 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
         put(TELEPHONY_TURN_INPUT_MAX_PORT, TELEPHONY_TURN_MAX_PORT);
     }};
 
-    @BeforeMethod
-    public void beforeTest(Method method){
-        if(method.toString().contains("Open_Page")) getInstanceTestBase().openMS("/settings/telephony");
-        getInstanceTestBase().openMS("Настройки","Телефония");
-    }
-
     @Story(value = "Настройка сети")
     @Description(value = "Настраиваем сеть для телефонии и проверяем корректность настроек")
     @Test
     void test_Settings_Network(){
-        softAssert = new SoftAssert();
         setNetwork(mapInputValueNetwork);
         clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK);
-        softAssert.assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        softAssert.assertEquals(isCheckSuccessAction(), "Настройки телефонии корректны.",
-                "Настройки сервера некорректны");
-        clickButtonCloseCheckSettingsForm();
-        for(Map.Entry<String, String> entry : mapInputValueNetwork.entrySet()){
-            softAssert.assertTrue(isShowValueInField(
-                    TELEPHONY_NETWORK_TITLE_FORM,
-                    entry.getKey(),
-                    entry.getValue(),
-                    true),
-                    "В разделе " + TELEPHONY_NETWORK_TITLE_FORM + "Значения " + entry.getValue() + " " +
-                            "нет в поле " + entry.getKey());
-        }
-        softAssert.assertAll();
+        assertAll("Проверка настроек сети",
+                () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
+                () -> assertEquals(isCheckSuccessAction(), "Настройки телефонии корректны.",
+                        "Настройки сервера некорректны"),
+                () -> {
+                    clickButtonCloseCheckSettingsForm();
+                    for(Map.Entry<String, String> entry : mapInputValueNetwork.entrySet()){
+                        assertAll("Проверяем, сохранились ли настройки",
+                                () -> assertTrue(isShowValueInField(
+                                        TELEPHONY_NETWORK_TITLE_FORM,
+                                        entry.getKey(),
+                                        entry.getValue(),
+                                        true),
+                                        "В разделе " + TELEPHONY_NETWORK_TITLE_FORM + "Значения " + entry.getValue() + " " +
+                                                "нет в поле " + entry.getKey())
+                        );
+                    }
+                }
+        );
     }
 
     @Story(value = "Настройка SIP-сервера")
     @Description(value = "Настраиваем речевые порты SIP-сервера для телефонии")
     @Test
     void test_Settings_SIP_Server(){
-        softAssert = new SoftAssert();
         setSipServer(mapInputValueSipServer);
-        for(Map.Entry<String, String> entry : mapInputValueSipServer.entrySet()){
-            softAssert.assertTrue(isShowValuesInField(
-                    TELEPHONY_SIP_TITLE_FORM,
-                    TELEPHONY_INPUT_SPEECH_PORTS,
-                    entry.getValue(),
-                    true),
-                    "В разделе " + TELEPHONY_SIP_TITLE_FORM + "Значения " + entry.getValue() + " " +
-                            "нет в поле " + entry.getKey());
-        }
-        softAssert.assertAll();
+        assertAll("Проверяем настройки SIP-сервера",
+                () -> {
+                    for(Map.Entry<String, String> entry : mapInputValueSipServer.entrySet()){
+                        assertAll("",
+                                () -> assertTrue(isShowValuesInField(
+                                        TELEPHONY_SIP_TITLE_FORM,
+                                        TELEPHONY_INPUT_SPEECH_PORTS,
+                                        entry.getValue(),
+                                        true),
+                                        "В разделе " + TELEPHONY_SIP_TITLE_FORM + "Значения " + entry.getValue() + " " +
+                                                "нет в поле " + entry.getKey())
+                            );
+                        }
+                    }
+                );
     }
 
     @Story(value = "Настройка SIP-сервера. Минимальный порт больше максимального")
@@ -101,42 +109,49 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
             "'Максимальный порт' и проверяем, будет ли СУ выдавать ошибку")
     @Test
     void test_SIP_Server_Min_Port_More_Max_Port(){
-        softAssert = new SoftAssert();
         setSettingsServer(mapInputWrongValueSipServer, TELEPHONY_SIP_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        softAssert.assertEquals(getTextWrong(), "Значение макс порта должно быть больше",
-                "Нет надписи об ошибке 'Значение макс порта должно быть больше'");
-        clickButtonClose();
-        softAssert.assertTrue(isShowValuesInField(
-                TELEPHONY_SIP_TITLE_FORM,
-                TELEPHONY_INPUT_SPEECH_PORTS,
-                mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MIN_PORT),
-                false),
-                "В СУ отображается значение минимального порта "
-                        + mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MIN_PORT) + "" +
-                        ", Которое больше максимального порта "
-                        + mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MAX_PORT) + "" +
-                        "в разделе " + TELEPHONY_SIP_TITLE_FORM);
-        softAssert.assertAll();
+        assertAll("Проверяем макисмальный и минимальный порты SIP-сервера",
+                () -> assertEquals(getTextWrong(), "Значение макс порта должно быть больше",
+                            "Нет надписи об ошибке 'Значение макс порта должно быть больше'"),
+                () -> {
+                    clickButtonClose();
+                    assertTrue(isShowValuesInField(
+                            TELEPHONY_SIP_TITLE_FORM,
+                            TELEPHONY_INPUT_SPEECH_PORTS,
+                            mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MIN_PORT),
+                            false),
+                            "В СУ отображается значение минимального порта "
+                                    + mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MIN_PORT) + "" +
+                                    ", Которое больше максимального порта "
+                                    + mapInputWrongValueSipServer.get(TELEPHONY_SIP_INPUT_MAX_PORT) + "" +
+                                    "в разделе " + TELEPHONY_SIP_TITLE_FORM);
+                    }
+        );
+
     }
 
     @Story(value = "Настройка TURN/STUN")
     @Description(value = "Настраиваем речевые порты и ключ Turn/Stun сервер для телефонии")
     @Test
     void test_Settings_Turn_Server(){
-        softAssert = new SoftAssert();
         setTurnserver(mapInputValueTurnServer);
-        for(Map.Entry<String,String> entry : mapInputValueTurnServer.entrySet()){
-            if(entry.getKey().contains("порт")) field = TELEPHONY_INPUT_SPEECH_PORTS;
-            else field = entry.getKey();
-            softAssert.assertTrue(isShowValuesInField(
-                    TELEPHONY_TURN_TITLE_FORM,
-                    field,
-                    entry.getValue(),
-                    true),
-                    "В разделе " + TELEPHONY_TURN_TITLE_FORM + "Значения " + entry.getValue() + " " +
-                            "нет в поле " + entry.getKey());
-        }
-        softAssert.assertAll();
+        assertAll("",
+                () -> {
+                    for(Map.Entry<String,String> entry : mapInputValueTurnServer.entrySet()){
+                        if(entry.getKey().contains("порт")) field = TELEPHONY_INPUT_SPEECH_PORTS;
+                        else field = entry.getKey();
+                        assertAll("",
+                                () -> assertTrue(isShowValuesInField(
+                                TELEPHONY_TURN_TITLE_FORM,
+                                field,
+                                entry.getValue(),
+                                true),
+                                "В разделе " + TELEPHONY_TURN_TITLE_FORM + "Значения " + entry.getValue() + " " +
+                                        "нет в поле " + entry.getKey())
+                        );
+                    }
+                }
+        );
     }
 
     @Story(value = "Настройка TURN/STUN. Минимальный порт больше максимального.")
@@ -144,22 +159,25 @@ public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
             "чем в поле 'Максимальный порт' и проверяем, будет ли СУ выдавать ошибку")
     @Test
     void test_Settings_Turn_Server_Min_Port_More_Max_Port(){
-        softAssert = new SoftAssert();
         setSettingsServer(mapInputWrongValueTurnServer, TELEPHONY_TURN_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        softAssert.assertEquals(getTextWrong(), "Значение макс порта должно быть больше",
-                "Нет надписи об ошибке 'Значение макс порта должно быть больше'");
-        clickButtonClose();
-        softAssert.assertTrue(isShowValuesInField(
-                TELEPHONY_TURN_TITLE_FORM,
-                TELEPHONY_INPUT_SPEECH_PORTS,
-                mapInputWrongValueTurnServer.get(TELEPHONY_TURN_INPUT_MIN_PORT),
-                false),
-                "В СУ отображается значение минимального порта "
-                        + mapInputWrongValueSipServer.get(TELEPHONY_TURN_INPUT_MIN_PORT) + "" +
-                        ", Которое больше максимального порта "
-                        + mapInputWrongValueSipServer.get(TELEPHONY_TURN_INPUT_MAX_PORT) + " " +
-                        "в разделе " + TELEPHONY_TURN_TITLE_FORM);
-        softAssert.assertAll();
+        assertAll("",
+                () -> assertEquals(getTextWrong(), "Значение макс порта должно быть больше",
+                            "Нет надписи об ошибке 'Значение макс порта должно быть больше'"),
+
+                () -> {
+                    clickButtonClose();
+                    assertTrue(isShowValuesInField(
+                        TELEPHONY_TURN_TITLE_FORM,
+                        TELEPHONY_INPUT_SPEECH_PORTS,
+                        mapInputWrongValueTurnServer.get(TELEPHONY_TURN_INPUT_MIN_PORT),
+                        false),
+                        "В СУ отображается значение минимального порта "
+                                + mapInputWrongValueSipServer.get(TELEPHONY_TURN_INPUT_MIN_PORT) + "" +
+                                ", Которое больше максимального порта "
+                                + mapInputWrongValueSipServer.get(TELEPHONY_TURN_INPUT_MAX_PORT) + " " +
+                                "в разделе " + TELEPHONY_TURN_TITLE_FORM);
+                }
+        );
     }
 
     @Story(value = "Перезагрузка страницы")

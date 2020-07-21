@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath "io.qameta.allure:allure-gradle:2.8.1"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:1.2.0"
     }
 }
 
@@ -28,6 +29,7 @@ repositories {
 apply plugin: 'io.qameta.allure'
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 jar {
     baseName = 'roschat-ms'
@@ -39,9 +41,14 @@ jar {
 }
 
 dependencies {
-    //Testing framework
-    // https://search.maven.org/artifact/org.testng/testng
-    compile 'org.testng:testng:7.1.0'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.6.0'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.6.0'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.0'
+    // https://mvnrepository.com/artifact/org.junit/junit5-engine
+    compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
 
     //dependencies for selenium
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
@@ -52,8 +59,10 @@ dependencies {
     compile group: 'ru.stqa.selenium', name: 'webdriver-factory', version: '4.3'
 
     //dependencies for reporting
-    // https://mvnrepository.com/artifact/io.qameta.allure/allure-testng
-    compile group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.3'
+    // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
+    testCompile group: 'io.qameta.allure', name: 'allure-junit5', version: '2.13.1'
+    // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit-platform
+    compile group: 'io.qameta.allure', name: 'allure-junit-platform', version: '2.13.1'
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-selenide
     compile group: 'io.qameta.allure', name: 'allure-selenide', version: '2.13.1'
     // https://mvnrepository.com/artifact/ru.yandex.qatools.ashot/ashot
@@ -76,16 +85,21 @@ allure {
     autoconfigure = true
     aspectjweaver = true
 
-    useTestNG {
-        version = '2.13.3'
+    downloadLink = 'https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.8.1/allure-commandline-2.8.1.zip'
+
+    useJUnit5 {
+        version = '2.13.1'
     }
 }
 
-task roschatdb(type: Test){
+task testintegration(type: Test){
 
-    useTestNG(){
-        suites 'src/test/resources/suite-roschat-db.xml'
-    }
+    useJUnitPlatform()
+
+    include("**/TestActiveDirectoryPage.class")
+    include("**/skud/TestSkudOM.class")
+    include("**/skud/TestSkudOrion.class")
+    include("**/skud/TestSkudPerco.class")
 
     dependsOn 'cleanTest'
 
@@ -94,6 +108,33 @@ task roschatdb(type: Test){
         events "passed", "skipped", "failed"
     }
 }
+
+task testtetra(type: Test){
+    useJUnitPlatform()
+
+    include("**/TestTetraPage.class")
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task testservice(type: Test){
+
+    useJUnitPlatform()
+
+    include("**/TestServicePage.class")
+
+    dependsOn testtetra
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+testintegration.finalizedBy(testservice)
 
 task roschatsnmp(type: Test){
 

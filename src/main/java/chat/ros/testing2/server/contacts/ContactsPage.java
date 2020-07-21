@@ -17,7 +17,7 @@ import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.testng.Assert.assertTrue;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class ContactsPage implements BasePage {
 

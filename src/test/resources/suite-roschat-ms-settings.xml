@@ -12,16 +12,16 @@
         </groups>
         <classes>
             <class name="chat.ros.testing2.server.TestGeozonesPage"/>
-            <class name="chat.ros.testing2.server.TestIntegrationPage"/>
+            <class name="chat.ros.testing2.server.integration.TestActiveDirectoryPage"/>
             <class name="chat.ros.testing2.server.TestServerPage"/>
             <class name="chat.ros.testing2.server.TestMailPage" />
             <class name="chat.ros.testing2.server.TestSNMPPage" />
             <class name="chat.ros.testing2.server.TestTelephonyPage" />
             <class name="chat.ros.testing2.server.TestUserPage" />
             <class name="chat.ros.testing2.contacts.TestServicePage"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOrion"/>
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudPerco"/>
+            <class name="chat.ros.testing2.server.integration.TestMonitorSkudOM"/>
+            <class name="chat.ros.testing2.server.integration.TestMonitorSkudOrion"/>
+            <class name="chat.ros.testing2.server.integration.TestMonitorSkudPerco"/>
         </classes>
     </test>
 </suite>

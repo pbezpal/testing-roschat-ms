@@ -11,8 +11,8 @@
             </dependencies>
         </groups>
         <classes>
-            <class name="chat.ros.testing2.server.TestIntegrationPage" />
-            <class name="chat.ros.testing2.server.integration.TestIntegrationSkudOM"/>
+            <class name="chat.ros.testing2.server.integration.TestActiveDirectoryPage" />
+            <class name="chat.ros.testing2.server.integration.TestMonitorSkudOM"/>
             <class name="chat.ros.testing2.contacts.TestServicePage"></class>
         </classes>
     </test>
