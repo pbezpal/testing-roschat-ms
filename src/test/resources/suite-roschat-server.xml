@@ -1,8 +1,0 @@
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-
-<suite name="roschat-server" verbose="1">
-    <suite-files>
-        <suite-file path="suite-channel-tests.xml" />
-        <suite-file path="suite-roschat-ms-settings.xml"></suite-file>
-    </suite-files>
-</suite>

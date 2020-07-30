@@ -349,17 +349,3 @@ task roschatms(type: Test){
 }
 
 roschatms.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
-
-test {
-
-    useTestNG(){
-        suites 'src/test/resources/testng.xml'
-    }
-
-    dependsOn 'cleanTest'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
