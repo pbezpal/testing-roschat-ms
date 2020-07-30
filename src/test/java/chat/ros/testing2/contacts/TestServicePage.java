@@ -17,14 +17,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Справочник")
 @Feature(value = "Контакты")
-public class TestServicePage extends ContactsPage implements TestSuiteBase {
+public class TestServicePage extends ContactsPage {
 
     private UserPage userPage;
 
