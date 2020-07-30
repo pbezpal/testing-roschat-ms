@@ -24,6 +24,9 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     mavenLocal()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 apply plugin: 'io.qameta.allure'
@@ -49,6 +52,8 @@ dependencies {
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.6.0'
     // https://mvnrepository.com/artifact/org.junit/junit5-engine
     compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.7.0-M1'
 
     //dependencies for selenium
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
@@ -92,14 +97,173 @@ allure {
     }
 }
 
+task contactsclosedchannels(type: Test) {
+
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Closed_Channel"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task contactspublicchannels(type: Test) {
+
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Public_Channel"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task contactspublicprovenchannels(type: Test) {
+
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Public_Proven_Channel"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task contactservice(type: Test) {
+
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Service"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task contactconnect(type: Test) {
+
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Connect"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task testpublicchannels(type: Test){
+
+    useJUnitPlatform()
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    dependsOn contactspublicchannels
+
+    include("**/TestPublicChannel.class")
+    include("**/TestPublicChannelChange.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task testpublicprovenchannels(type: Test){
+
+    useJUnitPlatform()
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    dependsOn contactspublicprovenchannels
+
+    include("**/TestPublicProvenChannel.class")
+    include("**/TestPublicProvenChannelChange.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task testclosedchannels(type: Test){
+
+    useJUnitPlatform()
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    dependsOn contactsclosedchannels
+
+    include("**/TestClosedChannel.class")
+    include("**/TestClosedChannelChange.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(testpublicchannels,testpublicprovenchannels)
+}
+
 task testintegration(type: Test){
 
     useJUnitPlatform()
 
     include("**/TestActiveDirectoryPage.class")
-    include("**/skud/TestSkudOM.class")
-    include("**/skud/TestSkudOrion.class")
-    include("**/skud/TestSkudPerco.class")
+    include("**/TestMonitorSkudOM.class")
+    include("**/TestMonitorSkudOrion.class")
+    include("**/TestMonitorSkudPerco.class")
 
     dependsOn 'cleanTest'
 
@@ -110,6 +274,7 @@ task testintegration(type: Test){
 }
 
 task testtetra(type: Test){
+
     useJUnitPlatform()
 
     include("**/TestTetraPage.class")
@@ -126,7 +291,7 @@ task testservice(type: Test){
 
     include("**/TestServicePage.class")
 
-    dependsOn testtetra
+    dependsOn testtetra,contactservice
 
     // Show test results.
     testLogging {
@@ -134,11 +299,9 @@ task testservice(type: Test){
     }
 }
 
-testintegration.finalizedBy(testservice)
-
 task roschatsnmp(type: Test){
 
-    useTestNG()
+    useJUnitPlatform()
 
     include("**/server/TestSNMPPage.class")
 
@@ -150,12 +313,16 @@ task roschatsnmp(type: Test){
     }
 }
 
-task roschatserver(type: Test){
-    useTestNG(){
-        suites 'src/test/resources/suite-roschat-server.xml'
+task testconnect(type: Test){
+
+    useJUnitPlatform()
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestServerPage.test_Settings_Connect"
     }
 
-    dependsOn 'cleanTest'
+    dependsOn contactconnect
 
     // Show test results.
     testLogging {
@@ -164,8 +331,13 @@ task roschatserver(type: Test){
 }
 
 task roschatms(type: Test){
-    useTestNG(){
-        suites 'src/test/resources/suite-roschat-ms.xml'
+    useJUnitPlatform()
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.server.*"
+        excludeTestsMatching "*.server.integration.*"
+        excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
     }
 
     dependsOn 'cleanTest'
@@ -175,6 +347,8 @@ task roschatms(type: Test){
         events "passed", "skipped", "failed"
     }
 }
+
+roschatms.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
 
 test {
 

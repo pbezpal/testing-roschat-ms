@@ -13,9 +13,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7012;
-import static chat.ros.testing2.data.ContactsData.CONTACT_NUMBER_7013;
-import static chat.ros.testing2.helpers.AttachToReport.*;
+import static chat.ros.testing2.data.ContactsData.CONTACT_A;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,15 +25,15 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
 
     private static String nameChannel;
     private static String newNameChannel;
-    private String newDescription = CLIENT_DESCRIPTION_CHANNEL_CLOSED + " " + System.currentTimeMillis();
+    private final String newDescription = CLIENT_DESCRIPTION_CHANNEL_CLOSED + " " + System.currentTimeMillis();
+    private final String login = CLIENT_USER_B + "@ros.chat";
+    private final String user = CONTACT_A + "@ros.chat";
     private String channel;
-    private boolean resultCreate;
-    private boolean resultChange;
-    private boolean status = false;
-    private boolean status_type = false;
-    private boolean status_proven = false;
-    private boolean status_edit = false;
-    private boolean status_delete = false;
+    private static boolean status_create;
+    private static boolean status_type;
+    private static boolean status_proven;
+    private static boolean status_edit;
+    private static boolean status_delete;
     private static TestsBase testsBase = new TestsBase();
 
     @BeforeAll
@@ -43,6 +41,11 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
         nameChannel = "CHCCH" + System.currentTimeMillis();
         newNameChannel = nameChannel + System.currentTimeMillis();
+        status_create = false;
+        status_type = false;
+        status_proven = false;
+        status_edit = false;
+        status_delete = false;
         testsBase.init();
     }
 
@@ -51,7 +54,7 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Test
     @Order(1)
     void test_Create_Channel(){
-        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(login, false);
         assertTrue(
                 createNewChannel(
                         nameChannel,
@@ -63,47 +66,16 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
         clickChat(nameChannel);
         assertTrue(isTextInfoClosedChannel(true),
                 "Отсутствует надпись Закрытый в разделе 'Информация о канале'");
-        status = true;
-    }
-
-    @Story(value = "Проверяем, что канал есть в БД postgres")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Появился ли канал в БД postgres" +
-            "2. Правильного ли типа канал")
-    @Test
-    @Order(2)
-    void test_Check_Exist_Channel_In_BD(){
-        assertTrue(status, "Канал не создан");
-        assertAll("Проверяем, есть ли канал в БД",
-                () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
-                        "Запись о канале " + nameChannel + " не найден в БД postgres"),
-                () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
-                                replaceAll(" ",""),
-                        "1",
-                        "Тип канала " + nameChannel + " в БД postgres не закрытого типа")
-        );
-
-    }
-
-    @Story(value = "Проверяем, отображается ли закрытый канал в СУ после создания")
-    @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
-            "закрытый канал в списке каналов после создания")
-    @Test
-    @Order(3)
-    void test_Show_Closed_Channel_In_MS_After_Create(){
-        assertTrue(status, "Канал не создан");
-        testsBase.openMS("Администрирование","Каналы");
-        assertTrue(isShowChannel(nameChannel, false),
-                "Закрытый канал " + nameChannel + " отображается в СУ");
+        status_create = true;
     }
 
     @Story(value = "Меняем имя, описание и тип канала с закрытого на публичный")
     @Description(value = "Авторизуемся под администратором и меняем тип у закрытого каналана на публичный")
     @Test
-    @Order(4)
+    @Order(2)
     void test_Edit_Type_With_Closed_On_Public_Channel(){
-        assertTrue(status, "Канал не создан");
-        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        assertTrue(status_create, "Канал не создан");
+        testsBase.openClient(login, false);
         assertTrue(
                 changeDataChannel(
                         nameChannel,false,false,true, CLIENT_TYPE_CHANNEL_PUBLIC).
@@ -120,17 +92,17 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
             "1. Остался ли канал в БД postgres" +
             "2. Правильного ли типа канал")
     @Test
-    @Order(5)
+    @Order(3)
     void test_Check_Exist_Channel_In_BD_After_Change_Type(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
-        assertAll("",
+        assertAll("Проверяем канал в БД Postgres, после смены типа",
                 () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " не найден в БД postgres"),
                 () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
                         replaceAll(" ",""),
                 "0",
-                "Тип канала " + nameChannel + " в БД postgres не закрытого типа")
+                "Тип канала " + nameChannel + " в БД postgres не публичного типа")
         );
     }
 
@@ -138,9 +110,9 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы," +
             " делаем публичный канал проверенным")
     @Test
-    @Order(6)
+    @Order(4)
     void test_Do_Proven_Channel_After_Edit_Type_Closed_Channel(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
         testsBase.openMS("Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
@@ -155,9 +127,9 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
             "2. Правильного ли типа канал" +
             "3. Статус проверенного канала")
     @Test
-    @Order(7)
+    @Order(5)
     void test_Check_Exist_Channel_In_BD_After_Add_Proven(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
         assertTrue(status_proven, "Не удалось сделать канал проверенным");
         assertAll("",
@@ -178,12 +150,12 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся на клиенте под учётной записью администратора канала." +
             " Проверяем, что у канала появился статус Проверенный")
     @Test
-    @Order(8)
-    void test_Check_Status_Closed_Channel(){
-        assertTrue(status, "Канал не создан");
+    @Order(6)
+    void test_Check_Status_Channel(){
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
         assertTrue(status_proven, "Не удалось сделать канал проверенным");
-        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(login, false);
         clickItemComments();
         assertAll("",
                 () -> assertTrue(isStatusTestedChannelListChat(nameChannel),
@@ -199,12 +171,12 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся на клиенте под учётной записью пользователя и вводим в поле поиска имя" +
             " публичного канала. Проверяем, что у канала статус Проверенный")
     @Test
-    @Order(9)
-    void test_Search_Closed_Channel(){
-        assertTrue(status, "Канал не создан");
+    @Order(7)
+    void test_Search_Channel(){
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Не сменилось имя и описание канала");
         assertTrue(status_proven, "Не удалось сделать канал проверенным");
-        testsBase.openClient(CONTACT_NUMBER_7013 + "@ros.chat", false);
+        testsBase.openClient(user, false);
         assertTrue(searchChannel(nameChannel, CLIENT_TYPE_CHANNEL_PUBLIC),
                 "Канал не найден");
         assertAll("",
@@ -220,10 +192,10 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Story(value = "Меняем название и описание канала")
     @Description(value = "Авторизуемся под администратором канала, меняем его название и описание")
     @Test
-    @Order(10)
+    @Order(8)
     void test_Change_Name_And_Description_Channel(){
-        assertTrue(status, "Канал не создан");
-        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        assertTrue(status_create, "Канал не создан");
+        testsBase.openClient(login, false);
         assertTrue(
                 changeDataChannel(
                         nameChannel,true,true, false,
@@ -242,18 +214,17 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
             "2. Правильного ли типа канал" +
             "3. Остался ли статус проверенного канала")
     @Test
-    @Order(11)
+    @Order(9)
     void test_Check_Exist_Channel_In_BD_After_Change_Name_And_Description(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_edit, "Не поменялось имя и/или описание канала");
-        assertTrue(status_proven, "Не удалось сделать канал проверенным");
         assertAll("",
                 () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, newNameChannel)),
                 "Запись о канале " + newNameChannel + " не найден в БД postgres"),
                 () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, newNameChannel)).
                         replaceAll(" ",""),
                 "0",
-                "Тип канала " + newNameChannel + " в БД postgres не закрытого типа"),
+                "Тип канала " + newNameChannel + " в БД postgres не публичного типа"),
                 () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckProvedChannel, newNameChannel)).
                         replaceAll(" ", ""),
                 "1",
@@ -265,9 +236,9 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов")
     @Test
-    @Order(12)
+    @Order(10)
     void test_Show_Public_Channel_In_MS(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_edit, "Не поменялось имя и/или описание канала");
         assertTrue(status_proven, "Не удалось сделать канал проверенным");
         testsBase.openMS("Администрирование","Каналы");
@@ -276,14 +247,14 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     }
 
     @Story(value = "Удаляем канал")
-    @Description(value = "Авторизуемся под пользователем администратором канала и удаляем канал." )
+    @Description(value = "Авторизуемся под администратор канала и удаляем канал." )
     @Test
-    @Order(13)
+    @Order(11)
     public void test_Delete_Channel() {
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         if (status_edit) channel = newNameChannel;
         else channel = nameChannel;
-        testsBase.openClient(CONTACT_NUMBER_7012 + "@ros.chat", false);
+        testsBase.openClient(login, false);
         assertTrue(deleteChannel(channel).isExistComments(channel, false),
                         "Канал найден в списке бесед после удаления");
         status_delete = true;
@@ -292,10 +263,12 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем канал в БД postgres после удаления")
     @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем запись о канале в БД")
     @Test
-    @Order(14)
+    @Order(12)
     void test_Check_Exist_Channel_In_BD_After_Delete() {
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_delete,"Канал не удален");
+        if (status_edit) channel = newNameChannel;
+        else channel = nameChannel;
         assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, channel)),
                 "Запись о канале " + channel + " осталась в БД postgres после удаления");
     }
@@ -303,12 +276,14 @@ public class TestClosedChannelChange extends ChannelsPage implements TestsParall
     @Story(value = "Проверяем отображается ли канал в СУ после удаления")
     @Description(value = "Проверяем в СУ, что канал не отображается после удаления канала")
     @Test
-    @Order(15)
+    @Order(13)
     void test_Show_Public_Channel_In_MS_After_Delete(){
-        assertTrue(status, "Канал не создан");
+        assertTrue(status_create, "Канал не создан");
         assertTrue(status_delete,"Канал не удален");
+        if (status_edit) channel = newNameChannel;
+        else channel = nameChannel;
         testsBase.openMS("Администрирование", "Каналы");
         assertTrue(isShowChannel(channel, false),
-                "Закрытый канал " + channel + " отображается в СУ после удаления");
+                "Канал " + channel + " отображается в СУ после удаления");
     }
 }

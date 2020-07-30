@@ -20,7 +20,7 @@ public interface TestsParallelBase {
     default void beforeSuite(ITestContext c){
         ITestContext context = c;
         if(context.getCurrentXmlTest().getName().contains("Channel")) {
-            isCheckContacts(CONTACT_NUMBER_7012, CONTACT_NUMBER_7013);
+            isCheckContacts(CONTACT_A, CONTACT_B);
         }
     }
 
@@ -43,7 +43,7 @@ public interface TestsParallelBase {
                 ContactsPage contactsPage = new ContactsPage();
                 getInstanceTestBase().openMS("Справочник");
                 if (contactsPage.isNotExistsTableText(number[i])) {
-                    contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+                    contactsPage.actionsContact(number[i]).addUserAccount(number[i], USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
                 }
                 getInstanceTestBase().dismissWebDriver();
             }

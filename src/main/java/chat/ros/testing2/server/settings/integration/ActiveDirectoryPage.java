@@ -14,4 +14,10 @@ public class ActiveDirectoryPage implements IntegrationPage {
         clickButtonSave();
         return isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, true);
     }
+
+    public boolean deleteActiveDirectory(){
+        clickButtonActionService(SETTINGS_BUTTON_DELETE);
+        clickButtonConfirmAction(SETTINGS_BUTTON_CONTINUE);
+        return isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, false);
+    }
 }

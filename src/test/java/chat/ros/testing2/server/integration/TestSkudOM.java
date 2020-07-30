@@ -33,15 +33,6 @@ public class TestSkudOM implements IntegrationPage, TestSuiteBase {
         put("Имя пользователя БД", INTEGRATION_SERVICE_OM_LOGIN_DB);
     }};
 
-    @BeforeEach
-    public void setUp(){
-        String method = new Object(){}.getClass().getEnclosingMethod().getName();
-        if( ! method.contains("test_Add_Service")){
-            assertTrue(status,"СКУД ОРИОН не был добавлен");
-        }
-        getInstanceTestBase().openMS("Настройки","Интеграция");
-    }
-
     @Story(value = "Добавляем сервис Офис-Монитор")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД Офис-Монитор и проверяем," +
             " что сервис был успешно добавлен на сервер")

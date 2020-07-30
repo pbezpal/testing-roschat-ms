@@ -1,8 +1,6 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestSuiteBase;
-import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.GeozonesPage;
 import com.codeborne.selenide.Selenide;
@@ -10,10 +8,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
@@ -21,7 +16,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
@@ -30,7 +25,7 @@ import static org.testng.Assert.assertTrue;
 @Feature(value = "Геозоны")
 public class TestGeozonesPage extends GeozonesPage {
 
-    private boolean status = false;
+    private static boolean status_add;
     private Map<String,String> mapInputValueGeozone = new HashMap() {{
         put("Название", GEOZONES_NAME_ZONA);
         put("Широта", GEOZONES_WIDTH_ZONA);
@@ -43,6 +38,12 @@ public class TestGeozonesPage extends GeozonesPage {
         put("Major", GEOZONES_BEACONE_MAJOR);
     }};
 
+    @BeforeAll
+    static void setUp(){
+        status_add = false;
+    }
+
+
     @Story(value = "Добавляем геозону")
     @Description(value = "Переходим в раздел Геозоны, добавляем геозону и проверяем," +
             " что геозона была успешно добавлена на сервер")
@@ -51,7 +52,7 @@ public class TestGeozonesPage extends GeozonesPage {
     void test_Add_Geozone(){
         assertTrue(addGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
                 "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер");
-        status = true;
+        status_add = true;
     }
 
     @Story(value = "Добавляем Beacon")
@@ -60,7 +61,7 @@ public class TestGeozonesPage extends GeozonesPage {
     @Test
     @Order(2)
     void test_Add_Beacon(){
-        assertTrue(status,"Не создана Геозона");
+        assertTrue(status_add,"Не создана Геозона");
         assertTrue(addBeacon(GEOZONES_NAME_ZONA, mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
                 "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер");
     }

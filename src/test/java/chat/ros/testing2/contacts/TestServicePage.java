@@ -24,16 +24,16 @@ import static org.testng.Assert.assertTrue;
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Справочник")
-@Feature(value = "Пользователи")
+@Feature(value = "Контакты")
 public class TestServicePage extends ContactsPage implements TestSuiteBase {
 
     private UserPage userPage;
 
-    @Story(value = "Добавляем у контакта  сервис Рация")
+    @Story(value = "Добавляем у контакта сервис Рация")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Radio_Contact(){
-        userPage = actionsContact(CONTACT_NUMBER_7012);
+        userPage = actionsContact(CONTACT_D);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_RADIO);
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
     }
@@ -42,15 +42,15 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис SIP. Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_SIP_Contact(){
-        userPage = sendInputSearchContact(CONTACT_NUMBER_7012).clickContact(CONTACT_NUMBER_7012);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CONTACT_NUMBER_7012);
+        userPage = sendInputSearchContact(CONTACT_D).clickContact(CONTACT_D);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CONTACT_D);
         assertAll("Проверяем, добавляется ли сервис SIP",
                 () -> assertTrue(
                 userPage.isShowService("h4",USER_SERVICES_TYPE_SIP),
                 "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен"),
                 () -> assertTrue(
-                userPage.isShowService("span",CONTACT_NUMBER_7012),
-                "Не отображается SIP номер " + CONTACT_NUMBER_7012)
+                userPage.isShowService("span", CONTACT_D),
+                "Не отображается SIP номер " + CONTACT_D)
         );
     }
 
@@ -58,7 +58,7 @@ public class TestServicePage extends ContactsPage implements TestSuiteBase {
     @Description(value = "Переходим в раздел Пользователь и добавляем сервис Тетра.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Tetra_Contact(){
-        userPage = sendInputSearchContact(CONTACT_NUMBER_7012).clickContact(CONTACT_NUMBER_7012);
+        userPage = sendInputSearchContact(CONTACT_D).clickContact(CONTACT_D);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
     }

@@ -1,8 +1,8 @@
 package chat.ros.testing2;
 
 import chat.ros.testing2.helpers.SSHManager;
-import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.BasePage;
+import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import client.ClientPage;
 import com.codeborne.selenide.Configuration;
@@ -13,7 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import ru.stqa.selenium.factory.WebDriverPool;
 
@@ -22,10 +21,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.logging.Level;
 
-import static chat.ros.testing2.data.ContactsData.*;
+import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
+import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
 import static chat.ros.testing2.data.LoginData.*;
 import static chat.ros.testing2.helpers.AttachToReport.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 import static org.testng.Assert.assertTrue;
 
 public class TestsBase {
@@ -121,9 +122,13 @@ public class TestsBase {
             ContactsPage contactsPage = new ContactsPage();
             openMS("Справочник");
             if(contactsPage.isNotExistsTableText(number)) {
-                contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACOUNT_ITEM_MENU);
+                contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
             }
         }
+    }
+
+    public boolean isContactAndAccount(String number){
+        return SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number));
     }
 
     public void dismissWebDriver(){

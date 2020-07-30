@@ -19,7 +19,7 @@ import static chat.ros.testing2.data.LoginData.PASSWORD_ADMIN_MS;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
@@ -28,7 +28,7 @@ import static org.testng.Assert.assertTrue;
 @Feature(value = "Настройки СУ")
 public class TestUserPage extends UserPage {
 
-    private boolean status = false;
+    private static boolean status_add;
     private Map<String, String> mapInputValueUser = new HashMap() {{
         put("Фамилия", USER_FIRST_NAME);
         put("Имя", USER_LAST_NAME);
@@ -37,12 +37,9 @@ public class TestUserPage extends UserPage {
         put("Пароль", USER_PASSWORD);
     }};
 
-    @BeforeEach
-    void setUp(){
-        String method = new Object(){}.getClass().getEnclosingMethod().getName();
-        if( ! method.contains("test_Add_New_User") || ! method.contains("Open") || ! method.contains("Refresh")){
-            assertTrue(status,"Пользователь не создан");
-        }
+    @BeforeAll
+    static void setUp(){
+        status_add = false;
     }
 
     @Story(value = "Добавляем нового пользователя в систему")
@@ -51,6 +48,7 @@ public class TestUserPage extends UserPage {
     @Order(1)
     void test_Add_New_User(){
         assertTrue(addUser(mapInputValueUser, USER_LOGIN), "Пользователь " + USER_LOGIN + " не был добавлен в систему");
+        status_add = true;
     }
 
     @Story(value = "Входим в систему под новым пользователем")
@@ -58,6 +56,7 @@ public class TestUserPage extends UserPage {
     @Test
     @Order(2)
     void test_Login_New_User(){
+        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN, USER_PASSWORD);
         assertTrue(isLoginNewUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
     }
@@ -67,6 +66,7 @@ public class TestUserPage extends UserPage {
     @Test
     @Order(3)
     void test_Delete_New_User(){
+        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
         open("/settings/users");
         assertTrue(isDeleteUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);

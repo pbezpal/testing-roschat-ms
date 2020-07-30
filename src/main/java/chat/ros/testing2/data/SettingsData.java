@@ -30,7 +30,7 @@ public interface SettingsData {
 
     /****** Параметры для настройки Push сервера ******/
     String SERVER_PUSH_TITLE_FORM = "Лицензирование и обсуживание";
-    String SERVER_PUSH_INPUT_HOST = "IP адрес";
+    String SERVER_PUSH_INPUT_HOST = "Адрес сервера";
     String SERVER_PUSH_HOST_SERVER = "firelink.me";
     String SERVER_PUSH_INPUT_LOGIN = "Логин";
     String SERVER_PUSH_LOGIN_SERVER = "testing2";

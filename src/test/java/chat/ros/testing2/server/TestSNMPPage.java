@@ -1,7 +1,6 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.SNMPPage;
 import com.codeborne.selenide.Selenide;
@@ -17,8 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static chat.ros.testing2.data.SettingsData.SNMP_ADDRESS_SERVER;
 import static chat.ros.testing2.data.SettingsData.SNMP_PORT_SERVER;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)

@@ -7,13 +7,16 @@ public interface ContactsData {
     String CONTACT_INPUT_PHONE_JOB = "Номер";
 
     /***** Параметры контактов ******/
-    String CONTACT_NUMBER_7012 = "7012";
-    String CONTACT_NUMBER_7013 = "7013";
+    String CONTACT_A = "7007";
+    String CONTACT_B = "7008";
+    String CONTACT_C = "7009";
+    String CONTACT_D = "7010";
+    String CONTACT_E = "7011";
 
     /******************************************** Раздел Польхователь ************************************************/
 
     /****** Параметры учётных записей ******/
-    String USER_ACOUNT_ITEM_MENU = "Учетная запись";
+    String USER_ACCOUNT_ITEM_MENU = "Учетная запись";
     String USER_ACCOUNT_INPUT_USERNAME = "Имя пользователя";
     String USER_ACCOUNT_PASSWORD = "12345678";
 

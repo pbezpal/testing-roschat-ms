@@ -1,24 +1,23 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.MailPage;
 import com.codeborne.selenide.Selenide;
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
