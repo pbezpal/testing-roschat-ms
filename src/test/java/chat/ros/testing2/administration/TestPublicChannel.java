@@ -1,7 +1,6 @@
 package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsBase;
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;

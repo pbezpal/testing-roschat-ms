@@ -1,7 +1,6 @@
 package chat.ros.testing2.server;
 
 import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import com.codeborne.selenide.Selenide;

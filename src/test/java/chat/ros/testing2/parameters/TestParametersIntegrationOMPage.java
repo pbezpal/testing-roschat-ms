@@ -1,31 +1,15 @@
 package chat.ros.testing2.parameters;
 
-import chat.ros.testing2.TestsBase;
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.ServerPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
-import chat.ros.testing2.server.settings.integration.SKUDPage;
-import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
-
-import java.lang.reflect.Method;
-import java.util.*;
-
-import static chat.ros.testing2.data.ParametersData.*;
-import static chat.ros.testing2.data.SettingsData.*;
-import static chat.ros.testing2.helpers.AttachToReport.*;
-import static org.testng.Assert.assertTrue;
 
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция")
-public class TestParametersIntegrationOMPage extends ServerPage implements IntegrationPage, TestsParallelBase {
+public class TestParametersIntegrationOMPage extends ServerPage implements IntegrationPage {
 
-    private SKUDPage skudPage;
+    /*private SKUDPage skudPage;
     private String field;
     private SoftAssert softAssert;
     private ServerPage serverPage = new ServerPage();
@@ -196,5 +180,5 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
-    }
+    }*/
 }

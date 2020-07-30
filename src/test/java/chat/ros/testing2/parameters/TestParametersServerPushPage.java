@@ -1,32 +1,26 @@
 package chat.ros.testing2.parameters;
 
 import chat.ros.testing2.TestsBase;
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.ServerPage;
-import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
 
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
-import static chat.ros.testing2.helpers.AttachToReport.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")
-public class TestParametersServerPushPage extends ServerPage implements TestsParallelBase {
+public class TestParametersServerPushPage extends ServerPage {
 
-    private SoftAssert softAssert;
+
     private String field;
     private TestsBase testsBase;
 
-    @DataProvider(name = "empty_value_push")
+
     public Object[][] getEmptyValuePush(){
         return new Object[][] {
                 {"",SERVER_PUSH_LOGIN_SERVER, SERVER_PUSH_PORT_SERVER, SERVER_PUSH_PASSWORD_SERVER},
@@ -35,7 +29,6 @@ public class TestParametersServerPushPage extends ServerPage implements TestsPar
                 {SERVER_PUSH_HOST_SERVER,SERVER_PUSH_LOGIN_SERVER, SERVER_PUSH_PORT_SERVER, ""}};
     }
 
-    @DataProvider(name = "wrong_value_host_push_server")
     public Iterator<Object[]> getWrongValueHostPushServer(){
         List<Object[]> list = new ArrayList<>();
         for(String host: WRONG_VALUE_HOST) {
@@ -44,7 +37,6 @@ public class TestParametersServerPushPage extends ServerPage implements TestsPar
         return list.iterator();
     }
 
-    @DataProvider(name = "wrong_value_push_port")
     public Iterator<Object[]> getWrongValuePushPort(){
         List<Object[]> list = new ArrayList<>();
         for(char c: WRONG_SYMBOLS_PORT.toCharArray()) {
@@ -53,7 +45,6 @@ public class TestParametersServerPushPage extends ServerPage implements TestsPar
         return list.iterator();
     }
 
-    @DataProvider(name = "valid_value_push_port")
     public Iterator<Object[]> getValidValuePushPort(){
         List<Object[]> list = new ArrayList<>();
         for(char c: VALID_SYMBOLS_PORT.toCharArray()) {
@@ -62,7 +53,7 @@ public class TestParametersServerPushPage extends ServerPage implements TestsPar
         return list.iterator();
     }
 
-    @BeforeClass
+    /*@BeforeClass
     void setUp(){
         testsBase = new TestsBase();
     }
@@ -186,5 +177,5 @@ public class TestParametersServerPushPage extends ServerPage implements TestsPar
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
-    }
+    }*/
 }

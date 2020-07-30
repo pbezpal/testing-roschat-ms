@@ -1,12 +1,11 @@
 package chat.ros.testing2.parameters;
 
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.ServerPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 
 /*@Epic(value = "Настройки")
 @Feature(value = "Интеграция")*/
-public class TestParametersIntegrationPage extends ServerPage implements IntegrationPage, TestsParallelBase {
+public class TestParametersIntegrationPage extends ServerPage implements IntegrationPage {
 
     /*private SKUDPage skudPage;
     private String field;

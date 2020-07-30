@@ -1,29 +1,14 @@
 package chat.ros.testing2.parameters;
 
-import chat.ros.testing2.TestsBase;
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.MailPage;
-import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
-
-import java.lang.reflect.Method;
-import java.util.*;
-
-import static chat.ros.testing2.data.ParametersData.*;
-import static chat.ros.testing2.data.SettingsData.*;
-import static chat.ros.testing2.data.SettingsData.MAIL_CONNECT_INPUT_PASSWORD;
-import static chat.ros.testing2.helpers.AttachToReport.*;
 
 @Epic(value = "Настройки")
 @Feature(value = "Почте")
-public class TestParametersMailPage extends MailPage implements TestsParallelBase {
+public class TestParametersMailPage extends MailPage {
 
-    private SoftAssert softAssert;
+    /*private SoftAssert softAssert;
     private String field;
     private TestsBase testsBase;
 
@@ -216,5 +201,5 @@ public class TestParametersMailPage extends MailPage implements TestsParallelBas
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
-    }
+    }*/
 }

@@ -1,7 +1,6 @@
 package chat.ros.testing2.server.integration;
 
 import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestSuiteBase;
 import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.monitoring.MonitoringPage;

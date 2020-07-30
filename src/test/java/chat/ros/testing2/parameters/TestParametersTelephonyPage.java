@@ -1,34 +1,20 @@
 package chat.ros.testing2.parameters;
 
 import chat.ros.testing2.TestsBase;
-import chat.ros.testing2.TestsParallelBase;
 import chat.ros.testing2.server.settings.TelephonyPage;
-import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static chat.ros.testing2.data.SettingsData.TELEPHONY_TURN_REALM;
-import static chat.ros.testing2.helpers.AttachToReport.*;
 
 
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
-public class TestParametersTelephonyPage extends TelephonyPage implements TestsParallelBase {
+public class TestParametersTelephonyPage extends TelephonyPage {
 
     private String field;
-    private SoftAssert softAssert;
     private TestsBase testsBase;
 
-    @DataProvider(name = "empty_value_network")
     public Object[][] getEmptyValueNetwork(){
         return new Object[][] {
                 {"",TELEPHONY_NETWORK_FRONT_IP, TELEPHONY_NETWORK_INSIDE_IP},
@@ -36,14 +22,12 @@ public class TestParametersTelephonyPage extends TelephonyPage implements TestsP
                 {TELEPHONY_NETWORK_PUBLIC_ADDRESS,TELEPHONY_NETWORK_FRONT_IP, ""}};
     }
 
-    @DataProvider(name = "empty_value_sip")
     public Object[][] getEmptyValueSip(){
         return new Object[][] {
                 {"",TELEPHONY_SIP_MAX_PORT},
                 {TELEPHONY_SIP_MIN_PORT,""}};
     }
 
-    @DataProvider(name = "empty_value_turn")
     public Object[][] getEmptyValueTurn(){
         return new Object[][] {
                 {"",TELEPHONY_TURN_MAX_PORT, TELEPHONY_TURN_REALM, TELEPHONY_TURN_SECRET},
@@ -52,7 +36,7 @@ public class TestParametersTelephonyPage extends TelephonyPage implements TestsP
                 {TELEPHONY_TURN_MIN_PORT,TELEPHONY_TURN_MAX_PORT, TELEPHONY_TURN_REALM, ""}};
     }
 
-    @BeforeClass
+    /*@BeforeClass
     void setUp(){
         testsBase = new TestsBase();
     }
@@ -180,5 +164,5 @@ public class TestParametersTelephonyPage extends TelephonyPage implements TestsP
             ABrowserLogNetwork();
             ABrowserLogConsole();
         }
-    }
+    }*/
 }
