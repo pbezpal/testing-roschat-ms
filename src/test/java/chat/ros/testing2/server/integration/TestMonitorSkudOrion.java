@@ -21,14 +21,14 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.MonitoringData.MONITORING_SERVICE_SKUD;
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция->Орион")
-public class TestMonitorSkudOrion implements IntegrationPage, TestSuiteBase {
+public class TestMonitorSkudOrion implements IntegrationPage {
 
     private final String classStatusServiceActive = "status active";
     private final String classStatusServiceInactive = "status inactive";

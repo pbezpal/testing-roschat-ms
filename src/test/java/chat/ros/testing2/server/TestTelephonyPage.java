@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
-public class TestTelephonyPage extends TelephonyPage implements TestSuiteBase {
+public class TestTelephonyPage extends TelephonyPage {
 
     private String field;
     private Map<String, String> mapInputValueNetwork = new HashMap() {{

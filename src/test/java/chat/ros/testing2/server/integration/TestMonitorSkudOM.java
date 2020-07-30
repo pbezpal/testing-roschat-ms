@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.MonitoringData.MONITORING_SERVICE_SKUD;
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
