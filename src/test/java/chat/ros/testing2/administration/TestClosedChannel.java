@@ -12,8 +12,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.TestsParallelBase.commandDBCheckChannel;
-import static chat.ros.testing2.TestsParallelBase.commandDBCheckTypeChannel;
+import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
+import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,7 +74,7 @@ public class TestClosedChannel extends ChannelsPage {
     void test_Check_Exist_Channel_In_BD(){
         assertTrue(status_create, "Канал не создан");
         assertAll("Проверяем канал в БД Postgres",
-                () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
+                () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)),
                 "Запись о канале " + nameChannel + " не найден в БД postgres"),
                 () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
                         replaceAll(" ",""),

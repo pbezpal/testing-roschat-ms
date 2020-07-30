@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.ContactsData.CONTACT_B;
+import static chat.ros.testing2.data.HelperData.*;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный проверенный канал")
-public class TestPublicProvenChannel extends ChannelsPage implements TestsParallelBase {
+public class TestPublicProvenChannel extends ChannelsPage {
 
     private static String nameChannel;
     private static String newNameChannel;

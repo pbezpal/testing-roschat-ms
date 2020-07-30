@@ -12,6 +12,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
+import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
+import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Администрирование")
 @Feature(value = "Публичный канал")
-public class TestPublicChannel extends ChannelsPage implements TestsParallelBase {
+public class TestPublicChannel extends ChannelsPage {
 
     private static String nameChannel;
     private static String newNameChannel;
