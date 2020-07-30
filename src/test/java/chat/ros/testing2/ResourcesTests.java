@@ -16,7 +16,7 @@ import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.LoginData.PORT_SERVER;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResourcesTests extends UserPage implements BeforeAllCallback, BeforeEachCallback, IntegrationPage {
 
