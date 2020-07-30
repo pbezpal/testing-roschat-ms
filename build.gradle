@@ -330,6 +330,10 @@ task testconnect(type: Test){
     }
 }
 
+task roschatdb {
+    dependsOn testservice, contactconnect, contactspublicprovenchannels, contactspublicchannels, contactsclosedchannels
+}
+
 task roschatms(type: Test){
     useJUnitPlatform()
 
