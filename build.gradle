@@ -399,3 +399,7 @@ task roschatms(type: Test){
 }
 
 roschatms.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+
+task testroschatms {
+    dependsOn roschatms, paramteststele
+}
