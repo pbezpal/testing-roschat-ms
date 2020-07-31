@@ -1,74 +1,82 @@
 package chat.ros.testing2.parameters;
 
+import chat.ros.testing2.ResourcesTests;
+import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.ServerPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
+import chat.ros.testing2.server.settings.integration.SKUDPage;
+import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.runners.Parameterized;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static chat.ros.testing2.data.ParametersData.*;
+import static chat.ros.testing2.data.SettingsData.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(ResourcesTests.class)
+@ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция")
 public class TestParametersIntegrationOMPage extends ServerPage implements IntegrationPage {
 
-    /*private SKUDPage skudPage;
+    private SKUDPage skudPage;
     private String field;
-    private SoftAssert softAssert;
-    private ServerPage serverPage = new ServerPage();
-    public TestsBase testsBase;
+    private static ServerPage serverPage = new ServerPage();
 
-    @DataProvider(name = "empty_value_om")
-    public Object[][] getEmptyValueOM(){
+    public static Object[][] getEmptyValueOM(){
         return new Object[][] {
                 {"",INTEGRATION_SERVICE_OM_PORT_BD, INTEGRATION_SERVICE_OM_LOGIN_DB},
                 {INTEGRATION_SERVICE_OM_IP_ADDRESS,"", INTEGRATION_SERVICE_OM_LOGIN_DB},
-                {INTEGRATION_SERVICE_OM_IP_ADDRESS,INTEGRATION_SERVICE_OM_PORT_BD, ""}};
+                {INTEGRATION_SERVICE_OM_IP_ADDRESS,INTEGRATION_SERVICE_OM_PORT_BD,""}};
     }
 
-    @DataProvider(name = "wrong_value_ip_om")
-    public Iterator<Object[]> getWrongValueServerOM(){
-        List<Object[]> list = new ArrayList<>();
-        for(String ip: WRONG_VALUE_IP_ADDRESS) {
-            list.add(new Object[]{ip});
+    @Parameterized.Parameters(name = "{0}")
+    public static Iterable<String> getWrongValueServerOM() {
+        ArrayList<String> data = new ArrayList<>();
+
+        for (String ip: WRONG_VALUE_IP_ADDRESS) {
+            data.add(ip);
         }
-        return list.iterator();
+
+        return data;
     }
 
-    @DataProvider(name = "wrong_symbols_port_om")
-    public Iterator<Object[]> getWrongSymbolsPortOM(){
-        List<Object[]> list = new ArrayList<>();
-        for(Character c: WRONG_SYMBOLS_PORT.toCharArray()) {
-            list.add(new Object[]{c});
+    @Parameterized.Parameters(name = "{0}")
+    public static Iterable<Character> getWrongSymbolsPortOM() {
+        ArrayList<Character> data = new ArrayList<>();
+
+        for (Character symbol: WRONG_SYMBOLS_PORT.toCharArray()) {
+            data.add(symbol);
         }
-        return list.iterator();
+
+        return data;
     }
 
-    @DataProvider(name = "valid_value_port_om")
-    public Iterator<Object[]> getValidValuePortOM(){
-        List<Object[]> list = new ArrayList<>();
-        for(char c: VALID_SYMBOLS_PORT.toCharArray()) {
-            list.add(new Object[]{c});
+    @Parameterized.Parameters(name = "{0}")
+    public static Iterable<Character> getValidValuePortOM() {
+        ArrayList<Character> data = new ArrayList<>();
+
+        for (Character symbol: VALID_SYMBOLS_PORT.toCharArray()) {
+            data.add(symbol);
         }
-        return list.iterator();
+
+        return data;
     }
 
-    @BeforeClass
-    void setUp(){
-        testsBase = new TestsBase();
-    }
-
-    @BeforeMethod
-    public void beforeMethod(Method method){
+    @BeforeEach
+    public void setUp(){
         field = null;
-        softAssert = new SoftAssert();
-        testsBase.init();
-        testsBase.openMS("Настройки", "Интеграция");
-        if (isExistsTableText("СКУД", false)) {
-        } else {
-            skudPage = (SKUDPage) clickServiceType("СКУД");
-            assertTrue(skudPage.deleteSKUD("СКУД"),
-                    "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
-        }
-        skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
-        clickButtonActionService(SETTINGS_BUTTON_SETTING);
     }
 
     @Story(value = "Проверяем настройки СКУД Офис-Монитор на пустые поля")
@@ -76,7 +84,8 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
             "1. Появилась ли красная надпись 'Введите значение' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с пустым полем")
-    @Test(dataProvider = "empty_value_om")
+    @ParameterizedTest
+    @MethodSource("getEmptyValueOM")
     void test_Settings_OM_Empty_Value(String ip, String port, String username){
         Map<String, String> mapInputValueOM = new HashMap() {{
             put("IP адрес", ip);
@@ -88,16 +97,15 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
         if(ip.equals("")) field = "IP адрес";
         else if(port.equals("")) field = "Порт БД";
         else field = "Имя пользователя БД";
-        softAssert.assertEquals(isShowTextWrongValue(field),"Введите значение",
-                "Надпись 'Введите значение' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        assertAll("Проверяем настрйоки СКУД ОМ с пустыми полями",
+                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
+                        "Надпись 'Введите значение' не появилась"),
+                () -> { clickButtonSave(); },
+                () -> assertTrue(isFormChange(),
+                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
+                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия"));
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
-        softAssert.assertAll();
     }
 
     @Story(value = "Проверяем невалидные значение IP адреса в настройках СКУД Офис-Монитор")
@@ -105,19 +113,20 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
             "1. Появилась ли красная надпись 'Невалидный IP адрес' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидными значениями")
-    @Test(dataProvider = "wrong_value_ip_om")
+    @ParameterizedTest
+    @MethodSource("getWrongValueServerOM")
     void test_Wrong_IP_OM(String ip){
         sendInputForm("IP адрес", ip);
-        softAssert.assertEquals(isShowTextWrongValue("IP адрес"),"Невалидный IP адрес",
-                "Надпись 'Невалидный IP адрес' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        assertAll("Проверяем IP адрес на невалидные значения",
+                () -> assertEquals(isShowTextWrongValue("IP адрес"),"Невалидный IP адрес",
+                        "Надпись 'Невалидный IP адрес' не появилась"),
+                () -> {clickButtonSave();},
+                () -> assertTrue(isFormChange(),
+                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
+                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
+                );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
-        softAssert.assertAll();
     }
 
     @Story(value = "Проверяем невалидные значения портов в настройках СКУД Офис-Монитор")
@@ -125,19 +134,20 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
             "1. Появилась ли красная надпись 'Невалидный порт' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидным значением в поле")
-    @Test(dataProvider = "wrong_symbols_port_om")
+    @ParameterizedTest
+    @MethodSource("getWrongSymbolsPortOM")
     void test_Wrong_Symbols_Ports_OM(Character c){
         sendInputForm("Порт БД", c.toString());
-        softAssert.assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
-                "Надпись 'Невалидный порт' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        assertAll("Проверяем настройки Порт БД с невалидными значениями",
+                () -> assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
+                        "Надпись 'Невалидный порт' не появилась"),
+                () -> { clickButtonSave(); },
+                () -> assertTrue(isFormChange(),
+                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
+                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
+        );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
-        softAssert.assertAll();
     }
 
     @Story(value = "Проверяем номер максимального порта в настройках СКУД Офис-Монитор")
@@ -148,37 +158,29 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
     @Test
     void test_Max_Length_Ports_OM(){
         sendInputForm("Порт БД", MORE_MAX_VALUE_PORT);
-        softAssert.assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
-                "Надпись 'Невалидный порт' не появилась");
-        clickButtonSave();
-        softAssert.assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить");
-        softAssert.assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия");
+        assertAll("Вводим порт БД больше максимально возможного",
+                () -> assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
+                        "Надпись 'Невалидный порт' не появилась"),
+                () -> { clickButtonSave(); },
+                () -> assertTrue(isFormChange(),
+                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
+                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
+                );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, false);
-        softAssert.assertAll();
     }
 
     @Story(value = "Проверяем валидные значения портов в настройках СКУД Офис-Монитор")
     @Description(value = "Вводим валидные значения портов в настройках СКУД Офис-Монитор и проверяем: \n" +
             "Сохраняются ли настройки с валидным значением в поле")
-    @Test(dataProvider = "valid_value_port_om")
+    @ParameterizedTest
+    @MethodSource("getValidValuePortOM")
     void test_Valid_Symbols_Ports_OM(Character c){
         sendInputForm("Порт БД", c.toString());
         clickButtonSave();
-        softAssert.assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия");
+        assertAll("Проверяем валидное значение " + c.toString(),
+                () -> assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия")
+        );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        isExistsTableText(INTEGRATION_SERVICE_OM_TYPE, true);
-        softAssert.assertAll();
     }
-
-    @AfterMethod(alwaysRun = true)
-    public void afterTestMethod(Method method, ITestResult testResult){
-        if(!testResult.isSuccess()){
-            AScreenshot(method.toString());
-            ABrowserLogNetwork();
-            ABrowserLogConsole();
-        }
-    }*/
 }

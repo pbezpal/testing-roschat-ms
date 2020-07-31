@@ -97,6 +97,55 @@ allure {
     }
 }
 
+task paramteststele(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestParametersTelephonyPage"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task paramtestsommailconnectpush(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestParametersServerConnectPage"
+        includeTestsMatching "*.TestParametersMailPage"
+        includeTestsMatching "*.TestParametersIntegrationOMPage"
+        includeTestsMatching "*.TestParametersServerPushPage"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task parametertests {
+    dependsOn paramtestsommailconnectpush, paramteststele
+}
+
 task contactsclosedchannels(type: Test) {
 
     useJUnitPlatform()
