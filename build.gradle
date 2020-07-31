@@ -379,10 +379,6 @@ task testconnect(type: Test){
     }
 }
 
-task roschatdb {
-    dependsOn testservice, contactconnect, contactspublicprovenchannels, contactspublicchannels, contactsclosedchannels
-}
-
 task roschatms(type: Test){
     useJUnitPlatform()
 
@@ -401,4 +397,14 @@ task roschatms(type: Test){
     }
 }
 
-roschatms.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+task testroschatms {
+    dependsOn roschatms, testconnect, testintegration, testservice, testclosedchannels, parametertests
+}
+
+task testroschatserver {
+    dependsOn roschatms, testconnect, testintegration, testservice, testclosedchannels
+}
+
+task testroschatdb {
+    dependsOn testservice, contactconnect, contactspublicprovenchannels, contactspublicchannels, contactsclosedchannels
+}

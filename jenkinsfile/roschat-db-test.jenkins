@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean roschatdb'
+                        sh './gradlew clean testroschatdb'
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }
