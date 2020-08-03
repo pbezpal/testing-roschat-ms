@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -211,6 +212,7 @@ public class TestParametersServerConnectPage extends ServerPage {
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидным значением в поле")
     @ParameterizedTest
+    @Ignore
     @MethodSource(value = "getWrongValueConnectPort")
     void test_Wrong_Symbols_Ports_Connect(String field, Character c){
         String port = null;
@@ -241,6 +243,7 @@ public class TestParametersServerConnectPage extends ServerPage {
     @Description(value = "Вводим валидные значения портов в настройках Подключение и проверяем: \n" +
             "Сохраняются ли настройки с валидным значением портов")
     @ParameterizedTest
+    @Ignore
     @MethodSource(value = "getValidValueConnectPorts")
     void test_Valid_Ports_Connect(String field, Character c){
         String port = null;

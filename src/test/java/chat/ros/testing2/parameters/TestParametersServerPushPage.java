@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -157,6 +158,7 @@ public class TestParametersServerPushPage extends ServerPage {
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидным значением в поле")
     @ParameterizedTest
+    @Ignore
     @MethodSource(value = "getWrongValuePushPort")
     void test_Wrong_Value_Ports_Push(Character c){
         clickButtonSettings(SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
@@ -176,6 +178,7 @@ public class TestParametersServerPushPage extends ServerPage {
     @Description(value = "Вводим валидные значения портов в настройках Лицензирование и проверяем: \n" +
             "Сохраняются ли настройки с валидным значением в поле")
     @ParameterizedTest
+    @Ignore
     @MethodSource(value = "getValidValuePushPort")
     void test_Valid_Ports_Push(Character c){
         clickButtonSettings(SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);

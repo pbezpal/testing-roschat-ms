@@ -35,8 +35,8 @@ apply plugin: 'maven'
 apply plugin: 'idea'
 
 jar {
-    baseName = 'roschat-ms'
-    version = '2.0'
+    baseName('roschat-ms')
+    version('2.0')
     exclude ("chat/ros/testing2/server/MonitoringPage.class")
     exclude ("chat/ros/testing2/data/SettingsData.class")
     exclude ("chat/ros/testing2/server/settings/**")
@@ -54,6 +54,10 @@ dependencies {
     compile group: 'org.junit', name: 'junit5-engine', version: '5.0.0-ALPHA'
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.7.0-M1'
+    // https://mvnrepository.com/artifact/org.junit.vintage/junit-vintage-engine
+    testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.0-M1'
+    // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite-api
+    testCompile group: 'org.junit.platform', name: 'junit-platform-suite-api', version: '1.7.0-M1'
 
     //dependencies for selenium
     // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
@@ -139,9 +143,9 @@ task paramteststele(type: Test) {
     testLogging {
         events "passed", "skipped", "failed"
     }
-
-    finalizedBy(paramtestsommailconnectpush)
 }
+
+paramteststele.finalizedBy(paramtestsommailconnectpush)
 
 task contactsclosedchannels(type: Test) {
 
@@ -380,7 +384,7 @@ task roschatdb {
     dependsOn testservice, contactconnect, contactspublicprovenchannels, contactspublicchannels, contactsclosedchannels
 }
 
-task roschatms(type: Test){
+task roschatserver(type: Test){
     useJUnitPlatform()
 
     filter {
@@ -398,8 +402,4 @@ task roschatms(type: Test){
     }
 }
 
-roschatms.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
-
-task testroschatms {
-    dependsOn roschatms, paramteststele
-}
+roschatserver.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
