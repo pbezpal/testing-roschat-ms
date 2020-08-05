@@ -68,8 +68,8 @@ public class TestPublicProvenChannel extends ChannelsPage {
     }
 
     @Story(value = "Проверяем, что канал есть в БД postgres")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Появился ли канал в БД postgres" +
+    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем: \n" +
+            "1. Появился ли канал в БД postgres\n" +
             "2. Правильного ли типа канал")
     @Test
     @Order(2)
@@ -100,9 +100,9 @@ public class TestPublicProvenChannel extends ChannelsPage {
     }
 
     @Story(value = "Проверяем канал в БД postgres после получения статуса проверенного")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Остался ли канал в БД postgres" +
-            "2. Правильного ли типа канал" +
+    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:\n" +
+            "1. Остался ли канал в БД postgres\n" +
+            "2. Правильного ли типа канал\n" +
             "3. Статус проверенного канала")
     @Test
     @Order(4)

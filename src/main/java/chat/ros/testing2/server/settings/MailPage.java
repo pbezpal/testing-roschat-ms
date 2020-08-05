@@ -59,7 +59,7 @@ public class MailPage implements SettingsPage {
         return dataConnectionMailServer;
     }
 
-    public MailPage settingsMailServer(Map<String, String> settingsMainServer, String security){
+    public MailPage settingsMailServerWithCheck(Map<String, String> settingsMainServer, String security){
         //Настраиваем раздел Подключение
         setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         setInputSecurity(security);
@@ -68,6 +68,14 @@ public class MailPage implements SettingsPage {
 
         //Нажимаем кнопку проверить
         clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_CHECK);
+
+        return this;
+    }
+
+    public MailPage settingsMailServerWithoutSave(Map<String, String> settingsMainServer, String security){
+        //Настраиваем раздел Подключение
+        setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
+        setInputSecurity(security);
 
         return this;
     }

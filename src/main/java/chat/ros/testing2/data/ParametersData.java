@@ -15,8 +15,8 @@ public interface ParametersData {
             "testing2.ros.c" + getRandomSymbol(WRONG_SYMBOLS_SERVER),
             "testing2.ros.chat" + getRandomSymbol(WRONG_SYMBOLS_SERVER)};
     String WRONG_SYMBOLS_IP_ADDRESS = WRONG_SYMBOLS_SERVER + "-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    String[] WRONG_VALUE_IP_ADDRESS = {"127.0.0.", "127.0..1", "127..0.1", "1277.0.0.1", "127.1111.0.1", "127.0.1111.1",
-            "127.0.0.1111","00.0.0.1","127.00.0.1","127.0.00.1","127.0.0.00",
+    String[] WRONG_VALUE_IP_ADDRESS = {"127.0.0.", "127.0..1", "127..0.1", "256.0.0.1", "127.256.0.1", "127.0.256.1",
+            "127.0.0.256","00.0.0.1","127.00.0.1","127.0.00.1","127.0.0.00",
             "12" + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + ".0.0.1",
             "127." + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + ".0.1",
             "127.0.0" + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + ".1",

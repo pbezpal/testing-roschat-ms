@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean testroschatms'
+                        sh './gradlew clean paramtests_connect_wrong'
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }

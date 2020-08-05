@@ -101,52 +101,6 @@ allure {
     }
 }
 
-task paramtestsommailconnectpush(type: Test) {
-    useJUnitPlatform()
-
-    dependsOn 'cleanTest'
-
-    systemProperties = [
-            'junit.jupiter.execution.parallel.enabled':'true',
-            'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
-            'junit.jupiter.execution.parallel.mode.default':'same_thread',
-            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]
-
-    //Parametrized Test
-
-    filter {
-        //include specific method in any of the tests
-        includeTestsMatching "*.TestParametersServerConnectPage"
-        includeTestsMatching "*.TestParametersMailPage"
-        includeTestsMatching "*.TestParametersIntegrationOMPage"
-        includeTestsMatching "*.TestParametersServerPushPage"
-    }
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
-task paramteststele(type: Test) {
-    useJUnitPlatform()
-
-    dependsOn 'cleanTest'
-
-    //Parametrized Test
-    filter {
-        //include specific method in any of the tests
-        includeTestsMatching "*.TestParametersTelephonyPage"
-    }
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
-paramteststele.finalizedBy(paramtestsommailconnectpush)
-
 task contactsclosedchannels(type: Test) {
 
     useJUnitPlatform()
@@ -381,7 +335,7 @@ task testconnect(type: Test){
 }
 
 task roschatdb {
-    dependsOn testservice, contactconnect, contactspublicprovenchannels, contactspublicchannels, contactsclosedchannels
+    dependsOn testservice, contactconnect, testclosedchannels
 }
 
 task roschatserver(type: Test){
@@ -400,6 +354,188 @@ task roschatserver(type: Test){
     testLogging {
         events "passed", "skipped", "failed"
     }
+
+    finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
 }
 
-roschatserver.finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+/***
+ * Параметризированные тесты
+ */
+
+task paramtests_server_valid(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersServerConnectValidPorts.class")
+    include("**/TestParametersServerPushValidPort")
+
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(roschatserver)
+}
+
+task paramtests_mail_wrong(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersMailEmptyValue.class")
+    include("**/TestParametersMailMaxLengthPort.class")
+    include("**/TestParametersMailWrongHostServer.class")
+    include("**/TestParametersMailWrongMail.class")
+
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_server_valid)
+}
+
+task paramtests_telephony_turn(type: Test){
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersTelephonyEmptyTurn.class")
+    include("**/TestParametersTelephonyTurnWrongMinPort.class")
+    include("**/TestParametersTelephonyTurnWrongMaxPort.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_mail_wrong)
+}
+
+task paramtests_telephony_sip(type: Test){
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersTelephonyEmptySip.class")
+    include("**/TestParametersTelephonySipWrongMinPort.class")
+    include("**/TestParametersTelephonySipWrongMaxPort.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_telephony_turn)
+}
+
+task paramtests_telephony_network(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersTelephonyEmptyNetwork.class")
+    include("**/TestParametersTelephonyNetworkWrongFrontDev.class")
+    include("**/TestParametersTelephonyNetworkWrongInsideDev.class")
+    include("**/TestParametersTelephonyNetworkWrongPublicAddress.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_telephony_sip)
+}
+
+task paramtests_push_wrong(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersServerPushWrongHost.class")
+    include("**/TestParametersServerPushWrongPort.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_telephony_network)
+}
+
+task paramtests_connect_wrong(type: Test) {
+    useJUnitPlatform()
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    //Parametrized Test
+    include("**/TestParametersServerConnectWrongHost.class")
+    include("**/TestParametersServerConnectWrongHttpPort.class")
+    include("**/TestParametersServerConnectWrongHttpsPort.class")
+    include("**/TestParametersServerConnectWrongWebsocketPort.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy(paramtests_push_wrong)
+}

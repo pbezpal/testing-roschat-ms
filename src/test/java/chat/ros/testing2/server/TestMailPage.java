@@ -34,7 +34,7 @@ public class TestMailPage extends MailPage {
     void test_Settings_Mail_No_Security(){
         this.getSettingsMailServer = getSettingsMailServer(MAIL_INFOTEK_SERVER, MAIL_INFOTEK_USERNAME,
                 MAIL_INFOTEK_PASSWORD, MAIL_PORT_NO_SECURITY, MAIL_INFOTEK_FROM_USER, MAIL_INFOTEK_FROM_MAIL);
-        settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_NO);
+        settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_NO);
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
             () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
             () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
@@ -49,7 +49,7 @@ public class TestMailPage extends MailPage {
     void test_Settings_Mail_SSL_Security(){
         this.getSettingsMailServer = getSettingsMailServer(MAIL_GOOGLE_SERVER, MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_SSL, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
-        settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_SSL);
+        settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_SSL);
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
                 () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
                 () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
@@ -64,7 +64,7 @@ public class TestMailPage extends MailPage {
     void test_Settings_Mail_STARTTLS_Security(){
         this.getSettingsMailServer = getSettingsMailServer(MAIL_GOOGLE_SERVER, MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_STARTTLS, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
-        settingsMailServer(this.getSettingsMailServer, MAIL_TYPE_SECURITY_STARTTLS);
+        settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_STARTTLS);
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
                 () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
                 () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",

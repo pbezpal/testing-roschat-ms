@@ -88,9 +88,9 @@ public class TestClosedChannelChange extends ChannelsPage {
     }
 
     @Story(value = "Проверяем канал в БД postgres после смены типа")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Остался ли канал в БД postgres" +
-            "2. Правильного ли типа канал")
+    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:\n" +
+            "1. Остался ли канал в БД postgres\n" +
+            "2. Правильного ли типа канал\n")
     @Test
     @Order(3)
     void test_Check_Exist_Channel_In_BD_After_Change_Type(){
