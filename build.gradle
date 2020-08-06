@@ -550,7 +550,7 @@ task paramtests_push_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    //finalizedBy(paramtests_telephony_network)
+    finalizedBy(paramtests_telephony_network)
 }
 
 task paramtests_connect_wrong(type: Test) {
