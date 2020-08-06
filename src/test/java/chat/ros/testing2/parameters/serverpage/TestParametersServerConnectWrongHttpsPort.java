@@ -25,7 +25,7 @@ public class TestParametersServerConnectWrongHttpsPort extends ServerParams {
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидным значением в поле")
     @Test
-    void test_Max_Length_Port_Http_Connect(){
+    void test_Max_Length_Port_Https_Connect(){
         wrong_symbols_ports(SERVER_CONNECT_INPUT_HTTPS_PORT, "65536");
     }
 
@@ -36,7 +36,7 @@ public class TestParametersServerConnectWrongHttpsPort extends ServerParams {
             "3. Сохраняются ли настройки с невалидным значением в поле")
     @ParameterizedTest
     @MethodSource(value = "getWrongValueConnectPort")
-    void test_Wrong_Symbols_Port_Http_Connect(Character c){
+    void test_Wrong_Symbols_Port_Https_Connect(Character c){
         wrong_symbols_ports(SERVER_CONNECT_INPUT_HTTPS_PORT, c.toString());
     }
 }

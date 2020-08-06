@@ -22,6 +22,6 @@ public class TestParametersServerConnectValidPorts extends ServerParams {
     @ParameterizedTest
     @MethodSource(value = "getValidValueConnectPorts")
     void test_Valid_Ports_Connect(String field, Character c){
-        value_symbols_port(field, c.toString());
+        valid_symbols_port(field, c.toString());
     }
 }

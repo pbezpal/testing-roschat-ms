@@ -16,8 +16,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
@@ -27,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")
-public class TestParametersServerPushWrongHost extends ServerPage {
+public class TestParametersServerPushWrongHost extends ServerParams {
 
     private String field;
 
@@ -37,17 +39,6 @@ public class TestParametersServerPushWrongHost extends ServerPage {
                 {SERVER_PUSH_HOST_SERVER,"", SERVER_PUSH_PORT_SERVER, SERVER_PUSH_PASSWORD_SERVER},
                 {SERVER_PUSH_HOST_SERVER,SERVER_PUSH_LOGIN_SERVER, "", SERVER_PUSH_PASSWORD_SERVER},
                 {SERVER_PUSH_HOST_SERVER,SERVER_PUSH_LOGIN_SERVER, SERVER_PUSH_PORT_SERVER, ""}};
-    }
-
-    @Parameterized.Parameters(name = "{0}")
-    public static Iterable<String> getWrongValueHostPushServer() {
-        ArrayList<String> data = new ArrayList<>();
-
-        for (String host: WRONG_VALUE_HOST) {
-            data.add(host);
-        }
-
-        return data;
     }
 
     @BeforeEach
@@ -90,9 +81,9 @@ public class TestParametersServerPushWrongHost extends ServerPage {
             "в настройках Лицензирование и обслуживание и проверяем: \n" +
             "1. Появилась ли красная надпись 'Невалидный адрес' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с пустым полем")
-    @ParameterizedTest
-    @MethodSource(value = "getWrongValueHostPushServer")
+            "3. Сохраняются ли настройки с невалидными значениями")
+    @ParameterizedTest(name = "#{index} => address = {0}")
+    @MethodSource(value = "getWrongHosts")
     void test_Wrong_Host_Public_Address_Connect(String address){
         Map<String, String> mapInputValueConnect = new HashMap() {{
             put(SERVER_PUSH_INPUT_HOST, address);

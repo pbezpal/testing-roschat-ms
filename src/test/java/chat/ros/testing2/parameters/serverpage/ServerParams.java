@@ -3,13 +3,15 @@ package chat.ros.testing2.parameters.serverpage;
 import chat.ros.testing2.server.settings.ServerPage;
 import org.junit.runners.Parameterized;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static chat.ros.testing2.data.LoginData.HOST_SERVER;
-import static chat.ros.testing2.data.ParametersData.VALID_SYMBOLS_PORT;
-import static chat.ros.testing2.data.ParametersData.WRONG_SYMBOLS_PORT;
+import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_FIELD_PORTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public abstract class ServerParams extends ServerPage {
 
     @Parameterized.Parameters(name = "{0}")
-    public static Iterable<Character> getWrongValueConnectPort() {
+    public static Iterable<String> getWrongHosts(){
+        ArrayList<String> data = new ArrayList<>();
+
+        for(String host: WRONG_VALUE_HOST){
+            data.add(host);
+        }
+
+        return data;
+    }
+
+    @Parameterized.Parameters(name = "{0}")
+    protected static Iterable<Character> getWrongValueConnectPort() {
         ArrayList<Character> data = new ArrayList<>();
 
         for(char c: WRONG_SYMBOLS_PORT.toCharArray()) {
@@ -28,7 +41,7 @@ public abstract class ServerParams extends ServerPage {
     }
 
     @Parameterized.Parameters(name = "{0}")
-    public static Iterable<Object[]> getValidValueConnectPorts() {
+    protected static Iterable<Object[]> getValidValueConnectPorts() {
         ArrayList<Object[]> data = new ArrayList<>();
 
         for (char c : VALID_SYMBOLS_PORT.toCharArray()) {
@@ -47,7 +60,7 @@ public abstract class ServerParams extends ServerPage {
         if (field.contains(SERVER_CONNECT_INPUT_HTTP_PORT)){
             ports = value + ", " + SERVER_CONNECT_HTTPS_PORT + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, value);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -56,7 +69,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_HTTPS_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT + ", " + value + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, value);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -65,7 +78,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT +  ", " + SERVER_CONNECT_HTTPS_PORT + ", " + value;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, value);
@@ -92,14 +105,14 @@ public abstract class ServerParams extends ServerPage {
                 "Значение " + ports + " отображается в поле " + SERVER_CONNECT_FIELD_PORTS);
     }
 
-    protected void value_symbols_port(String field, String value){
+    protected void valid_symbols_port(String field, String value){
         String ports = null;
         Map<String, String> mapInputValueConnect = null;
 
         if (field.contains(SERVER_CONNECT_INPUT_HTTP_PORT)){
             ports = value + ", " + SERVER_CONNECT_HTTPS_PORT + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, value);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -108,16 +121,16 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_HTTPS_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT + ", " + value + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, value);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
             }};
         }
-        else if (field.contains(SERVER_CONNECT_INPUT_HTTPS_PORT)){
+        else if (field.contains(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT +  ", " + SERVER_CONNECT_HTTPS_PORT + ", " + value;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, "testing2.ros.chat");
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, value);

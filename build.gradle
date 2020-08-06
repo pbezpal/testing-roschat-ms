@@ -105,6 +105,8 @@ task contactsclosedchannels(type: Test) {
 
     useJUnitPlatform()
 
+    description "Тестирование добавления пользователя для тестирования закрытых каналов"
+
     dependsOn 'cleanTest'
 
     //Parametrized Test
@@ -123,6 +125,8 @@ task contactsclosedchannels(type: Test) {
 task contactspublicchannels(type: Test) {
 
     useJUnitPlatform()
+
+    description "Тестирование добавления пользователя для тестирования публичных каналов"
 
     dependsOn 'cleanTest'
 
@@ -143,6 +147,8 @@ task contactspublicprovenchannels(type: Test) {
 
     useJUnitPlatform()
 
+    description "Тестирование добавления пользователя для тестирования проверенных каналов"
+
     dependsOn 'cleanTest'
 
     //Parametrized Test
@@ -162,6 +168,8 @@ task contactservice(type: Test) {
 
     useJUnitPlatform()
 
+    description "Тестирование добавления пользователя для тестирования добавления сервисов у пользователя"
+
     dependsOn 'cleanTest'
 
     filter {
@@ -179,6 +187,8 @@ task contactconnect(type: Test) {
 
     useJUnitPlatform()
 
+    description "Тестирование добавления пользователя для тестирования портов в разделе Подключение"
+
     dependsOn 'cleanTest'
 
     filter {
@@ -195,6 +205,8 @@ task contactconnect(type: Test) {
 task testpublicchannels(type: Test){
 
     useJUnitPlatform()
+
+    description "Тестирование публичных каналов"
 
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
@@ -218,6 +230,8 @@ task testpublicprovenchannels(type: Test){
 
     useJUnitPlatform()
 
+    description "Тестирование проверенных каналов"
+
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
@@ -239,6 +253,8 @@ task testpublicprovenchannels(type: Test){
 task testclosedchannels(type: Test){
 
     useJUnitPlatform()
+
+    description "Тестирование закрытых каналов"
 
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
@@ -264,6 +280,8 @@ task testintegration(type: Test){
 
     useJUnitPlatform()
 
+    description "Тестирование сервисы интеграции СКУД и Active Directory"
+
     include("**/TestActiveDirectoryPage.class")
     include("**/TestMonitorSkudOM.class")
     include("**/TestMonitorSkudOrion.class")
@@ -281,6 +299,8 @@ task testtetra(type: Test){
 
     useJUnitPlatform()
 
+    description "Тестирование сервиса Тетра"
+
     include("**/TestTetraPage.class")
 
     // Show test results.
@@ -292,6 +312,8 @@ task testtetra(type: Test){
 task testservice(type: Test){
 
     useJUnitPlatform()
+
+    description "Тестирование добавления сервисов пользователю"
 
     include("**/TestServicePage.class")
 
@@ -307,6 +329,8 @@ task roschatsnmp(type: Test){
 
     useJUnitPlatform()
 
+    description "Тестирование раздела SNMP"
+
     include("**/server/TestSNMPPage.class")
 
     dependsOn 'cleanTest'
@@ -320,6 +344,9 @@ task roschatsnmp(type: Test){
 task testconnect(type: Test){
 
     useJUnitPlatform()
+
+    description "Прописываем в разделе Подключение разные порты и проверяем, подключается ли клиент на этих портах " +
+            "серверу"
 
     filter {
         //include specific method in any of the tests
@@ -365,6 +392,8 @@ task roschatserver(type: Test){
 task paramtests_server_valid(type: Test) {
     useJUnitPlatform()
 
+    description "Тестирование на валидные значения"
+
     dependsOn 'cleanTest'
 
     systemProperties = [
@@ -389,6 +418,8 @@ task paramtests_server_valid(type: Test) {
 
 task paramtests_mail_wrong(type: Test) {
     useJUnitPlatform()
+
+    description "Тестирование раздела Почта на невалидные значения"
 
     dependsOn 'cleanTest'
 
@@ -417,6 +448,8 @@ task paramtests_mail_wrong(type: Test) {
 task paramtests_telephony_turn(type: Test){
     useJUnitPlatform()
 
+    description "Тестирование раздела TURN/STUN на невалидные значения"
+
     dependsOn 'cleanTest'
 
     systemProperties = [
@@ -442,6 +475,8 @@ task paramtests_telephony_turn(type: Test){
 task paramtests_telephony_sip(type: Test){
     useJUnitPlatform()
 
+    description "Тестирование раздела SIP-сервер на невалидные значения"
+
     dependsOn 'cleanTest'
 
     systemProperties = [
@@ -466,6 +501,8 @@ task paramtests_telephony_sip(type: Test){
 
 task paramtests_telephony_network(type: Test) {
     useJUnitPlatform()
+
+    description "Тестирование раздела Сеть на невалидные значения"
 
     dependsOn 'cleanTest'
 
@@ -493,6 +530,8 @@ task paramtests_telephony_network(type: Test) {
 task paramtests_push_wrong(type: Test) {
     useJUnitPlatform()
 
+    description "Тестирование раздела Лицензирование и обсуживание на невалидные значения"
+
     dependsOn 'cleanTest'
 
     systemProperties = [
@@ -511,11 +550,13 @@ task paramtests_push_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(paramtests_telephony_network)
+    //finalizedBy(paramtests_telephony_network)
 }
 
 task paramtests_connect_wrong(type: Test) {
     useJUnitPlatform()
+
+    description "Тестирование раздела Подключение на невалидные значения"
 
     dependsOn 'cleanTest'
 

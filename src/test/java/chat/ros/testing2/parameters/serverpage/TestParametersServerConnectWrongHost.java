@@ -2,14 +2,11 @@ package chat.ros.testing2.parameters.serverpage;
 
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.server.BasePage;
 import chat.ros.testing2.server.settings.ServerPage;
-import chat.ros.testing2.server.settings.SettingsPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,8 +14,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.ParametersData.*;
@@ -29,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")
-public class TestParametersServerConnectWrongHost extends ServerPage {
+public class TestParametersServerConnectWrongHost extends ServerParams {
 
     private String field;
 
@@ -39,17 +38,6 @@ public class TestParametersServerConnectWrongHost extends ServerPage {
                 {HOST_SERVER,"", SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
                 {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, "", SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
                 {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, ""}};
-    }
-
-    @Parameterized.Parameters(name = "{0}")
-    public static Iterable<String> getWrongValueHostConnectServer() {
-        ArrayList<String> data = new ArrayList<>();
-
-        for (String host: WRONG_VALUE_HOST) {
-            data.add(host);
-        }
-
-        return data;
     }
 
     @BeforeEach
@@ -114,12 +102,12 @@ public class TestParametersServerConnectWrongHost extends ServerPage {
     }
 
     @Story(value = "Проверяем невалидные значение хоста в поле 'Внешний адрес сервера' в настройках Подключение")
-    @Description(value = "Вводим невалидные символы в поле 'Внешний адрес сервера' в настройках Подключение и проверяем: \n" +
-            "1. Появилась ли красная надпись 'Невалидный адрес' \n" +
-            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
-            "3. Сохраняются ли настройки с пустым полем")
-    @ParameterizedTest
-    @MethodSource(value = "getWrongValueHostConnectServer")
+    @Description(value = "Вводим невалидные символы в поле 'Внешний адрес сервера' в настройках Подключение и проверяем:\n" +
+            "1. Появилась ли красная надпись 'Невалидный адрес'\n" +
+            "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить\n" +
+            "3. Сохраняются ли настройки с невалидными значениями")
+    @ParameterizedTest(name = "#{index} => address = {0}")
+    @MethodSource(value = "getWrongHosts")
     void test_Wrong_Host_Public_Address_Connect(String address){
         Map<String, String> mapInputValueConnect = new HashMap() {{
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, address);

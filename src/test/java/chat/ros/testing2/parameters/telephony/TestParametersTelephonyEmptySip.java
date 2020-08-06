@@ -26,7 +26,7 @@ public class TestParametersTelephonyEmptySip extends TelephonyPage {
 
     private String field;
 
-    public static Object[][] getEmptyValueSip(){
+    private static Object[][] getEmptyValueSip(){
         return new Object[][] {
                 {"",TELEPHONY_SIP_MAX_PORT},
                 {TELEPHONY_SIP_MIN_PORT,""}};

@@ -7,6 +7,7 @@ import chat.ros.testing2.server.settings.UserPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
 
@@ -20,7 +21,7 @@ import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ResourcesTests extends UserPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, IntegrationPage {
+public class ResourcesTests extends UserPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback, IntegrationPage {
 
     private WebDriver driver = null;
     private String classTest = null;
@@ -114,6 +115,14 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         String method = context.getTestMethod().toString();
         if(method.contains("TestParameters")){
             refresh();
+        }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) {
+        classTest = context.getTestClass().toString();
+        if(classTest.contains("TestParameters")){
+            Selenide.close();
         }
     }
 }

@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature(value = "Интеграция")
 public class TestParametersIntegrationOMPage extends ServerPage implements IntegrationPage {
 
-    private SKUDPage skudPage;
     private String field;
     private static ServerPage serverPage = new ServerPage();
 

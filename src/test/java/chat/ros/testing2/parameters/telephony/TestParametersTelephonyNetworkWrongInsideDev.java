@@ -24,7 +24,7 @@ public class TestParametersTelephonyNetworkWrongInsideDev extends TelephonyParam
             "1. Появилась ли красная надпись 'Невалидный IP адрес' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с невалидными значениями")
-    @ParameterizedTest
+    @ParameterizedTest(name = "#{index} => ip=''{0}''")
     @MethodSource(value = "getWrongValueIPNetwork")
     void test_Settings_Network_Wrong_Inside_Dev(String ip){
         wrong_ip_network(TELEPHONY_NETWORK_INPUT_INSIDE_DEV, ip);

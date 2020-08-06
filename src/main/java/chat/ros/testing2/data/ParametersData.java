@@ -39,7 +39,7 @@ public interface ParametersData {
             "test@infotek.ru" + getRandomSymbol(WRONG_SYMBOLS_EMAIL),};
 
     static String getRandomSymbol(String value){
-        int max = value.length();
+        int max = value.length() - 1;
         return String.valueOf(value.charAt((int)(Math.random() * ++max)));
     }
 

@@ -16,8 +16,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
@@ -31,15 +33,8 @@ public class TestParametersMailWrongHostServer extends MailPage {
 
     private Map mapValueMail = null;
 
-    @Parameterized.Parameters(name = "{0}")
-    public static Iterable<String> getWrongValueHostMailServer() {
-        ArrayList<String> data = new ArrayList<>();
-
-        for (String host: WRONG_VALUE_HOST) {
-            data.add(host);
-        }
-
-        return data;
+    public static Stream<String> getWrongValueHostMailServer() {
+        return Arrays.stream(WRONG_VALUE_HOST);
     }
 
     @Story(value = "Проверяем невалидные значение хоста в поле 'Адрес почтового сервера' в настройках Почты")
@@ -47,7 +42,7 @@ public class TestParametersMailWrongHostServer extends MailPage {
             "1. Появилась ли красная надпись 'Невалидный адрес' \n" +
             "2. Пропадает ли форма для редактирования настроек Подклюяения после нажатия кнопки Сохранить \n" +
             "3. Сохраняются ли настройки с пустым полем")
-    @ParameterizedTest
+    @ParameterizedTest(name = "#{index} => address=''{0}''")
     @MethodSource(value = "getWrongValueHostMailServer")
     void test_Wrong_Host_Server_Email(String address){
         this.mapValueMail = getSettingsMailServer(address, MAIL_INFOTEK_USERNAME,
