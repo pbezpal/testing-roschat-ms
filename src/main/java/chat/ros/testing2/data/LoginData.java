@@ -9,8 +9,8 @@ public interface LoginData {
     String PORT_SERVER = "1110";
 
     /****** Параметры для авторизации в СУ ******/
-    String LOGIN_ADMIN_MS = "admin";
-    String PASSWORD_ADMIN_MS = "123456";
+    String LOGIN_AS_MS = "admin";
+    String PASSWORD_AS_MS = "123456";
 
     /****** Параметры для авторизации ssh ******/
     String LOGIN_ADMIN_SSH = "root";

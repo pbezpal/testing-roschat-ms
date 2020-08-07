@@ -15,8 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.HelperData.commandDBCheckSKUD;
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
-import static chat.ros.testing2.data.LoginData.PORT_SERVER;
+import static chat.ros.testing2.data.LoginData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,21 +43,21 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
 
         testsBase.init();
 
-        if(classTest.contains("TestParametersServer")) testsBase.openMS("Настройки","Сервер");
+        if(classTest.contains("TestParametersServer")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Сервер");
 
-        if(classTest.contains("TestParametersTelephony")) testsBase.openMS("Настройки", "Телефония");
+        if(classTest.contains("TestParametersTelephony")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
 
-        if(classTest.contains("TestParametersMail")) testsBase.openMS("Настройки","Почта");
+        if(classTest.contains("TestParametersMail")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Почта");
 
         if((classTest.contains("Skud") || classTest.contains("TestParametersIntegrationOMPage")) && SSHManager.isCheckQuerySSH(commandDBCheckSKUD)){
-            testsBase.openMS("Настройки","Интеграция");
+            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
             skudPage = (SKUDPage) clickServiceType("СКУД");
             assertTrue(skudPage.deleteSKUD("СКУД"),
                     "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
         }
 
         if(classTest.contains("TestParametersIntegrationOMPage")){
-            testsBase.openMS("Настройки","Интеграция");
+            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
             skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
             assertTrue(skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE),
                     "Сервис СКУД Офис-Монитор не найден в тиблице 'Подключенные сервисы'");
@@ -69,41 +68,45 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
     public void beforeEach(ExtensionContext context) {
         String method = context.getTestMethod().toString();
         if(method.contains("IntegrationPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/integration");
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/integration");
             else {
-                testsBase.openMS("Настройки", "Интеграция");
+                testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Интеграция");
                 sleep(1000);
             }
         } else if (method.contains("TestGeozonesPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/geozones");
-            else testsBase.openMS("Настройки", "Геозоны");
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
+                    USER_PASSWORD_ADMIN,
+                    "/settings/geozones");
+            else testsBase.openMS(USER_LOGIN_ADMIN,
+                    USER_PASSWORD_ADMIN,
+                    "Настройки", "Геозоны");
         } else if (method.contains("TestMailPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/mail");
-            else testsBase.openMS("Настройки", "Почта");
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
+                    USER_PASSWORD_ADMIN,
+                    "/settings/mail");
+            else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Почта");
         } else if (method.contains("TestMonitorSkud")) {
-            if (method.contains("Status")) testsBase.openMS("Монитор");
-            else testsBase.openMS("Настройки", "Интеграция");
+            if (method.contains("Status")) testsBase.openMS(USER_LOGIN_ADMIN,
+                    USER_PASSWORD_ADMIN,"Монитор");
+            else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Интеграция");
         } else if (method.contains("TestServerPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/web-server");
-            else testsBase.openMS("Настройки", "Сервер");
-        } else if (classTest.contains("TestTetraPage")) testsBase.openMS("Настройки","Интеграция");
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/web-server");
+            else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Сервер");
+        } else if (classTest.contains("TestTetraPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         else if (method.contains("TestSNMPPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/snmp");
-            else testsBase.openMS("Настройки", "SNMP");
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/snmp");
+            else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "SNMP");
         } else if (method.contains("TestTelephonyPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS("/settings/telephony");
-            testsBase.openMS("Настройки", "Телефония");
-        } else if (method.contains("TestUserPage")) {
+            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/telephony");
+            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
+        } else if (method.contains("TestUser")) {
             if (method.contains("Login") || method.contains("Delete")) {
                 Configuration.baseUrl = hostServer;
                 open("/");
                 logoutMS();
-            } else if (method.contains("Open")) {
-                testsBase.openMS();
-                open("/settings/users");
-            } else testsBase.openMS("Настройки", "Настройка СУ");
-        } else if (method.contains("TestServicePage")) testsBase.openMS("Справочник");
-        else if (method.contains("TestContactsPage")) testsBase.openMS("Справочник");
+            }else testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
+        } else if (method.contains("TestServicePage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
+        else if (method.contains("TestContactsPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
         else if(method.contains("TestParametersIntegrationOMPage")) {
             skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
             clickButtonActionService(SETTINGS_BUTTON_SETTING);

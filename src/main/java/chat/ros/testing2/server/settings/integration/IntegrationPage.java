@@ -14,7 +14,6 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface IntegrationPage extends SettingsPage {
 
-    ElementsCollection listServices = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     ElementsCollection buttonActionService = $$(".block-actions .v-btn__content");
     ElementsCollection buttonComplex = $$("div.block-content.complex button div");
     SelenideElement buttonSaveContacts = $("div.sync-wrapper button.primary");
@@ -25,7 +24,7 @@ public interface IntegrationPage extends SettingsPage {
     @Step(value = "Проверяем, доступен ли сервис {service} для выбора")
     default boolean isAvailableTypeService(String service){
         try{
-            listServices.findBy(Condition.text(service)).shouldBe(Condition.enabled);
+            listItems.findBy(Condition.text(service)).shouldBe(Condition.enabled);
         }catch (ElementNotFound e){
             return false;
         }
@@ -35,7 +34,7 @@ public interface IntegrationPage extends SettingsPage {
     @Step(value = "Выбираем сервис {service}")
     default IntegrationPage clickTypeService(String service){
         assertTrue(isAvailableTypeService(service), "Сервис " + service + " недоступен для выбора");
-        listServices.findBy(Condition.text(service)).click();
+        listItems.findBy(Condition.text(service)).click();
         return this;
     }
 

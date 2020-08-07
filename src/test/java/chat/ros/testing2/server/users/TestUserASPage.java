@@ -1,4 +1,4 @@
-package chat.ros.testing2.server;
+package chat.ros.testing2.server.users;
 
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
@@ -14,8 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.LoginData.LOGIN_ADMIN_MS;
-import static chat.ros.testing2.data.LoginData.PASSWORD_ADMIN_MS;
+import static chat.ros.testing2.data.LoginData.LOGIN_AS_MS;
+import static chat.ros.testing2.data.LoginData.PASSWORD_AS_MS;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
@@ -26,15 +26,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Настройки СУ")
-public class TestUserPage extends UserPage {
+public class TestUserASPage extends UserPage {
 
     private static boolean status_add;
     private Map<String, String> mapInputValueUser = new HashMap() {{
-        put("Фамилия", USER_FIRST_NAME);
-        put("Имя", USER_LAST_NAME);
-        put("Отчество", USER_PATRON_NAME);
-        put("Логин", USER_LOGIN);
-        put("Пароль", USER_PASSWORD);
+        put("Фамилия", USER_FIRST_NAME_AS);
+        put("Имя", USER_LAST_NAME_AS);
+        put("Отчество", USER_PATRON_NAME_AS);
+        put("Логин", USER_LOGIN_AS);
+        put("Пароль", USER_PASSWORD_AS);
     }};
 
     @BeforeAll
@@ -42,12 +42,13 @@ public class TestUserPage extends UserPage {
         status_add = false;
     }
 
-    @Story(value = "Добавляем нового пользователя в систему")
-    @Description(value = "Переходим в раздел Настройки -> Настройки СУ и добавляем новго пользователя")
+    @Story(value = "Добавляем пользователя с правами Администратор Безопасности")
+    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
     @Test
     @Order(1)
-    void test_Add_New_User(){
-        assertTrue(addUser(mapInputValueUser, USER_LOGIN), "Пользователь " + USER_LOGIN + " не был добавлен в систему");
+    void test_Add_New_User_AS(){
+        addUser(mapInputValueUser).selectRoleUser(0).clickButtonSave();
+        assertTrue(isExistsTableText(USER_LOGIN_AS, true), "Пользователь " + USER_LOGIN_AS + " не был добавлен в систему");
         status_add = true;
     }
 
@@ -57,8 +58,8 @@ public class TestUserPage extends UserPage {
     @Order(2)
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
-        loginOnServer(USER_LOGIN, USER_PASSWORD);
-        assertTrue(isLoginNewUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
+        loginOnServer(USER_LOGIN_AS, USER_PASSWORD_AS);
+        assertTrue(isLoginNewUser(USER_LOGIN_AS), "Не удалось авторизоваться под пользователем " + USER_LOGIN_AS);
     }
 
     @Story(value = "Удаляем нового пользователя")
@@ -67,9 +68,9 @@ public class TestUserPage extends UserPage {
     @Order(3)
     void test_Delete_New_User(){
         assertTrue(status_add, "Пользователь не создан");
-        loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
+        loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
-        assertTrue(isDeleteUser(USER_LOGIN), "Не удалось авторизоваться под пользователем " + USER_LOGIN);
+        assertTrue(isDeleteUser(USER_LOGIN_AS), "Не удалось удалить пользователя " + USER_LOGIN_AS);
     }
 
     @Story(value = "Перезагрузка страницы")

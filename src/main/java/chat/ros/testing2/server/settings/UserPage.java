@@ -1,6 +1,7 @@
 package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.server.LoginPage;
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -8,6 +9,7 @@ import io.qameta.allure.Step;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -16,6 +18,7 @@ public class UserPage extends LoginPage implements SettingsPage {
     private SelenideElement buttonUserAvatar = $("div.user-avatar button");
     private SelenideElement divLogoutMS = $("div.menuable__content__active div.v-list__tile__title.item-title");
     private String locatorDeleteUser = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button//i[text()='%2$s']";
+    private SelenideElement divRoles = $("div[role='combobox']");
 
     public UserPage() {}
 
@@ -37,11 +40,17 @@ public class UserPage extends LoginPage implements SettingsPage {
         return this;
     }
 
-    public boolean addUser(Map<String, String> mapInputValueUser, String user){
+    @Step(value = "Выбираем тип пользователя {role}")
+    public UserPage selectRoleUser(int role){
+        divRoles.click();
+        listItems.get(role).click();
+        return this;
+    }
+
+    public UserPage addUser(Map<String, String> mapInputValueUser){
         clickButtonAdd();
         sendLabelInputsForm(mapInputValueUser);
-        clickButtonSave();
-        return isExistsTableText(user, true);
+        return this;
     }
 
     public boolean changeUser(Map<String, String> mapInputValueUser, String user){

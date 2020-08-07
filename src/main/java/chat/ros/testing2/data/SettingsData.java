@@ -169,16 +169,46 @@ public interface SettingsData {
     String SNMP_ADDRESS_SERVER = "10.10.199.249";
     String SNMP_PORT_SERVER = "10051";
 
-    /******************************************** Раздел Настройка СУ ************************************************/
+    /******************************************** Раздел Пользователи СУ ************************************************/
 
-    String USER_FIRST_NAME = "Тестовый";
-    String USER_FIRST_NAME_1 = "Тестинг";
-    String USER_LAST_NAME = "Николай";
-    String USER_LAST_NAME_1 = "Петр";
-    String USER_PATRON_NAME = "Тестович";
-    String USER_PATRON_NAME_1 = "Петрович";
-    String USER_LOGIN = "Testuser";
-    String USER_PASSWORD = "12345678";
-    String USER_PASSWORD_1 = "87654321";
+    /**
+     * Администратор безопасности
+     */
+    String USER_FIRST_NAME_AS = "Администратор";
+    String USER_LAST_NAME_AS = "Безопасности";
+    String USER_PATRON_NAME_AS = "Безопаснович";
+    String USER_LOGIN_AS = "AdminSecurity";
+    String USER_PASSWORD_AS = "12345678";
+    String USER_ROLE_AS = "Администратор безопасности";
+
+    /**
+     * Администратор для тестирования СУ
+     */
+    String USER_FIRST_NAME_ADMIN = "Администратор";
+    String USER_LAST_NAME_ADMIN = "Администраторов";
+    String USER_PATRON_NAME_ADMIN = "Администратович";
+    String USER_LOGIN_ADMIN = "Admin";
+    String USER_PASSWORD_ADMIN = "87654321";
+    String USER_ROLE_ADMIN = "Администратор";
+
+    /**
+     * Администратор для проверки раздела пользователи
+     */
+    String USER_FIRST_NAME_ADMIN_TEST = "Администратор";
+    String USER_LAST_NAME_ADMIN_TEST = "Администраторов";
+    String USER_PATRON_NAME_ADMIN_TEST = "Администратович";
+    String USER_LOGIN_ADMIN_TEST = "admintest";
+    String USER_PASSWORD_ADMIN_TEST = "qwerty123456";
+
+    /**
+     * Администратор
+     */
+    String USER_FIRST_NAME_OPER = "Оператор";
+    String USER_LAST_NAME_OPER = "Операторов";
+    String USER_PATRON_NAME_OPER = "Операторович";
+    String USER_LOGIN_OPER = "oper";
+    String USER_PASSWORD_OPER = "123456";
+    String USER_ROLE_OPER = "Оператор";
+
     String USER_BUTTON_CONTINUE = "Продолжить";
 }

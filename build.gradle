@@ -101,6 +101,24 @@ allure {
     }
 }
 
+task testuseradmin(type: Test){
+    useJUnitPlatform()
+
+    description "Добавляем пользователя Администратор для тестирования СУ"
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.users.TestUserAdminForTests"
+    }
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 task contactsclosedchannels(type: Test) {
 
     useJUnitPlatform()
@@ -341,6 +359,11 @@ task roschatsnmp(type: Test){
     }
 }
 
+task test_roschatsnmp {
+    dependsOn testuseradmin
+    finalizedBy(roschatsnmp)
+}
+
 task testconnect(type: Test){
 
     useJUnitPlatform()
@@ -362,7 +385,8 @@ task testconnect(type: Test){
 }
 
 task roschatdb {
-    dependsOn testservice, contactconnect, testclosedchannels
+    dependsOn testuseradmin
+    finalizedBy(testservice, contactconnect, testclosedchannels)
 }
 
 task roschatserver(type: Test){
@@ -373,6 +397,7 @@ task roschatserver(type: Test){
         includeTestsMatching "*.server.*"
         excludeTestsMatching "*.server.integration.*"
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
+        excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
     dependsOn 'cleanTest'
@@ -383,6 +408,11 @@ task roschatserver(type: Test){
     }
 
     finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+}
+
+task test_roschatserver{
+    dependsOn testuseradmin
+    finalizedBy(roschatserver)
 }
 
 /***
@@ -558,7 +588,7 @@ task paramtests_connect_wrong(type: Test) {
 
     description "Тестирование раздела Подключение на невалидные значения"
 
-    dependsOn 'cleanTest'
+    dependsOn testuseradmin
 
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',

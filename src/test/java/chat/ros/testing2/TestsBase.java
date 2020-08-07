@@ -22,6 +22,8 @@ import java.util.logging.Level;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
 import static chat.ros.testing2.data.LoginData.*;
+import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
+import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -89,12 +91,12 @@ public class TestsBase {
                     "авторизации");
     }
 
-    public void openMS(String... navigation){
+    public void openMS(String login, String password, String... navigation){
         sleep(1000);
         Configuration.baseUrl = hostServer;
         LoginPage loginPage = new LoginPage();
         open("/");
-        if( ! loginPage.isLoginMS()) loginPage.loginOnServer(LOGIN_ADMIN_MS, PASSWORD_ADMIN_MS);
+        if( ! loginPage.isLoginMS()) loginPage.loginOnServer(login, password);
         if(navigation.length == 2){
             BasePage.clickItemMenu(navigation[0]);
             BasePage.clickItemSettings(navigation[1]);
@@ -107,7 +109,7 @@ public class TestsBase {
     public void addContactAndAccount(String number){
         if (!SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number))) {
             ContactsPage contactsPage = new ContactsPage();
-            openMS("Справочник");
+            //openMS("Справочник");
             if(contactsPage.isNotExistsTableText(number)) {
                 contactsPage.actionsContact(number).addUserAccount(number, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
             }

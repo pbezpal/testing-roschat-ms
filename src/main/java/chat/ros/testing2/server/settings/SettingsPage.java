@@ -17,6 +17,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public interface SettingsPage extends BasePage {
 
+    ElementsCollection listItems = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
     SelenideElement formConfirmActions = $("div.dialog-header h3");
     SelenideElement divCheckSettings = $("div.msg-body h4");
