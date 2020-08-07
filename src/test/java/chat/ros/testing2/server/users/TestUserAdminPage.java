@@ -58,7 +58,7 @@ public class TestUserAdminPage extends UserPage {
     @Order(2)
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
-        loginOnServer(USER_LOGIN_ADMIN_TEST, USER_PASSWORD_AS);
+        loginOnServer(USER_LOGIN_ADMIN_TEST, USER_PASSWORD_ADMIN_TEST);
         assertTrue(isLoginNewUser(USER_LOGIN_ADMIN_TEST), "Не удалось авторизоваться под пользователем " + USER_LOGIN_ADMIN_TEST);
     }
 

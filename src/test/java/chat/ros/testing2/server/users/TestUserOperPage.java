@@ -58,7 +58,7 @@ public class TestUserOperPage extends UserPage {
     @Order(2)
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
-        loginOnServer(USER_LOGIN_OPER, USER_PASSWORD_AS);
+        loginOnServer(USER_LOGIN_OPER, USER_PASSWORD_OPER);
         assertTrue(isLoginNewUser(USER_LOGIN_OPER), "Не удалось авторизоваться под пользователем " + USER_LOGIN_OPER);
     }
 
