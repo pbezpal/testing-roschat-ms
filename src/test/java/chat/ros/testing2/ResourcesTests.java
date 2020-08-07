@@ -43,6 +43,8 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
 
         testsBase.init();
 
+        if(loginPage.isLoginMS()) logoutMS();
+
         if(classTest.contains("TestParametersServer")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Сервер");
 
         if(classTest.contains("TestParametersTelephony")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
@@ -104,7 +106,9 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
                 Configuration.baseUrl = hostServer;
                 open("/");
                 logoutMS();
-            }else testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
+            }else{
+                testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
+            }
         } else if (method.contains("TestServicePage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
         else if (method.contains("TestContactsPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
         else if(method.contains("TestParametersIntegrationOMPage")) {
