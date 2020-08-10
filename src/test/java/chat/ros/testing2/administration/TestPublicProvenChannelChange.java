@@ -12,6 +12,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
+import static chat.ros.testing2.data.ContactsData.CLIENT_USER_H;
 import static chat.ros.testing2.data.ContactsData.CLIENT_USER_I;
 import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
 import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
@@ -29,7 +30,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
     private static String nameChannel;
     private static String newNameChannel;
     private String newDescription = CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN + System.currentTimeMillis();
-    private final String admin = CLIENT_USER_F + "@ros.chat";
+    private final String admin = CLIENT_USER_H + "@ros.chat";
     private final String user = CLIENT_USER_I + "@ros.chat";
     private String channel;
     private static boolean status_create;
