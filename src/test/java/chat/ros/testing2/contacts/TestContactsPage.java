@@ -24,9 +24,9 @@ import static data.CommentsData.*;
 @Feature(value = "Контакты")
 public class TestContactsPage extends ContactsPage {
 
-    private static String[] users_closed_channels = {CLIENT_USER_A,CLIENT_USER_B, CONTACT_A};
-    private static String[] users_public_channels = {CLIENT_USER_C,CLIENT_USER_D};
-    private static String[] users_public_proven_channels = {CLIENT_USER_E,CLIENT_USER_F,CONTACT_B,CONTACT_C};
+    private static String[] users_closed_channels = {CLIENT_USER_A,CLIENT_USER_B, CLIENT_USER_C};
+    private static String[] users_public_channels = {CLIENT_USER_D,CLIENT_USER_E};
+    private static String[] users_public_proven_channels = {CLIENT_USER_F,CLIENT_USER_G,CLIENT_USER_H,CLIENT_USER_I};
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<String> getUsersClosedChannel() {
@@ -93,7 +93,7 @@ public class TestContactsPage extends ContactsPage {
             "создаём учётную запись для пользователя")
     @Test
     void test_Add_Contacts_For_Service(){
-        actionsContact(CONTACT_D).addUserAccount(CONTACT_D, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        actionsContact(CLIENT_USER_J).addUserAccount(CLIENT_USER_J, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
     @Story(value = "Добавление контактов")
@@ -101,7 +101,7 @@ public class TestContactsPage extends ContactsPage {
             "создаём учётную запись для пользователя")
     @Test
     void test_Add_Contacts_For_Connect(){
-        actionsContact(CONTACT_E).addUserAccount(CONTACT_E, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        actionsContact(CLIENT_USER_K).addUserAccount(CLIENT_USER_K, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
 }

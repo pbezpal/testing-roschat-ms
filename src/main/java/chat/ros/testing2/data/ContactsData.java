@@ -7,11 +7,11 @@ public interface ContactsData {
     String CONTACT_INPUT_PHONE_JOB = "Номер";
 
     /***** Параметры контактов ******/
-    String CONTACT_A = "7007";
-    String CONTACT_B = "7008";
-    String CONTACT_C = "7009";
-    String CONTACT_D = "7010";
-    String CONTACT_E = "7011";
+    String CLIENT_USER_G = "7006";
+    String CLIENT_USER_H = "7007";
+    String CLIENT_USER_I = "7008";
+    String CLIENT_USER_J = "7009";
+    String CLIENT_USER_K = "7010";
 
     /******************************************** Раздел Польхователь ************************************************/
 

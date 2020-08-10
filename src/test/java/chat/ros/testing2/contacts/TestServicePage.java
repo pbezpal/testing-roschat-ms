@@ -32,7 +32,7 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Radio_Contact(){
-        userPage = actionsContact(CONTACT_D);
+        userPage = actionsContact(CLIENT_USER_J);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_RADIO);
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
     }
@@ -41,15 +41,15 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис SIP. Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_SIP_Contact(){
-        userPage = sendInputSearchContact(CONTACT_D).clickContact(CONTACT_D);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CONTACT_D);
+        userPage = sendInputSearchContact(CLIENT_USER_J).clickContact(CLIENT_USER_J);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CLIENT_USER_J);
         assertAll("Проверяем, добавляется ли сервис SIP",
                 () -> assertTrue(
                 userPage.isShowService("h4",USER_SERVICES_TYPE_SIP),
                 "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен"),
                 () -> assertTrue(
-                userPage.isShowService("span", CONTACT_D),
-                "Не отображается SIP номер " + CONTACT_D)
+                userPage.isShowService("span", CLIENT_USER_J),
+                "Не отображается SIP номер " + CLIENT_USER_J)
         );
     }
 
@@ -57,7 +57,7 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздел Пользователь и добавляем сервис Тетра.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Tetra_Contact(){
-        userPage = sendInputSearchContact(CONTACT_D).clickContact(CONTACT_D);
+        userPage = sendInputSearchContact(CLIENT_USER_J).clickContact(CLIENT_USER_J);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
     }

@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
 import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
+import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
+import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -90,7 +92,7 @@ public class TestPublicChannel extends ChannelsPage {
     @Order(3)
     void test_Show_Public_Channel_In_MS(){
         assertTrue(status_create, "Канал не создан");
-        testsBase.openMS("Администрирование","Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
                 "Публичный канал " + nameChannel + " не отображается в СУ");
     }
@@ -143,7 +145,7 @@ public class TestPublicChannel extends ChannelsPage {
     void test_Show_Public_Channel_In_MS_After_Change(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_edit, "Не поменялось имя и/или описание канала");
-        testsBase.openMS("Администрирование","Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, true),
                 "Публичный канал " + newNameChannel + " не отображается в СУ");
     }
@@ -184,7 +186,7 @@ public class TestPublicChannel extends ChannelsPage {
         assertTrue(status_delete,"Канал не удален");
         if (status_edit) channel = newNameChannel;
         else channel = nameChannel;
-        testsBase.openMS("Администрирование", "Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование", "Каналы");
         assertTrue(isShowChannel(channel, false),
                 "Канал " + channel + " отображается в СУ после удаления");
     }

@@ -12,9 +12,11 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.ContactsData.CONTACT_C;
+import static chat.ros.testing2.data.ContactsData.CLIENT_USER_I;
 import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
 import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
+import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
+import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +30,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
     private static String newNameChannel;
     private String newDescription = CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN + System.currentTimeMillis();
     private final String admin = CLIENT_USER_F + "@ros.chat";
-    private final String user = CONTACT_C + "@ros.chat";
+    private final String user = CLIENT_USER_I + "@ros.chat";
     private String channel;
     private static boolean status_create;
     private static boolean status_type;
@@ -77,7 +79,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
     @Order(2)
     void test_Do_Proven_Channel_After_Create_Public_Channel(){
         assertTrue(status_create, "Канал не создан");
-        testsBase.openMS("Администрирование","Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, true),
                 "Канал " + nameChannel + " не найден в списке каналов");
         doTestedChannel(nameChannel);
@@ -131,7 +133,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
     void test_Show_Public_Channel_In_MS_After_Change_Type(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
-        testsBase.openMS("Администрирование","Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(nameChannel, false),
                 "Закрытый канал " + nameChannel + " отображается в СУ");
     }
@@ -183,7 +185,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
     void test_Show_Closed_Channel_In_MS_After_Change(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_edit, "Не поменялось имя и/или описание канала");
-        testsBase.openMS("Администрирование","Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, false),
                 "Закрытый канал " + newNameChannel + " отображается в СУ после ");
     }
@@ -224,7 +226,7 @@ public class TestPublicProvenChannelChange extends ChannelsPage {
         assertTrue(status_delete,"Канал не удален");
         if (status_edit) channel = newNameChannel;
         else channel = nameChannel;
-        testsBase.openMS("Администрирование", "Каналы");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование", "Каналы");
         assertTrue(isShowChannel(channel, false),
                 "Канал " + channel + " отображается в СУ после удаления");
     }

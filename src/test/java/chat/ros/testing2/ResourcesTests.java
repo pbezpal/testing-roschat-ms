@@ -2,7 +2,6 @@ package chat.ros.testing2;
 
 import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.LoginPage;
-import chat.ros.testing2.server.settings.MailPage;
 import chat.ros.testing2.server.settings.UserPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
@@ -128,7 +127,7 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
     @Override
     public void afterAll(ExtensionContext context) {
         classTest = context.getTestClass().toString();
-        if(classTest.contains("TestParameters")){
+        if(classTest.contains("TestParameters") || classTest.contains("Channel")){
             Selenide.close();
         }
     }
