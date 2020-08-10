@@ -47,7 +47,7 @@ public class TestActiveDirectoryPage implements IntegrationPage {
     @Test
     @Order(1)
     void test_Add_Service_Active_Directory(){
-        testsBase.openMS("Настройки","Интеграция");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) addIntegrationService(INTEGRATION_SERVICE_AD_TYPE);
         assertTrue(activeDirectoryPage.settingsActiveDirectory(mapInputValueAD), "Сервис Active Directory не был добавлен");
         status_Add = true;
@@ -60,7 +60,7 @@ public class TestActiveDirectoryPage implements IntegrationPage {
     @Order(2)
     void test_Sync_Contacts_Active_Directory(){
         assertTrue(status_Add, "Не удалось добавить сервис AD");
-        testsBase.openMS("Настройки","Интеграция");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
         assertTrue(activeDirectoryPage.syncContacts(), "Ошибка при сихронизации контактов");
     }
@@ -72,7 +72,7 @@ public class TestActiveDirectoryPage implements IntegrationPage {
     @Order(3)
     void test_Delete_Active_Directory(){
         assertTrue(status_Add, "Не удалось добавить сервис AD");
-        testsBase.openMS("Настройки","Интеграция");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
         assertTrue(activeDirectoryPage.deleteActiveDirectory(), "Сервис Active Directory не удалён");
     }
