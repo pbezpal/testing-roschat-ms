@@ -401,7 +401,7 @@ task roschatserver(type: Test){
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
-    dependsOn 'cleanTest'
+    dependsOn testuseradmin
 
     // Show test results.
     testLogging {
@@ -409,11 +409,6 @@ task roschatserver(type: Test){
     }
 
     finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
-}
-
-task test_roschatserver{
-    dependsOn testuseradmin
-    finalizedBy(roschatserver)
 }
 
 /***
