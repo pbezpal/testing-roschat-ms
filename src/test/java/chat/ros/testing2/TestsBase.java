@@ -22,13 +22,11 @@ import java.util.logging.Level;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
 import static chat.ros.testing2.data.LoginData.*;
-import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
-import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestsBase {
+public class TestsBase implements ClientPage {
 
     private final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
     private final String hostClient = "https://" + HOST_SERVER;
@@ -79,7 +77,8 @@ public class TestsBase {
         Configuration.baseUrl = hostClient;
         open("/");
         assertTrue(ClientPage.isLoginWindow(), "Не появилась форма авторизации на WEB клиенте");
-        assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
+        ClientPage.loginClientClickButtonOrEnter(login, USER_ACCOUNT_PASSWORD, staySystem, true);
+        assertTrue(isSuccessAuthClient(), "Ошибка при " +
                     "авторизации");
     }
 
@@ -87,7 +86,8 @@ public class TestsBase {
         Configuration.baseUrl = host;
         open("/");
         assertTrue(ClientPage.isLoginWindow(), "Не появилась форма авторизации на WEB клиенте");
-        assertTrue(ClientPage.loginClient(login, USER_ACCOUNT_PASSWORD, staySystem), "Ошибка при " +
+        ClientPage.loginClientClickButtonOrEnter(login, USER_ACCOUNT_PASSWORD, staySystem, true);
+        assertTrue(isSuccessAuthClient(), "Ошибка при " +
                     "авторизации");
     }
 

@@ -390,6 +390,28 @@ task roschatdb {
     finalizedBy(testservice, contactconnect, testclosedchannels)
 }
 
+task geozona (type: Test) {
+    useJUnitPlatform()
+
+    description "Прописываем в разделе Подключение разные порты и проверяем, подключается ли клиент на этих портах " +
+            "серверу"
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.server.*"
+        excludeTestsMatching "*.server.integration.*"
+        excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
+        excludeTestsMatching "*.users.TestUserAdminForTests"
+    }
+
+    //dependsOn contactconnect
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 task roschatserver(type: Test){
     useJUnitPlatform()
 

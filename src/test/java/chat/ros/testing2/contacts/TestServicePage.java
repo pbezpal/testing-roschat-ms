@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.SettingsData.INTEGRATION_SERVICE_TETRA_NAME;
+import static data.CommentsData.CLIENT_7009;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,7 +33,7 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Radio_Contact(){
-        userPage = actionsContact(CLIENT_USER_J);
+        userPage = actionsContact(CLIENT_7009);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_RADIO);
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
     }
@@ -41,15 +42,15 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис SIP. Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_SIP_Contact(){
-        userPage = sendInputSearchContact(CLIENT_USER_J).clickContact(CLIENT_USER_J);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CLIENT_USER_J);
+        userPage = sendInputSearchContact(CLIENT_7009).clickContact(CLIENT_7009);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CLIENT_7009);
         assertAll("Проверяем, добавляется ли сервис SIP",
                 () -> assertTrue(
                 userPage.isShowService("h4",USER_SERVICES_TYPE_SIP),
                 "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен"),
                 () -> assertTrue(
-                userPage.isShowService("span", CLIENT_USER_J),
-                "Не отображается SIP номер " + CLIENT_USER_J)
+                userPage.isShowService("span", CLIENT_7009),
+                "Не отображается SIP номер " + CLIENT_7009)
         );
     }
 
@@ -57,7 +58,7 @@ public class TestServicePage extends ContactsPage {
     @Description(value = "Переходим в раздел Пользователь и добавляем сервис Тетра.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Tetra_Contact(){
-        userPage = sendInputSearchContact(CLIENT_USER_J).clickContact(CLIENT_USER_J);
+        userPage = sendInputSearchContact(CLIENT_7009).clickContact(CLIENT_7009);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
         assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
     }

@@ -29,7 +29,7 @@ public class TestPublicChannel extends ChannelsPage {
     private static String nameChannel;
     private static String newNameChannel;
     private String newDescription = CLIENT_DESCRIPTION_CHANNEL_PUBLIC_PROVEN + System.currentTimeMillis();
-    private final String login = CLIENT_USER_D + "@ros.chat";
+    private final String login = CLIENT_7003 + "@ros.chat";
     private String channel = null;
     private static boolean status_create;
     private static boolean status_edit;

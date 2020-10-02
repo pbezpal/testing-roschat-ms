@@ -6,14 +6,7 @@ public interface ContactsData {
     String CONTACT_INPUT_LASTNAME = "Фамилия";
     String CONTACT_INPUT_PHONE_JOB = "Номер";
 
-    /***** Параметры контактов ******/
-    String CLIENT_USER_G = "7006";
-    String CLIENT_USER_H = "7007";
-    String CLIENT_USER_I = "7008";
-    String CLIENT_USER_J = "7009";
-    String CLIENT_USER_K = "7010";
-
-    /******************************************** Раздел Польхователь ************************************************/
+    /******************************************** Раздел Пользователь ************************************************/
 
     /****** Параметры учётных записей ******/
     String USER_ACCOUNT_ITEM_MENU = "Учетная запись";

@@ -24,9 +24,9 @@ import static data.CommentsData.*;
 @Feature(value = "Контакты")
 public class TestContactsPage extends ContactsPage {
 
-    private static String[] users_closed_channels = {CLIENT_USER_A,CLIENT_USER_B, CLIENT_USER_C};
-    private static String[] users_public_channels = {CLIENT_USER_D,CLIENT_USER_E};
-    private static String[] users_public_proven_channels = {CLIENT_USER_F,CLIENT_USER_G,CLIENT_USER_H,CLIENT_USER_I};
+    private static String[] users_closed_channels = {CLIENT_7000,CLIENT_7001, CLIENT_7002};
+    private static String[] users_public_channels = {CLIENT_7003,CLIENT_7004};
+    private static String[] users_public_proven_channels = {CLIENT_7005, CLIENT_7006, CLIENT_7007, CLIENT_7008};
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<String> getUsersClosedChannel() {
@@ -61,7 +61,7 @@ public class TestContactsPage extends ContactsPage {
         return data;
     }
 
-    @Story(value = "Добавление контактов")
+    @Story(value = "Добавление контактов для закрытых каналов")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @ParameterizedTest
@@ -70,7 +70,7 @@ public class TestContactsPage extends ContactsPage {
         actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
-    @Story(value = "Добавление контактов")
+    @Story(value = "Добавление контактов для публичного канала")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @ParameterizedTest
@@ -79,7 +79,7 @@ public class TestContactsPage extends ContactsPage {
         actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
-    @Story(value = "Добавление контактов")
+    @Story(value = "Добавление контактов для публичного проверенного канала")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @ParameterizedTest
@@ -88,20 +88,20 @@ public class TestContactsPage extends ContactsPage {
         actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
-    @Story(value = "Добавление контактов")
+    @Story(value = "Добавление контакта для проверки добавления сервоисов")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
     void test_Add_Contacts_For_Service(){
-        actionsContact(CLIENT_USER_J).addUserAccount(CLIENT_USER_J, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        actionsContact(CLIENT_7009).addUserAccount(CLIENT_7009, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
-    @Story(value = "Добавление контактов")
+    @Story(value = "Добавление контакта для проверки подключения к серверу на разных портах")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
     void test_Add_Contacts_For_Connect(){
-        actionsContact(CLIENT_USER_K).addUserAccount(CLIENT_USER_K, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        actionsContact(CLIENT_7010).addUserAccount(CLIENT_7010, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
 }

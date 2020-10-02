@@ -28,7 +28,7 @@ public class TestClosedChannel extends ChannelsPage {
     private static String nameChannel;
     private static String newNameChannel;
     private String channel = null;
-    private final String login = CLIENT_USER_A + "@ros.chat";
+    private final String login = CLIENT_7000 + "@ros.chat";
     private final String newDescription = CLIENT_DESCRIPTION_CHANNEL_CLOSED + " " + System.currentTimeMillis();
     private static boolean status_create;
     private static boolean status_edit;

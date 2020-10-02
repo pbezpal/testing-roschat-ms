@@ -140,7 +140,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             "2. Состояние СКУД - неактивно. Красный кружок.")
     @Test
     @Order(7)
-    void test_Status_SKUD_After_Delete_OM(){
+    void test_Status_SKUD_After_Delete_SKUD(){
         assertTrue(status_Add,"СКУД ОРИОН не добавлен");
         assertTrue(status_Delete, "Ошибка при удалении СКУД ОРИОН");
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),

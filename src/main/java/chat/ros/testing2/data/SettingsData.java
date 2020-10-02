@@ -197,7 +197,7 @@ public interface SettingsData {
     String USER_FIRST_NAME_ADMIN_TEST = "Администратор";
     String USER_LAST_NAME_ADMIN_TEST = "Администраторов";
     String USER_PATRON_NAME_ADMIN_TEST = "Администратович";
-    String USER_LOGIN_ADMIN_TEST = "admintest";
+    String USER_LOGIN_ADMIN_TEST = "Admintest";
     String USER_PASSWORD_ADMIN_TEST = "qwerty123456";
 
     /**
@@ -206,7 +206,7 @@ public interface SettingsData {
     String USER_FIRST_NAME_OPER = "Оператор";
     String USER_LAST_NAME_OPER = "Операторов";
     String USER_PATRON_NAME_OPER = "Операторович";
-    String USER_LOGIN_OPER = "oper";
+    String USER_LOGIN_OPER = "Oper";
     String USER_PASSWORD_OPER = "123456";
     String USER_ROLE_OPER = "Оператор";
 

@@ -3,7 +3,6 @@ package chat.ros.testing2.server.users;
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
-import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -18,7 +17,6 @@ import static chat.ros.testing2.data.LoginData.LOGIN_AS_MS;
 import static chat.ros.testing2.data.LoginData.PASSWORD_AS_MS;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,7 +44,7 @@ public class TestUserOperPage extends UserPage {
     @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
     @Test
     @Order(1)
-    void test_Add_New_User_AS(){
+    void test_Add_New_User_Oper(){
         addUser(mapInputValueUser).selectRoleUser(2).clickButtonSave();
         assertTrue(isExistsTableText(USER_LOGIN_OPER, true), "Пользователь " + USER_LOGIN_OPER + " не был добавлен в систему");
         status_add = true;
