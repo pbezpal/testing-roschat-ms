@@ -97,7 +97,7 @@ public class TestsBase implements ClientPage {
         sleep(1000);
         Configuration.baseUrl = hostServer;
         LoginPage loginPage = new LoginPage();
-        //open("/");
+        open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(login, password);
         if(navigation.length == 2){
             BasePage.clickItemMenu(navigation[0]);
