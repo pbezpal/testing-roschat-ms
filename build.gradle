@@ -372,11 +372,6 @@ task roschatsnmp(type: Test){
     }
 }
 
-task test_roschatsnmp {
-    dependsOn testuseradmin
-    finalizedBy(roschatsnmp)
-}
-
 task testconnect(type: Test){
 
     useJUnitPlatform()
