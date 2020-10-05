@@ -22,8 +22,7 @@ import java.util.logging.Level;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
 import static chat.ros.testing2.data.LoginData.*;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestsBase implements ClientPage {

@@ -187,7 +187,7 @@ public interface SettingsData {
     String USER_FIRST_NAME_ADMIN = "Администратор";
     String USER_LAST_NAME_ADMIN = "Администраторов";
     String USER_PATRON_NAME_ADMIN = "Администратович";
-    String USER_LOGIN_ADMIN = "Admin";
+    String USER_LOGIN_ADMIN = "AdminMS";
     String USER_PASSWORD_ADMIN = "87654321";
     String USER_ROLE_ADMIN = "Администратор";
 

@@ -164,9 +164,9 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем, есть ли прогрессбар")
-    default boolean isNotShowProgressBar(){
+    default boolean isProgressBar(){
         try{
-            divProgressBar.waitUntil(not(enabled), 10000);
+            divProgressBar.shouldNotBe(enabled);
         }catch (ElementShould elementShould){
             return true;
         }
