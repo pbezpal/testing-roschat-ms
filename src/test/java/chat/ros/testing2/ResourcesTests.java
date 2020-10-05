@@ -47,7 +47,7 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         if(classTest.contains("TestUser")){
             if(loginPage.isLoginMS()) logoutMS();
         }else{
-            if(isProgressBar()) refresh();
+            if(isNotShowProgressBar()) refresh();
             if( ! isLoginUser(USER_LOGIN_ADMIN)) logoutMS();
         }
 
