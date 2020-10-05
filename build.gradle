@@ -105,6 +105,8 @@ task testuseradmin(type: Test){
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Добавляем пользователя Администратор для тестирования СУ"
 
     filter {
@@ -273,6 +275,8 @@ task testclosedchannels(type: Test){
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование закрытых каналов"
 
     systemProperties = [
@@ -299,6 +303,8 @@ task testintegration(type: Test){
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование сервисы интеграции СКУД и Active Directory"
 
     include("**/TestActiveDirectoryPage.class")
@@ -318,6 +324,8 @@ task testtetra(type: Test){
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование сервиса Тетра"
 
     include("**/TestTetraPage.class")
@@ -331,6 +339,8 @@ task testtetra(type: Test){
 task testservice(type: Test){
 
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование добавления сервисов пользователю"
 
@@ -348,11 +358,13 @@ task roschatsnmp(type: Test){
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование раздела SNMP"
 
     include("**/server/TestSNMPPage.class")
 
-    dependsOn 'cleanTest'
+    dependsOn testuseradmin
 
     // Show test results.
     testLogging {
@@ -368,6 +380,8 @@ task test_roschatsnmp {
 task testconnect(type: Test){
 
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Прописываем в разделе Подключение разные порты и проверяем, подключается ли клиент на этих портах " +
             "серверу"
@@ -393,6 +407,8 @@ task roschatdb {
 task roschatserver(type: Test){
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*.server.*"
@@ -417,6 +433,8 @@ task roschatserver(type: Test){
 
 task paramtests_server_valid(type: Test) {
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование на валидные значения"
 
@@ -444,6 +462,8 @@ task paramtests_server_valid(type: Test) {
 
 task paramtests_mail_wrong(type: Test) {
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование раздела Почта на невалидные значения"
 
@@ -474,6 +494,8 @@ task paramtests_mail_wrong(type: Test) {
 task paramtests_telephony_turn(type: Test){
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование раздела TURN/STUN на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -501,6 +523,8 @@ task paramtests_telephony_turn(type: Test){
 task paramtests_telephony_sip(type: Test){
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование раздела SIP-сервер на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -527,6 +551,8 @@ task paramtests_telephony_sip(type: Test){
 
 task paramtests_telephony_network(type: Test) {
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование раздела Сеть на невалидные значения"
 
@@ -556,6 +582,8 @@ task paramtests_telephony_network(type: Test) {
 task paramtests_push_wrong(type: Test) {
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование раздела Лицензирование и обсуживание на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -582,6 +610,8 @@ task paramtests_push_wrong(type: Test) {
 task paramtests_connect_wrong(type: Test) {
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование раздела Подключение на невалидные значения"
 
     dependsOn testuseradmin
@@ -605,4 +635,20 @@ task paramtests_connect_wrong(type: Test) {
     }
 
     finalizedBy(paramtests_push_wrong)
+}
+
+task Test123(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    description "Тестирование переменных"
+
+    dependsOn 'cleanTest'
+
+    include("**/TestClass.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
