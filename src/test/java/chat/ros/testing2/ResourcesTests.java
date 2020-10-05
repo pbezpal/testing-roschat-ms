@@ -44,6 +44,13 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
 
         testsBase.init();
 
+        if(classTest.contains("TestUser")){
+            if(loginPage.isLoginMS()) logoutMS();
+        }else{
+            if(isProgressBar()) refresh();
+            if( ! isLoginUser(USER_LOGIN_ADMIN)) logoutMS();
+        }
+
         if(classTest.contains("TestParametersServer")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Сервер");
 
         if(classTest.contains("TestParametersTelephony")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
@@ -129,8 +136,6 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         classTest = context.getTestClass().toString();
         if(classTest.contains("TestParameters") || classTest.contains("Channel")){
             Selenide.close();
-        }else if(classTest.contains("TestUser")){
-            if(loginPage.isLoginMS()) logoutMS();
         }
     }
 }

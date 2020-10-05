@@ -28,6 +28,7 @@ public interface BasePage {
     SelenideElement textWrong = $(".v-messages__message");
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
+    SelenideElement divProgressBar = $("div.modal-progress");
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
@@ -160,6 +161,17 @@ public interface BasePage {
         }
 
         return textWrong.text();
+    }
+
+    @Step(value = "Проверяем, есть ли прогрессбар")
+    default boolean isProgressBar(){
+        try{
+            divProgressBar.waitUntil(enabled, 5000);
+        }catch (ElementNotFound e){
+            return true;
+        }
+
+        return false;
     }
 
 }

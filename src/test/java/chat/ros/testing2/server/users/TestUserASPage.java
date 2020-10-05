@@ -53,13 +53,13 @@ public class TestUserASPage extends UserPage {
     }
 
     @Story(value = "Входим в систему под новым пользователем")
-    @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
+    @Description(value = "Выходим из системы управления и авторизуемся под новым пользователем")
     @Test
     @Order(2)
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_AS, USER_PASSWORD_AS);
-        assertTrue(isLoginNewUser(USER_LOGIN_AS), "Не удалось авторизоваться под пользователем " + USER_LOGIN_AS);
+        assertTrue(isLoginUser(USER_LOGIN_AS), "Не удалось авторизоваться под пользователем " + USER_LOGIN_AS);
     }
 
     @Story(value = "Удаляем нового пользователя")

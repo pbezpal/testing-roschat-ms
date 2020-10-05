@@ -1,17 +1,15 @@
 package chat.ros.testing2.server.settings;
 
 import chat.ros.testing2.server.LoginPage;
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
 import java.util.Map;
 
-import static chat.ros.testing2.data.SettingsData.*;
-import static com.codeborne.selenide.Condition.not;
+import static chat.ros.testing2.data.SettingsData.USER_BUTTON_CONTINUE;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class UserPage extends LoginPage implements SettingsPage {
 
@@ -22,8 +20,8 @@ public class UserPage extends LoginPage implements SettingsPage {
 
     public UserPage() {}
 
-    @Step(value = "Проверяем, что мы авторизовались под пользователем {user}")
-    public boolean isLoginNewUser(String user){
+    @Step(value = "Проверяем, что мы авторизованы под пользователем {user}")
+    public boolean isLoginUser(String user){
         return buttonUserAvatar.find("span").text().equals(user);
     }
 

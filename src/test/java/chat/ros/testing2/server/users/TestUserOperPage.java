@@ -57,7 +57,7 @@ public class TestUserOperPage extends UserPage {
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_OPER, USER_PASSWORD_OPER);
-        assertTrue(isLoginNewUser(USER_LOGIN_OPER), "Не удалось авторизоваться под пользователем " + USER_LOGIN_OPER);
+        assertTrue(isLoginUser(USER_LOGIN_OPER), "Не удалось авторизоваться под пользователем " + USER_LOGIN_OPER);
     }
 
     @Story(value = "Удаляем нового пользователя")

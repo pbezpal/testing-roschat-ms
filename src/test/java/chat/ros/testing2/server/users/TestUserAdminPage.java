@@ -3,7 +3,6 @@ package chat.ros.testing2.server.users;
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
-import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -18,7 +17,6 @@ import static chat.ros.testing2.data.LoginData.LOGIN_AS_MS;
 import static chat.ros.testing2.data.LoginData.PASSWORD_AS_MS;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,7 +57,7 @@ public class TestUserAdminPage extends UserPage {
     void test_Login_New_User(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_ADMIN_TEST, USER_PASSWORD_ADMIN_TEST);
-        assertTrue(isLoginNewUser(USER_LOGIN_ADMIN_TEST), "Не удалось авторизоваться под пользователем " + USER_LOGIN_ADMIN_TEST);
+        assertTrue(isLoginUser(USER_LOGIN_ADMIN_TEST), "Не удалось авторизоваться под пользователем " + USER_LOGIN_ADMIN_TEST);
     }
 
     @Story(value = "Удаляем нового пользователя")
