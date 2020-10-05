@@ -27,10 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestsBase implements ClientPage {
 
-    /*private final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
-    private final String hostClient = "https://" + HOST_SERVER;*/
-    private final String hostServer = "https://ormp2.ros.chat:" + PORT_SERVER;
-    private final String hostClient = "https://ormp2.ros.chat";
+    private final String hostServer = "https://" + HOST_SERVER + ":" + PORT_SERVER;
+    private final String hostClient = "https://" + HOST_SERVER;
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
     private WebDriver driver = null;
 
