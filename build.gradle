@@ -399,7 +399,7 @@ task testconnect(type: Test){
     }
 }
 
-task roschatdb {
+task test_roschatdb {
     dependsOn testuseradmin
     finalizedBy(testservice, contactconnect, testclosedchannels)
 }

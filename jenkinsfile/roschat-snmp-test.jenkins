@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean test_roschatsnmp'
+                        sh './gradlew clean test_roschatsnmp -Dhost="testing2.ros.chat" -Dport="1110"'
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }

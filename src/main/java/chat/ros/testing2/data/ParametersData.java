@@ -4,8 +4,7 @@ public interface ParametersData {
 
     String WRONG_SYMBOLS_SERVER = " !\"/#$%&'()*+,:;<=>?[\\]^_`{|}~‘’“”–ё№»" +
             "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
-    String[] WRONG_VALUE_HOST = {"t",".chat","testing2roschat", "testing2.r", "r.chat",
-            "testing2testing2testing2testing2testing2testing2testing2testing2.me", "-testing2.ros.chat",
+    String[] WRONG_VALUE_HOST = {"t",".chat","testing2roschat", "r.chat", "-testing2.ros.chat",
             "testing2.ros..chat","testing2.ros.chat-",".testing2.ros.chat","testing2.ros.chat.",
             getRandomSymbol(WRONG_SYMBOLS_SERVER) + "testing2.ros.chat",
             "test"  + getRandomSymbol(WRONG_SYMBOLS_SERVER) +  "ing2.ros.chat",
