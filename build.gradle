@@ -289,8 +289,6 @@ task testclosedchannels(type: Test){
 
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование закрытых каналов"
 
     systemProperties = [
@@ -300,6 +298,8 @@ task testclosedchannels(type: Test){
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     dependsOn contactsclosedchannels
 
@@ -453,8 +453,6 @@ task test_roschatserver {
 task paramtests_server_valid(type: Test) {
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование на валидные значения"
 
     dependsOn 'cleanTest'
@@ -466,6 +464,8 @@ task paramtests_server_valid(type: Test) {
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerConnectValidPorts.class")
@@ -482,8 +482,6 @@ task paramtests_server_valid(type: Test) {
 task paramtests_mail_wrong(type: Test) {
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование раздела Почта на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -496,6 +494,8 @@ task paramtests_mail_wrong(type: Test) {
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
+    System.getProperties()
+
     //Parametrized Test
     include("**/TestParametersMailEmptyValue.class")
     include("**/TestParametersMailMaxLengthPort.class")
@@ -507,13 +507,11 @@ task paramtests_mail_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(paramtests_server_valid)
+    //finalizedBy(paramtests_server_valid)
 }
 
 task paramtests_telephony_turn(type: Test){
     useJUnitPlatform()
-
-    systemProperties System.getProperties()
 
     description "Тестирование раздела TURN/STUN на невалидные значения"
 
@@ -526,6 +524,8 @@ task paramtests_telephony_turn(type: Test){
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptyTurn.class")
@@ -542,8 +542,6 @@ task paramtests_telephony_turn(type: Test){
 task paramtests_telephony_sip(type: Test){
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование раздела SIP-сервер на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -555,6 +553,8 @@ task paramtests_telephony_sip(type: Test){
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptySip.class")
@@ -571,8 +571,6 @@ task paramtests_telephony_sip(type: Test){
 task paramtests_telephony_network(type: Test) {
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование раздела Сеть на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -584,6 +582,8 @@ task paramtests_telephony_network(type: Test) {
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptyNetwork.class")
@@ -601,8 +601,6 @@ task paramtests_telephony_network(type: Test) {
 task paramtests_push_wrong(type: Test) {
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование раздела Лицензирование и обсуживание на невалидные значения"
 
     dependsOn 'cleanTest'
@@ -614,6 +612,8 @@ task paramtests_push_wrong(type: Test) {
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerPushWrongHost.class")
@@ -629,8 +629,6 @@ task paramtests_push_wrong(type: Test) {
 task paramtests_connect_wrong(type: Test) {
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование раздела Подключение на невалидные значения"
 
     dependsOn testuseradmin
@@ -642,6 +640,8 @@ task paramtests_connect_wrong(type: Test) {
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerConnectWrongHost.class")
