@@ -364,12 +364,17 @@ task roschatsnmp(type: Test){
 
     include("**/server/TestSNMPPage.class")
 
-    dependsOn testuseradmin
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
     }
+}
+
+task test_roschatsnmp {
+    dependsOn testuseradmin
+    finalizedBy(roschatsnmp)
 }
 
 task testconnect(type: Test){
@@ -412,7 +417,7 @@ task roschatserver(type: Test){
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
-    dependsOn testuseradmin
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {
@@ -420,6 +425,11 @@ task roschatserver(type: Test){
     }
 
     finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+}
+
+task test_roschatserver {
+    dependsOn testuseradmin
+    finalizedBy()
 }
 
 /***
