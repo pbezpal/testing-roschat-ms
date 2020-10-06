@@ -126,6 +126,8 @@ task contactsclosedchannels(type: Test) {
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование добавления пользователя для тестирования закрытых каналов"
 
     dependsOn 'cleanTest'
@@ -146,6 +148,8 @@ task contactsclosedchannels(type: Test) {
 task contactspublicchannels(type: Test) {
 
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование добавления пользователя для тестирования публичных каналов"
 
@@ -168,6 +172,8 @@ task contactspublicprovenchannels(type: Test) {
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование добавления пользователя для тестирования проверенных каналов"
 
     dependsOn 'cleanTest'
@@ -189,6 +195,8 @@ task contactservice(type: Test) {
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование добавления пользователя для тестирования добавления сервисов у пользователя"
 
     dependsOn 'cleanTest'
@@ -208,6 +216,8 @@ task contactconnect(type: Test) {
 
     useJUnitPlatform()
 
+    systemProperties System.getProperties()
+
     description "Тестирование добавления пользователя для тестирования портов в разделе Подключение"
 
     dependsOn 'cleanTest'
@@ -226,6 +236,8 @@ task contactconnect(type: Test) {
 task testpublicchannels(type: Test){
 
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование публичных каналов"
 
@@ -250,6 +262,8 @@ task testpublicchannels(type: Test){
 task testpublicprovenchannels(type: Test){
 
     useJUnitPlatform()
+
+    systemProperties System.getProperties()
 
     description "Тестирование проверенных каналов"
 
