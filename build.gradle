@@ -655,19 +655,3 @@ task paramtests_connect_wrong(type: Test) {
 
     finalizedBy(paramtests_push_wrong)
 }
-
-task Test123(type: Test){
-    useJUnitPlatform()
-
-    systemProperties System.getProperties()
-
-    description "Тестирование переменных"
-
-    dependsOn 'cleanTest'
-
-    include("**/TestClass.class")
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
