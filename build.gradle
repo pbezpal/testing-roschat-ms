@@ -627,11 +627,14 @@ task paramtests_push_wrong(type: Test) {
 }
 
 task paramtests_connect_wrong(type: Test) {
+
     useJUnitPlatform()
 
     description "Тестирование раздела Подключение на невалидные значения"
 
-    dependsOn testuseradmin
+    //dependsOn testuseradmin
+
+    dependsOn 'cleanTest'
 
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
@@ -653,5 +656,5 @@ task paramtests_connect_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(paramtests_push_wrong)
+    //finalizedBy(paramtests_push_wrong)
 }
