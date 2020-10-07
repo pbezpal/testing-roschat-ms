@@ -236,9 +236,7 @@ task contactconnect(type: Test) {
 task testpublicchannels(type: Test){
 
     useJUnitPlatform()
-
-    systemProperties System.getProperties()
-
+    
     description "Тестирование публичных каналов"
 
     systemProperties = [
@@ -248,6 +246,8 @@ task testpublicchannels(type: Test){
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    systemProperties System.getProperties()
 
     dependsOn contactspublicchannels
 
@@ -263,8 +263,6 @@ task testpublicprovenchannels(type: Test){
 
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование проверенных каналов"
 
     systemProperties = [
@@ -274,6 +272,8 @@ task testpublicprovenchannels(type: Test){
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
+
+    systemProperties System.getProperties()
 
     dependsOn contactspublicprovenchannels
 
@@ -299,7 +299,7 @@ task testclosedchannels(type: Test){
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     dependsOn contactsclosedchannels
 
@@ -465,7 +465,7 @@ task paramtests_server_valid(type: Test) {
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerConnectValidPorts.class")
@@ -489,7 +489,7 @@ task paramtests_mail_wrong(type: Test) {
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
@@ -507,7 +507,7 @@ task paramtests_mail_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    //finalizedBy(paramtests_server_valid)
+    finalizedBy(paramtests_server_valid)
 }
 
 task paramtests_telephony_turn(type: Test){
@@ -525,7 +525,7 @@ task paramtests_telephony_turn(type: Test){
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptyTurn.class")
@@ -554,7 +554,7 @@ task paramtests_telephony_sip(type: Test){
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptySip.class")
@@ -583,7 +583,7 @@ task paramtests_telephony_network(type: Test) {
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersTelephonyEmptyNetwork.class")
@@ -613,7 +613,7 @@ task paramtests_push_wrong(type: Test) {
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerPushWrongHost.class")
@@ -641,7 +641,7 @@ task paramtests_connect_wrong(type: Test) {
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
 
-    System.getProperties()
+    systemProperties System.getProperties()
 
     //Parametrized Test
     include("**/TestParametersServerConnectWrongHost.class")
