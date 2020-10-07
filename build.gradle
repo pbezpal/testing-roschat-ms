@@ -443,7 +443,7 @@ task roschatserver(type: Test){
 
 task test_roschatserver {
     dependsOn testuseradmin
-    finalizedBy()
+    finalizedBy(roschatserver)
 }
 
 /***
