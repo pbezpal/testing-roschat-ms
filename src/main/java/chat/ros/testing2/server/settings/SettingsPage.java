@@ -117,6 +117,7 @@ public interface SettingsPage extends BasePage {
         return true;
     }
 
+
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
         SelenideElement element = $$("h2").findBy(text(form)).parent();
@@ -223,6 +224,13 @@ public interface SettingsPage extends BasePage {
         return true;
     }
 
+    /**
+     * Send value to fields of form
+     * @param mapInputValue
+     * @param form
+     * @param button
+     * @return SettingsPage
+     */
     default SettingsPage setSettingsServer(Map<String, String> mapInputValue, String form, String button){
         clickButtonSettings(form, button);
         sendInputsForm(mapInputValue);

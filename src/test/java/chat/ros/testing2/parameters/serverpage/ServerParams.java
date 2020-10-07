@@ -10,13 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static chat.ros.testing2.data.SettingsData.SERVER_CONNECT_FIELD_PORTS;
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class ServerParams extends ServerPage {
+
+    private static String hostServer = System.getProperty("host");
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<String> getWrongHosts(){
@@ -60,7 +61,7 @@ public abstract class ServerParams extends ServerPage {
         if (field.contains(SERVER_CONNECT_INPUT_HTTP_PORT)){
             ports = value + ", " + SERVER_CONNECT_HTTPS_PORT + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, value);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -69,7 +70,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_HTTPS_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT + ", " + value + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, value);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -78,7 +79,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT +  ", " + SERVER_CONNECT_HTTPS_PORT + ", " + value;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, value);
@@ -112,7 +113,7 @@ public abstract class ServerParams extends ServerPage {
         if (field.contains(SERVER_CONNECT_INPUT_HTTP_PORT)){
             ports = value + ", " + SERVER_CONNECT_HTTPS_PORT + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, value);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -121,7 +122,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_HTTPS_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT + ", " + value + ", " + SERVER_CONNECT_WEBSOCKET_PORT;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, value);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, SERVER_CONNECT_WEBSOCKET_PORT);
@@ -130,7 +131,7 @@ public abstract class ServerParams extends ServerPage {
         else if (field.contains(SERVER_CONNECT_INPUT_WEBSOCKET_PORT)){
             ports = SERVER_CONNECT_HTTP_PORT +  ", " + SERVER_CONNECT_HTTPS_PORT + ", " + value;
             mapInputValueConnect = new HashMap() {{
-                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, HOST_SERVER);
+                put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, hostServer);
                 put(SERVER_CONNECT_INPUT_HTTP_PORT, SERVER_CONNECT_HTTP_PORT);
                 put(SERVER_CONNECT_INPUT_HTTPS_PORT, SERVER_CONNECT_HTTPS_PORT);
                 put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, value);

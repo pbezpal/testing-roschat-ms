@@ -2,7 +2,6 @@ package chat.ros.testing2.parameters.serverpage;
 
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.server.settings.ServerPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -11,16 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
-import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,14 +23,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature(value = "Сервер")
 public class TestParametersServerConnectWrongHost extends ServerParams {
 
+    private static String hostServer = System.getProperty("host");
     private String field;
 
     public static Object[][] getEmptyValueConnect(){
         return new Object[][] {
                 {"",SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,"", SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, "", SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER,SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, ""}};
+                {hostServer,"", SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer,SERVER_CONNECT_HTTP_OTHER_PORT, "", SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer,SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, ""}};
     }
 
     @BeforeEach

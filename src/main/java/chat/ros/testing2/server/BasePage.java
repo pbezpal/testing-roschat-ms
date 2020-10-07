@@ -92,7 +92,7 @@ public interface BasePage {
             SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input");
             element.sendKeys(Keys.CONTROL + "a");
             element.sendKeys(Keys.BACK_SPACE);
-            element.sendKeys(value);
+            if( ! value.equals("")) element.sendKeys(value);
         }
     }
 

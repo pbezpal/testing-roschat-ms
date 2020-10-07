@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.LoginData.HOST_SERVER;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.CLIENT_7010;
@@ -33,18 +32,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature(value = "Сервер")
 public class TestServerPage extends ServerPage {
 
+    private static String hostServer = System.getProperty("host");
+
     private TestsBase testsBase = new TestsBase();
     private final String account = CLIENT_7010 + "@ros.chat";
     private static Object[][] getValueConnect(){
         return new Object[][] {
-                {HOST_SERVER, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
-                {HOST_SERVER, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT}};
+                {hostServer, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_OTHER_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_OTHER_PORT, SERVER_CONNECT_HTTPS_OTHER_PORT, SERVER_CONNECT_WEBSOCKET_PORT},
+                {hostServer, SERVER_CONNECT_HTTP_PORT, SERVER_CONNECT_HTTPS_PORT, SERVER_CONNECT_WEBSOCKET_PORT}};
     }
 
     private Map<String, String> mapInputValuePush = new HashMap() {{

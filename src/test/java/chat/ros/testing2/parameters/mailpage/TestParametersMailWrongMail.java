@@ -52,8 +52,8 @@ public class TestParametersMailWrongMail extends MailPage {
                 MAIL_INFOTEK_PASSWORD, MAIL_PORT_NO_SECURITY, MAIL_INFOTEK_FROM_USER, mail);
         settingsMailServerWithoutSave(this.mapValueMail, MAIL_TYPE_SECURITY_NO);
         assertAll("Проверяем на невалидное значение почты " + mail,
-                () -> assertEquals(isShowTextWrongValue(MAIL_CONTACT_INPUT_FROM_MAIL),"Невалидный адрес",
-                        "Надпись 'Невалидный адрес' не появилась"),
+                () -> assertEquals(isShowTextWrongValue(MAIL_CONTACT_INPUT_FROM_MAIL),"Неверный адрес",
+                        "Надпись 'Неверный адрес' не появилась"),
                 () -> { clickButtonSave(); },
                 () -> assertTrue(isFormChange(),
                 "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
