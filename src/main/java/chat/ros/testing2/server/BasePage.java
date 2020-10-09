@@ -81,7 +81,8 @@ public interface BasePage {
 
     @Step(value = "Кликаем на поле {input}")
     default void clickInputForm(String input){
-        $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input").click();
+        $$(".modal-item__title h4").findBy(text(input)).
+                closest("li").find("input").click();
     }
 
     @Step(value = "Заполняем поля формы")
@@ -89,7 +90,8 @@ public interface BasePage {
         for(Map.Entry<String, String> entry : mapInputValue.entrySet()){
             String input = entry.getKey();
             String value = entry.getValue();
-            SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input");
+            SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).
+                    closest("li").find("input");
             element.sendKeys(Keys.CONTROL + "a");
             element.sendKeys(Keys.BACK_SPACE);
             if( ! value.equals("")) element.sendKeys(value);
