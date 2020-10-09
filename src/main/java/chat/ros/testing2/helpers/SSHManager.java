@@ -13,7 +13,7 @@ public class SSHManager {
 
     private static JSch ssh = new JSch();
     private static String line;
-    private static String HOST_SERVER = System.getProperty("host");
+    private static String HOST_SERVER = System.getProperty("hostserver");
 
     public SSHManager(){}
 

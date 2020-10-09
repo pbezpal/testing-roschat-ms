@@ -24,10 +24,8 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
     private WebDriver driver = null;
     private String classTest = null;
     private SKUDPage skudPage = null;
-    private final String hostServer = "https://" + System.getProperty("host") + ":" + System.getProperty("port");
-    private final String hostClient = "https://" + System.getProperty("host");
-    //private final String hostServer = "https://ormp2.ros.chat:8080";
-    //private final String hostClient = "https://ormp2.ros.chat";
+    private final String hostServer = "https://" + System.getProperty("hostserver") + ":" + System.getProperty("portms");
+    private final String hostClient = "https://" + System.getProperty("hostserver");
     private LoginPage loginPage = new LoginPage();
     private TestsBase testsBase = new TestsBase();
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";

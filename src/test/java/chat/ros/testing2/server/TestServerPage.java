@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature(value = "Сервер")
 public class TestServerPage extends ServerPage {
 
-    private static String hostServer = System.getProperty("host");
+    private static String hostServer = System.getProperty("hostserver");
 
     private TestsBase testsBase = new TestsBase();
     private final String account = CLIENT_7010 + "@ros.chat";

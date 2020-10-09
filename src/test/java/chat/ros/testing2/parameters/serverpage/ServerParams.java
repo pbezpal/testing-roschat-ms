@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class ServerParams extends ServerPage {
 
-    private static String hostServer = System.getProperty("host");
+    private static String hostServer = System.getProperty("hostserver");
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<String> getWrongHosts(){

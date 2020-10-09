@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestsBase implements ClientPage {
 
-    private final String hostServer = "https://" + System.getProperty("host") + ":" + System.getProperty("port");
-    private final String hostClient = "https://" + System.getProperty("host");
+    private final String hostServer = "https://" + System.getProperty("hostserver") + ":" + System.getProperty("portms");
+    private final String hostClient = "https://" + System.getProperty("hostserver");
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
     private WebDriver driver = null;
 

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature(value = "Сервер")
 public class TestParametersServerConnectWrongHost extends ServerParams {
 
-    private static String hostServer = System.getProperty("host");
+    private static String hostServer = System.getProperty("hostserver");
     private String field;
 
     public static Object[][] getEmptyValueConnect(){
