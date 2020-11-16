@@ -29,6 +29,24 @@ public class TestServicePage extends ContactsPage {
 
     private UserPage userPage;
 
+    @Story(value = "Добавляем у контакта сервис Компьютерный клиент")
+    @Description(value = "Переходим в раздель Пользователь и добавляем сервис Компьютерный клиент.  Проверяем, что сервис был добавлен")
+    @Test
+    void test_Add_Service_PC_Contact(){
+        userPage = actionsContact(CLIENT_7009);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
+        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_PC), "Сервис " + USER_SERVICES_TYPE_PC + " не был добавлен");
+    }
+
+    @Story(value = "Добавляем у контакта сервис Мобильный клиент")
+    @Description(value = "Переходим в раздель Пользователь и добавляем сервис Мобильный клиент.  Проверяем, что сервис был добавлен")
+    @Test
+    void test_Add_Service_Mobile_Contact(){
+        userPage = actionsContact(CLIENT_7009);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_MOBILE);
+        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_MOBILE), "Сервис " + USER_SERVICES_TYPE_MOBILE + " не был добавлен");
+    }
+
     @Story(value = "Добавляем у контакта сервис Рация")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test

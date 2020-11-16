@@ -88,7 +88,7 @@ public class TestContactsPage extends ContactsPage {
         actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
-    @Story(value = "Добавление контакта для проверки добавления сервоисов")
+    @Story(value = "Добавление контакта для проверки добавления сервисов")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
