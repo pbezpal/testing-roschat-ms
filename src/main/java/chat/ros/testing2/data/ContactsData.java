@@ -14,7 +14,7 @@ public interface ContactsData {
     String USER_ACCOUNT_PASSWORD = "12345678";
 
     /****** Параметры сервисов ******/
-    String USER_SERVICES_ITEM_MENU = "Сервисы";
+    String USER_SERVICES_ITEM_MENU = "Сервисы РОСЧАТ";
     String USER_SERVICES_BUTTON_ADD = "Добавить";
     String USER_SERVICES_TYPE_RADIO = "РАЦИЯ";
     String USER_SERVICES_TYPE_DX500 = "DX-500";

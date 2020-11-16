@@ -18,11 +18,14 @@ public class UserPage implements BasePage {
     private SelenideElement divWrapperUser = $("div.main-wrapper.user");
     private SelenideElement activeItemMenu = $("div.main-wrapper.user a.v-tabs__item.v-tabs__item--active");
     private ElementsCollection inactiveItemMenu = $$("div.main-wrapper.user a.v-tabs__item");
-    private SelenideElement buttonNewAccount = $("div#new-account button");
+    private SelenideElement buttonNewAccount = $("#new-account button");
     private ElementsCollection inputsPassword = $$("form.v-form input[type='password']");
     private SelenideElement divProgressBar = $("div.v-progress-circular__info");
     private ElementsCollection spanValueAccount = $$("div.v-window__container span");
-    private SelenideElement buttonsAddService = $x("//div[@class='service']//ancestor::div[@class='main-block']//button");
+    private SelenideElement buttonActiveItem = $(".v-window-item:not([style='display: none;'])").find("button.primary");
+    private SelenideElement formServices = $("div.v-dialog--active");
+    private SelenideElement buttonsAddService = formServices.find("button.primary");
+    private ElementsCollection listServices = formServices.$$("div.dialog-item h4");
     private ElementsCollection servicesMenuContent = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     private ElementsCollection listTitleServices = $$("div.service-info %1$s");
 
@@ -113,11 +116,11 @@ public class UserPage implements BasePage {
         return this;
     }
 
-    @Step(value = "Нажимаем кнопку добавить в разделе Сервисы")
+    /*@Step(value = "Нажимаем кнопку добавить в разделе Сервисы")
     private UserPage clickButtonService(){
         buttonsAddService.click();
         return this;
-    }
+    }*/
 
     @Step(value = "Проверяем, что сервис {service} доступен для добавления")
     private boolean isNotDisabledService(String service){
@@ -129,9 +132,21 @@ public class UserPage implements BasePage {
         return true;
     }
 
+    @Step(value = "Нажимаем кнопку Добавить")
+    private UserPage clickButtonAddOfUser(){
+        buttonActiveItem.click();
+        return this;
+    }
+
     @Step(value = "Выбираем тип сервиса {service}")
     private UserPage clickAddTypeService(String service){
-        servicesMenuContent.findBy(text(service)).click();
+        listServices.findBy(text(service)).click();
+        return this;
+    }
+
+    @Step(value = "Нажимаем кнопку Добавить")
+    private UserPage clickButtonAddService(){
+        buttonsAddService.click();
         return this;
     }
 
@@ -167,32 +182,35 @@ public class UserPage implements BasePage {
     //Добавляем сервисы
     public UserPage addServices(String itemMenu, String type){
         //Переходим в раздел Сервисы
-        clickMenuItem(itemMenu);
-        clickButtonService();
-        clickAddTypeService(type);
+        clickMenuItem(itemMenu)
+                .clickButtonAddOfUser()
+                .clickAddTypeService(type)
+                .clickButtonAddService();
         return this;
     }
 
     //Добавляем сервис Тетра
     public UserPage addServices(String itemMenu, String type, String server, String ssi){
         //Переходим в раздел Сервисы
-        clickMenuItem(itemMenu);
-        clickButtonService();
-        clickAddTypeService(type);
-        selectServerTetra(server);
-        sendInputNumberSSI(ssi);
-        clickButtonSave();
+        clickMenuItem(itemMenu)
+                .clickButtonAddOfUser()
+                .clickAddTypeService(type)
+                .clickButtonAddService()
+                .selectServerTetra(server)
+                .sendInputNumberSSI(ssi)
+                .clickButtonSave();
         return this;
     }
 
     //Добавляем сервис SIP
     public UserPage addServices(String itemMenu, String type, String number){
         //Переходим в раздел Сервисы
-        clickMenuItem(itemMenu);
-        clickButtonService();
-        clickAddTypeService(type);
-        sendSipNumber(number);
-        clickButtonSave();
+        clickMenuItem(itemMenu)
+                .clickButtonAddOfUser()
+                .clickAddTypeService(type)
+                .clickButtonAddService()
+                .sendSipNumber(number)
+                .clickButtonSave();
         return this;
     }
 }

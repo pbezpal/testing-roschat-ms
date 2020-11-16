@@ -24,7 +24,7 @@ public interface BasePage {
     SelenideElement buttonClose = $(".modal-wrapper .secondary--text");
     SelenideElement modalSuccessCheckAction = $("div.msg-wrapper.modal-wrapper");
     ElementsCollection tdTableList = $$("table.v-datatable td");
-    SelenideElement buttonAdd = $("div.action-bar button div");
+    SelenideElement buttonAdd = $("div.action-bar button.primary");
     SelenideElement textWrong = $(".v-messages__message");
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
@@ -73,7 +73,11 @@ public interface BasePage {
 
     @Step(value = "Вводим в поле {input} значение {value}")
     default void sendInputForm(String input, String value){
-        SelenideElement element = $$(".modal-item__title h4").findBy(text(input)).closest("li").find("input");
+        SelenideElement element = $$(".modal-item__title h4")
+                .findBy(text(input))
+                .parent()
+                .parent()
+                .find("input");
         element.sendKeys(Keys.CONTROL + "a");
         element.sendKeys(Keys.BACK_SPACE);
         element.sendKeys(value);
@@ -100,7 +104,7 @@ public interface BasePage {
 
     @Step(value = "Нажимаем кнопку Добавить")
     default void clickButtonAdd(){
-        buttonAdd.shouldBe(text("Добавить")).click();
+        buttonAdd.shouldBe(visible).click();
     }
 
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
