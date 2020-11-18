@@ -114,6 +114,9 @@ public interface IntegrationPage extends SettingsPage {
 
     default boolean syncContacts(){
         clickButtonOnComplex("Синхронизировать");
+        if(isShowErrorWindow()){
+            return false;
+        }
         clickSaveContacts();
         waitNotShowWindowSaveContacts();
         waitNotShowLoadWrapper();
