@@ -3,6 +3,7 @@ package chat.ros.testing2.contacts;
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.contacts.ContactsPage;
+import chat.ros.testing2.server.contacts.UserPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -27,6 +28,7 @@ public class TestContactsPage extends ContactsPage {
     private static String[] users_closed_channels = {CLIENT_7000,CLIENT_7001, CLIENT_7002};
     private static String[] users_public_channels = {CLIENT_7003,CLIENT_7004};
     private static String[] users_public_proven_channels = {CLIENT_7005, CLIENT_7006, CLIENT_7007, CLIENT_7008};
+    private UserPage userPage;
 
     @Parameterized.Parameters(name = "{0}")
     public static Iterable<String> getUsersClosedChannel() {
@@ -67,7 +69,8 @@ public class TestContactsPage extends ContactsPage {
     @ParameterizedTest
     @MethodSource("getUsersClosedChannel")
     void test_Add_Contacts_For_Closed_Channel(String user){
-        actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage = actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
     }
 
     @Story(value = "Добавление контактов для публичного канала")
@@ -76,7 +79,8 @@ public class TestContactsPage extends ContactsPage {
     @ParameterizedTest
     @MethodSource("getUsersPublicChannel")
     void test_Add_Contacts_For_Public_Channel(String user){
-        actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage = actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
     }
 
     @Story(value = "Добавление контактов для публичного проверенного канала")
@@ -85,7 +89,8 @@ public class TestContactsPage extends ContactsPage {
     @ParameterizedTest
     @MethodSource("getUsersPublicProvenChannel")
     void test_Add_Contacts_For_Public_Proven_Channel(String user){
-        actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage = actionsContact(user).addUserAccount(user, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
     }
 
     @Story(value = "Добавление контакта для проверки добавления сервисов")
@@ -101,7 +106,8 @@ public class TestContactsPage extends ContactsPage {
             "создаём учётную запись для пользователя")
     @Test
     void test_Add_Contacts_For_Connect(){
-        actionsContact(CLIENT_7010).addUserAccount(CLIENT_7010, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage = actionsContact(CLIENT_7010).addUserAccount(CLIENT_7010, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
     }
 
 }
