@@ -71,8 +71,12 @@ public class TestServerPage extends ServerPage {
         setSectionConnect(mapInputValueConnect);
         assertAll("Проверяем настройки портов подключения",
                 () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
-                () -> assertEquals(isCheckSuccessAction(),"Настройки сервера корректны.",
-                "Настройки сервера некорректны")
+                () -> assertTrue(isShowIconModalWindow(".success--text"),
+                        "Нет иконки успешной проверки Сети"),
+                () -> assertEquals(getTextModalWindow("h3"), "Проверка настроек",
+                        "Заголовок модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"), "Настройки телефонии корректны.",
+                        "Настройки сервера некорректны")
         );
         clickButtonCloseCheckSettingsForm();
         assertAll( "Проверяем, сохранились ли настройки",

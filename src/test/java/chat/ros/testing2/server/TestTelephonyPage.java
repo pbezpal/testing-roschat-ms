@@ -57,9 +57,13 @@ public class TestTelephonyPage extends TelephonyPage {
     void test_Settings_Network(){
         setNetwork(mapInputValueNetwork);
         clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK);
+        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         assertAll("Проверка настроек сети",
-                () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
-                () -> assertEquals(isCheckSuccessAction(), "Настройки телефонии корректны.",
+                () -> assertTrue(isShowIconModalWindow(".success--text"),
+                        "Нет иконки успешной проверки Сети"),
+                () -> assertEquals(getTextModalWindow("h3"), "Проверка настроек",
+                        "Заголовок модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"), "Настройки телефонии корректны.",
                         "Настройки сервера некорректны"),
                 () -> {
                     clickButtonCloseCheckSettingsForm();

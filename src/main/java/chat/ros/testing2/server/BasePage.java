@@ -22,7 +22,6 @@ public interface BasePage {
     SelenideElement inputPassword = formChange.find("input[type='password']");
     SelenideElement buttonSave = $(".modal-wrapper .primary");
     SelenideElement buttonClose = $(".modal-wrapper .secondary--text");
-    SelenideElement modalSuccessCheckAction = $("div.msg-wrapper.modal-wrapper");
     ElementsCollection tdTableList = $$("table.v-datatable td");
     SelenideElement buttonAdd = $("div.action-bar button.primary");
     SelenideElement textWrong = $(".v-messages__message");
@@ -185,7 +184,7 @@ public interface BasePage {
     default boolean isShowElement(SelenideElement element, boolean show){
         if(show){
             try{
-                element.shouldBe(visible);
+                element.waitUntil(visible, 15000);
             }catch (ElementNotFound error){
                 return false;
             }

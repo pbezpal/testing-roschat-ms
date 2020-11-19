@@ -6,7 +6,6 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
-import com.codeborne.selenide.ex.ElementShouldNot;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
@@ -20,9 +19,9 @@ public interface SettingsPage extends BasePage {
     ElementsCollection listItems = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
     SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
     SelenideElement formConfirmActions = $("div.dialog-header h3");
-    SelenideElement divCheckSettings = $("div.msg-body h4");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
+    SelenideElement mainWrapper = $(".main-wrapper");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -121,6 +120,7 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
         SelenideElement element = $$("h2").findBy(text(form)).parent();
+        if(isShowElement(element,false)) mainWrapper.scrollIntoView(false);
         SelenideElement buttonForm = element.$$(".v-btn__content").findBy(text(button));
         element.scrollIntoView(false);
         buttonForm.click();
@@ -187,24 +187,8 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Проверяем, появилась ли форма Проверки настроек")
     default boolean isFormCheckSettings(){
-        try{
-            divCheckSettings.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
-    }
-
-    @Step(value = "Проверяем, что проверка настроек прошла успешно")
-    default String isCheckSuccessAction(){
-        try{
-            modalSuccessCheckAction.waitUntil(visible, 15000);
-        }catch (ElementNotFound element){
-            return null;
-        }
-
-        return modalSuccessCheckAction.find("h4").text();
+        if(isShowElement(modalWindow, true)) return true;
+        else return false;
     }
 
     @Step(value = "Нажимаем кнопку Закрыть на форме проверки настроек")

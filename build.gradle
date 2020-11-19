@@ -438,7 +438,7 @@ task roschatserver(type: Test){
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+    //finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
 }
 
 task test_roschatserver {

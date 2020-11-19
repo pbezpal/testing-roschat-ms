@@ -35,10 +35,16 @@ public class TestMailPage extends MailPage {
         this.getSettingsMailServer = getSettingsMailServer(MAIL_INFOTEK_SERVER, MAIL_INFOTEK_USERNAME,
                 MAIL_INFOTEK_PASSWORD, MAIL_PORT_NO_SECURITY, MAIL_INFOTEK_FROM_USER, MAIL_INFOTEK_FROM_MAIL);
         settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_NO);
+        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
-            () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
-            () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
-                "Настройки сервера некорректны")
+                () -> assertTrue(isShowIconModalWindow(".success--text"),
+                        "Нет иконки успещной проверки почты"),
+                () -> assertEquals(getTextModalWindow("h3"),
+                        "Проверка настроек",
+                        "Заголовок модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"),
+                        "Настройки почты корректны.",
+                        "Текст модального окна не совпадает с ожидаемым")
         );
         clickButtonCloseCheckSettingsForm();
     }
@@ -50,11 +56,17 @@ public class TestMailPage extends MailPage {
         this.getSettingsMailServer = getSettingsMailServer(MAIL_GOOGLE_SERVER, MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_SSL, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
         settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_SSL);
+        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
-                () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
-                () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
-                        "Настройки сервера некорректны")
-                );
+                () -> assertTrue(isShowIconModalWindow(".success--text"),
+                        "Нет иконки успещной проверки почты"),
+                () -> assertEquals(getTextModalWindow("h3"),
+                        "Проверка настроек",
+                        "Заголовок модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"),
+                        "Настройки почты корректны.",
+                        "Текст модального окна не совпадает с ожидаемым")
+        );
         clickButtonCloseCheckSettingsForm();
     }
 
@@ -65,10 +77,16 @@ public class TestMailPage extends MailPage {
         this.getSettingsMailServer = getSettingsMailServer(MAIL_GOOGLE_SERVER, MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD, MAIL_PORT_STARTTLS, MAIL_GOOGLE_FROM_USER, MAIL_GOOGLE_FROM_MAIL);
         settingsMailServerWithCheck(this.getSettingsMailServer, MAIL_TYPE_SECURITY_STARTTLS);
+        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
-                () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
-                () -> assertEquals(isCheckSuccessAction(),"Настройки почты корректны.",
-                        "Настройки сервера некорректны")
+                () -> assertTrue(isShowIconModalWindow(".success--text"),
+                        "Нет иконки успещной проверки почты"),
+                () -> assertEquals(getTextModalWindow("h3"),
+                        "Проверка настроек",
+                        "Заголовок модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"),
+                        "Настройки почты корректны.",
+                        "Текст модального окна не совпадает с ожидаемым")
         );
         clickButtonCloseCheckSettingsForm();
     }

@@ -71,7 +71,8 @@ public class ServerPage implements SettingsPage{
 
     private boolean isUpdateLicense(){
         clickButtonSettings(SERVER_PUSH_TITLE_FORM, SERVER_PUSH_BUTTON_UPDATE_LICENSE);
-        boolean update = isCheckSuccessAction().equals("Лицензия успешно обновлена");
+        if(isShowElement(modalWindow, true)) return false;
+        boolean update = getTextModalWindow("h4").equals("Лицензия успешно обновлена");
         clickButtonCloseCheckSettingsForm();
         return update;
     }

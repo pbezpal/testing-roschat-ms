@@ -102,7 +102,7 @@ public interface IntegrationPage extends SettingsPage {
 
     default boolean syncContacts(){
         clickButtonOnComplex("Синхронизировать");
-        if(isShowElement(modalWindow, true)) return false;
+        if(isFormCheckSettings()) return false;
         clickSaveContacts();
         waitNotShowWindowSaveContacts();
         waitNotShowLoadWrapper();
