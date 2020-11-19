@@ -29,6 +29,7 @@ public interface BasePage {
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
     SelenideElement divProgressBar = $("div.modal-progress");
+    SelenideElement modalWindow = $(".modal-wrapper");
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
@@ -178,6 +179,43 @@ public interface BasePage {
         }
 
         return false;
+    }
+
+    @Step(value = "Проверяем, виден ли элемент {element}")
+    default boolean isShowElement(SelenideElement element, boolean show){
+        if(show){
+            try{
+                element.shouldBe(visible);
+            }catch (ElementNotFound error){
+                return false;
+            }
+        }else{
+            try{
+                element.shouldBe(not(visible));
+            }catch (ElementShould error){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Step(value = "Проверяем, отображается ли иконка {locator}")
+    default boolean isShowIconModalWindow(String locator){
+        try{
+            modalWindow.find(locator).shouldBe(visible);
+        }catch (ElementNotFound error){
+            return false;
+        }
+
+        return true;
+
+    }
+
+    @Step(value = "Проверяем, отображается ли текст модального окна")
+    default String getTextModalWindow(String locator){
+        return modalWindow.find(locator).text();
+
     }
 
 }

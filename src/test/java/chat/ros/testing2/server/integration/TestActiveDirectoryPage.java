@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
@@ -63,6 +63,16 @@ public class TestActiveDirectoryPage implements IntegrationPage {
         testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
         assertTrue(activeDirectoryPage.syncContacts(), "Ошибка при сихронизации контактов");
+        assertAll("Проверяем, успешно ли синхронизировались контакты AD",
+                () -> assertTrue(isShowIconModalWindow(".primary--text"),
+                        "Нет иконки успешной синхронизации"),
+                () -> assertEquals(getTextModalWindow("h3"),
+                        "Успешно",
+                        "Текст в заголовке модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"),
+                        "Контакты успешно синхронизированы.",
+                        "Текст в модальном окне не совпадает с ожидаемым")
+        );
     }
 
     @Story(value = "Удаление Active Directory")

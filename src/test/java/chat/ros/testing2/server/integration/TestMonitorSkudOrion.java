@@ -21,7 +21,8 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.MonitoringData.MONITORING_SERVICE_SKUD;
 import static chat.ros.testing2.data.SettingsData.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
@@ -75,7 +76,17 @@ public class TestMonitorSkudOrion implements IntegrationPage {
     void test_Sync_Contacts(){
         assertTrue(status_Add,"СКУД ОРИОН не добавлен");
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
-        assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов со СКУД ОРИОН");
+        assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов");
+        assertAll("Проверяем, успешно ли синхронизировались контакты AD",
+                () -> assertTrue(isShowIconModalWindow(".primary--text"),
+                        "Нет иконки успешной синхронизации"),
+                () -> assertEquals(getTextModalWindow("h3"),
+                        "Успешно",
+                        "Текст в заголовке модального окна не совпадает с ожидаемым"),
+                () -> assertEquals(getTextModalWindow("h4"),
+                        "Контакты успешно синхронизированы.",
+                        "Текст в модальном окне не совпадает с ожидаемым")
+        );
         status_Sync = true;
     }
 

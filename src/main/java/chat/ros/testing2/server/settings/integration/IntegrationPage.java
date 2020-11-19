@@ -18,7 +18,6 @@ public interface IntegrationPage extends SettingsPage {
     ElementsCollection buttonComplex = $$("div.block-content.complex button div");
     SelenideElement buttonSaveContacts = $("div.sync-wrapper button.primary");
     SelenideElement divLoading = $("div.loader-wrapper");
-    SelenideElement msgError = $("div.msg-header h3");
     String locatorButton = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button";
 
     @Step(value = "Проверяем, доступен ли сервис {service} для выбора")
@@ -68,17 +67,6 @@ public interface IntegrationPage extends SettingsPage {
         return this;
     }
 
-    @Step(value = "Проверяем, появилось ли окно с ошибкой")
-    default boolean isShowErrorWindow(){
-        try{
-            msgError.shouldBe(Condition.not(Condition.text("Ошибка")));
-        }catch (ElementShould elementShould){
-            return false;
-        }
-
-        return true;
-    }
-
     default Object clickServiceType(String service){
         $x(String.format(locatorButton,service)).waitUntil(Condition.visible,60000).click();
         switch(service){
@@ -114,12 +102,10 @@ public interface IntegrationPage extends SettingsPage {
 
     default boolean syncContacts(){
         clickButtonOnComplex("Синхронизировать");
-        if(isShowErrorWindow()){
-            return false;
-        }
+        if(isShowElement(modalWindow, true)) return false;
         clickSaveContacts();
         waitNotShowWindowSaveContacts();
         waitNotShowLoadWrapper();
-        return isShowErrorWindow();
+        return true;
     }
 }
