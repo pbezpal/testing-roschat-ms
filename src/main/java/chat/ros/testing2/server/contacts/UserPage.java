@@ -146,7 +146,7 @@ public class UserPage implements BasePage {
 
     @Step(value = "Нажимаем кнопку Добавить")
     private UserPage clickButtonAddService(){
-        buttonsAddService.click();
+        buttonsAddService.waitUntil(visible, 3000).click();
         return this;
     }
 

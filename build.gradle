@@ -362,12 +362,12 @@ task testservice(type: Test){
         //include specific method in any of the tests
         includeTestsMatching "*.TestServicePage"
         includeTestsMatching "*.TestContactsPage"
-        excludeTestsMatching "*.TestServicePage.test_Add_Service_Tetra_Contact"
+        excludeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Service"
     }
     //include("**/TestServicePage.class")
     //include("**/TestContactsPage.class")
 
-    //dependsOn testtetra,contactservice
+    dependsOn testtetra,contactservice
 
     // Show test results.
     testLogging {
