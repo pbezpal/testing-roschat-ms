@@ -358,8 +358,14 @@ task testservice(type: Test){
 
     description "Тестирование добавления сервисов пользователю"
 
-    include("**/TestServicePage.class")
-    include("**/TestContactsPage.class")
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestServicePage"
+        includeTestsMatching "*.TestContactsPage"
+        excludeTestsMatching "*.TestContactsPage.test_Add_Contacts_For_Service"
+    }
+    //include("**/TestServicePage.class")
+    //include("**/TestContactsPage.class")
 
     dependsOn testtetra,contactservice
 
