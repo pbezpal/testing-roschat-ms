@@ -359,6 +359,7 @@ task testservice(type: Test){
     description "Тестирование добавления сервисов пользователю"
 
     include("**/TestServicePage.class")
+    include("**/TestContactsPage.class")
 
     dependsOn testtetra,contactservice
 
