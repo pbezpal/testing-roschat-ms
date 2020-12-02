@@ -67,6 +67,8 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
             assertTrue(skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE),
                     "Сервис СКУД Офис-Монитор не найден в тиблице 'Подключенные сервисы'");
         }
+
+        if(classTest.contains("TestReservationPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Обслуживание","Резервирование");
     }
 
     @Override

@@ -118,7 +118,7 @@ public interface BasePage {
         return true;
     }
 
-    @Step(value = "Нажимаем нопку Сохранить")
+    @Step(value = "Нажимаем нопку Сохранить/Восстановить")
     default void clickButtonSave(){
         buttonSave.click();
     }
