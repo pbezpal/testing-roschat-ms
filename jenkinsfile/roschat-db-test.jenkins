@@ -42,24 +42,10 @@ pipeline{
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
             }
         }
-        stage("Running web-client testing"){
-            steps{
-                script{
-                    try{
-                        sleep 60
-                        build(job: "roschat-web-client-testing",
-                            parameters: [
-                                string(name: 'VER', value: "${SERVER_VER}"),
-                                string(name: 'REZULT', value: "${currentBuild.result}"),
-                                string(name: 'REPORT', value: "${BUILD_URL}allure")
-                            ])
-                    }catch(err){
-                        error('web-client testing - FAILED')
-						currentBuild.result = 'FAILURE'
-                    }
-                }
-            }
-
+    }
+    post{
+        always{
+            emailext body: "Server version testing - ${SERVER_VER} \n Result testing - ${currentBuild.result} \n Report - ${BUILD_URL}allure", subject: 'Roschat server testing', to: 'bezpalko', from: 'jenkins@ros.chat'
         }
     }
 }
