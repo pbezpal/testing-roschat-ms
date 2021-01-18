@@ -45,7 +45,7 @@ public interface IntegrationPage extends SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button}")
     default IntegrationPage clickButtonActionService(String button){
-        buttonActionService.findBy(Condition.text(button)).click();
+        buttonActionService.findBy(Condition.text(button)).waitUntil(Condition.enabled, 300000).click();
         return this;
     }
 

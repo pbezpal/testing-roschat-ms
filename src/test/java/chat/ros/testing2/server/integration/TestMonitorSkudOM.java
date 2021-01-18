@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature(value = "Интеграция->Офис-Монитор")
 public class TestMonitorSkudOM implements IntegrationPage {
 
-    private final String classStatusServiceActive = "status active";
-    private final String classStatusServiceInactive = "status inactive";
+    private final String classStatusServiceActive = ".status.active";
+    private final String classStatusServiceInactive = ".status.inactive";
     private SKUDPage skudPage = null;
     private static boolean status_Add;
     private static boolean status_Sync;
