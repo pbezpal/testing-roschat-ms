@@ -142,8 +142,11 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Проверяем, появилась ли надпись о пустом/невалидном значении")
     default String isShowTextWrongValue(String field){
-        SelenideElement element = $$(".modal-item__title h4").findBy(text(field)).closest("li").
-                find(".v-messages__message");
+        SelenideElement element = $$(".modal-item__title h4")
+                .findBy(text(field))
+                .parent()
+                .parent()
+                .find(".v-messages__message");
         try{
             element.shouldBe(visible);
         }catch (ElementNotFound e){
