@@ -29,7 +29,7 @@ public interface SettingsData {
     String SERVER_CONNECT_FIELD_PORTS = "Порты (http, https, websocket):";
 
     /****** Параметры для настройки Push сервера ******/
-    String SERVER_PUSH_TITLE_FORM = "Лицензирование и обсуживание";
+    String SERVER_PUSH_TITLE_FORM = "Лицензирование и обслуживание";
     String SERVER_PUSH_INPUT_HOST = "Адрес сервера";
     String SERVER_PUSH_HOST_SERVER = "firelink.me";
     String SERVER_PUSH_INPUT_LOGIN = "Логин";
