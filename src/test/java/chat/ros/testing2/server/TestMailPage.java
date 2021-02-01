@@ -38,7 +38,7 @@ public class TestMailPage extends MailPage {
         assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
         assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
                 () -> assertTrue(isShowIconModalWindow(".success--text"),
-                        "Нет иконки успещной проверки почты"),
+                        "Нет иконки успешной проверки почты"),
                 () -> assertEquals(getTextModalWindow("h3"),
                         "Проверка настроек",
                         "Заголовок модального окна не совпадает с ожидаемым"),

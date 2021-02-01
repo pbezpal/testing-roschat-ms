@@ -319,7 +319,7 @@ task testintegration(type: Test){
 
     systemProperties System.getProperties()
 
-    description "Тестирование сервисы интеграции СКУД и Active Directory"
+    description "Тестирование сервисов интеграции СКУД и Active Directory"
 
     include("**/TestActiveDirectoryPage.class")
     include("**/TestMonitorSkudOM.class")
@@ -390,6 +390,8 @@ task roschatsnmp(type: Test){
 }
 
 task test_roschatsnmp {
+    description "Тестирование сервера сервиса SNMP. Если ошибка при создании администратора СУ, то тест завершается" +
+            " с ошибкой"
     dependsOn testuseradmin
     finalizedBy(roschatsnmp)
 }
@@ -426,10 +428,13 @@ task roschatserver(type: Test){
 
     systemProperties System.getProperties()
 
+    description "Тестирование разделов настроек"
+
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*.server.*"
         excludeTestsMatching "*.server.integration.*"
+        excludeTestsMatching "*.server.TestServerPage" //не забыть убрать
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
@@ -658,4 +663,23 @@ task paramtests_connect_wrong(type: Test) {
     }
 
     finalizedBy(paramtests_push_wrong)
+}
+
+task roschatгusers(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.server.users.*"
+    }
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
 }
