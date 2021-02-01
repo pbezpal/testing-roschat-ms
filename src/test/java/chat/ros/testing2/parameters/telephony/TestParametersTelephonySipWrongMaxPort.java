@@ -27,7 +27,7 @@ public class TestParametersTelephonySipWrongMaxPort extends TelephonyParams {
     @ParameterizedTest
     @MethodSource(value = "getWrongValuePort")
     void test_Settings_SIP_Wrong_Max_Port(Character symbol){
-        wrong_sip_ports(TELEPHONY_SIP_INPUT_MAX_PORT, symbol.toString(), "Значение должно быть целым числом");
+        wrong_sip_ports(TELEPHONY_SIP_INPUT_MAX_PORT, symbol.toString(), "Невалидный порт");
     }
 
     @Story(value = "Проверяем максимальное значения порта в поле Максимальный порт SIP-сервер")

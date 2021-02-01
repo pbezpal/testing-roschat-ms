@@ -92,7 +92,7 @@ public class TestParametersMailEmptyValue extends MailPage {
         else if(fromUser.equals("")) field = MAIL_CONTACT_INPUT_FROM_USER;
         else field = MAIL_CONTACT_INPUT_FROM_MAIL;
         assertAll("Проверяем настройки почты с пустыми полями",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите адрес электронной почты",
+                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
                         "Надпись 'Введите значение' не появилась"),
                 () -> { clickButtonSave(); },
                 () -> assertTrue(isFormChange(),

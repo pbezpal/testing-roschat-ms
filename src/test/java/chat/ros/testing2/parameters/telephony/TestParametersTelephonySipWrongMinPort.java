@@ -27,7 +27,7 @@ public class TestParametersTelephonySipWrongMinPort extends TelephonyParams {
     @ParameterizedTest
     @MethodSource(value = "getWrongValuePort")
     void test_Settings_SIP_Wrong_Min_Port(Character symbol){
-        wrong_sip_ports(TELEPHONY_SIP_INPUT_MIN_PORT, symbol.toString(),"Значение должно быть целым числом");
+        wrong_sip_ports(TELEPHONY_SIP_INPUT_MIN_PORT, symbol.toString(),"Невалидный порт");
     }
 
     @Story(value = "Проверяем максимальное значения порта в поле Минимальный порт SIP-сервер")
