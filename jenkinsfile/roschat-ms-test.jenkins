@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean paramtests_connect_wrong -Dhostserver="ormp2.ros.chat" -Dportms="1110"'
+                        sh './gradlew clean paramtests_connect_wrong -Dhostserver="ormp2.ros.chat" -Dportms="1110" -Dselenoid="10.10.199.42"'
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }

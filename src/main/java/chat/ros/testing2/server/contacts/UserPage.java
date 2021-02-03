@@ -132,9 +132,13 @@ public class UserPage implements BasePage {
         return true;
     }
 
-    @Step(value = "Нажимаем кнопку Добавить")
-    private UserPage clickButtonAddOfUser(){
-        buttonActiveItem.click();
+    @Step(value = "Нажимаем кнопку Добавить в разделе {item}")
+    private UserPage clickButtonAddOfService(String item){
+        $(".service")
+                .waitUntil(visible, 2000)
+                .parent()
+                .find("button.primary")
+                .click();
         return this;
     }
 
@@ -179,11 +183,15 @@ public class UserPage implements BasePage {
         return true;
     }
 
-    //Добавляем сервисы
+    /**
+     * This method add service roschat to client
+     * @param itemMenu name section of services roschat
+     * @param type what service of roschat to be added
+     * @return instance UserPage
+     */
     public UserPage addServices(String itemMenu, String type){
-        //Переходим в раздел Сервисы
         clickMenuItem(itemMenu)
-                .clickButtonAddOfUser()
+                .clickButtonAddOfService(itemMenu)
                 .clickAddTypeService(type)
                 .clickButtonAddService();
         return this;
@@ -193,7 +201,7 @@ public class UserPage implements BasePage {
     public UserPage addServices(String itemMenu, String type, String server, String ssi){
         //Переходим в раздел Сервисы
         clickMenuItem(itemMenu)
-                .clickButtonAddOfUser()
+                .clickButtonAddOfService(itemMenu)
                 .clickAddTypeService(type)
                 .clickButtonAddService()
                 .selectServerTetra(server)
@@ -206,7 +214,7 @@ public class UserPage implements BasePage {
     public UserPage addServices(String itemMenu, String type, String number){
         //Переходим в раздел Сервисы
         clickMenuItem(itemMenu)
-                .clickButtonAddOfUser()
+                .clickButtonAddOfService(itemMenu)
                 .clickAddTypeService(type)
                 .clickButtonAddService()
                 .sendSipNumber(number)
