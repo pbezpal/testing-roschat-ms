@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean test_roschatdb -Dhostserver="${params.SERVER}" -Dportms="${params.PORT}" -Dselenoid="${params.SELENOID}"'
+                        sh "./gradlew clean test_roschatdb -Dhostserver=${params.SERVER} -Dportms=${params.PORT} -Dselenoid=${params.SELENOID}"
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }
