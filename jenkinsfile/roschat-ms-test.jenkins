@@ -30,7 +30,7 @@ pipeline{
             steps{
                 script{
                     try{
-                        sh './gradlew clean paramtests_connect_wrong -Dhostserver="${params.SERVER}" -Dportms="${params.PORT}" -Dselenoid="${params.SELENOID}"'
+                        sh "./gradlew clean paramtests_connect_wrong -Dhostserver=${params.SERVER} -Dportms=${params.PORT} -Dselenoid=${params.SELENOID}"
                     }catch(err){
                         currentBuild.result = 'FAILURE';
                     }
