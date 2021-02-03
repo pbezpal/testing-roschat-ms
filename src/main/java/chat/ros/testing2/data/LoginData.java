@@ -3,7 +3,7 @@ package chat.ros.testing2.data;
 public interface LoginData {
 
     /****** Параметры сервера ******/
-    String HOST_HUB = "10.10.199.45";
+    String HOST_HUB = System.getProperty("selenoid");
 
     /****** Параметры для авторизации в СУ ******/
     String LOGIN_AS_MS = "admin";
