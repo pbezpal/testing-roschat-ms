@@ -86,8 +86,7 @@ public class ServerPage implements SettingsPage{
         //Прокручиваем страницу вниз
         $("html").scrollIntoView(false);
         //Нажимаем кнопку Обновить лицензию
-        if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
-        sleep(30000);
+        //if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
         assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
 
         return this;
