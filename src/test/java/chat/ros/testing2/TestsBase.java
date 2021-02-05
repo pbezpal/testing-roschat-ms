@@ -39,7 +39,7 @@ public class TestsBase implements ClientPage {
     public void init(){
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("chrome");
-        capabilities.setVersion("80.0");
+        capabilities.setVersion("88.0");
         capabilities.setCapability("enableVNC", true);
         capabilities.setCapability("enableVideo", false);
         capabilities.setCapability("acceptInsecureCerts", true);
