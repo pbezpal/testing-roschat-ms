@@ -89,7 +89,6 @@ public class TestParametersMailEmptyValue extends MailPage {
         else if(username.equals("")) field = MAIL_CONNECT_INPUT_USERNAME;
         else if(password.equals("")) field = MAIL_CONNECT_INPUT_PASSWORD;
         else if(port.equals("")) field = MAIL_CONNECT_INPUT_EMAIL_PORT;
-        else if(fromUser.equals("")) field = MAIL_CONTACT_INPUT_FROM_USER;
         else field = MAIL_CONTACT_INPUT_FROM_MAIL;
         assertAll("Проверяем настройки почты с пустыми полями",
                 () -> assertEquals(isShowTextWrongValue(field),"Введите значение",

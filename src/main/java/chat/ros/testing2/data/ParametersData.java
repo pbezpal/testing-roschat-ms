@@ -28,7 +28,7 @@ public interface ParametersData {
     String MORE_MAX_VALUE_PORT = "65536";
     String WRONG_SYMBOLS_EMAIL = " \"(),:;<>[\\]‘’“”–ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     String[] WRONG_VALUE_EMAIL = {"testinfotek.ru", "test@infotekru",".test@infotek.ru","test@infotek.ru.",
-            "test@infotek.r",getRandomSymbol(WRONG_SYMBOLS_EMAIL) + "test@infotek.ru",
+            getRandomSymbol(WRONG_SYMBOLS_EMAIL) + "test@infotek.ru",
             "test" + getRandomSymbol(WRONG_SYMBOLS_EMAIL) + "@infotek.ru",
             "t" + getRandomSymbol(WRONG_SYMBOLS_EMAIL) + "st@infotek.ru",
             "test" + getRandomSymbol(WRONG_SYMBOLS_EMAIL) + "infotek.ru",
