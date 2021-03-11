@@ -34,17 +34,42 @@ public interface SettingsPage extends BasePage {
         return true;
     }
 
+    @Step(value = "Проверяем, отображается ли {show} поле {field}")
+    default boolean isShowField(String form, String field, boolean show){
+        SelenideElement element = $$("h2").findBy(text(form)).parent().$$("div.block-content__item-name h4").
+                findBy(text(field));
+
+        $$("h2").findBy(text(form)).scrollIntoView(false);
+
+        if(show){
+            try{
+                element.should(enabled);
+            }catch (ElementNotFound e){
+                return false;
+            }
+        }else {
+            try{
+                element.should(not(enabled));
+            }catch (ElementShould e){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
     default boolean isShowValueInField(String form, String field, String value, boolean show){
         SelenideElement element = $$("h2").findBy(text(form)).parent().$$("div.block-content__item-name h4").
                 findBy(text(field)).closest("li").find("span.v-chip__content");
+
+        $$("h2").findBy(text(form)).scrollIntoView(false);
+
         try{
             element.should(enabled);
         }catch (ElementNotFound e){
             return false;
         }
-
-        element.scrollIntoView(false);
 
         if(show){
             return element.text().equals(value);

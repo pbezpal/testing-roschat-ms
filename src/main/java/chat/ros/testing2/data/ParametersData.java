@@ -23,8 +23,8 @@ public interface ParametersData {
             "127" + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + "0.0.1",
             "127.0" + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + "0.1",
             "127.0.0" + getRandomSymbol(WRONG_SYMBOLS_IP_ADDRESS) + "1"};
-    String WRONG_SYMBOLS_PORT = WRONG_SYMBOLS_SERVER + "-.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0";
-    String VALID_SYMBOLS_PORT = "123456789";
+    String WRONG_SYMBOLS_PORT = WRONG_SYMBOLS_SERVER + "-.ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    String VALID_SYMBOLS_PORT = "1234567890";
     String MORE_MAX_VALUE_PORT = "65536";
     String WRONG_SYMBOLS_EMAIL = " \"(),:;<>[\\]‘’“”–ё№»АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюя";
     String[] WRONG_VALUE_EMAIL = {"testinfotek.ru", "test@infotekru",".test@infotek.ru","test@infotek.ru.",
