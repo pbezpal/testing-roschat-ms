@@ -62,7 +62,7 @@ public class TelephonyParams extends TelephonyPage {
             }};
         }
         setSettingsServer(mapInputValueNetwork, TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем настройки сети на пустые значения",
+        assertAll("Проверяем настройки сети на невалидные значения",
                 () -> assertEquals(isShowTextWrongValue(field),"Невалидный IP адрес",
                         "Надпись 'Невалидный IP адрес' не появилась"),
                 () -> { clickButtonSave(); },
@@ -72,12 +72,11 @@ public class TelephonyParams extends TelephonyPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowValueInField(
+        assertTrue(isShowField(
                 TELEPHONY_NETWORK_TITLE_FORM,
                 field,
-                value,
                 false),
-                "В поле " + field + ", сохранилось значение " + value);
+                "Поле " + field + ", отображается в форме " + TELEPHONY_NETWORK_TITLE_FORM);
     }
 
     protected void wrong_sip_ports(String field, String value, String text_error){
