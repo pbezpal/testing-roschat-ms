@@ -682,3 +682,24 @@ task roschatгusers(type: Test){
     }
 
 }
+
+task roschativr(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    /*filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.server.users.*"
+    }*/
+
+    include("**/TestSoundFilesPage.class")
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
