@@ -171,13 +171,23 @@ public interface SettingsData {
 
     /******************************************* Раздел Голосовое меню ***********************************************/
 
+    //General elements
+    String IVR_BUTTON_EDIT = "edit";
+    String IVR_BUTTON_DELETE = "delete";
+
     String IVR_TITLE_ENTRY_POINTS = "Точки входа";
-    String IVR_TITLE_MENU = "Меню";
+
+    String IVR_MENU_TITLE = "Меню";
+    String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Перейти в меню", "Положить трубку",
+            "Вернуться в родительское меню", "Вернуться в корневое меню", "Повторить меню"};
+    String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
+    String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";
 
     //Раздел Звуковые файлы
-    String IVR_TITLE_SOUND_FILES = "Звуковые файлы";
-    String IVR_TITLE_DESCRIPTION_SOUND_FILE_WAV = "Тестовое описание звукового файла wav";
-    String IVR_TITLE_DESCRIPTION_SOUND_FILE_MP3 = "Тестовое описание звукового файла mp3";
+    String IVR_SOUND_FILES_TITLE = "Звуковые файлы";
+    String IVR_SOUND_FILES_FIELD_DESCRIPTION = "Описание";
+    String IVR_SOUND_FILES_DESCRIPTION_WAV = "Тестовое описание звукового файла wav";
+    String IVR_SOUND_FILES_DESCRIPTION_MP3 = "Тестовое описание звукового файла mp3";
 
     /******************************************* Раздел Пользователи СУ **********************************************/
 

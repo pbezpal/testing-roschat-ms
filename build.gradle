@@ -688,12 +688,7 @@ task roschativr(type: Test){
 
     systemProperties System.getProperties()
 
-    /*filter {
-        //include specific method in any of the tests
-        includeTestsMatching "*.server.users.*"
-    }*/
-
-    include("**/TestSoundFilesPage.class")
+    include("**/TestIVRPage.class")
 
     dependsOn 'cleanTest'
 

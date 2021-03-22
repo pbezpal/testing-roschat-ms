@@ -28,8 +28,9 @@ public interface SettingsPage extends BasePage {
      * Items for combo box
      */
     SelenideElement elementComboBox = $("div[role='combobox'] i.v-icon.material-icons.theme--light");
-    SelenideElement divComboBoxActive = $("div.v-select--is-menu-active");
-    ElementsCollection listItemsComboBox = $$("div.v-list.theme--light div.v-list__tile__title");
+    SelenideElement divComboBoxActive = $(".v-select--is-menu-active");
+    SelenideElement activeContextMenu = $(".menuable__content__active");
+    ElementsCollection listItemsComboBox = activeContextMenu.$$(".v-list__tile__title");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -133,11 +134,11 @@ public interface SettingsPage extends BasePage {
         elements.last().scrollIntoView(false);
 
         if(show){
-           try {
-               elements.findBy(text(value));
-           }catch (ElementNotFound e){
-               return false;
-           }
+            try {
+                elements.findBy(text(value));
+            }catch (ElementNotFound e){
+                return false;
+            }
         }else {
             try {
                 elements.findBy(not(text(value)));
