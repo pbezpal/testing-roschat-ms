@@ -115,7 +115,7 @@ public class IVRPage implements SettingsPage {
         return this;
     }
 
-    @Step(value = "Заполняем описание {description} звукового файла")
+    @Step(value = "Вводим {value} в поле {field}")
     private IVRPage sendInputModalWindow(String field, String ...value){
         if(value.length > 0) {
             SelenideElement input = $("input[aria-label='" + field + "']");
@@ -219,9 +219,9 @@ public class IVRPage implements SettingsPage {
     }
 
     /*@Step(value = "Проверяем, параметры настройки голосового меню")
-    public boolean getTextSpansGoToMenuOfModalWindowVoiceMenu(String span){
-        try{
-            
+    public boolean getTextSpansGoToMenuOfModalWindowVoiceMenu(String span) {
+        try {
+
         }
         modalWindow.$$("span").findBy(text(span))
                 .parent()
@@ -297,15 +297,10 @@ public class IVRPage implements SettingsPage {
         return this;
     }
 
-    public IVRPage setInputsEntryPoint(Map<String, String> values, String item){
-        sendInputsForm(values);
+    public IVRPage createEntryPoint(String number, String aon, String item){
+        sendInputModalWindow("Набираемый номер", number)
+                .sendInputModalWindow("АОН", aon);
         selectItemComboBox(item);
         return this;
     }
-
-    public IVRPage createEntryPoint(Map<String, String> values, String item){
-        clickButtonAdd(IVR_TITLE_ENTRY_POINTS);
-        return setInputsEntryPoint(values, item);
-    }
-
 }

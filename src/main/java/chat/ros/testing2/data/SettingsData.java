@@ -175,10 +175,10 @@ public interface SettingsData {
     String IVR_BUTTON_EDIT = "edit";
     String IVR_BUTTON_DELETE = "delete";
 
-    String IVR_TITLE_ENTRY_POINTS = "Точки входа";
+    String IVR_ENTRY_POINTS_TITLE = "Точки входа";
 
     String IVR_MENU_TITLE = "Меню";
-    String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Перейти в меню", "Положить трубку",
+    String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Положить трубку",
             "Вернуться в родительское меню", "Вернуться в корневое меню", "Повторить меню"};
     String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
     String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";

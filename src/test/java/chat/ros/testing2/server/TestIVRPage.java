@@ -37,6 +37,7 @@ public class TestIVRPage extends IVRPage {
             getClassLoader().
             getResource("sound/" + mp3File).
             getFile();
+    private static int num;
 
     @Parameterized.Parameters(name = "{0}")
     private static Iterable<String> receiveMenuItems() {
@@ -89,6 +90,7 @@ public class TestIVRPage extends IVRPage {
     @BeforeAll
     static void setUp(){
         status_add_sound_file = false;
+        num = 1000;
     }
 
     @Story(value = "Загружаем звуковой wav файл")
@@ -116,10 +118,10 @@ public class TestIVRPage extends IVRPage {
 
     @Story(value = "Добавление меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Добавляем голосове меню \n" +
-            "3. Проверяем, что голосовое меню успешно добавлено")
+            "2. Добавляем Меню \n" +
+            "3. Проверяем, что меню успешно добавлено")
     @Order(2)
-    @ParameterizedTest(name="#{index} - Test item menu=''{0}''")
+    @ParameterizedTest(name="#{index} - Add menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Menu(String name){
         String descriptionMenu = IVR_MENU_DESCRIPTION + " " + name;
@@ -129,7 +131,7 @@ public class TestIVRPage extends IVRPage {
                         "проверяем, что голосовое меню " + name + " было добавлено в таблицу",
                 () -> assertEquals(clickButtonAdd(IVR_MENU_TITLE).isVisibleTitleModalWrapper(),
                         "Новое голосовое меню",
-                        "Не найден заголовок модального окна при добавлении звукового файла"),
+                        "Не найден заголовок модального окна при добавлении голосового меню"),
                 () -> {
                     sendModalWindowByMenu(name, wavFile).clickButtonPrimaryOfModalWindow();},
                 () -> assertTrue(isItemTable(IVR_MENU_TITLE, descriptionMenu, true),
@@ -140,6 +142,39 @@ public class TestIVRPage extends IVRPage {
         checkLookModalWindowOfMenu(name);
 
     }
+
+    @Story(value = "Добавление точки входа")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Добавляем точку входа \n" +
+            "3. Проверяем, что точка входа успешно добавлена")
+    @Order(3)
+    @ParameterizedTest(name="#{index} - Add entry point=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Add_Entry_Point(String menu){
+        assertTrue(isItemTable(IVR_MENU_TITLE, menu, true),
+                "Название  " + menu + " не найдено в таблице меню");
+        String number = String.valueOf(num);
+        String aon = menu + " " + number;
+        assertAll("1. Добавляем точку входа " + menu + " \n" +
+                        "проверяем, что точка входа " + menu + " была добавлена в таблицу",
+                () -> assertEquals(clickButtonAdd(IVR_ENTRY_POINTS_TITLE).isVisibleTitleModalWrapper(),
+                        "Создание точки входа",
+                        "Не найден заголовок модального окна при добавлении точки входа"),
+                () -> {
+                    createEntryPoint(number, aon, menu).clickButtonPrimaryOfModalWindow();},
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
+                        "АОН " + aon + " меню " + menu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
+                        "Набираемый номер " + number + " меню " + menu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, menu, true),
+                        "Меню " + menu + " не найдено в таблице точек входа")
+        );
+        num++;
+    }
+
+
 
     @Story(value = "Редактируем звуковой фал")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
