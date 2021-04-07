@@ -9,8 +9,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 
-import java.util.Map;
-
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -216,6 +214,25 @@ public class IVRPage implements SettingsPage {
                 .parent()
                 .find(".name")
                 .text();
+    }
+
+    @Step(value = "Проверяем, отображается ли звуковой файл в настройке голосового меню")
+    public boolean isSoundFileWithCallMenu(boolean show) {
+        if (show) {
+            try {
+                $(".v-select__selection--comma").shouldBe(visible);
+            } catch (ElementNotFound e) {
+                return false;
+            }
+        } else {
+            try {
+                $(".v-select__selection--comma").shouldBe(not(visible));
+            } catch (ElementShould e) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /*@Step(value = "Проверяем, параметры настройки голосового меню")

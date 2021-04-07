@@ -99,6 +99,7 @@ public class TestIVRPage extends IVRPage {
             "3. Проверяем, что звуковой файл wav и описание к нему добавлены в таблицу звуковых файлов")
     @Test
     @Order(1)
+    @Disabled
     void test_Upload_Sound_File_WAV(){
         assertEquals(uploadSoundFile(pathWAVFile, IVR_SOUND_FILES_DESCRIPTION_WAV)
                         .isVisibleTitleModalWrapper(),
@@ -123,6 +124,7 @@ public class TestIVRPage extends IVRPage {
     @Order(2)
     @ParameterizedTest(name="#{index} - Add menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
+    @Disabled
     void test_Add_Menu(String name){
         String descriptionMenu = IVR_MENU_DESCRIPTION + " " + name;
         assertTrue(status_add_sound_file, "Тест с добавлением звукового файла " + wavFile + " провалился. " +
@@ -150,6 +152,7 @@ public class TestIVRPage extends IVRPage {
     @Order(3)
     @ParameterizedTest(name="#{index} - Add entry point=''{0}''")
     @MethodSource(value = "receiveMenuItems")
+    @Disabled
     void test_Add_Entry_Point(String menu){
         assertTrue(isItemTable(IVR_MENU_TITLE, menu, true),
                 "Название  " + menu + " не найдено в таблице меню");
@@ -176,29 +179,35 @@ public class TestIVRPage extends IVRPage {
 
 
 
-    @Story(value = "Редактируем звуковой фал")
+    @Story(value = "Добавление звукового файла без описания")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Выбираем редактировать звуковой файл добавленный в первом тесте \n" +
-            "3. Меняем wav файл на файл MP3 и описание к файлу \n" +
-            "4. Проверяем, что новый файл и описание добавлены в таблицу звуковых файлов")
+            "2. Добавляем звуковой файл без описания \n" +
+            "3. Проверяем, что новый файл добавлен в таблицу звуковых файлов")
     @Test
-    @Order(3)
+    @Order(4)
     @Disabled
-    void test_Edit_Sound_File(){
-        assertTrue(status_add_sound_file, "Тест с добавлением звукового файла " + wavFile + " провалился. " +
-                "Невозможно продолжать тестирование");
-        assertAll("Проверяем, добавлен файл и описание к нему в таблицу",
-                () -> assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile, IVR_BUTTON_EDIT)
-                                .isVisibleTitleModalWrapper(),
-                        "Редактирование звукового файла",
-                        "Не найден заголовок модального окна при добавлении звукового файла"),
-                () -> {uploadSoundFileByModalWindow(pathMP3File, IVR_SOUND_FILES_DESCRIPTION_MP3)
-                        .clickButtonPrimaryOfModalWindow();},
-                () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, mp3File, true),
-                        "Название файла " + mp3File + " не найдено в таблице звуковых файлов"),
-                () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, IVR_SOUND_FILES_DESCRIPTION_MP3, true),
-                        "Описание " + IVR_SOUND_FILES_DESCRIPTION_MP3 + " звукового файла " + pathMP3File + " " +
-                                "не найдено в таблице звуковых файлов")
-        );
+    void test_Upload_Sound_File_Without_Description(){
+        assertEquals(uploadSoundFile(pathMP3File, "")
+                        .isVisibleTitleModalWrapper(),
+                "Новый звуковой файл",
+                "Не найден заголовок модального окна при добавлении звукового файла");
+        clickButtonPrimaryOfModalWindow();
+        assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, mp3File, true),
+                "Название файла " + mp3File + " не найдено в таблице звуковых файлов");
+    }
+
+    @Story(value = "Удаляем звуковой файл")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем звуковой файл \n" +
+            "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
+    @Test
+    @Order(5)
+    void test_Delete_Sound_File(){
+        clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления звукового файла");
+        clickButtonConfirmAction("Удалить");
+        assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, wavFile, false),
+                "Название файла " + wavFile + " найдено в таблице звуковых файлов после удаления файла");
     }
 }
