@@ -49,11 +49,11 @@ public interface SettingsData {
     /****** Параметры для настройки Сети ******/
     String TELEPHONY_NETWORK_TITLE_FORM = "Сеть";
     String TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS = "Публичный адрес";
-    String TELEPHONY_NETWORK_PUBLIC_ADDRESS = "188.170.5.169";
+    String TELEPHONY_NETWORK_PUBLIC_ADDRESS = "10.10.11.183";
     String TELEPHONY_NETWORK_INPUT_FRONT_DEV = "Внешний интерфейс";
-    String TELEPHONY_NETWORK_FRONT_IP = "10.10.199.47";
+    String TELEPHONY_NETWORK_FRONT_IP = "10.10.11.183";
     String TELEPHONY_NETWORK_INPUT_INSIDE_DEV = "Внутренний интерфейс";
-    String TELEPHONY_NETWORK_INSIDE_IP = "10.10.199.47";
+    String TELEPHONY_NETWORK_INSIDE_IP = "10.10.11.183";
     String TELEPHONY_NETWORK_TEXT_CHECK = "Настройки телефонии корректны.";
 
     /****** Параметры для настройки SIP-сервера ******/
