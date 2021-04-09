@@ -49,11 +49,11 @@ public interface SettingsData {
     /****** Параметры для настройки Сети ******/
     String TELEPHONY_NETWORK_TITLE_FORM = "Сеть";
     String TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS = "Публичный адрес";
-    String TELEPHONY_NETWORK_PUBLIC_ADDRESS = "188.170.5.169";
+    String TELEPHONY_NETWORK_PUBLIC_ADDRESS = "10.10.11.183";
     String TELEPHONY_NETWORK_INPUT_FRONT_DEV = "Внешний интерфейс";
-    String TELEPHONY_NETWORK_FRONT_IP = "10.10.199.47";
+    String TELEPHONY_NETWORK_FRONT_IP = "10.10.11.183";
     String TELEPHONY_NETWORK_INPUT_INSIDE_DEV = "Внутренний интерфейс";
-    String TELEPHONY_NETWORK_INSIDE_IP = "10.10.199.47";
+    String TELEPHONY_NETWORK_INSIDE_IP = "10.10.11.183";
     String TELEPHONY_NETWORK_TEXT_CHECK = "Настройки телефонии корректны.";
 
     /****** Параметры для настройки SIP-сервера ******/
@@ -186,8 +186,8 @@ public interface SettingsData {
     //Раздел Звуковые файлы
     String IVR_SOUND_FILES_TITLE = "Звуковые файлы";
     String IVR_SOUND_FILES_FIELD_DESCRIPTION = "Описание";
-    String IVR_SOUND_FILES_DESCRIPTION_WAV = "Тестовое описание звукового файла wav";
-    String IVR_SOUND_FILES_DESCRIPTION_MP3 = "Тестовое описание звукового файла mp3";
+    String IVR_SOUND_FILES_DESCRIPTION_WAV_1 = "Тестовое описание первого звукового файла";
+    String IVR_SOUND_FILES_DESCRIPTION_WAV_2 = "Тестовое описание второго звукового файла";
 
     /******************************************* Раздел Пользователи СУ **********************************************/
 

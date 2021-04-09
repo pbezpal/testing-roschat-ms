@@ -15,15 +15,19 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class IVRPage implements SettingsPage {
 
+    private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement inputUploadSoundFile = $("#upload");
     private SelenideElement modalWindow = $(".modal-window");
     private SelenideElement inputUploadSoundFileByModalWindow = modalWindow.find("#upload");
     private SelenideElement titleModalWindow = modalWindow.find("h2");
-    private SelenideElement buttonPrimaryOfModalWindow = modalWindow.find(".primary");
+    private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
     private SelenideElement buttonClose = modalWindow.find(".v-btn--flat");
     private ElementsCollection listContextMenu = activeContextMenu.$$(".list__tile__title");
     private SelenideElement buttonAddDTMF = $(".dtmf-header button");
     private ElementsCollection spansModalWindowOfVoiceMenu = modalWindow.$$("span");
+    private SelenideElement buttonDeleteDTMF = $(".mx-0");
+    private SelenideElement inputNumberDTMF = $(".flex.xs2");
+    private SelenideElement inputActionDTMF = $(".flex.xs8");
 
     private SelenideElement getIVRSection(String title){
         return mainWrapper.$$("h2").findBy(text(title)).parent();
@@ -33,12 +37,14 @@ public class IVRPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку Добавить в разделе {title}")
     public IVRPage clickButtonAdd(String title){
+        getIVRSection(title).scrollIntoView(false);
         getIVRSection(title).find(".action-bar button").click();
         return this;
     }
 
     @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
     public boolean isItemTable(String section, String item, boolean show){
+        getIVRSection(section).scrollIntoView(false);
         if(show){
             try{
                 getIVRSection(section).$$("table td")
@@ -62,6 +68,7 @@ public class IVRPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {section} у записи {item}")
     public IVRPage clickButtonTable(String section, String item, String button){
+        getIVRSection(section).scrollIntoView(false);
         getIVRSection(section)
                 .$$("table td")
                 .findBy(text(item))
@@ -85,9 +92,9 @@ public class IVRPage implements SettingsPage {
         return titleModalWindow.getText();
     }
 
-    @Step(value = "Нажимаем кнопку Сохранить/Закрыть в модальном окне")
-    public IVRPage clickButtonPrimaryOfModalWindow(){
-        buttonPrimaryOfModalWindow.click();
+    @Step(value = "Нажимаем кнопку {button} в модальном окне")
+    public IVRPage clickActionButtonOfModalWindow(String button){
+        buttonActionOfModalWindow.findBy(text(button)).click();
         return this;
     }
 
@@ -216,6 +223,50 @@ public class IVRPage implements SettingsPage {
                 .text();
     }
 
+    @Step(value = "Удаляем DTMF в меню")
+    public IVRPage clickButtonDeleteDTMF(){
+        buttonDeleteDTMF.click();
+        return this;
+    }
+
+    @Step(value = "Проверяем отображается ли {show} поле Набрано в DTMF")
+    public boolean isInputNumberDTMF(boolean show){
+        if(show){
+            try {
+                inputNumberDTMF.shouldBe(visible);
+            }catch (ElementNotFound e){
+                return false;
+            }
+        }else{
+            try {
+                inputNumberDTMF.shouldBe(not(visible));
+            }catch (ElementShould e){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Step(value = "Проверяем отображается ли {show} поле Действие в DTMF")
+    public boolean isInputActionDTMF(boolean show){
+        if(show){
+            try {
+                inputActionDTMF.shouldBe(visible);
+            }catch (ElementNotFound e){
+                return false;
+            }
+        }else{
+            try {
+                inputActionDTMF.shouldBe(not(visible));
+            }catch (ElementShould e){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Step(value = "Проверяем, отображается ли звуковой файл в настройке голосового меню")
     public boolean isSoundFileWithCallMenu(boolean show) {
         if (show) {
@@ -253,6 +304,7 @@ public class IVRPage implements SettingsPage {
      * @return
      */
     public IVRPage uploadSoundFile(String file, String ...description){
+        contentWrapper.scrollIntoView(false);
         return uploadSoundFile(file).sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
     }
 
@@ -271,15 +323,29 @@ public class IVRPage implements SettingsPage {
      * @param fields
      * @return
      */
-    private IVRPage sendInputDialNumber(String ...fields){
+    private IVRPage sendInputDialNumber(String number, String ...fields){
         for (String field: fields) {
             SelenideElement inputDialNumber = $x("//*[@aria-label='" + field + "']//ancestor::div[@class='layout']")
                     .find("input[aria-label='Набираемый номер']");
             inputDialNumber.click();
             inputDialNumber.sendKeys(Keys.CONTROL + "a");
             inputDialNumber.sendKeys(Keys.BACK_SPACE);
-            inputDialNumber.sendKeys("1000");
+            inputDialNumber.sendKeys(number);
         }
+
+        return this;
+    }
+
+    public IVRPage sendModalWindowOfMenu(String name, String type, String sound){
+        selectItemComboBox(sound);
+
+        sendInputModalWindow("Название", name)
+                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name)
+                .sendInputModalWindow("Таймаут, сек", "30")
+                .clickSelectField("Действие при таймауте")
+                .selectItemContextMenu(type)
+                .clickSelectField("Действие при неправильном наборе")
+                .selectItemContextMenu(type);
 
         return this;
     }
@@ -290,23 +356,16 @@ public class IVRPage implements SettingsPage {
      * @param sound
      * @return
      */
-    public IVRPage sendModalWindowByMenu(String name, String sound){
-        selectItemComboBox(sound);
+    public IVRPage addVoiceMenu(String name, String type, String sound, String number){
 
-        sendInputModalWindow("Название", name)
-                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name)
-                .sendInputModalWindow("Таймаут, сек", "30")
-                .clickSelectField("Действие при таймауте")
-                .selectItemContextMenu(name)
-                .clickSelectField("Действие при неправильном наборе")
-                .selectItemContextMenu(name)
+        sendModalWindowOfMenu(name, type, sound)
                 .clickButtonAddDTMF()
                 .clickSelectField("Действие")
-                .selectItemContextMenu(name)
-                .sendInputModalWindow("Набрано", "1000");
+                .selectItemContextMenu(type)
+                .sendInputModalWindow("Набрано", number);
 
-        if(name.equals("Звонок")){
-            return sendInputDialNumber("Действие при таймауте"
+        if(type.equals("Звонок")){
+            return sendInputDialNumber(number, "Действие при таймауте"
                     ,"Действие при неправильном наборе"
                     ,"Действие");
         }
@@ -314,10 +373,23 @@ public class IVRPage implements SettingsPage {
         return this;
     }
 
-    public IVRPage createEntryPoint(String number, String aon, String item){
+    public IVRPage editVoiceMenu(String name, String type, String sound, String number){
+
+        sendModalWindowOfMenu(name, type, sound)
+                .clickButtonDeleteDTMF();
+
+        if(type.equals("Звонок")){
+            return sendInputDialNumber(number, "Действие при таймауте"
+                    ,"Действие при неправильном наборе");
+        }
+
+        return this;
+    }
+
+    public IVRPage sendModalWindowOfEntryPoint(String number, String aon, String type){
         sendInputModalWindow("Набираемый номер", number)
                 .sendInputModalWindow("АОН", aon);
-        selectItemComboBox(item);
+        selectItemComboBox(type);
         return this;
     }
 }
