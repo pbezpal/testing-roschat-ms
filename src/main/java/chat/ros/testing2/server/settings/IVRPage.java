@@ -1,5 +1,6 @@
 package chat.ros.testing2.server.settings;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
@@ -11,6 +12,7 @@ import org.openqa.selenium.Keys;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class IVRPage implements SettingsPage {
@@ -48,19 +50,21 @@ public class IVRPage implements SettingsPage {
 
     @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
     public boolean isItemTable(String section, String item, boolean show){
-        getIVRSection(section).scrollIntoView(false);
+        getIVRSection(section).$("table").scrollIntoView(false);
         if(show){
             try{
-                getIVRSection(section).$$("table td")
-                        .findBy(text(item))
+                getIVRSection(section)
+                        .$("table")
+                        .$(byText(item))
                         .shouldBe(visible);
             }catch (ElementNotFound e){
                 return false;
             }
         }else{
             try{
-                getIVRSection(section).$$("table td")
-                        .findBy(text(item))
+                getIVRSection(section).
+                        $("table")
+                        .$(byText(item))
                         .shouldBe(not(visible));
             }catch (ElementShould e){
                 return false;
@@ -74,8 +78,8 @@ public class IVRPage implements SettingsPage {
     public IVRPage clickButtonTable(String section, String item, String button){
         getIVRSection(section).scrollIntoView(false);
         getIVRSection(section)
-                .$$("table td")
-                .findBy(text(item))
+                .$("table")
+                .$(byText(item))
                 .parent()
                 .$$(".layout i")
                 .findBy(text(button))
@@ -223,7 +227,9 @@ public class IVRPage implements SettingsPage {
     }
 
     private SelenideElement getElementGoToAction(String span){
-        return modalWindow.$$("span").findBy(text(span))
+        return modalWindow
+                .$$("span")
+                .findBy(text(span))
                 .parent()
                 .find(".go-to-action");
     }
@@ -231,9 +237,7 @@ public class IVRPage implements SettingsPage {
     @Step(value = "Проверяем, наличие ссылки у элемента {span}")
     public boolean isGoToActionOfSpanOfModalWindow(String span){
         try{
-            getElementGoToAction(span)
-                    .find(".go-to-action")
-                    .shouldBe(visible);
+            getElementGoToAction(span).shouldBe(visible);
         }catch (ElementNotFound e){
             return false;
         }
@@ -384,6 +388,7 @@ public class IVRPage implements SettingsPage {
      * @param description
      * @return
      */
+
     public IVRPage uploadSoundFile(String file, String ...description){
         contentWrapper.scrollIntoView(false);
         return uploadSoundFile(file).sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
@@ -443,9 +448,10 @@ public class IVRPage implements SettingsPage {
 
         sendModalWindowOfMenu(name, type, sound, menu)
                 .clickButtonAddDTMF()
-                .clickSelectField("Действие")
-                .selectItemContextMenu(type)
-                .sendInputModalWindow("Набрано", number);
+                .clickSelectField("Действие");
+                if(type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
+                else selectItemContextMenu(type);
+                sendInputModalWindow("Набрано", number);
 
         if(type.equals("Звонок")){
             return sendInputDialNumber(number, "Действие при таймауте"
