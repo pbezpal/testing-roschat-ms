@@ -23,6 +23,7 @@ import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.CLIENT_7010;
+import static org.junit.gen5.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -111,6 +112,8 @@ public class TestServerPage extends ServerPage {
     @Test
     void test_Settings_Push_Server(){
         setPushService(mapInputValuePush);
+        assertTrue(isCheckUpdateLicense(), "Настройки не применились");
+        assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
     }
 
     @Story(value = "Перезагрузка страницы")
