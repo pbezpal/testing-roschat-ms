@@ -1,4 +1,4 @@
-package chat.ros.testing2.server;
+package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
-public class TestIVRPage extends IVRPage {
+public class TestIVRPage extends CheckIVRMenu {
 
     private static boolean status_add_sound_file_with_description;
     private static boolean status_add_sound_file_without_description;
@@ -51,118 +51,7 @@ public class TestIVRPage extends IVRPage {
         return data;
     }
 
-    private void checkLookModalWindowOfMenu(String title, String type, String soundFile, boolean dtmf){
-        assertTrue(isItemTable(IVR_MENU_TITLE, type, true),
-                "Название  " + type + " не найдено в таблице меню");
-        assertAll("Проверяем, отображение элементов в модальном окне" +
-                        "для просмотра настроек меню",
-                () -> assertEquals(clickButtonTable(IVR_MENU_TITLE, type, IVR_MENU_BUTTON_LOOK_MENU)
-                                .isVisibleTitleModalWrapper(),
-                        title,
-                        "Не найден заголовок модального окна при просмотре настроек меню " + title),
-                () -> assertTrue(isIconSoundOfModalWindowVoiceMenu(getModalWindow()),
-                        "Отсутствует иконка звукового файла"),
-                () -> assertTrue(isIconTimeOutOfModalWindowMenu(getModalWindow()),
-                        "Отсутствует иконка По таймауту"),
-                () -> assertTrue(isIconErrorOutlineOfModalWindowMenu(getModalWindow()),
-                        "Отсутствует иконка неправильно набранного номера"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getModalWindow(),"Звуковой файл"),
-                        soundFile,
-                        "Отсуствтует значение " + soundFile + " в модальном окне просмотра настроек Звуковой файл"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getModalWindow(),"По таймауту"),
-                        type,
-                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек По таймауту"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getModalWindow(),"При неправильном наборе"),
-                        type,
-                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек При неправильном наборе")
-        );
 
-        if(dtmf){
-            assertAll("Проверяем, отображается ли настройки DTMF",
-                    () -> assertTrue(isIconDTMFOfModalWindowMenu(getModalWindow()),
-                            "Отсутствует иконка DTMF"),
-                    () -> assertEquals(getNumberDTMFOfModalWindowMenu(getModalWindow()),
-                            String.valueOf(num),
-                            "Отсутствует номер в модальном окне просмотр настроек DTMF"),
-                    () -> assertEquals(getTextDTMFOfModalWindowMenu(getModalWindow()),
-                            type,
-                            "Отсуствтует значение " + type + " в модальном окне просмотра настроек DTMF")
-            );
-        }
-
-        clickActionButtonOfModalWindow("Закрыть");
-    }
-
-    private void checkLookModalWindowOfMenu(String field, String type, boolean dtmf){
-        assertAll("Проверяем, отображение элементов в разделе " + field,
-                () -> assertTrue(isIconSoundOfModalWindowVoiceMenu(getElementMenuOfGoToAction(field)),
-                        "Отсутствует иконка звукового файла"),
-                () -> assertTrue(isIconTimeOutOfModalWindowMenu(getElementMenuOfGoToAction(field)),
-                        "Отсутствует иконка По таймауту"),
-                () -> assertTrue(isIconErrorOutlineOfModalWindowMenu(getElementMenuOfGoToAction(field)),
-                        "Отсутствует иконка неправильно набранного номера"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getElementMenuOfGoToAction(field),"По таймауту"),
-                        type,
-                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек По таймауту"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getElementMenuOfGoToAction(field),"При неправильном наборе"),
-                        type,
-                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек При неправильном наборе")
-        );
-    }
-
-    private void checkLookModalWindowOfGoToTheMenu(String title, String type, String soundFile, boolean dtmf){
-        assertTrue(isItemTable(IVR_MENU_TITLE, type, true),
-                "Название  " + type + " не найдено в таблице меню");
-        assertAll("Проверяем, отображение элементов в модальном окне" +
-                        "для просмотра настроек меню",
-                () -> assertEquals(clickButtonTable(IVR_MENU_TITLE, type, IVR_MENU_BUTTON_LOOK_MENU)
-                                .isVisibleTitleModalWrapper(),
-                        title,
-                        "Не найден заголовок модального окна при просмотре настроек меню " + title),
-                () -> assertTrue(isIconSoundOfModalWindowVoiceMenu(getModalWindow()),
-                        "Отсутствует иконка звукового файла"),
-                () -> assertTrue(isIconTimeOutOfModalWindowMenu(getModalWindow()),
-                        "Отсутствует иконка По таймауту"),
-                () -> assertTrue(isIconErrorOutlineOfModalWindowMenu(getModalWindow()),
-                        "Отсутствует иконка неправильно набранного номера"),
-                () -> assertEquals(getTextSpanNameOfModalWindowMenu(getModalWindow(),"Звуковой файл"),
-                        soundFile,
-                        "Отсуствтует значение " + soundFile + " в модальном окне просмотра настроек Звуковой файл"),
-                () -> assertTrue(isGoToActionOfSpanOfModalWindow("По таймауту"),
-                        "Отсуствтует ссылка для отображение настроек меню у поля По таймауту"),
-                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow("По таймауту"),
-                        "Перейти в меню",
-                        "Отсуствует текст Перейти в меню в поле По таймауту"),
-                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow("По таймауту"),
-                        " «" + type + "»",
-                        "Отсуствует текст  «" + type + "» в поле По таймауту"),
-                () -> {clickGoToActionOfModalWindow("По таймауту");},
-                () -> {checkLookModalWindowOfMenu("По таймауту", type, false);},
-                () -> assertTrue(isGoToActionOfSpanOfModalWindow("При неправильном наборе"),
-                        "Отсуствтует ссылка для отображение настроек меню у поля При неправильном наборе"),
-                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow("При неправильном наборе"),
-                        "Перейти в меню",
-                        "Отсуствует текст Перейти в меню в поле При неправильном наборе"),
-                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow("При неправильном наборе"),
-                        " «" + type + "»",
-                        "Отсуствует текст  «" + type + "» в поле При неправильном наборе")
-        );
-
-        /*if(dtmf){
-            assertAll("Проверяем, отображается ли настройки DTMF",
-                    () -> assertTrue(isIconDTMFOfModalWindowMenu(getModalWindow()),
-                            "Отсутствует иконка DTMF"),
-                    () -> assertEquals(getNumberDTMFOfModalWindowMenu(getModalWindow()),
-                            String.valueOf(num),
-                            "Отсутствует номер в модальном окне просмотр настроек DTMF"),
-                    () -> assertEquals(getTextDTMFOfModalWindowMenu(getModalWindow()),
-                            type,
-                            "Отсуствтует значение " + type + " в модальном окне просмотра настроек DTMF")
-            );
-        }*/
-
-        clickActionButtonOfModalWindow("Закрыть");
-    }
 
     @BeforeAll
     static void setUp(){
@@ -217,13 +106,13 @@ public class TestIVRPage extends IVRPage {
                                 "не найдено в таблице меню")
         );
 
-        checkLookModalWindowOfMenu(type, type, wavFile1, true);
+        checkLookModalWindowOfMenu(type, type, wavFile1, true, String.valueOf(num));
 
         num++;
 
     }
 
-    @Story(value = "Добавление рехода в меню")
+    @Story(value = "Добавление перехода в меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем Меню \n" +
             "3. Выбираем тип Перейти в меню\n" +
@@ -232,8 +121,8 @@ public class TestIVRPage extends IVRPage {
     @ParameterizedTest(name="#{index} - Add go to menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Go_To_Menu(String type){
-        String name = "Перейти в меню " + type;
-        String descriptionMenu = IVR_MENU_DESCRIPTION + " перейти в меню " + type;
+        String title = "Перейти в меню " + type;
+        String descriptionMenu = IVR_MENU_DESCRIPTION + title;
         assertTrue(status_add_sound_file_with_description, "Тест с добавлением звукового файла " + wavFile1 + " провалился. " +
                 "Невозможно продолжать тестирование");
         assertAll("1. Добавляем голосовое меню \n" +
@@ -249,7 +138,7 @@ public class TestIVRPage extends IVRPage {
                                 "не найдено в таблице меню")
         );
 
-        checkLookModalWindowOfGoToTheMenu(type, type, wavFile1, false);
+        checkLookModalWindowOfGoToTheMenu(title, type, wavFile1, false);
 
         num++;
 
@@ -377,7 +266,6 @@ public class TestIVRPage extends IVRPage {
     @Order(8)
     @ParameterizedTest(name="#{index} - Delete menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    @Disabled
     void test_Delete_Menu(String type){
         String menu = type + " отредактировано";
         clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
