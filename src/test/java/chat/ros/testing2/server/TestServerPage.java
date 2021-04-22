@@ -96,8 +96,7 @@ public class TestServerPage extends ServerPage {
         );
         sleep(5000);
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        if(https.equals(SERVER_CONNECT_HTTPS_OTHER_PORT)) client = "http://" + server + ":" + http;
-        else client = "https://" + server;
+        client = "https://" + server;
         testsBase.openClient(client, account, false);
     }
 
