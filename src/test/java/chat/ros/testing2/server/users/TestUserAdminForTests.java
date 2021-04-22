@@ -31,10 +31,10 @@ public class TestUserAdminForTests extends UserPage {
         put("Пароль", USER_PASSWORD_ADMIN);
     }};
 
-    @Story(value = "Добавляем пользователя с правами Администратор Безопасности")
-    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
+    @Story(value = "Добавляем пользователя с правами Администратор для тестирования СУ")
+    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор")
     @Test
-    void test_Add_New_User_Admin(){
+    void test_Add_New_User_Admin_MS(){
         addUser(mapInputValueUser).selectRoleUser(1).clickButtonSave();
         assertTrue(isExistsTableText(USER_LOGIN_ADMIN, true), "Пользователь " + USER_LOGIN_ADMIN + " не был добавлен в систему");
     }

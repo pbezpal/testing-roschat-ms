@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
-@Feature(value = "Настройки СУ")
+@Feature(value = "Пользователи")
 public class TestUserAdminPage extends UserPage {
 
     private static boolean status_add;
@@ -40,31 +40,37 @@ public class TestUserAdminPage extends UserPage {
         status_add = false;
     }
 
-    @Story(value = "Добавляем пользователя с правами Администратор Безопасности")
-    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
+    @Story(value = "Добавляем пользователя с правами Администратор")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Добавляем пользователя Admintest с правами Администратор \n" +
+            "3. Проверяем, что пользователь Admintest был добавлен и отображается в таблице пользователей")
     @Test
     @Order(1)
-    void test_Add_New_User_AS(){
+    void test_Add_New_User_Admin(){
         addUser(mapInputValueUser).selectRoleUser(1).clickButtonSave();
         assertTrue(isExistsTableText(USER_LOGIN_ADMIN_TEST, true), "Пользователь " + USER_LOGIN_ADMIN_TEST + " не был добавлен в систему");
         status_add = true;
     }
 
-    @Story(value = "Входим в систему под новым пользователем")
-    @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
+    @Story(value = "Авторизуемся в систему под новым пользователем с правами Администратор")
+    @Description(value = "1. Выходим из системы усправления \n" +
+            "2. Авторизуемся в СУ под пользователем Admintest \n" +
+            "3. Проверяем, что пользователь Admintest успешно авторизовался в СУ")
     @Test
     @Order(2)
-    void test_Login_New_User(){
+    void test_Login_New_User_Admin(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_ADMIN_TEST, USER_PASSWORD_ADMIN_TEST);
         assertTrue(isLoginUser(USER_LOGIN_ADMIN_TEST), "Не удалось авторизоваться под пользователем " + USER_LOGIN_ADMIN_TEST);
     }
 
-    @Story(value = "Удаляем нового пользователя")
-    @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
+    @Story(value = "Удаляем нового пользователя с правами Администратор")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Удаляем пользователя Admintest с правами Администратор \n" +
+            "3. Проверяем, что пользователь Admintest был удалён и не отображается в таблице пользователей")
     @Test
     @Order(3)
-    void test_Delete_New_User(){
+    void test_Delete_New_User_Admin(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");

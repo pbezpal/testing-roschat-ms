@@ -113,7 +113,10 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
                 open("/");
                 logoutMS();
             }else{
-                testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
+                if (method.contains("Open_Page")) testsBase.openMS(LOGIN_AS_MS,
+                        PASSWORD_AS_MS,
+                        "/settings/users");
+                else testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
             }
         } else if (method.contains("TestServicePage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
         else if (method.contains("TestContactsPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");

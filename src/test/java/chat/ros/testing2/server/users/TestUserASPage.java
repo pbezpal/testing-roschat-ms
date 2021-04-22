@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
-@Feature(value = "Настройки СУ")
+@Feature(value = "Пользователи")
 public class TestUserASPage extends UserPage {
 
     private static boolean status_add;
@@ -43,7 +43,9 @@ public class TestUserASPage extends UserPage {
     }
 
     @Story(value = "Добавляем пользователя с правами Администратор Безопасности")
-    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Добавляем пользователя AdminSecurity с правами Администратор Безопасновти\n" +
+            "3. Проверяем, что пользователь AdminSecurity был добавлен и отображается в таблице пользователей")
     @Test
     @Order(1)
     void test_Add_New_User_AS(){
@@ -52,45 +54,29 @@ public class TestUserASPage extends UserPage {
         status_add = true;
     }
 
-    @Story(value = "Входим в систему под новым пользователем")
-    @Description(value = "Выходим из системы управления и авторизуемся под новым пользователем")
+    @Story(value = "Входим в систему под новым пользователем с правами Администратор Безопасности")
+    @Description(value = "1. Выходим из системы усправления \n" +
+            "2. Авторизуемся в СУ под пользователем AdminSecurity \n" +
+            "3. Проверяем, что пользователь AdminSecurity успешно авторизовался в СУ и отображается " +
+            "таблица с пользователями СУ")
     @Test
     @Order(2)
-    void test_Login_New_User(){
+    void test_Login_New_User_AS(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_AS, USER_PASSWORD_AS);
         assertTrue(isLoginUser(USER_LOGIN_AS), "Не удалось авторизоваться под пользователем " + USER_LOGIN_AS);
     }
 
-    @Story(value = "Удаляем нового пользователя")
-    @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
+    @Story(value = "Удаляем нового пользователя с правами Администратор Безопасности")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Удаляем пользователя AdminSecurity с правами Администратор \n" +
+            "3. Проверяем, что пользователь AdminSecurity был удалён и не отображается в таблице пользователей")
     @Test
     @Order(3)
-    void test_Delete_New_User(){
+    void test_Delete_New_User_AS(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
         assertTrue(isDeleteUser(USER_LOGIN_AS), "Не удалось удалить пользователя " + USER_LOGIN_AS);
-    }
-
-    @Story(value = "Перезагрузка страницы")
-    @Description(value = "Переходим на страницу Телефония, перезагружаем страницу и проверяем, появилась ли " +
-            "надпись 'Идет загрузка настроек...'")
-    @Test
-    void test_Refresh_Page(){
-        Selenide.refresh();
-        sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
-    }
-
-    @Story(value = "Переходим на страницу через адресную строку")
-    @Description(value = "После авторизации вставляем в адресную строку страницу Телефония и проверяем, появилась ли " +
-            "надпись 'Идет загрузка настроек...'")
-    @Test
-    void test_Open_Page(){
-        sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
     }
 }
