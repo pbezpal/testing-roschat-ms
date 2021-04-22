@@ -23,6 +23,7 @@ import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.CLIENT_7010;
+import static org.junit.gen5.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -95,8 +96,7 @@ public class TestServerPage extends ServerPage {
         );
         sleep(5000);
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        if(https.equals(SERVER_CONNECT_HTTPS_OTHER_PORT)) client = "http://" + server + ":" + http;
-        else client = "https://" + server;
+        client = "https://" + server;
         testsBase.openClient(client, account, false);
     }
 
@@ -111,6 +111,8 @@ public class TestServerPage extends ServerPage {
     @Test
     void test_Settings_Push_Server(){
         setPushService(mapInputValuePush);
+        assertTrue(isCheckUpdateLicense(), "Настройки не применились");
+        assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
     }
 
     @Story(value = "Перезагрузка страницы")

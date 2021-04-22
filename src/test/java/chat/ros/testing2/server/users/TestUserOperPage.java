@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(ResourcesTests.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
-@Feature(value = "Настройки СУ")
+@Feature(value = "Пользователи")
 public class TestUserOperPage extends UserPage {
 
     private static boolean status_add;
@@ -40,8 +40,10 @@ public class TestUserOperPage extends UserPage {
         status_add = false;
     }
 
-    @Story(value = "Добавляем пользователя с правами Администратор Безопасности")
-    @Description(value = "Авторизовываемся на СУ и добавляем нового пользователя с правами Администратор Безопасности")
+    @Story(value = "Добавляем пользователя с правами Оператор")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Добавляем пользователя Oper с правами Оператор \n" +
+            "3. Проверяем, что пользователь Oper был добавлен и отображается в таблице пользователей")
     @Test
     @Order(1)
     void test_Add_New_User_Oper(){
@@ -50,21 +52,25 @@ public class TestUserOperPage extends UserPage {
         status_add = true;
     }
 
-    @Story(value = "Входим в систему под новым пользователем")
-    @Description(value = "Выходим из системы усправления и авторизуемся под новым пользователем")
+    @Story(value = "Входим в систему под новым пользователем с правами Оператор")
+    @Description(value = "1. Выходим из системы усправления \n" +
+            "2. Авторизуемся в СУ под пользователем Oper \n" +
+            "3. Проверяем, что пользователь Oper успешно авторизовался в СУ")
     @Test
     @Order(2)
-    void test_Login_New_User(){
+    void test_Login_New_User_Oper(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_OPER, USER_PASSWORD_OPER);
         assertTrue(isLoginUser(USER_LOGIN_OPER), "Не удалось авторизоваться под пользователем " + USER_LOGIN_OPER);
     }
 
-    @Story(value = "Удаляем нового пользователя")
-    @Description(value = "Переходим в раздел Настройки -> Настройки СУ и удаляем нового пользователя СУ")
+    @Story(value = "Удаляем нового пользователя с правами Оператор")
+    @Description(value = "1. Авторизуемся на СУ под пользователем admin \n" +
+            "2. Удаляем пользователя Oper с правами Оператор \n" +
+            "3. Проверяем, что пользователь Oper был удалён и не отображается в таблице пользователей")
     @Test
     @Order(3)
-    void test_Delete_New_User(){
+    void test_Delete_New_User_Oper(){
         assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");

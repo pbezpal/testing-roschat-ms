@@ -667,11 +667,14 @@ task paramtests_connect_wrong(type: Test) {
 task roschatгusers(type: Test){
     useJUnitPlatform()
 
+    description "Эта таска используется для тестирования"
+
     systemProperties System.getProperties()
 
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*.server.users.*"
+        excludeTestsMatching "*.server.users.TestUserAdminForTests"
     }
 
     dependsOn 'cleanTest'
