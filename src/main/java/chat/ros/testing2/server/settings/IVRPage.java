@@ -218,20 +218,38 @@ public class IVRPage implements SettingsPage {
     /***************** Проверка элементов при Переходе в меню ************************/
 
     public SelenideElement getElementMenuOfGoToAction(String span){
-        return modalWindow
-                .$$("span")
-                .findBy(text(span))
+        return getElementGoToAction(span)
                 .parent()
                 .parent()
                 .find(".ivr-item__sub");
     }
 
     private SelenideElement getElementGoToAction(String span){
-        return modalWindow
-                .$$("span")
-                .findBy(text(span))
-                .parent()
-                .find(".go-to-action");
+        ElementsCollection titleIvrItem = modalWindow.$$("span");
+        int i = 0;
+
+        for(; i < titleIvrItem.size();){
+            int rez = 0;
+
+            if(titleIvrItem.get(i).text().equals(span)){
+                try{
+                    titleIvrItem.get(i).parent().find(".go-to-action").shouldBe(visible);
+                }catch (ElementNotFound e){
+                    i++;
+                    rez = 1;
+                }
+            }else {
+                i++;
+                continue;
+            }
+
+            if(rez == 0) break;
+        }
+
+        if(i == titleIvrItem.size()) return null;
+
+        return titleIvrItem.get(i).parent().find(".go-to-action");
+
     }
 
     @Step(value = "Проверяем, наличие ссылки у элемента {span}")
