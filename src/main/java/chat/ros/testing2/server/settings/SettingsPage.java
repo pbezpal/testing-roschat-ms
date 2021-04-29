@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface SettingsPage extends BasePage {
 
@@ -22,6 +23,14 @@ public interface SettingsPage extends BasePage {
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
     SelenideElement mainWrapper = $(".main-wrapper");
+
+    /**
+     * Items for combo box
+     */
+    SelenideElement elementComboBox = $("div[role='combobox'] i.v-icon.material-icons.theme--light");
+    SelenideElement divComboBoxActive = $(".v-select--is-menu-active");
+    SelenideElement activeContextMenu = $(".menuable__content__active");
+    ElementsCollection listItemsComboBox = activeContextMenu.$$(".v-list__tile__title");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -125,11 +134,11 @@ public interface SettingsPage extends BasePage {
         elements.last().scrollIntoView(false);
 
         if(show){
-           try {
-               elements.findBy(text(value));
-           }catch (ElementNotFound e){
-               return false;
-           }
+            try {
+                elements.findBy(text(value));
+            }catch (ElementNotFound e){
+                return false;
+            }
         }else {
             try {
                 elements.findBy(not(text(value)));
@@ -234,6 +243,28 @@ public interface SettingsPage extends BasePage {
         }
 
         return true;
+    }
+
+    @Step(value = "Проверяем, что появился список")
+    default boolean isItemsComboBox(){
+        try{
+            divComboBoxActive.shouldBe(Condition.visible);
+        }catch (ElementNotFound element){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Step(value = "Выбираем элемент {item} из списка")
+    default SettingsPage selectItemComboBox(String item){
+        //Call up a list of items
+        elementComboBox.click();
+        assertTrue(isItemsComboBox(), "Не появился список с элементами");
+        //Select item
+        listItemsComboBox.findBy(Condition.text(item)).click();
+
+        return this;
     }
 
     /**

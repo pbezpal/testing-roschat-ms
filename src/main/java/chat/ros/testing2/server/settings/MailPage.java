@@ -16,35 +16,7 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class MailPage implements SettingsPage {
 
-    //Элементы для раздела Подключение
-    private SelenideElement elementListTypeSecurity = $("div[role='combobox'] i.v-icon.material-icons.theme--light");
-    private SelenideElement divComboboxActive = $("div.v-select--is-menu-active");
-    private ElementsCollection divTypeSecurity = $$("div.v-list.theme--light div.v-list__tile__title");
-
     public MailPage(){}
-
-    @Step(value = "Проверяем, что появился список с выбором защиты соединения")
-    public boolean isListMethodSecurity(){
-        try{
-            divComboboxActive.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
-    }
-
-    @Step(value = "Выбираем метод защиты соединения {security}")
-    public MailPage setInputSecurity(String security){
-        //Нажимаем на input для выбора метода защиты
-        elementListTypeSecurity.click();
-        //Проверяем, что появился список с методами защиты
-        assertTrue(isListMethodSecurity(), "Не появился список с методами защиты соединения");
-        //Выбираем метод зациты соединения
-        divTypeSecurity.findBy(Condition.text(security)).click();
-
-        return this;
-    }
 
     public Map<String, String> getSettingsMailServer(String server, String username, String password, String port,
                                                      String fromUser, String fromMail){
@@ -62,7 +34,7 @@ public class MailPage implements SettingsPage {
     public MailPage settingsMailServerWithCheck(Map<String, String> settingsMainServer, String security){
         //Настраиваем раздел Подключение
         setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        setInputSecurity(security);
+        selectItemComboBox(security);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
 
@@ -75,7 +47,7 @@ public class MailPage implements SettingsPage {
     public MailPage settingsMailServerWithoutSave(Map<String, String> settingsMainServer, String security){
         //Настраиваем раздел Подключение
         setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        setInputSecurity(security);
+        selectItemComboBox(security);
 
         return this;
     }

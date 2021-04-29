@@ -123,7 +123,7 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         else if(method.contains("TestParametersIntegrationOMPage")) {
             skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
             clickButtonActionService(SETTINGS_BUTTON_SETTING);
-        }
+        } else if (classTest.contains("TestIVRPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Голосовое меню");
     }
 
     @Override

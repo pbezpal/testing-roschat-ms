@@ -685,3 +685,19 @@ task roschatгusers(type: Test){
     }
 
 }
+
+task roschativr(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    include("**/TestIVRPage.class")
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
