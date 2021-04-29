@@ -20,6 +20,7 @@ public class IVRPage implements SettingsPage {
     private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement inputUploadSoundFile = $("#upload");
     private SelenideElement modalWindow = $(".modal-window");
+    private SelenideElement modalWindowContent = modalWindow.find(".modal-window__content");
     private SelenideElement inputUploadSoundFileByModalWindow = modalWindow.find("#upload");
     private SelenideElement titleModalWindow = modalWindow.find("h2");
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
@@ -98,6 +99,12 @@ public class IVRPage implements SettingsPage {
         }
 
         return titleModalWindow.getText();
+    }
+
+    @Step(value = "Прокручиваем контекст модального")
+    public IVRPage scrollContentModalWindow(boolean scroll){
+        modalWindowContent.scrollIntoView(false);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку {button} в модальном окне")
@@ -217,6 +224,11 @@ public class IVRPage implements SettingsPage {
 
     /***************** Проверка элементов при Переходе в меню ************************/
 
+    /***
+     * This method returns parent element go to menu for span field
+     * @param span field name
+     * @return
+     */
     public SelenideElement getElementMenuOfGoToAction(String span){
         return getElementGoToAction(span)
                 .parent()
@@ -224,32 +236,55 @@ public class IVRPage implements SettingsPage {
                 .find(".ivr-item__sub");
     }
 
-    private SelenideElement getElementGoToAction(String span){
-        ElementsCollection titleIvrItem = modalWindow.$$("span");
-        int i = 0;
-
-        for(; i < titleIvrItem.size();){
-            int rez = 0;
-
-            if(titleIvrItem.get(i).text().equals(span)){
-                try{
-                    titleIvrItem.get(i).parent().find(".go-to-action").shouldBe(visible);
-                }catch (ElementNotFound e){
-                    i++;
-                    rez = 1;
-                }
-            }else {
-                i++;
-                continue;
+    public boolean isElementMenuOfGoToAction(String span, boolean show){
+        if(show) {
+            try {
+                getElementMenuOfGoToAction(span).shouldBe(visible);
+            } catch (ElementNotFound e) {
+                return false;
             }
-
-            if(rez == 0) break;
+        }else{
+            try {
+                getElementMenuOfGoToAction(span).shouldBe(not(visible));
+            } catch (ElementShould e) {
+                return false;
+            }
         }
 
-        if(i == titleIvrItem.size()) return null;
+        return true;
+    }
 
-        return titleIvrItem.get(i).parent().find(".go-to-action");
+    /***
+     * This method returns parent element go to menu of DTMF section
+     * @return
+     */
+    public SelenideElement getElementMenuOfGoToActionWithDTMF(){
+        return getGoToActionDTMF()
+                .parent()
+                .parent()
+                .find(".ivr-item__sub");
+    }
 
+    public boolean isElementMenuOfGoToActionWithDTMF(boolean show){
+        if(show) {
+            try {
+                getElementMenuOfGoToActionWithDTMF().shouldBe(visible);
+            } catch (ElementNotFound e) {
+                return false;
+            }
+        }else{
+            try {
+                getElementMenuOfGoToActionWithDTMF().shouldBe(not(visible));
+            } catch (ElementShould e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private SelenideElement getElementGoToAction(String span){
+        return $x("//span[contains(text(),'" + span + "')]//following-sibling::*[@class='go-to-action']");
     }
 
     @Step(value = "Проверяем, наличие ссылки у элемента {span}")
@@ -284,12 +319,21 @@ public class IVRPage implements SettingsPage {
 
     /****************** DTMF **********************/
 
-    @Step(value = "Проверяем, номер DTMF при просмотре настроек меню")
-    public String getNumberDTMFOfModalWindowMenu(SelenideElement firstElement){
+    public SelenideElement getGoToActionDTMF(){
+        return $x("//span[contains(text(),'DTMF')]//parent::div//parent::div//*[@class='go-to-action']");
+    }
+
+    private SelenideElement getContentDTMP(SelenideElement firstElement){
         return firstElement.$$("span").findBy(text("DTMF"))
                 .parent()
                 .parent()
-                .find(".ivr-item__content span")
+                .find(".ivr-item__content");
+    }
+
+    @Step(value = "Проверяем, номер DTMF при просмотре настроек меню")
+    public String getNumberDTMFOfModalWindowMenu(SelenideElement firstElement){
+        return getContentDTMP(firstElement)
+                .find("span")
                 .text();
     }
 
@@ -303,27 +347,23 @@ public class IVRPage implements SettingsPage {
     }
 
     @Step(value = "Проверяем, текст первой части текста ссылки параметра DTMF при просмотре настроек Перехода в меню")
-    public String getFirstTextGoToActionOfDTMFOfModalWindowMenu(SelenideElement firstElement){
-        return firstElement
-                .$$("span")
-                .findBy(text("DTMF"))
-                .parent()
-                .parent()
-                .find(".go-to-action")
+    public String getFirstTextGoToActionOfDTMFOfModalWindowMenu(){
+        return getGoToActionDTMF()
                 .find("span:not(.name)")
                 .text();
     }
 
     @Step(value = "Проверяем, текст первой части текста ссылки параметра DTMF при просмотре настроек Перехода в меню")
-    public String getSecondTextGoToActionOfDTMFOfModalWindowMenu(SelenideElement firstElement){
-        return firstElement
-                .$$("span")
-                .findBy(text("DTMF"))
-                .parent()
-                .parent()
-                .find(".go-to-action")
+    public String getSecondTextGoToActionOfDTMFOfModalWindowMenu(){
+        return getGoToActionDTMF()
                 .find(".name")
                 .text();
+    }
+
+    @Step(value = "Нажимаем по ссылке у элемента DTMF")
+    public IVRPage clickGoToActionOfDTMF(){
+        getGoToActionDTMF().click();
+        return this;
     }
 
     @Step(value = "Удаляем DTMF в меню")

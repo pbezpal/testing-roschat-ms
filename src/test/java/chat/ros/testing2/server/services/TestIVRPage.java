@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +40,7 @@ public class TestIVRPage extends CheckIVRMenu {
             getResource("sound/" + wavFile2).
             getFile();
     private static int num;
+    private static HashMap<String,String> mapMenu;
 
     @Parameterized.Parameters(name = "{0}")
     private static Iterable<String> receiveMenuItems() {
@@ -58,6 +60,7 @@ public class TestIVRPage extends CheckIVRMenu {
         status_add_sound_file_with_description = false;
         status_add_sound_file_without_description = false;
         num = 999;
+        mapMenu = new HashMap<>();
     }
 
     @AfterEach
@@ -70,7 +73,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Добавляем звуковой файл wav и описание к нему\n" +
             "3. Проверяем, что звуковой файл wav и описание к нему добавлены в таблицу звуковых файлов")
     @Test
-    @Disabled
     @Order(1)
     void test_Upload_Sound_File_WAV(){
         assertEquals(uploadSoundFile(pathWAVFile1, IVR_SOUND_FILES_DESCRIPTION_WAV_1)
@@ -94,7 +96,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Добавляем Меню \n" +
             "3. Проверяем, что меню успешно добавлено")
     @Order(2)
-    @Disabled
     @ParameterizedTest(name="#{index} - Add menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Menu(String type){
@@ -113,7 +114,8 @@ public class TestIVRPage extends CheckIVRMenu {
                                 "не найдено в таблице меню")
         );
 
-        checkLookModalWindowOfMenu(type, type, wavFile1, true, String.valueOf(num));
+        checkLookModalWindowOfMenu(type, type, getModalWindow(), wavFile1, true, String.valueOf(num));
+        mapMenu.put(type,String.valueOf(num));
     }
 
     @Story(value = "Добавление перехода в меню")
@@ -127,8 +129,9 @@ public class TestIVRPage extends CheckIVRMenu {
     void test_Add_Go_To_Menu(String type){
         String title = "Перейти в меню " + type;
         String descriptionMenu = IVR_MENU_DESCRIPTION + " " + title;
-        /*assertTrue(status_add_sound_file_with_description, "Тест с добавлением звукового файла " + wavFile1 + " провалился. " +
-                "Невозможно продолжать тестирование");*/
+        String numberSimpleMenu = mapMenu.get(type);
+        assertTrue(status_add_sound_file_with_description, "Тест с добавлением звукового файла " + wavFile1 + " провалился. " +
+                "Невозможно продолжать тестирование");
         assertAll("1. Добавляем голосовое меню \n" +
                         "2. Выбираем в действиях Перейти в меню -> " + type + " \n" +
                         "проверяем, что голосовое меню было добавлено в таблицу",
@@ -142,7 +145,7 @@ public class TestIVRPage extends CheckIVRMenu {
                                 "не найдено в таблице меню")
         );
 
-        checkLookModalWindowOfGoToTheMenu(title, type, wavFile1, false);
+        checkLookModalWindowOfGoToTheMenu(title, type, wavFile1, true, true, String.valueOf(num), numberSimpleMenu);
     }
 
     @Story(value = "Добавление точки входа")
@@ -150,7 +153,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Добавляем точку входа \n" +
             "3. Проверяем, что точка входа успешно добавлена")
     @Order(4)
-    @Disabled
     @ParameterizedTest(name="#{index} - Add entry point=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Entry_Point(String typeMenu){
@@ -182,7 +184,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Добавляем звуковой файл без описания \n" +
             "3. Проверяем, что новый файл добавлен в таблицу звуковых файлов")
     @Test
-    @Disabled
     @Order(5)
     void test_Upload_Sound_File_Without_Description(){
         assertEquals(uploadSoundFile(pathWAVFile2, "")
@@ -200,7 +201,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Редактируем Меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
     @Order(6)
-    @Disabled
     @ParameterizedTest(name="#{index} - Edit menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Menu(String type){
@@ -227,7 +227,7 @@ public class TestIVRPage extends CheckIVRMenu {
                                 "не найдено в таблице меню")
         );
 
-        checkLookModalWindowOfMenu(newNameMenu, type, wavFile2, false);
+        checkLookModalWindowOfMenu(newNameMenu, type, getModalWindow(), wavFile2, false);
 
     }
 
@@ -236,7 +236,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
     @Order(7)
-    @Disabled
     @ParameterizedTest(name="#{index} - Edit entry point=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Entry_Point(String typeMenu){
@@ -270,7 +269,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Удаляем Меню \n" +
             "3. Проверяем, что в таблице удалённое меню не отображается")
     @Order(8)
-    @Disabled
     @ParameterizedTest(name="#{index} - Delete menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Menu(String type){
@@ -288,7 +286,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Удаляем точки входа \n" +
             "3. Проверяем, что в таблице удалённые точки входа не отображается")
     @Order(9)
-    @Disabled
     @ParameterizedTest(name="#{index} - Delete entry point=''{0}''")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Entry_Point(String type){
@@ -306,7 +303,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Удаляем звуковой файл \n" +
             "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
     @Test
-    @Disabled
     @Order(10)
     void test_Delete_Sound_File(){
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_DELETE);
@@ -323,7 +319,6 @@ public class TestIVRPage extends CheckIVRMenu {
             "3. Меняем wav файл на файл MP3 и описание к файлу \n" +
             "4. Проверяем, что новый файл и описание добавлены в таблицу звуковых файлов")
     @Test
-    @Disabled
     @Order(11)
     void test_Edit_Sound_File() {
         assertTrue(status_add_sound_file_without_description, "Тест с добавлением звукового файла " + wavFile2 + " провалился. " +
