@@ -15,6 +15,7 @@ import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -118,47 +119,17 @@ public class TestIVRPage extends CheckIVRMenu {
         mapMenu.put(type,String.valueOf(num));
     }
 
-    @Story(value = "Добавление перехода в меню")
-    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Добавляем Меню \n" +
-            "3. Выбираем тип Перейти в меню\n" +
-            "4. Проверяем, что меню успешно добавлено")
-    @Order(3)
-    @ParameterizedTest(name="#{index} - Add go to menu=''{0}''")
-    @MethodSource(value = "receiveMenuItems")
-    void test_Add_Go_To_Menu(String type){
-        String title = "Перейти в меню " + type;
-        String descriptionMenu = IVR_MENU_DESCRIPTION + " " + title;
-        String numberSimpleMenu = mapMenu.get(type);
-        assertTrue(status_add_sound_file_with_description, "Тест с добавлением звукового файла " + wavFile1 + " провалился. " +
-                "Невозможно продолжать тестирование");
-        assertAll("1. Добавляем голосовое меню \n" +
-                        "2. Выбираем в действиях Перейти в меню -> " + type + " \n" +
-                        "проверяем, что голосовое меню было добавлено в таблицу",
-                () -> assertEquals(clickButtonAdd(IVR_MENU_TITLE).isVisibleTitleModalWrapper(),
-                        "Новое голосовое меню",
-                        "Не найден заголовок модального окна при добавлении голосового меню"),
-                () -> {
-                    addVoiceMenu("Перейти в меню " + type, "Перейти в меню", wavFile1, String.valueOf(num), type).clickActionButtonOfModalWindow("Сохранить");},
-                () -> assertTrue(isItemTable(IVR_MENU_TITLE, descriptionMenu, true),
-                        "Описание " + descriptionMenu + " голосового меню " +
-                                "не найдено в таблице меню")
-        );
-
-        checkLookModalWindowOfGoToTheMenu(title, type, wavFile1, true, true, String.valueOf(num), numberSimpleMenu);
-    }
-
     @Story(value = "Добавление точки входа")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Добавляем точку входа \n" +
+            "2. Добавляем точку входа обычным меню\n" +
             "3. Проверяем, что точка входа успешно добавлена")
-    @Order(4)
-    @ParameterizedTest(name="#{index} - Add entry point=''{0}''")
+    @Order(3)
+    @ParameterizedTest(name="#{index} - Add entry point with simple menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    void test_Add_Entry_Point(String typeMenu){
-        num++;
+    void test_Add_Entry_Point_WIth_Simple_Menu(String typeMenu){
         assertTrue(isItemTable(IVR_MENU_TITLE, typeMenu, true),
-                "Название  " + typeMenu + " не найдено в таблице меню");
+                "Меню  " + typeMenu + " не найдено в таблице меню. Невозможно продолжать тестирование");
+        num++;
         String number = String.valueOf(num);
         String aon = typeMenu + " " + number;
         assertAll("1. Добавляем точку входа " + typeMenu + " \n" +
@@ -179,12 +150,76 @@ public class TestIVRPage extends CheckIVRMenu {
         );
     }
 
+    @Story(value = "Добавление перехода в меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Добавляем Меню \n" +
+            "3. Выбираем тип Перейти в меню\n" +
+            "4. Проверяем, что меню успешно добавлено")
+    @Order(4)
+    @ParameterizedTest(name="#{index} - Add go to menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Add_Go_To_Menu(String type){
+        String title = "Перейти в меню " + type;
+        String descriptionMenu = IVR_MENU_DESCRIPTION + " " + title;
+        String numberSimpleMenu = mapMenu.get(type);
+        assertTrue(status_add_sound_file_with_description, "Тест с добавлением звукового файла " + wavFile1 + " провалился. " +
+                "Невозможно продолжать тестирование");
+        assertTrue(isItemTable(IVR_MENU_TITLE, type, true),
+                "Меню " + type + " не найдено в таблице меню. Невозможно продолжать тестирование");
+        assertAll("1. Добавляем голосовое меню \n" +
+                        "2. Выбираем в действиях Перейти в меню -> " + type + " \n" +
+                        "проверяем, что голосовое меню было добавлено в таблицу",
+                () -> assertEquals(clickButtonAdd(IVR_MENU_TITLE).isVisibleTitleModalWrapper(),
+                        "Новое голосовое меню",
+                        "Не найден заголовок модального окна при добавлении голосового меню"),
+                () -> {
+                    addVoiceMenu("Перейти в меню " + type, "Перейти в меню", wavFile1, String.valueOf(num), type).clickActionButtonOfModalWindow("Сохранить");},
+                () -> assertTrue(isItemTable(IVR_MENU_TITLE, descriptionMenu, true),
+                        "Описание " + descriptionMenu + " голосового меню " +
+                                "не найдено в таблице меню")
+        );
+
+        checkLookModalWindowOfGoToTheMenu(title, type, type, wavFile1, true, true, String.valueOf(num), numberSimpleMenu);
+    }
+
+    @Story(value = "Добавление точки входа с меню перехода в другое меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Добавляем точку входа \n" +
+            "3. Проверяем, что точка входа успешно добавлена")
+    @Order(5)
+    @ParameterizedTest(name="#{index} - Add entry point with go to menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Add_Entry_Point_With_Go_To_Menu(String type){
+        String titleGoToMenu = "Перейти в меню " + type;
+        assertTrue(isItemTable(IVR_MENU_TITLE, titleGoToMenu, true),
+                "Меню  " + titleGoToMenu + " не найдено в таблице меню. Невозможно продолжать тестирование");
+        num++;
+        String number = String.valueOf(num);
+        String aon = titleGoToMenu + " " + number;
+        assertAll("1. Добавляем точку входа " + titleGoToMenu + " \n" +
+                        "проверяем, что точка входа " + titleGoToMenu + " была добавлена в таблицу",
+                () -> assertEquals(clickButtonAdd(IVR_ENTRY_POINTS_TITLE).isVisibleTitleModalWrapper(),
+                        "Создание точки входа",
+                        "Не найден заголовок модального окна при добавлении точки входа"),
+                () -> {
+                    sendModalWindowOfEntryPoint(number, aon, titleGoToMenu).clickActionButtonOfModalWindow("Сохранить");},
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
+                        "АОН " + aon + " меню " + titleGoToMenu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
+                        "Набираемый номер " + number + " меню " + titleGoToMenu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, true),
+                        "Меню " + titleGoToMenu + " не найдено в таблице точек входа")
+        );
+    }
+
     @Story(value = "Добавление звукового файла без описания")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем звуковой файл без описания \n" +
             "3. Проверяем, что новый файл добавлен в таблицу звуковых файлов")
     @Test
-    @Order(5)
+    @Order(6)
     void test_Upload_Sound_File_Without_Description(){
         assertEquals(uploadSoundFile(pathWAVFile2, "")
                         .isVisibleTitleModalWrapper(),
@@ -196,16 +231,18 @@ public class TestIVRPage extends CheckIVRMenu {
         status_add_sound_file_without_description = true;
     }
 
-    @Story(value = "Редактирование меню")
+    @Story(value = "Редактирование простого меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем Меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
-    @Order(6)
+    @Order(7)
     @ParameterizedTest(name="#{index} - Edit menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    void test_Edit_Menu(String type){
+    void test_Edit_Simple_Menu(String type){
         assertTrue(status_add_sound_file_without_description, "Тест с добавлением звукового файла " + wavFile2 + " провалился. " +
                 "Невозможно продолжать тестирование");
+        assertTrue(isItemTable(IVR_MENU_TITLE, type, true),
+                "Меню " + type + " не найдено в таблице меню. Невозможно продолжать тестирование.");
         num++;
         String newNameMenu = type + " отредактировано";
         String newDescriptionMenu = IVR_MENU_DESCRIPTION + " " + newNameMenu;
@@ -231,14 +268,14 @@ public class TestIVRPage extends CheckIVRMenu {
 
     }
 
-    @Story(value = "Редактирование точки входа")
+    @Story(value = "Редактирование точки входа простым меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
-    @Order(7)
+    @Order(8)
     @ParameterizedTest(name="#{index} - Edit entry point=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    void test_Edit_Entry_Point(String typeMenu){
+    void test_Edit_Entry_Point_With_Simple_Menu(String typeMenu){
         String newMenu = typeMenu + " отредактировано";
         assertTrue(isItemTable(IVR_MENU_TITLE, newMenu, true),
                 "Название  " + newMenu + " не найдено в таблице меню");
@@ -259,43 +296,75 @@ public class TestIVRPage extends CheckIVRMenu {
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
                         "Набираемый номер " + number + " меню " + typeMenu + " " +
                                 "не найдено в таблице точек входа"),
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, typeMenu, true),
-                        "Меню " + typeMenu + " не найдено в таблице точек входа")
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, newMenu, true),
+                        "Меню " + newMenu + " не найдено в таблице точек входа")
         );
     }
 
-    @Story(value = "Удаляем меню")
+    @Story(value = "Редактирование меню перехода в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Удаляем Меню \n" +
-            "3. Проверяем, что в таблице удалённое меню не отображается")
-    @Order(8)
-    @ParameterizedTest(name="#{index} - Delete menu=''{0}''")
+            "2. Редактируем меню - переход в меню \n" +
+            "3. Проверяем, что меню было успешно отредактировано")
+    @Order(9)
+    @ParameterizedTest(name="#{index} - Edit go to menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    void test_Delete_Menu(String type){
-        String menu = type + " отредактировано";
-        clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления меню " + menu);
-        clickButtonConfirmAction("Удалить");
-        assertTrue(isItemTable(IVR_MENU_TITLE, menu, false),
-                "Название меню " + menu + " найдено в таблице меню после удаления");
+    void test_Edit_Go_To_Menu(String type){
+        assertTrue(status_add_sound_file_without_description, "Тест с добавлением звукового файла " + wavFile2 + " провалился. " +
+                "Невозможно продолжать тестирование");
+        String newNameMenu = type + " отредактировано";
+        assertTrue(isItemTable(IVR_MENU_TITLE, newNameMenu, true),
+                "Меню " + newNameMenu + " не найдено в таблице меню. Невозможно продолжать тестирование.");
+
+        String newTitleGoToMenu = "Перейти в меню " + type + " отредактировано";
+        String newDescriptionGoToMenu = IVR_MENU_DESCRIPTION + " " + newTitleGoToMenu;
+        assertAll("1. Добавляем голосовое меню \n" +
+                        "2. Выбираем в действиях Перейти в меню -> " + newNameMenu + " \n" +
+                        "3. Проверяем, что голосовое меню " + newTitleGoToMenu + " было добавлено в таблицу",
+                () -> assertEquals(clickButtonTable(IVR_MENU_TITLE, "Перейти в меню " + type, IVR_BUTTON_EDIT).isVisibleTitleModalWrapper(),
+                        "Редактирование голосового меню",
+                        "Не найден заголовок модального окна при редактировании голосового меню"),
+                () -> {
+                    editVoiceMenu(newTitleGoToMenu, "Перейти в меню", wavFile2, newNameMenu).clickActionButtonOfModalWindow("Сохранить");},
+                () -> assertTrue(isItemTable(IVR_MENU_TITLE, newDescriptionGoToMenu, true),
+                        "Описание " + newDescriptionGoToMenu + " голосового меню " +
+                                "не найдено в таблице меню")
+        );
+
+        checkLookModalWindowOfGoToTheMenu(newTitleGoToMenu, newNameMenu, type, wavFile2, false, false);
     }
 
-    @Story(value = "Удаляем точки входа")
+    @Story(value = "Редактирование точки входа c меню меню перехода в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Удаляем точки входа \n" +
-            "3. Проверяем, что в таблице удалённые точки входа не отображается")
-    @Order(9)
-    @ParameterizedTest(name="#{index} - Delete entry point=''{0}''")
+            "2. Редактируем точку входа \n" +
+            "3. Проверяем, что точка входа успешно отредактирована")
+    @Order(10)
+    @ParameterizedTest(name="#{index} - Edit entry point with go to menu=''{0}''")
     @MethodSource(value = "receiveMenuItems")
-    void test_Delete_Entry_Point(String type){
-        String menu = type + " отредактировано";
-        clickButtonTable(IVR_ENTRY_POINTS_TITLE, menu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления точки входа " + menu);
-        clickButtonConfirmAction("Продолжить");
-        assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, menu, false),
-                "Точка входа " + menu + " найдена в таблице после удаления");
+    void test_Edit_Entry_Point_With_Go_To_Menu(String typeMenu){
+        String nameMenu = "Перейти в меню " + typeMenu + " отредактировано";
+        assertTrue(isItemTable(IVR_MENU_TITLE, nameMenu, true),
+                "Название  " + nameMenu + " не найдено в таблице меню");
+        num++;
+        String oldTitleEntryPoint = "Перейти в меню " + typeMenu;
+        String number = String.valueOf(num);
+        String aon = nameMenu + " " + number;
+        assertAll("1. Редактируем точку входа " + oldTitleEntryPoint + " \n" +
+                        "проверяем, что точка входа " + nameMenu + " отображается в таблице после редактирования",
+                () -> assertEquals(clickButtonTable(IVR_ENTRY_POINTS_TITLE, oldTitleEntryPoint, IVR_BUTTON_EDIT)
+                                .isVisibleTitleModalWrapper(),
+                        "Редактирование точки входа",
+                        "Не найден заголовок модального окна при редактировании точки входа " + oldTitleEntryPoint),
+                () -> {
+                    sendModalWindowOfEntryPoint(number, aon, nameMenu).clickActionButtonOfModalWindow("Сохранить");},
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
+                        "АОН " + aon + " меню " + nameMenu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
+                        "Набираемый номер " + number + " меню " + nameMenu + " " +
+                                "не найдено в таблице точек входа"),
+                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, nameMenu, true),
+                        "Меню " + nameMenu + " не найдено в таблице точек входа")
+        );
     }
 
     @Story(value = "Удаляем звуковой файл")
@@ -303,7 +372,7 @@ public class TestIVRPage extends CheckIVRMenu {
             "2. Удаляем звуковой файл \n" +
             "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
     @Test
-    @Order(10)
+    @Order(11)
     void test_Delete_Sound_File(){
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_DELETE);
         assertTrue(isFormConfirmActions(true),
@@ -313,13 +382,81 @@ public class TestIVRPage extends CheckIVRMenu {
                 "Название файла " + wavFile1 + " найдено в таблице звуковых файлов после удаления файла");
     }
 
+    @Story(value = "Удаляем точки входа с простым меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем точки входа \n" +
+            "3. Проверяем, что в таблице удалённые точки входа не отображается")
+    @Order(12)
+    @ParameterizedTest(name="#{index} - Delete entry point with simple menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Delete_Entry_Point_With_Simple_Menu(String type){
+        String titleSimpleMenu = type + " отредактировано";
+        clickButtonTable(IVR_ENTRY_POINTS_TITLE, titleSimpleMenu, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления точки входа " + titleSimpleMenu);
+        clickButtonConfirmAction("Продолжить");
+        assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleSimpleMenu, false),
+                "Точка входа " + titleSimpleMenu + " найдена в таблице после удаления");
+    }
+
+    @Story(value = "Удаляем точки входа с меню перехода в другое меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем точки входа \n" +
+            "3. Проверяем, что в таблице удалённые точки входа не отображается")
+    @Order(13)
+    @ParameterizedTest(name="#{index} - Delete entry point with go to menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Delete_Entry_Point_With_Go_To_Menu(String type){
+        String titleGoToMenu = "Перейти в меню " + type + " отредактировано";
+        clickButtonTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления точки входа " + titleGoToMenu);
+        clickButtonConfirmAction("Продолжить");
+        assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, false),
+                "Точка входа " + titleGoToMenu + " найдена в таблице после удаления");
+    }
+
+    @Story(value = "Удаляем простое меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем Меню \n" +
+            "3. Проверяем, что в таблице удалённое меню не отображается")
+    @Order(14)
+    @ParameterizedTest(name="#{index} - Delete menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Delete_Simple_Menu(String type){
+        String menu = type + " отредактировано";
+        clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления меню " + menu);
+        clickButtonConfirmAction("Удалить");
+        assertTrue(isItemTable(IVR_MENU_TITLE, menu, false),
+                "Название меню " + menu + " найдено в таблице меню после удаления");
+    }
+
+    @Story(value = "Удаляем меню перехода в другое меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем Меню \n" +
+            "3. Проверяем, что в таблице удалённое меню не отображается")
+    @Order(15)
+    @ParameterizedTest(name="#{index} - Delete menu=''{0}''")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Delete_Go_To_Menu(String type){
+        String menu = "Перейти в меню " + type + " отредактировано";
+        clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления меню " + menu);
+        clickButtonConfirmAction("Удалить");
+        assertTrue(isItemTable(IVR_MENU_TITLE, menu, false),
+                "Название меню " + menu + " найдено в таблице меню после удаления");
+    }
+
     @Story(value = "Редактируем звуковой фал")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Выбираем редактировать звуковой файл добавленный в первом тесте \n" +
             "3. Меняем wav файл на файл MP3 и описание к файлу \n" +
             "4. Проверяем, что новый файл и описание добавлены в таблицу звуковых файлов")
     @Test
-    @Order(11)
+    @Order(16)
     void test_Edit_Sound_File() {
         assertTrue(status_add_sound_file_without_description, "Тест с добавлением звукового файла " + wavFile2 + " провалился. " +
                 "Невозможно продолжать тестирование");
@@ -336,6 +473,21 @@ public class TestIVRPage extends CheckIVRMenu {
                         "Название файла " + wavFile1 + " не найдено в таблице звуковых файлов")
         );
 
+    }
+
+    @Story(value = "Удаляем звуковой файл после редактирования")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Удаляем звуковой файл \n" +
+            "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
+    @Test
+    @Order(17)
+    void test_Delete_Sound_File_After_Edit(){
+        clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления звукового файла");
+        clickButtonConfirmAction("Удалить");
+        assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, wavFile1, false),
+                "Название файла " + wavFile1 + " найдено в таблице звуковых файлов после удаления файла");
     }
 
 }

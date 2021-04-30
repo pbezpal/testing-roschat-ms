@@ -33,8 +33,8 @@ public class IVRPage implements SettingsPage {
     private SelenideElement inputActionDTMF = $(".flex.xs8");
 
     private SelenideElement getIVRSection(String title){
-        return mainWrapper.$$("h2").findBy(text(title)).parent();
-    }
+        return $x("//h2[text()='" + title + "']//parent::*[@class='block-wrapper']");
+     }
 
     public SelenideElement getModalWindow() {
         return modalWindow;
@@ -51,6 +51,7 @@ public class IVRPage implements SettingsPage {
 
     @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
     public boolean isItemTable(String section, String item, boolean show){
+        getIVRSection(section).scrollTo();
         getIVRSection(section).$("table").scrollIntoView(false);
         if(show){
             try{
@@ -520,14 +521,17 @@ public class IVRPage implements SettingsPage {
         return this;
     }
 
-    public IVRPage editVoiceMenu(String name, String type, String sound, String number){
+    public IVRPage editVoiceMenu(String name, String type, String sound, String numberOrMenu){
 
-        sendModalWindowOfMenu(name, type, sound)
-                .clickButtonDeleteDTMF();
+        if(type.equals("Перейти в меню")) sendModalWindowOfMenu(name, type, sound, numberOrMenu).clickButtonDeleteDTMF();
+        else {
+            sendModalWindowOfMenu(name, type, sound)
+                    .clickButtonDeleteDTMF();
 
-        if(type.equals("Звонок")){
-            return sendInputDialNumber(number, "Действие при таймауте"
-                    ,"Действие при неправильном наборе");
+            if (type.equals("Звонок")) {
+                return sendInputDialNumber(numberOrMenu, "Действие при таймауте"
+                        , "Действие при неправильном наборе");
+            }
         }
 
         return this;

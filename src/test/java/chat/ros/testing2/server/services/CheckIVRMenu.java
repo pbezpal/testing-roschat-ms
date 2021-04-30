@@ -63,7 +63,7 @@ public class CheckIVRMenu extends IVRPage {
         if( ! title.contains("Перейти в меню")) clickActionButtonOfModalWindow("Закрыть");
     }
 
-    public void checkLookModalWindowOfGoToTheMenu(String title, String type, String soundFile, boolean dtmfSimpleMenu, boolean dtmf, String... number){
+    public void checkLookModalWindowOfGoToTheMenu(String title, String textGoToMenu, String type, String soundFile, boolean dtmfSimpleMenu, boolean dtmf, String... number){
         String numberSimpleMenu;
         if(dtmfSimpleMenu && dtmf) numberSimpleMenu = number[1];
         else if(dtmfSimpleMenu && ! dtmf) numberSimpleMenu = number[0];
@@ -91,16 +91,16 @@ public class CheckIVRMenu extends IVRPage {
                 "Перейти в меню",
                 "Отсуствует текст Перейти в меню в поле По таймауту"),
                 () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(timeout_field),
-                "«" + type + "»",
-                "Отсуствует текст «" + type + "» в поле " + timeout_field),
+                "«" + textGoToMenu + "»",
+                "Отсуствует текст «" + textGoToMenu + "» в поле " + timeout_field),
                 () -> assertTrue(isGoToActionOfSpanOfModalWindow(wrong_number_field),
                 "Отсуствтует ссылка для отображение настроек меню у поля " + wrong_number_field),
                 () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(wrong_number_field),
                 "Перейти в меню",
                 "Отсуствует текст Перейти в меню в поле " + wrong_number_field),
                 () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(wrong_number_field),
-                "«" + type + "»",
-                "Отсуствует текст " + type + " в поле " + wrong_number_field),
+                "«" + textGoToMenu + "»",
+                "Отсуствует текст " + textGoToMenu + " в поле " + wrong_number_field),
                 () -> {
                     if(dtmf){
                         assertTrue(isIconDTMFOfModalWindowMenu(getModalWindow()),
@@ -112,8 +112,8 @@ public class CheckIVRMenu extends IVRPage {
                                 "Перейти в меню",
                                 "Отсуствует текст Перейти в меню в поле DTMF");
                         assertEquals(getSecondTextGoToActionOfDTMFOfModalWindowMenu(),
-                                "«" + type + "»",
-                                "Отсуствует текст " + type + " в поле DTMF");
+                                "«" + textGoToMenu + "»",
+                                "Отсуствует текст " + textGoToMenu + " в поле DTMF");
                         clickGoToActionOfDTMF().scrollContentModalWindow(false);
                         checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToActionWithDTMF(), soundFile, dtmfSimpleMenu, numberSimpleMenu);
                         clickGoToActionOfDTMF().isElementMenuOfGoToActionWithDTMF(false);
