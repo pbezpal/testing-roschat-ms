@@ -1,6 +1,5 @@
-package chat.ros.testing2.server.settings;
+package chat.ros.testing2.server.settings.services;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
@@ -12,95 +11,23 @@ import org.openqa.selenium.Keys;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class IVRPage implements SettingsPage {
+public class IVRPage extends ServicesPage {
 
     private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement inputUploadSoundFile = $("#upload");
-    private SelenideElement modalWindow = $(".modal-window");
-    private SelenideElement modalWindowContent = modalWindow.find(".modal-window__content");
-    private SelenideElement inputUploadSoundFileByModalWindow = modalWindow.find("#upload");
-    private SelenideElement titleModalWindow = modalWindow.find("h2");
-    private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
-    private SelenideElement buttonClose = modalWindow.find(".v-btn--flat");
+    private SelenideElement modalWindowContent = getModalWindow().find(".modal-window__content");
+    private SelenideElement inputUploadSoundFileByModalWindow = getModalWindow().find("#upload");
+    private ElementsCollection buttonActionOfModalWindow = getModalWindow().$$(".modal-window__actions button div");
+    private SelenideElement buttonClose = getModalWindow().find(".v-btn--flat");
     private ElementsCollection listContextMenu = activeContextMenu.$$(".list__tile__title");
     private SelenideElement buttonAddDTMF = $(".dtmf-header button");
-    private ElementsCollection spansModalWindowOfVoiceMenu = modalWindow.$$("span");
     private SelenideElement buttonDeleteDTMF = $(".mx-0");
     private SelenideElement inputNumberDTMF = $(".flex.xs2");
     private SelenideElement inputActionDTMF = $(".flex.xs8");
 
-    private SelenideElement getIVRSection(String title){
-        return $x("//h2[text()='" + title + "']//parent::*[@class='block-wrapper']");
-     }
-
-    public SelenideElement getModalWindow() {
-        return modalWindow;
-    }
-
-    /******************* Работа с разделом Голосовое меню *******************/
-
-    @Step(value = "Нажимаем кнопку Добавить в разделе {title}")
-    public IVRPage clickButtonAdd(String title){
-        getIVRSection(title).scrollIntoView(false);
-        getIVRSection(title).find(".action-bar button").click();
-        return this;
-    }
-
-    @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
-    public boolean isItemTable(String section, String item, boolean show){
-        getIVRSection(section).scrollTo();
-        getIVRSection(section).$("table").scrollIntoView(false);
-        if(show){
-            try{
-                getIVRSection(section)
-                        .$("table")
-                        .$(byText(item))
-                        .shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try{
-                getIVRSection(section).
-                        $("table")
-                        .$(byText(item))
-                        .shouldBe(not(visible));
-            }catch (ElementShould e){
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Step(value = "Нажимаем кнопку {button} в разделе {section} у записи {item}")
-    public IVRPage clickButtonTable(String section, String item, String button){
-        getIVRSection(section).scrollIntoView(false);
-        getIVRSection(section)
-                .$("table")
-                .$(byText(item))
-                .parent()
-                .$$(".layout i")
-                .findBy(text(button))
-                .click();
-        return this;
-    }
-
     /******************** Работа с модальным окном ***********************/
-
-    @Step(value = "Проверяем, отображается ли заголовок {title} модального окна")
-    public String isVisibleTitleModalWrapper(){
-        try {
-            titleModalWindow.shouldBe(visible);
-        }catch (ElementNotFound e){
-            return null;
-        }
-
-        return titleModalWindow.getText();
-    }
 
     @Step(value = "Прокручиваем контекст модального")
     public IVRPage scrollContentModalWindow(boolean scroll){
@@ -133,18 +60,6 @@ public class IVRPage implements SettingsPage {
     private IVRPage uploadSoundFileByModalWindow(String file){
         ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("arguments[0].style.display = 'block';", inputUploadSoundFileByModalWindow);
         inputUploadSoundFileByModalWindow.sendKeys(file);
-        return this;
-    }
-
-    @Step(value = "Вводим {value} в поле {field}")
-    private IVRPage sendInputModalWindow(String field, String ...value){
-        if(value.length > 0) {
-            SelenideElement input = $("input[aria-label='" + field + "']");
-            input.click();
-            input.sendKeys(Keys.CONTROL + "a");
-            input.sendKeys(Keys.BACK_SPACE);
-            input.sendKeys(value);
-        }
         return this;
     }
 
@@ -450,7 +365,9 @@ public class IVRPage implements SettingsPage {
 
     public IVRPage uploadSoundFile(String file, String ...description){
         contentWrapper.scrollIntoView(false);
-        return uploadSoundFile(file).sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        uploadSoundFile(file);
+        sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        return this;
     }
 
     /**
@@ -460,7 +377,9 @@ public class IVRPage implements SettingsPage {
      * @return
      */
     public IVRPage uploadSoundFileByModalWindow(String file, String ...description){
-        return uploadSoundFileByModalWindow(file).sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        uploadSoundFileByModalWindow(file);
+        sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        return this;
     }
 
     /**
@@ -485,9 +404,9 @@ public class IVRPage implements SettingsPage {
         selectItemComboBox(sound);
 
         sendInputModalWindow("Название", name)
-                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name)
-                .sendInputModalWindow("Таймаут, сек", "30")
-                .clickSelectField("Действие при таймауте");
+                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name);
+                sendInputModalWindow("Таймаут, сек", "30");
+                clickSelectField("Действие при таймауте");
                 if(type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
                 else selectItemContextMenu(type);
                 clickSelectField("Действие при неправильном наборе");

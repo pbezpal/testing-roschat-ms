@@ -1,11 +1,10 @@
 package chat.ros.testing2.server.services;
 
-import chat.ros.testing2.server.settings.IVRPage;
+import chat.ros.testing2.server.settings.services.IVRPage;
 import com.codeborne.selenide.SelenideElement;
 
 import static chat.ros.testing2.data.SettingsData.IVR_MENU_BUTTON_LOOK_MENU;
 import static chat.ros.testing2.data.SettingsData.IVR_MENU_TITLE;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -2,7 +2,6 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.server.settings.IVRPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -15,7 +14,6 @@ import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;

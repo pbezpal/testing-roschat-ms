@@ -5,7 +5,6 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
-import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 
 import static chat.ros.testing2.data.SettingsData.*;
