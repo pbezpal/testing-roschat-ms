@@ -701,3 +701,26 @@ task roschativr(type: Test){
     }
 
 }
+
+task contact_for_fax(type: Test) {
+
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    description "Тестирование добавления пользователя для тестирования закрытых каналов"
+
+    dependsOn 'cleanTest'
+
+    //Parametrized Test
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestContactsPage.test_Add_Contact_For_Fax"
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}

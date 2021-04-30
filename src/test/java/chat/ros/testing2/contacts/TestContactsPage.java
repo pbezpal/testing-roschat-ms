@@ -17,6 +17,7 @@ import org.junit.runners.Parameterized;
 import java.util.ArrayList;
 
 import static chat.ros.testing2.data.ContactsData.*;
+import static chat.ros.testing2.data.SettingsData.CONTACT_FOR_FAX;
 import static data.CommentsData.*;
 
 @ExtendWith(ResourcesTests.class)
@@ -108,6 +109,14 @@ public class TestContactsPage extends ContactsPage {
     void test_Add_Contacts_For_Connect(){
         userPage = actionsContact(CLIENT_7010).addUserAccount(CLIENT_7010, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
+    }
+
+    @Story(value = "Добавление контакта для проверки факса")
+    @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
+            "создаём учётную запись для пользователя")
+    @Test
+    void test_Add_Contact_For_Fax(){
+        actionsContact(CONTACT_FOR_FAX).addUserAccount(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
     }
 
 }
