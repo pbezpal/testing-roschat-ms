@@ -173,6 +173,7 @@ public interface SettingsData {
 
     //General elements
     String IVR_BUTTON_EDIT = "edit";
+    String IVR_BUTTON_PLAY_AUDIO = "play_arrow";
     String IVR_BUTTON_DELETE = "delete";
 
     String IVR_ENTRY_POINTS_TITLE = "Точки входа";

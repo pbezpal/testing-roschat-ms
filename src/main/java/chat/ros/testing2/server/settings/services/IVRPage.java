@@ -26,6 +26,7 @@ public class IVRPage extends ServicesPage {
     private SelenideElement buttonDeleteDTMF = $(".mx-0");
     private SelenideElement inputNumberDTMF = $(".flex.xs2");
     private SelenideElement inputActionDTMF = $(".flex.xs8");
+    private SelenideElement audioPlayer = $(".modal-window__content audio");
 
     /******************** Работа с модальным окном ***********************/
 
@@ -61,6 +62,59 @@ public class IVRPage extends ServicesPage {
         ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("arguments[0].style.display = 'block';", inputUploadSoundFileByModalWindow);
         inputUploadSoundFileByModalWindow.sendKeys(file);
         return this;
+    }
+
+    @Step(value = "Проверяем, отображается ли плеер")
+    public boolean isAudioPlayer(){
+        try {
+            audioPlayer.shouldBe(visible);
+        }catch (ElementNotFound e){
+            return false;
+        }
+
+        return true;
+    }
+
+    @Step(value = "Нажимаем кнопку проигрывания звукового файла")
+    public IVRPage clickPlayAudio(){
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").play();");
+        return this;
+    }
+
+    @Step(value = "Проверяем функцию проигрывания аудио")
+    public Double isPlayAudioPlayer(){
+        sleep(5000);
+        return (Double) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
+    }
+
+    @Step(value = "Проверяем функцию паузы в аудиоплеере")
+    public boolean isPauseAudioPlayer(){
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").pause();");
+        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").paused;");
+    }
+
+    @Step(value = "Проверяем длину звукового файла")
+    public String isDurationAudio(){
+        return ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").duration").toString();
+    }
+
+    @Step(value = "Проверяем функцию изменения уровня звука в аудиоплеере")
+    public String isVolumeAudioPlayer(){
+        boolean volume = true;
+            ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").volume = 0.5;");
+            return  ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").volume;").toString();
+    }
+
+    @Step(value = "Проверяем функцию выключения звука")
+    public boolean isMutedAudioPlayer(){
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = true;");
+        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;");
+    }
+
+    @Step(value = "Проверяем функцию включения звука")
+    public boolean isOutMutedAudioPlayer(){
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = false;");
+        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;");
     }
 
     /********************** Работа с разделом Меню ****************************/
@@ -366,6 +420,20 @@ public class IVRPage extends ServicesPage {
     public IVRPage uploadSoundFile(String file, String ...description){
         contentWrapper.scrollIntoView(false);
         uploadSoundFile(file);
+        /*audioPlayer.shouldBe(visible);
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").play();");
+        sleep(3000);
+        Double timePlay = (Double) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
+        if(timePlay > 0) System.out.println("Current time > 0");
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").pause();");
+        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").paused;"));
+        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").duration"));
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").volume = 0.3;");
+        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").volume;"));
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = true;");
+        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;"));
+        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = false;");
+        System.out.println( ! (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;"));*/
         sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
         return this;
     }

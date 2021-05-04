@@ -691,7 +691,7 @@ task roschativr(type: Test){
 
     systemProperties System.getProperties()
 
-    include("**/TestIVRPage.class")
+    include("**/TestAudioPlayerPage.class")
 
     dependsOn 'cleanTest'
 
