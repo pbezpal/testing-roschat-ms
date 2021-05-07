@@ -1,9 +1,6 @@
 package chat.ros.testing2.server.settings.services;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.*;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
@@ -31,8 +28,7 @@ public class IVRPage extends ServicesPage {
     private SelenideElement inputNumberDTMF = $(".flex.xs2");
     private SelenideElement inputActionDTMF = $(".flex.xs8");
     private SelenideElement audioPlayer = $(".modal-window__content audio");
-    private SelenideElement buttonDownloadFile = getModalWindow().find(".melody-buttons button[title='Скачать']");
-    //private JavascriptExecutor js = ((JavascriptExecutor) WebDriverRunner.getWebDriver());
+    private SelenideElement buttonDownloadFile = getModalWindow().$(".melody-buttons").find("button[title='Скачать']");
 
     /******************** Работа с модальным окном ***********************/
 
@@ -125,14 +121,15 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Скачиваем звуковой файл")
-    public void downloadSoundFile() {
+    public File downloadSoundFile() {
         File soundFile = null;
         try {
             soundFile = buttonDownloadFile.download();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return null;
         }
-        System.out.println(soundFile);
+
+        return soundFile;
     }
 
     /********************** Работа с разделом Меню ****************************/

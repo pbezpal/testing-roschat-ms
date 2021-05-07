@@ -22,6 +22,10 @@ public class ResourcesIVRTests extends StartWebDriver implements BeforeEachCallb
                 if( TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")){
                     Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Audio_Player_When_Uploading_File"), "The sound file don't add. Skip the test!");
                 }
+            }if(testMethod.equals("test_Download_Sound_File")){
+                if( TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")){
+                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Audio_Player_When_Uploading_File"), "The sound file don't add. Skip the test!");
+                }
             }else if(testMethod.equals("test_Button_Play_After_Edit_Sound_File"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File"), "The sound file don't edit. Skip the test!");
             else if( ! testMethod.equals("test_Audio_Player_When_Uploading_File"))

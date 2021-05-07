@@ -4,6 +4,8 @@ import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.services.IVRPage;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.FileDownloadMode;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
@@ -198,16 +200,21 @@ public class TestSoundPage extends IVRPage {
             "4. Проверяем, скачался ли звуковой файл"
     )
     @Test
-    @Disabled
-    @Order(4)
+    @Order(5)
     void test_Download_Sound_File() {
-        /*assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_EDIT)
+        String soundFile = "";
+        if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
+        else soundFile = wavFile2;
+        assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_EDIT)
                         .isVisibleTitleModalWrapper(),
                 "Редактирование звукового файла",
-                "Не найден заголовок модального окна при воспроизведение");*/
-        clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_EDIT);
-        downloadSoundFile();
-        clickActionButtonOfModalWindow("Отменить");
+                "Не найден заголовок модального окна при воспроизведение");
+        String finalSoundFile = soundFile;
+        assertAll("Проверяем скачивание файла " + soundFile,
+                () -> assertEquals(downloadSoundFile().getName(), finalSoundFile,
+                        "Файл " + finalSoundFile + " не удалось скачать"),
+                () -> {clickActionButtonOfModalWindow("Отменить");}
+        );
     }
 
     @Story(value = "Удаляем звуковой файл")
@@ -215,7 +222,7 @@ public class TestSoundPage extends IVRPage {
             "2. Удаляем звуковой файл \n" +
             "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
     @Test
-    @Order(5)
+    @Order(6)
     void test_Delete_Sound_File(){
         String soundFile = "";
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;

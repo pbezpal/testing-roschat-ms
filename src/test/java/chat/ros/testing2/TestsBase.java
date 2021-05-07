@@ -10,11 +10,8 @@ import com.codeborne.selenide.FileDownloadMode;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.net.NetworkUtils;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import ru.stqa.selenium.factory.WebDriverPool;
 
 import java.util.logging.Level;
 
@@ -37,7 +34,6 @@ public class TestsBase implements ClientPage {
 
     public void init(){
 
-        //Configuration.proxyHost = "localhost";
         Configuration.remote = "http://" + HOST_HUB + ":4444/wd/hub";
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("chrome");
@@ -52,8 +48,7 @@ public class TestsBase implements ClientPage {
         Configuration.browserCapabilities = capabilities;
         Configuration.browserSize = "1920x1080";
         Configuration.browserPosition = "2x2";
-        /*Configuration.fileDownload = FileDownloadMode.PROXY;
-        Configuration.proxyEnabled = true;*/
+        Configuration.fileDownload = FileDownloadMode.FOLDER;
         Configuration.screenshots = false;
     }
 
@@ -115,9 +110,5 @@ public class TestsBase implements ClientPage {
 
     public boolean isContactAndAccount(String number){
         return SSHManager.isCheckQuerySSH(String.format(sshCommandIsContact, number));
-    }
-
-    public void dismissWebDriver(){
-        WebDriverPool.DEFAULT.dismissAll();
     }
 }

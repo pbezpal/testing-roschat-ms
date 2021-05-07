@@ -64,8 +64,7 @@ dependencies {
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     // https://mvnrepository.com/artifact/com.codeborne/selenide
     implementation group: 'com.codeborne', name: 'selenide', version: '5.20.4'
-    // https://mvnrepository.com/artifact/ru.stqa.selenium/webdriver-factory
-    compile group: 'ru.stqa.selenium', name: 'webdriver-factory', version: '4.3'
+    implementation group: 'org.selenide', name: 'selenide-selenoid', version: '1.1.1'
 
     //dependencies for reporting
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
@@ -84,14 +83,6 @@ dependencies {
     //Dependencies for connect ssh
     // https://mvnrepository.com/artifact/com.jcraft/jsch
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.55'
-
-    //Proxy for download files
-    // https://mvnrepository.com/artifact/com.browserup/browserup-proxy-core
-    //implementation group: 'com.browserup', name: 'browserup-proxy-core', version: '2.1.2'
-    // https://mvnrepository.com/artifact/io.netty/netty-codec
-    //implementation group: 'io.netty', name: 'netty-codec', version: '4.1.63.Final'
-    // https://mvnrepository.com/artifact/io.netty/netty-codec
-    //implementation group: 'io.netty', name: 'netty-all', version: '4.1.63.Final'
 
     //local library
     compile fileTree(dir: 'libs', include: '*.jar')
