@@ -181,7 +181,7 @@ public interface SettingsData {
     String IVR_MENU_TITLE = "Меню";
     String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Положить трубку",
             "Вернуться в родительское меню", "Вернуться в корневое меню", "Повторить меню"};
-    //String[] IVR_MENU_ITEMS = {"Звонок"};
+    String[] IVR_MENU_ITEMS_1 = {"Звонок"};
     String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
     String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";
 

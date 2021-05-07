@@ -7,8 +7,8 @@ import chat.ros.testing2.server.settings.integration.IntegrationPage;
 import chat.ros.testing2.server.settings.integration.SKUDPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.*;
-import org.openqa.selenium.WebDriver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ResourcesTests extends UserPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback, IntegrationPage {
 
-    private WebDriver driver = null;
     private String classTest = null;
     private SKUDPage skudPage = null;
     private final String hostServer = "https://" + System.getProperty("hostserver") + ":" + System.getProperty("portms");
@@ -41,6 +40,8 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         classTest = context.getTestClass().toString();
 
         testsBase.init();
+
+        TestStatusResult.setTestResult(false);
 
         if(isProgressBar()) refresh();
 
@@ -74,64 +75,69 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        String method = context.getTestMethod().toString();
-        if(method.contains("IntegrationPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/integration");
+        String classTest = context.getTestClass().toString();
+        String methodTest = context.getRequiredTestMethod().getName();
+        TestStatusResult.setTestResult(false);
+        if(classTest.contains("IntegrationPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/integration");
             else {
                 testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Интеграция");
                 sleep(1000);
             }
-        } else if (method.contains("TestGeozonesPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
+        } else if (methodTest.contains("TestGeozonesPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,
                     "/settings/geozones");
             else testsBase.openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,
                     "Настройки", "Геозоны");
-        } else if (method.contains("TestMailPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
+        } else if (methodTest.contains("TestMailPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,
                     "/settings/mail");
             else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Почта");
-        } else if (method.contains("TestMonitorSkud")) {
-            if (method.contains("Status")) testsBase.openMS(USER_LOGIN_ADMIN,
+        } else if (methodTest.contains("TestMonitorSkud")) {
+            if (methodTest.contains("Status")) testsBase.openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,"Монитор");
             else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Интеграция");
-        } else if (method.contains("TestServerPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/web-server");
+        } else if (methodTest.contains("TestServerPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/web-server");
             else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Сервер");
         } else if (classTest.contains("TestTetraPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
-        else if (method.contains("TestSNMPPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/snmp");
+        else if (methodTest.contains("TestSNMPPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/snmp");
             else testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "SNMP");
-        } else if (method.contains("TestTelephonyPage")) {
-            if (method.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/telephony");
+        } else if (methodTest.contains("TestTelephonyPage")) {
+            if (methodTest.contains("Open_Page")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/telephony");
             testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
-        } else if (method.contains("TestUser")) {
-            if (method.contains("Login") || method.contains("Delete")) {
+        } else if (methodTest.contains("TestUser")) {
+            if (methodTest.contains("Login") || methodTest.contains("Delete")) {
                 Configuration.baseUrl = hostServer;
                 open("/");
                 logoutMS();
             }else{
-                if (method.contains("Open_Page")) testsBase.openMS(LOGIN_AS_MS,
+                if (methodTest.contains("Open_Page")) testsBase.openMS(LOGIN_AS_MS,
                         PASSWORD_AS_MS,
                         "/settings/users");
                 else testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
             }
-        } else if (method.contains("TestServicePage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
-        else if (method.contains("TestContactsPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
-        else if(method.contains("TestParametersIntegrationOMPage")) {
+        } else if (methodTest.contains("TestServicePage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
+        else if (methodTest.contains("TestContactsPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
+        else if(methodTest.contains("TestParametersIntegrationOMPage")) {
             skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
             clickButtonActionService(SETTINGS_BUTTON_SETTING);
-        } else if (classTest.contains("TestIVRPage") || classTest.contains("TestAudioPlayerPage"))
-            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Голосовое меню");
+        }
     }
 
     @Override
     public void afterEach(ExtensionContext context){
-        String method = context.getTestMethod().toString();
+        String method = context.getRequiredTestMethod().getName();
         if(method.contains("TestParameters")){
             refresh();
+        }
+
+        if(method.contains("test_Audio_Player_When_Uploading_File")){
+            TestStatusResult.setTestResult(method, TestStatusResult.getStatusTest());
         }
     }
 
@@ -142,7 +148,7 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
             if(loginPage.isLoginMS()) logoutMS();
         }
         if(classTest.contains("TestParameters") || classTest.contains("Channel")){
-            Selenide.close();
+            Selenide.closeWebDriver();
         }
     }
 }

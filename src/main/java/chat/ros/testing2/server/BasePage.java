@@ -27,7 +27,7 @@ public interface BasePage {
     SelenideElement textWrong = $(".v-messages__message");
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
-    SelenideElement divProgressBar = $("div.modal-progress");
+    SelenideElement divProgressBar = $(".modal-progress");
     SelenideElement modalWindow = $(".modal-wrapper");
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")

@@ -43,29 +43,30 @@ public class CheckIVRMenu extends IVRPage {
                         "Отсуствтует значение " + type + " в модальном окне просмотра настроек По таймауту"),
                 () -> assertEquals(getTextSpanNameOfModalWindowMenu(parent,wrong_number_field),
                         type,
-                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек При неправильном наборе")
+                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек При неправильном наборе"),
+                () -> {
+                    if (dtmf) {
+                        assertAll("Проверяем, отображается ли настройки DTMF",
+                                () -> assertTrue(isIconDTMFOfModalWindowMenu(parent),
+                                        "Отсутствует иконка DTMF"),
+                                () -> assertEquals(getNumberDTMFOfModalWindowMenu(parent),
+                                        number[0],
+                                        "Отсутствует номер в модальном окне просмотр настроек DTMF"),
+                                () -> assertEquals(getTextDTMFOfModalWindowMenu(parent),
+                                        type,
+                                        "Отсуствтует значение " + type + " в модальном окне просмотра настроек DTMF")
+                        );
+                    }
+                }
         );
-
-        if (dtmf) {
-            assertAll("Проверяем, отображается ли настройки DTMF",
-                    () -> assertTrue(isIconDTMFOfModalWindowMenu(parent),
-                            "Отсутствует иконка DTMF"),
-                    () -> assertEquals(getNumberDTMFOfModalWindowMenu(parent),
-                            number[0],
-                            "Отсутствует номер в модальном окне просмотр настроек DTMF"),
-                    () -> assertEquals(getTextDTMFOfModalWindowMenu(parent),
-                            type,
-                            "Отсуствтует значение " + type + " в модальном окне просмотра настроек DTMF")
-            );
-        }
 
         if( ! title.contains("Перейти в меню")) clickActionButtonOfModalWindow("Закрыть");
     }
 
-    public void checkLookModalWindowOfGoToTheMenu(String title, String textGoToMenu, String type, String soundFile, boolean dtmfSimpleMenu, boolean dtmf, String... number){
+    public void checkLookModalWindowOfGoToTheMenu(String title, String textGoToMenu, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number) {
         String numberSimpleMenu;
-        if(dtmfSimpleMenu && dtmf) numberSimpleMenu = number[1];
-        else if(dtmfSimpleMenu && ! dtmf) numberSimpleMenu = number[0];
+        if (dtmfSimpleMenu && dtmf) numberSimpleMenu = number[1];
+        else if (dtmfSimpleMenu && !dtmf) numberSimpleMenu = number[0];
         else numberSimpleMenu = null;
         assertAll("Проверяем, отображение элементов в модальном окне" +
                         "для просмотра настроек меню",
@@ -84,20 +85,20 @@ public class CheckIVRMenu extends IVRPage {
                 () -> assertEquals(getTextSpanNameOfModalWindowMenu(getModalWindow(), sound_field),
                 soundFile,
                 "Отсуствтует значение " + soundFile + " в модальном окне просмотра настроек Звуковой файл"),
-                () -> assertTrue(isGoToActionOfSpanOfModalWindow(timeout_field),
+                () -> assertTrue(isGoToActionOfSpanOfModalWindow(timeout_field, action),
                 "Отсуствтует ссылка для отображение настроек меню у поля " + timeout_field),
-                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(timeout_field),
+                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(timeout_field, action),
                 "Перейти в меню",
                 "Отсуствует текст Перейти в меню в поле По таймауту"),
-                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(timeout_field),
+                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(timeout_field, action),
                 "«" + textGoToMenu + "»",
                 "Отсуствует текст «" + textGoToMenu + "» в поле " + timeout_field),
-                () -> assertTrue(isGoToActionOfSpanOfModalWindow(wrong_number_field),
+                () -> assertTrue(isGoToActionOfSpanOfModalWindow(wrong_number_field, action),
                 "Отсуствтует ссылка для отображение настроек меню у поля " + wrong_number_field),
-                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(wrong_number_field),
+                () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(wrong_number_field, action),
                 "Перейти в меню",
                 "Отсуствует текст Перейти в меню в поле " + wrong_number_field),
-                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(wrong_number_field),
+                () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(wrong_number_field, action),
                 "«" + textGoToMenu + "»",
                 "Отсуствует текст " + textGoToMenu + " в поле " + wrong_number_field),
                 () -> {
@@ -118,50 +119,67 @@ public class CheckIVRMenu extends IVRPage {
                         clickGoToActionOfDTMF().isElementMenuOfGoToActionWithDTMF(false);
                     }
                 },
-                () -> {clickGoToActionOfModalWindow(timeout_field);},
-                () -> {checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(timeout_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);},
-                () -> assertTrue(clickGoToActionOfModalWindow(timeout_field)
-                        .isElementMenuOfGoToAction(timeout_field, false),
-                        "Отображается настройки меню в поле " + timeout_field),
-                () -> {clickGoToActionOfModalWindow(wrong_number_field);},
-                () -> {checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(wrong_number_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);},
-                () -> assertTrue(clickGoToActionOfModalWindow(wrong_number_field)
-                        .isElementMenuOfGoToAction(wrong_number_field, false),
-                        "Отображается настройки меню в поле " + wrong_number_field)
-        );
-
-        clickActionButtonOfModalWindow("Показать все");
-
-        assertAll("Проверяем функцию Показать всё",
                 () -> {
-                    checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(timeout_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
-                },
-                () -> {
-                    checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(wrong_number_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
-                },
-                () -> {
-                    scrollContentModalWindow(false);
-                },
-                () -> {
-                    if (dtmf) {
-                        scrollContentModalWindow(false);
-                        checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToActionWithDTMF(), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                    if (action) {
+                        assertAll("Проверяем переходы по ссылкам меню",
+                                () -> {
+                                    clickGoToActionOfModalWindow(timeout_field);
+                                },
+                                () -> {
+                                    checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(timeout_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                                },
+                                () -> assertTrue(clickGoToActionOfModalWindow(timeout_field)
+                                                .isElementMenuOfGoToAction(timeout_field, false),
+                                        "Отображается настройки меню в поле " + timeout_field),
+                                () -> {
+                                    clickGoToActionOfModalWindow(wrong_number_field);
+                                },
+                                () -> {
+                                    checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(wrong_number_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                                },
+                                () -> assertTrue(clickGoToActionOfModalWindow(wrong_number_field)
+                                                .isElementMenuOfGoToAction(wrong_number_field, false),
+                                        "Отображается настройки меню в поле " + wrong_number_field)
+                        );
                     }
                 }
+
         );
 
-        clickActionButtonOfModalWindow("Свернуть все");
+        if (action) {
+            clickActionButtonOfModalWindow("Показать все");
 
-        assertAll("Проверяем функцию Свернуть все",
-                () -> assertTrue(isElementMenuOfGoToAction(timeout_field, false),
-                        "Отображается настройки меню в поле " + timeout_field),
-                () -> assertTrue(isElementMenuOfGoToAction(wrong_number_field, false),
-                        "Отображается настройки меню в поле " + wrong_number_field),
-                () -> {
-                    if (dtmf)
-                        assertTrue(isElementMenuOfGoToActionWithDTMF(false), "Отображаются настройки меню в разделе DTMF");
-                }
-        );
+            assertAll("Проверяем функцию Показать всё",
+                    () -> {
+                        checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(timeout_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                    },
+                    () -> {
+                        checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToAction(wrong_number_field), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                    },
+                    () -> {
+                        scrollContentModalWindow(false);
+                    },
+                    () -> {
+                        if (dtmf) {
+                            scrollContentModalWindow(false);
+                            checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToActionWithDTMF(), soundFile, dtmfSimpleMenu, numberSimpleMenu);
+                        }
+                    }
+            );
+
+            clickActionButtonOfModalWindow("Свернуть все");
+
+            assertAll("Проверяем функцию Свернуть все",
+                    () -> assertTrue(isElementMenuOfGoToAction(timeout_field, false),
+                            "Отображается настройки меню в поле " + timeout_field),
+                    () -> assertTrue(isElementMenuOfGoToAction(wrong_number_field, false),
+                            "Отображается настройки меню в поле " + wrong_number_field),
+                    () -> {
+                        if (dtmf)
+                            assertTrue(isElementMenuOfGoToActionWithDTMF(false), "Отображаются настройки меню в разделе DTMF");
+                    }
+            );
+        }
 
         clickActionButtonOfModalWindow("Закрыть");
     }

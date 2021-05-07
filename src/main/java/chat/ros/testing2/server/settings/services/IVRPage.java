@@ -1,6 +1,7 @@
 package chat.ros.testing2.server.settings.services;
 
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import com.codeborne.selenide.ex.ElementNotFound;
@@ -8,6 +9,9 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
@@ -27,6 +31,8 @@ public class IVRPage extends ServicesPage {
     private SelenideElement inputNumberDTMF = $(".flex.xs2");
     private SelenideElement inputActionDTMF = $(".flex.xs8");
     private SelenideElement audioPlayer = $(".modal-window__content audio");
+    private SelenideElement buttonDownloadFile = getModalWindow().find(".melody-buttons button[title='Скачать']");
+    //private JavascriptExecutor js = ((JavascriptExecutor) WebDriverRunner.getWebDriver());
 
     /******************** Работа с модальным окном ***********************/
 
@@ -52,15 +58,16 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Добавляем звуковой файл {file}")
     private IVRPage uploadSoundFile(String file){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("arguments[0].style.display = 'block';", inputUploadSoundFile);
-        inputUploadSoundFile.sendKeys(file);
+        //js.executeScript("arguments[0].style.display = 'block';", inputUploadSoundFile);
+        //inputUploadSoundFile.sendKeys(file);
+        inputUploadSoundFile.uploadFile(new File(file));
         return this;
     }
 
     @Step(value = "Заменяем звуковой файл на {file}")
     private IVRPage uploadSoundFileByModalWindow(String file){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("arguments[0].style.display = 'block';", inputUploadSoundFileByModalWindow);
-        inputUploadSoundFileByModalWindow.sendKeys(file);
+        //js.executeScript("arguments[0].style.display = 'block';", inputUploadSoundFileByModalWindow);
+        inputUploadSoundFileByModalWindow.uploadFile(new File(file));
         return this;
     }
 
@@ -77,44 +84,55 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Нажимаем кнопку проигрывания звукового файла")
     public IVRPage clickPlayAudio(){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").play();");
+        //js.executeScript("document.querySelector(\".modal-window__content audio\").play();");
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").play();");
         return this;
     }
 
     @Step(value = "Проверяем функцию проигрывания аудио")
     public Double isPlayAudioPlayer(){
         sleep(5000);
-        return (Double) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
+        return (Double) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
     }
 
     @Step(value = "Проверяем функцию паузы в аудиоплеере")
     public boolean isPauseAudioPlayer(){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").pause();");
-        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").paused;");
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").pause();");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").paused;");
     }
 
     @Step(value = "Проверяем длину звукового файла")
     public String isDurationAudio(){
-        return ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").duration").toString();
+        return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").duration").toString();
     }
 
     @Step(value = "Проверяем функцию изменения уровня звука в аудиоплеере")
     public String isVolumeAudioPlayer(){
-        boolean volume = true;
-            ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").volume = 0.5;");
-            return  ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").volume;").toString();
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").volume = 0.5;");
+            return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").volume;").toString();
     }
 
     @Step(value = "Проверяем функцию выключения звука")
     public boolean isMutedAudioPlayer(){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = true;");
-        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;");
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = true;");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
     }
 
     @Step(value = "Проверяем функцию включения звука")
     public boolean isOutMutedAudioPlayer(){
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = false;");
-        return (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;");
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = false;");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
+    }
+
+    @Step(value = "Скачиваем звуковой файл")
+    public void downloadSoundFile() {
+        File soundFile = null;
+        try {
+            soundFile = buttonDownloadFile.download();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(soundFile);
     }
 
     /********************** Работа с разделом Меню ****************************/
@@ -257,28 +275,55 @@ public class IVRPage extends ServicesPage {
         return $x("//span[contains(text(),'" + span + "')]//following-sibling::*[@class='go-to-action']");
     }
 
-    @Step(value = "Проверяем, наличие ссылки у элемента {span}")
-    public boolean isGoToActionOfSpanOfModalWindow(String span){
-        try{
-            getElementGoToAction(span).shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
+    private SelenideElement getElementWithoutGoToAction(String span){
+        return getModalWindow()
+                .findAll("span")
+                .findBy(text(span))
+                .parent();
+    }
+
+    @Step(value = "Проверяем, наличие ссылки {show} у элемента {span}")
+    public boolean isGoToActionOfSpanOfModalWindow(String span, boolean show){
+        if(show) {
+            try {
+                getElementGoToAction(span).shouldBe(visible);
+            } catch (ElementNotFound e) {
+                return false;
+            }
+        }else{
+            try {
+                getElementGoToAction(span).shouldBe(not(visible));
+            } catch (ElementShould e) {
+                return false;
+            }
         }
+
         return true;
     }
 
     @Step(value = "Проверяем, отображается ли первая часть текста ссылки у элемента {span}")
-    public String getFirstTextGoToActionOfSpanOfModalWindow(String span){
-        return getElementGoToAction(span)
-                .find("span:not(.name)")
-                .text();
+    public String getFirstTextGoToActionOfSpanOfModalWindow(String span, boolean action){
+        if (action)
+            return getElementGoToAction(span)
+                    .find("span:not(.name)")
+                    .text();
+        else
+            return getElementWithoutGoToAction(span)
+                    .findAll("span")
+                    .findBy(text("Перейти в меню"))
+                    .text();
     }
 
     @Step(value = "Проверяем, отображается ли вторая часть текста ссылки у элемента {span}")
-    public String getSecondTextGoToActionOfSpanOfModalWindow(String span){
-        return getElementGoToAction(span)
-                .find(".name")
-                .text();
+    public String getSecondTextGoToActionOfSpanOfModalWindow(String span, boolean action){
+        if (action)
+            return getElementGoToAction(span)
+                    .find(".name")
+                    .text();
+        else
+            return getElementWithoutGoToAction(span)
+                    .find(".name")
+                    .text();
     }
 
     @Step(value = "Кликаем по ссылки у элемента {span}")
@@ -420,20 +465,6 @@ public class IVRPage extends ServicesPage {
     public IVRPage uploadSoundFile(String file, String ...description){
         contentWrapper.scrollIntoView(false);
         uploadSoundFile(file);
-        /*audioPlayer.shouldBe(visible);
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").play();");
-        sleep(3000);
-        Double timePlay = (Double) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
-        if(timePlay > 0) System.out.println("Current time > 0");
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").pause();");
-        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").paused;"));
-        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").duration"));
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").volume = 0.3;");
-        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").volume;"));
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = true;");
-        System.out.println(((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;"));
-        ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("document.querySelector(\".modal-window__content audio\").muted = false;");
-        System.out.println( ! (boolean) ((JavascriptExecutor) WebDriverRunner.getWebDriver()).executeScript("return document.querySelector(\".modal-window__content audio\").muted;"));*/
         sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
         return this;
     }
@@ -509,12 +540,10 @@ public class IVRPage extends ServicesPage {
     }
 
     public IVRPage editVoiceMenu(String name, String type, String sound, String numberOrMenu){
-
         if(type.equals("Перейти в меню")) sendModalWindowOfMenu(name, type, sound, numberOrMenu).clickButtonDeleteDTMF();
         else {
             sendModalWindowOfMenu(name, type, sound)
                     .clickButtonDeleteDTMF();
-
             if (type.equals("Звонок")) {
                 return sendInputDialNumber(numberOrMenu, "Действие при таймауте"
                         , "Действие при неправильном наборе");

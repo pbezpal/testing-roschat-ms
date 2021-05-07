@@ -6,18 +6,16 @@ import chat.ros.testing2.server.LoginPage;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import client.ClientPage;
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
+import com.codeborne.selenide.FileDownloadMode;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.net.NetworkUtils;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import ru.stqa.selenium.factory.WebDriverPool;
 
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.logging.Level;
 
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
@@ -33,10 +31,14 @@ public class TestsBase implements ClientPage {
     private final String hostClient = "https://" + System.getProperty("hostserver");
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
     private RemoteWebDriver driver = null;
+    private String ipAddress = new NetworkUtils().getIp4NonLoopbackAddressOfThisMachine().getHostAddress();
 
-    public TestsBase () {} ;
+    public TestsBase () {}
 
     public void init(){
+
+        //Configuration.proxyHost = "localhost";
+        Configuration.remote = "http://" + HOST_HUB + ":4444/wd/hub";
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("chrome");
         capabilities.setVersion("88.0");
@@ -47,18 +49,11 @@ public class TestsBase implements ClientPage {
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
         capabilities.setCapability("goog:loggingPrefs", logPrefs);
-
-        try {
-            driver = (RemoteWebDriver) WebDriverPool.DEFAULT.getDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        driver.manage().window().setSize(new Dimension(1920, 1080));
-        driver.manage().window().setPosition(new Point(2,2));
-        driver.setFileDetector(new LocalFileDetector());
-        WebDriverRunner.setWebDriver(driver);
-
+        Configuration.browserCapabilities = capabilities;
+        Configuration.browserSize = "1920x1080";
+        Configuration.browserPosition = "2x2";
+        /*Configuration.fileDownload = FileDownloadMode.PROXY;
+        Configuration.proxyEnabled = true;*/
         Configuration.screenshots = false;
     }
 
