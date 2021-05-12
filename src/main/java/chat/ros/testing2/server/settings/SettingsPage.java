@@ -9,6 +9,7 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
@@ -21,7 +22,7 @@ public interface SettingsPage extends BasePage {
     SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
     SelenideElement formConfirmActions = $("div.dialog-header h3");
     SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
-    SelenideElement elementLoaderSettings = $("div.loader-wrapper h2");
+    SelenideElement elementLoaderSettings = $(".loader-wrapper h2");
     SelenideElement mainWrapper = $(".main-wrapper");
 
     /**
@@ -35,7 +36,7 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
         try{
-            $("a.v-tabs__item.v-tabs__item--active").waitUntil(Condition.not(text(itemContainer)), 10000);
+            $("a.v-tabs__item.v-tabs__item--active").shouldBe(not(text(itemContainer)), Duration.ofSeconds(10));
         }catch (ElementShould element){
             return false;
         }
@@ -109,13 +110,8 @@ public interface SettingsPage extends BasePage {
     default boolean isShowSymbolsInField(String form, String field, String value, boolean show){
         SelenideElement element = $$("h2").findBy(text(form)).parent().$$(".block-content__item-name h4").
                 findBy(text(field)).closest("li").find(".v-chip__content");
-        try{
-            element.should(enabled);
-        }catch (ElementNotFound e){
-            return false;
-        }
 
-        element.scrollIntoView(false);
+        $$("h2").findBy(text(form)).scrollIntoView(false);
 
         if(show){
             return element.text().contains(value);
@@ -218,7 +214,9 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
     default SettingsPage clickButtonConfirmAction(String button){
-        $$(".actions-wrapper .v-btn__content").findBy(text(button)).waitUntil(visible,10000).click();
+        $$(".actions-wrapper .v-btn__content")
+                .findBy(text(button))
+                .shouldBe(visible,Duration.ofSeconds(10)).click();
         return this;
     }
 
@@ -237,7 +235,7 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Ждём, когда пропадёт элемент загрузки настроек")
     default boolean isNotShowLoaderSettings(){
         try{
-            elementLoaderSettings.waitUntil(not(text("Идет загрузка настроек...")), 30000);
+            elementLoaderSettings.shouldNotBe(visible, Duration.ofSeconds(30));
         }catch (ElementShould e){
             return false;
         }

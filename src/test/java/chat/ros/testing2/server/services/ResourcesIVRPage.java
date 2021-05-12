@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.*;
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
-public class ResourcesIVRTests extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
+public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -103,7 +103,7 @@ public class ResourcesIVRTests extends StartWebDriver implements BeforeEachCallb
         }
 
         if(testClass.contains("TestSoundPage") || testClass.contains("TestMenuPage"))
-            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Голосовое меню");
+            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
     }
 
     @Override

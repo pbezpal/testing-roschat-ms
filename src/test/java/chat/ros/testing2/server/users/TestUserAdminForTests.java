@@ -1,6 +1,5 @@
 package chat.ros.testing2.server.users;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
 import io.qameta.allure.Description;
@@ -16,7 +15,7 @@ import java.util.Map;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesUserPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Пользователи")

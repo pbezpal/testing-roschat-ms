@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.integration;
 
-import chat.ros.testing2.ResourcesTests;
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.monitoring.MonitoringPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
@@ -9,7 +9,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.gen5.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -25,14 +24,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesIntegrationPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция->Орион")
 public class TestMonitorSkudOrion implements IntegrationPage {
 
-    private final String classStatusServiceActive = "status active";
-    private final String classStatusServiceInactive = "status inactive";
+    private final String classStatusServiceActive = ".status.active";
+    private final String classStatusServiceInactive = ".status.inactive";
     private SKUDPage skudPage;
     private static boolean status_Add;
     private static boolean status_Sync;
@@ -49,31 +48,23 @@ public class TestMonitorSkudOrion implements IntegrationPage {
         put("Исходящий порт", INTEGRATION_SERVICE_ORION_OUTGOING_PORT);
     }};
 
-    @BeforeAll
-    static void beforeAll(){
-        status_Add = false;
-        status_Sync = false;
-        status_Disconnect = false;
-        status_Delete = false;
-    }
-
     @Story(value = "Добавляем сервис СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД ОРИОН и проверяем," +
             " что сервис был успешно добавлен на сервер")
     @Test
     @Order(1)
-    void test_Add_Service(){
+    void test_Add_SKUD_Orion(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
                 "После добавления сервис СКУД ОРИОН не найден в тиблице 'Подключенные сервисы'");
-        status_Add = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Синхронизация контактов со СКУД ОРИОН")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД ОРИОН и нажимаем Синхронизировать")
     @Test
     @Order(2)
-    void test_Sync_Contacts(){
+    void test_Sync_Contacts_SKUD_Orion(){
         assertTrue(status_Add,"СКУД ОРИОН не добавлен");
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов");
@@ -87,7 +78,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
                         "Контакты успешно синхронизированы.",
                         "Текст в модальном окне не совпадает с ожидаемым")
         );
-        status_Sync = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД ОРИОН, при корректных настройках подключения")
@@ -96,9 +87,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             "2. Состояние ОРИОН - активно. Зелённый кружок.")
     @Test
     @Order(3)
-    void test_Status_Orion_Active(){
-        assertTrue(status_Add,"СКУД ОРИОН не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
+    void test_Status_Active_SKUD_Orion(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_ORION_TYPE, classStatusServiceActive),
                 "Состояни СКУД ОРИОН - неактивно, либо отсутсвтует сервис ОРИОН");
     }
@@ -108,13 +97,11 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             "данные для подключения.")
     @Test
     @Order(4)
-    void test_Change_Data_Disconnect_SKUD(){
-        assertTrue(status_Add,"СКУД ОРИОН не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
+    void test_Change_Data_Disconnect_SKUD_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
                 "После редактирования настроек сервис СКУД ОРИОН не найден в таблице Подключенные сервисы");
-        status_Disconnect = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД ОРИОН, при некорректных настройках подключения")
@@ -123,10 +110,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             "2. Состояние СКУД ОРИОН - неактивно. Красный кружок.")
     @Test
     @Order(5)
-    void test_Status_Orion_Inactive(){
-        assertTrue(status_Add,"СКУД ОРИОН не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
-        assertTrue(status_Disconnect, "Ошибка при некорректных настройках СКУД ОРИОН");
+    void test_Status_Inactive_SKUD_Orion(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_ORION_TYPE, classStatusServiceInactive),
                 "Состояни СКУД ОРИОН - активно, либо отсутсвтует сервис ОРИОН");
     }
@@ -137,12 +121,11 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             " успешно удалён.")
     @Test
     @Order(6)
-    void test_Delete_Orion(){
-        assertTrue(status_Add,"СКУД ОРИОН не добавлен");
+    void test_Delete_SKUD_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE),
                 "После удаления, сервис СКУД ОРИОН найден в таблице Подключенные сервисы");
-        status_Delete = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД, после удаления СКУД ОРИОН")
@@ -151,9 +134,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
             "2. Состояние СКУД - неактивно. Красный кружок.")
     @Test
     @Order(7)
-    void test_Status_SKUD_After_Delete_SKUD(){
-        assertTrue(status_Add,"СКУД ОРИОН не добавлен");
-        assertTrue(status_Delete, "Ошибка при удалении СКУД ОРИОН");
+    void test_Status_SKUD_After_Delete_SKUD_Orion(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - подключен, либо отсутсвтует сервис СКУД");
     }

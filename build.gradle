@@ -64,6 +64,7 @@ dependencies {
     implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
     // https://mvnrepository.com/artifact/com.codeborne/selenide
     implementation group: 'com.codeborne', name: 'selenide', version: '5.20.4'
+    // https://mvnrepository.com/artifact/org.selenide/selenide-selenoid
     implementation group: 'org.selenide', name: 'selenide-selenoid', version: '1.1.1'
 
     //dependencies for reporting
@@ -698,7 +699,15 @@ task roschativr(type: Test){
 
     systemProperties System.getProperties()
 
-    include("**/TestSoundPage.class")
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.server.services.*"
+        /*excludeTestsMatching "*.server.integration.*"
+        excludeTestsMatching "*.TestServerPage.test_Settings_Connect"*/
+        //excludeTestsMatching "*.users.TestUserAdminForTests"
+    }
+
+    //include("**/TestSoundPage.class")
     //include("**/TestMenuPage.class")
 
     dependsOn 'cleanTest'

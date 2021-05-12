@@ -1,23 +1,17 @@
 package chat.ros.testing2.parameters.mailpage;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.parameters.ResourcesParameters;
 import chat.ros.testing2.server.settings.MailPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.Ignore;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runners.Parameterized;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -25,7 +19,7 @@ import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesParameters.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Почта")

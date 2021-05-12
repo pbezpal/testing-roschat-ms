@@ -1,6 +1,5 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.SNMPPage;
 import com.codeborne.selenide.Selenide;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesServerPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "SNMP")

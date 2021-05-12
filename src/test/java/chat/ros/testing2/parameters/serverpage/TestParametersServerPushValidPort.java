@@ -1,7 +1,7 @@
 package chat.ros.testing2.parameters.serverpage;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.parameters.ResourcesParameters;
 import chat.ros.testing2.server.settings.ServerPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -20,7 +20,7 @@ import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesParameters.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")

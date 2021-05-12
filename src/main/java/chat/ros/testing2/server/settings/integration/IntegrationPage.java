@@ -7,7 +7,10 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Condition.not;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
@@ -44,30 +47,30 @@ public interface IntegrationPage extends SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button}")
     default IntegrationPage clickButtonActionService(String button){
-        buttonActionService.findBy(Condition.text(button)).waitUntil(Condition.enabled, 300000).click();
+        buttonActionService.findBy(Condition.text(button)).shouldBe(Condition.visible, Duration.ofMinutes(5)).click();
         return this;
     }
 
     @Step(value = "Нажимаем кнопку сохранить")
     default IntegrationPage clickSaveContacts(){
-        buttonSaveContacts.waitUntil(Condition.enabled, 300000).click();
+        buttonSaveContacts.shouldBe(Condition.enabled, Duration.ofMinutes(5)).click();
         return this;
     }
 
     @Step(value = "Ждём, когда пропадёт форма сохранения контактов")
     default IntegrationPage waitNotShowWindowSaveContacts(){
-        buttonSaveContacts.should(Condition.not(Condition.visible));
+        buttonSaveContacts.should(not(Condition.visible));
         return this;
     }
 
     @Step(value = "Ждём, когда пропадёт элемент загрузки синхронизации")
     default IntegrationPage waitNotShowLoadWrapper(){
-        divLoading.waitUntil(Condition.not(Condition.visible), 600000);
+        divLoading.shouldBe(not(Condition.visible), Duration.ofMinutes(10));
         return this;
     }
 
     default Object clickServiceType(String service){
-        $x(String.format(locatorButton,service)).waitUntil(Condition.visible,60000).click();
+        $x(String.format(locatorButton,service)).shouldBe(Condition.visible,Duration.ofMinutes(1)).click();
         switch(service){
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();

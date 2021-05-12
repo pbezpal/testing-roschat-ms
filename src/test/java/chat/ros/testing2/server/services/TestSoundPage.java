@@ -1,21 +1,14 @@
 package chat.ros.testing2.server.services;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.services.IVRPage;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.FileDownloadMode;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.io.FileNotFoundException;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Epic(value = "Голосовое меню")
 @Feature(value = "Звуковые файлы")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesIVRTests.class)
+@ExtendWith(ResourcesIVRPage.class)
 @ExtendWith(WatcherTests.class)
 public class TestSoundPage extends IVRPage {
 
@@ -91,7 +84,7 @@ public class TestSoundPage extends IVRPage {
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_PLAY_AUDIO);
         assertAll("Проверяем налицие закоголовка и работу аудиоплеера в модальном окне",
                 () -> assertEquals(isVisibleTitleModalWrapper(),
-                        "Редактирование звукового файлa",
+                        "Редактирование звукового файла",
                         "Не найден заголовок модального окна при воспроизведение"),
                 () -> {
                     assertTrue(isAudioPlayer(),
@@ -169,7 +162,7 @@ public class TestSoundPage extends IVRPage {
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile2, IVR_BUTTON_PLAY_AUDIO);
         assertAll("Проверяем налицие закоголовка и работу аудиоплеера в модальном окне",
                 () -> assertEquals(isVisibleTitleModalWrapper(),
-                        "Редактирование звукового файлa",
+                        "Редактирование звукового файла",
                         "Не найден заголовок модального окна при воспроизведение"),
                 () -> {
                     assertTrue(isAudioPlayer(),

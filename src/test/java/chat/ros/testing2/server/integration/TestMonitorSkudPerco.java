@@ -1,7 +1,6 @@
 package chat.ros.testing2.server.integration;
 
-import chat.ros.testing2.ResourcesTests;
-import chat.ros.testing2.TestsBase;
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.monitoring.MonitoringPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
@@ -22,20 +21,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesIntegrationPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Интеграция->PERCo")
 public class TestMonitorSkudPerco implements IntegrationPage {
 
-    private final String classStatusServiceActive = "status active";
-    private final String classStatusServiceInactive = "status inactive";
+    private final String classStatusServiceActive = ".status.active";
+    private final String classStatusServiceInactive = ".status.inactive";
     private SKUDPage skudPage = null;
-    private static boolean status_Add;
-    private static boolean status_Sync;
-    private static boolean status_Disconnect;
-    private static boolean status_Delete;
-    private final TestsBase testsBase = new TestsBase();
     private final Map<String, String> mapInputValueConnectPerco = new HashMap() {{
         put("Адрес модуля интеграции с PERCo", INTEGRATION_SERVICE_PERCO_IP_MODULE);
         put("Порт модуля интеграции с PERCo", INTEGRATION_SERVICE_PERCO_PORT_MODULE);
@@ -53,32 +47,23 @@ public class TestMonitorSkudPerco implements IntegrationPage {
         put("Ключ шифрования", INTEGRATION_SERVICE_PERCO_KEY);
     }};
 
-    @BeforeAll
-    static void beforeAll(){
-        status_Add = false;
-        status_Sync = false;
-        status_Disconnect = false;
-        status_Delete = false;
-    }
-
     @Story(value = "Добавляем сервис СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, добавляем и настраиваем сервис СКУД PERCo и проверяем," +
             " что сервис был успешно добавлен на сервер")
     @Test
     @Order(1)
-    void test_Add_Service(){
+    void test_Add_SKUD_Perco(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
                 "После добавления сервис СКУД PERCo не найден в тиблице 'Подключенные сервисы'");
-        status_Add = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Синхронизация контактов со СКУД PERCo")
     @Description(value = "Переходим в раздел Интеграция, заходим в сервис СКУД PERCo и нажимаем Синхронизировать")
     @Test
     @Order(2)
-    void test_Sync_Contacts(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
+    void test_Sync_Contacts_SKUD_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.syncContacts(), "Ошибка при сихронизации контактов");
         assertAll("Проверяем, успешно ли синхронизировались контакты AD",
@@ -91,7 +76,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
                         "Контакты успешно синхронизированы.",
                         "Текст в модальном окне не совпадает с ожидаемым")
         );
-        status_Sync = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД PERCo, при корректных настройках подключения")
@@ -100,9 +85,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
             "2. Состояние PERCo - активно. Зелённый кружок.")
     @Test
     @Order(3)
-    void test_Status_Perco_Active(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
+    void test_Status_Active_SKUD_Perco(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_PERCO_TYPE, classStatusServiceActive),
                 "Состояни СКУД PERCo - неактивно, либо отсутсвтует сервис ОPERCo");
     }
@@ -112,13 +95,11 @@ public class TestMonitorSkudPerco implements IntegrationPage {
             "данные для подключения.")
     @Test
     @Order(4)
-    void test_Change_Data_Disconnect_SKUD(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
+    void test_Change_Data_Disconnect_SKUD_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
                 "После редактирования настроек сервис СКУД PERCo не найден в таблице Подключенные сервисы");
-        status_Disconnect = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД PERCo, при некорректных настройках подключения")
@@ -127,10 +108,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
             "2. Состояние СКУД PERCo - неактивно. Красный кружок.")
     @Test
     @Order(5)
-    void test_Status_Perco_Inactive(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
-        assertTrue(status_Sync,"Ошибка при синхронизации контактов со СКУД ОРИОН");
-        assertTrue(status_Disconnect, "Ошибка при настройке невалидных данных");
+    void test_Status_Inactive_SKUD_Perco(){
         assertTrue(MonitoringPage.isStatusService(INTEGRATION_SERVICE_PERCO_TYPE, classStatusServiceInactive),
                 "Состояни СКУД PERCo - активно, либо отсутсвтует сервис PERCo");
     }
@@ -141,12 +119,11 @@ public class TestMonitorSkudPerco implements IntegrationPage {
             " успешно удалён.")
     @Test
     @Order(6)
-    void test_Delete_Perco(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
+    void test_Delete_SKUD_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
         assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_PERCO_TYPE),
                 "После удаления, сервис СКУД PERCo найден в таблице Подключенные сервисы");
-        status_Delete = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Состояние СКУД, после удаления СКУД PERCo")
@@ -155,9 +132,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
             "2. Состояние СКУД - неактивно. Красный кружок.")
     @Test
     @Order(7)
-    void test_Status_SKUD_After_Delete_SKUD(){
-        assertTrue(status_Add,"СКУД PERCo не добавлен");
-        assertTrue(status_Delete, "СКУД PERCo не был удалён");
+    void test_Status_SKUD_After_Delete_SKUD_Perco(){
         assertTrue(MonitoringPage.isStatusService(MONITORING_SERVICE_SKUD, classStatusServiceInactive),
                 "Состояни СКУД - подключен, либо отсутсвтует сервис СКУД");
     }

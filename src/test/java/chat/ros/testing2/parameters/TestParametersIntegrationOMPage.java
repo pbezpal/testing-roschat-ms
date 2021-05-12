@@ -4,7 +4,6 @@ import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.ServerPage;
 import chat.ros.testing2.server.settings.integration.IntegrationPage;
-import chat.ros.testing2.server.settings.integration.SKUDPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

@@ -1,6 +1,5 @@
 package chat.ros.testing2.contacts;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.contacts.ContactsPage;
 import chat.ros.testing2.server.contacts.UserPage;
@@ -20,7 +19,7 @@ import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.SettingsData.CONTACT_FOR_FAX;
 import static data.CommentsData.*;
 
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesContactsPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Справочник")
 @Feature(value = "Контакты")

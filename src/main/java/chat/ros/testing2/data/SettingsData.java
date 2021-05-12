@@ -33,11 +33,13 @@ public interface SettingsData {
     String SERVER_PUSH_INPUT_HOST = "Адрес сервера";
     String SERVER_PUSH_HOST_SERVER = "firelink.me";
     String SERVER_PUSH_INPUT_LOGIN = "Логин";
-    String SERVER_PUSH_LOGIN_SERVER = "ormp2";
+    String SERVER_PUSH_LOGIN_SERVER = "testing2";
+    //String SERVER_PUSH_LOGIN_SERVER = "ormp2";
     String SERVER_PUSH_INPUT_PORT = "Порт";
     String SERVER_PUSH_PORT_SERVER = "8088";
     String SERVER_PUSH_INPUT_PASSWORD = "Пароль";
-    String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
+    //String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
+    String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
     String SERVER_PUSH_BUTTON_UPDATE_LICENSE = "Обновить лицензию";
     String SERVER_PUSH_TEXT_CHECK_LICENSE = "Лицензия успешно обновлена";
 

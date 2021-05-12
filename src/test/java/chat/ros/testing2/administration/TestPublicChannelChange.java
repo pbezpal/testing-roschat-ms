@@ -2,7 +2,6 @@ package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
-import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static data.CommentsData.*;
@@ -85,30 +82,11 @@ public class TestPublicChannelChange extends ChannelsPage {
         status_type = true;
     }
 
-    @Story(value = "Проверяем канал в БД postgres после смены типа")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Остался ли канал в БД postgres" +
-            "2. Правильного ли типа канал")
-    @Test
-    @Order(3)
-    void test_Check_Exist_Channel_In_BD_After_Change_Type(){
-        assertTrue(status_create, "Канал не создан");
-        assertTrue(status_type, "Тип канала не поменялся");
-        assertAll("Проверяем канал в БД Postgres, после смены типа",
-                () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
-                        "Запись о канале " + nameChannel + " не найден в БД postgres"),
-                () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
-                                replaceAll(" ",""),
-                        "1",
-                        "Тип канала " + nameChannel + " в БД postgres не закрытого типа")
-        );
-    }
-
     @Story(value = "Проверяем, отображается ли закрытый канал в СУ после изменения типа канала")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "закрытый канал в списке каналов после изменения типа с публичного на закрытый")
     @Test
-    @Order(4)
+    @Order(3)
     void test_Show_Public_Channel_In_MS_After_Change_Type(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_type, "Тип канала не поменялся");
@@ -121,7 +99,7 @@ public class TestPublicChannelChange extends ChannelsPage {
     @Description(value = "Авторизуемся под администратором канала и меняем название и описание канала. Проверяем, что на" +
             "клиенте отображается новое название и описание канала.")
     @Test
-    @Order(5)
+    @Order(4)
     void test_Change_Name_And_Description_Channel(){
         assertTrue(status_create, "Канал не создан");
         testsBase.openClient(login, false);
@@ -137,30 +115,11 @@ public class TestPublicChannelChange extends ChannelsPage {
         status_edit = true;
     }
 
-    @Story(value = "Проверяем канал в БД postgres после смены имени и описания")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Появился ли канал в БД postgres" +
-            "2. Правильного ли типа канал")
-    @Test
-    @Order(6)
-    void test_Check_Exist_Channel_In_BD_After_Change_Name_And_Description(){
-        assertTrue(status_create, "Канал не создан");
-        assertTrue(status_edit, "Не поменялось имя и/или описание канала");
-        assertAll("Проверяем, сохраниись ли изменения БД",
-                () ->assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, newNameChannel)),
-                        "Запись о канале " + newNameChannel + " не найден в БД postgres"),
-                () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, newNameChannel)).
-                                replaceAll(" ",""),
-                        "1",
-                        "Тип канала " + newNameChannel + " в БД postgres не закрытого типа")
-        );
-    }
-
     @Story(value = "Проверяем, отображается ли закрытый канал в СУ после смены названия и описания")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "закрытый канал в списке каналов после смены названия и описания")
     @Test
-    @Order(7)
+    @Order(5)
     void test_Show_Closed_Channel_In_MS_After_Change(){
         testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
         assertTrue(isShowChannel(newNameChannel, false),
@@ -171,7 +130,7 @@ public class TestPublicChannelChange extends ChannelsPage {
     @Story(value = "Удаляем канал")
     @Description(value = "Авторизуемся под администратором канала и удаляем канал." )
     @Test
-    @Order(8)
+    @Order(6)
     public void test_Delete_Channel() {
         assertTrue(status_create, "Канал не создан");
         if (status_edit) channel = newNameChannel;
@@ -182,23 +141,10 @@ public class TestPublicChannelChange extends ChannelsPage {
         status_delete = true;
     }
 
-    @Story(value = "Проверяем канал в БД postgres после удаления")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем запись о канале в БД")
-    @Test
-    @Order(9)
-    void test_Check_Exist_Channel_In_BD_After_Delete() {
-        assertTrue(status_create, "Канал не создан");
-        assertTrue(status_delete,"Канал не удален");
-        if (status_edit) channel = newNameChannel;
-        else channel = nameChannel;
-        assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, channel)),
-                "Запись о канале " + channel + " осталась в БД postgres после удаления");
-    }
-
     @Story(value = "Проверяем отображается ли канал в СУ после удаления")
     @Description(value = "Проверяем в СУ, что канал не отображается после удаления канала")
     @Test
-    @Order(10)
+    @Order(7)
     void test_Show_Public_Channel_In_MS_After_Delete(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_delete,"Канал не удален");

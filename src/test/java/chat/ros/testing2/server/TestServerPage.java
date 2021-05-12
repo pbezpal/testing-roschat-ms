@@ -1,6 +1,5 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.ServerPage;
@@ -27,7 +26,7 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesServerPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Сервер")

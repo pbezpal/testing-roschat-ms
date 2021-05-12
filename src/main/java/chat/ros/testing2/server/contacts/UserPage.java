@@ -1,11 +1,14 @@
 package chat.ros.testing2.server.contacts;
 
 import chat.ros.testing2.server.BasePage;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
+
+import java.time.Duration;
 
 import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;
@@ -62,7 +65,7 @@ public class UserPage implements BasePage {
     @Step(value = "Ждём, когда пропадёт прогрессбар при добавлении аккаунта")
     protected boolean isWaitInvisibleProgressbar(){
         try{
-            divProgressBar.waitUntil(not(visible), 10000);
+            divProgressBar.shouldBe(not(visible), Duration.ofMillis(10000));
         }catch (ElementShould elementShould){
             return false;
         }
@@ -135,7 +138,7 @@ public class UserPage implements BasePage {
     @Step(value = "Нажимаем кнопку Добавить в разделе {item}")
     private UserPage clickButtonAddOfService(String item){
         $(".service")
-                .waitUntil(visible, 2000)
+                .shouldBe(visible, Duration.ofSeconds(2))
                 .parent()
                 .find("button.primary")
                 .click();
@@ -150,7 +153,7 @@ public class UserPage implements BasePage {
 
     @Step(value = "Нажимаем кнопку Добавить")
     private UserPage clickButtonAddService(){
-        buttonsAddService.waitUntil(visible, 3000).click();
+        buttonsAddService.shouldBe(visible, Duration.ofSeconds(3)).click();
         return this;
     }
 

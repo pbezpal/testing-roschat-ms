@@ -2,7 +2,6 @@ package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,13 +11,10 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
-import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static data.CommentsData.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(WatcherTests.class)
@@ -67,29 +63,11 @@ public class TestPublicChannel extends ChannelsPage {
         status_create = true;
     }
 
-    @Story(value = "Проверяем, что канал есть в БД postgres")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Появился ли канал в БД postgres" +
-            "2. Правильного ли типа канал")
-    @Test
-    @Order(2)
-    void test_Check_Exist_Channel_In_BD(){
-        assertTrue(status_create, "Канал не создан");
-        assertAll("Проверяем канал в БД Postgres",
-                () -> assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, nameChannel)),
-                        "Запись о канале " + nameChannel + " не найден в БД postgres"),
-                () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, nameChannel)).
-                                replaceAll(" ",""),
-                        "0",
-                        "Тип канала " + nameChannel + " в БД postgres не закрытого типа")
-        );
-    }
-
     @Story(value = "Проверяем, отображается ли публичный канал в СУ")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов")
     @Test
-    @Order(3)
+    @Order(2)
     void test_Show_Public_Channel_In_MS(){
         assertTrue(status_create, "Канал не создан");
         testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Администрирование","Каналы");
@@ -101,7 +79,7 @@ public class TestPublicChannel extends ChannelsPage {
     @Description(value = "Авторизуемся под администратором канала и меняем название и описание канала. Проверяем, что на" +
             "клиенте отображается новое название и описание канала.")
     @Test
-    @Order(4)
+    @Order(3)
     void test_Change_Name_And_Description_Channel(){
         assertTrue(status_create, "Канал не создан");
         testsBase.openClient(login, false);
@@ -118,30 +96,11 @@ public class TestPublicChannel extends ChannelsPage {
 
     }
 
-    @Story(value = "Проверяем канал в БД postgres после смены имени и описания")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем:" +
-            "1. Есть ли новое имя канал в БД postgres" +
-            "2. Правильного ли типа канал")
-    @Test
-    @Order(5)
-    void test_Check_Exist_Channel_In_BD_After_Change_Name_And_Description(){
-        assertTrue(status_create, "Канал не создан");
-        assertTrue(status_edit, "Не поменялось имя и/или описание канала");
-        assertAll("Проверяем, сохраниись ли изменения БД",
-                () ->assertTrue(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, newNameChannel)),
-                        "Запись о канале " + newNameChannel + " не найден в БД postgres"),
-                () -> assertEquals(SSHManager.getQuerySSH(String.format(commandDBCheckTypeChannel, newNameChannel)).
-                                replaceAll(" ",""),
-                        "0",
-                        "Тип канала " + newNameChannel + " в БД postgres не публичного типа")
-        );
-    }
-
     @Story(value = "Проверяем, отображается ли публичный канал в СУ после смены имени и описания")
     @Description(value = "Авторизуемся в СУ, переходим в раздел Администрирование->Каналы и проверяем, отображается ли " +
             "канал в списке каналов после смены имени и описания канала")
     @Test
-    @Order(6)
+    @Order(4)
     void test_Show_Public_Channel_In_MS_After_Change(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_edit, "Не поменялось имя и/или описание канала");
@@ -153,7 +112,7 @@ public class TestPublicChannel extends ChannelsPage {
     @Story(value = "Удаляем канал")
     @Description(value = "1. Авторизуемся под пользователем администратором канала и удаляем канал. ")
     @Test
-    @Order(7)
+    @Order(5)
     void test_Delete_Channel() {
         assertTrue(status_create, "Канал не создан");
         if (status_edit) channel = newNameChannel;
@@ -164,23 +123,10 @@ public class TestPublicChannel extends ChannelsPage {
         status_delete = true;
     }
 
-    @Story(value = "Проверяем канал в БД postgres после удаления")
-    @Description(value = "Подключаемся к серверу по протоколу ssh и проверяем запись о канале в БД")
-    @Test
-    @Order(8)
-    void test_Check_Exist_Channel_In_BD_After_Delete() {
-        assertTrue(status_create, "Канал не создан");
-        assertTrue(status_delete,"Канал не удален");
-        if (status_edit) channel = newNameChannel;
-        else channel = nameChannel;
-        assertFalse(SSHManager.isCheckQuerySSH(String.format(commandDBCheckChannel, channel)),
-                "Запись о канале " + channel + " осталась в БД postgres после удаления");
-    }
-
     @Story(value = "Проверяем отображается ли канал в СУ после удаления")
     @Description(value = "Проверяем в СУ, что канал не отображается после удаления канала")
     @Test
-    @Order(9)
+    @Order(6)
     void test_Show_Closed_Channel_In_MS_After_Delete(){
         assertTrue(status_create, "Канал не создан");
         assertTrue(status_delete,"Канал не удален");

@@ -72,7 +72,7 @@ public class ServicesPage implements SettingsPage {
         return this;
     }
 
-    @Step(value = "Проверяем, отображается ли заголовок {title} модального окна")
+    @Step(value = "Проверяем, отображается ли заголовок модального окна")
     public String isVisibleTitleModalWrapper(){
         try {
             titleModalWindow.shouldBe(visible);

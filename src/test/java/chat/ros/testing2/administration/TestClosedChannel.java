@@ -2,7 +2,6 @@ package chat.ros.testing2.administration;
 
 import chat.ros.testing2.TestsBase;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.helpers.SSHManager;
 import chat.ros.testing2.server.administration.ChannelsPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,8 +11,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
-import static chat.ros.testing2.data.HelperData.commandDBCheckChannel;
-import static chat.ros.testing2.data.HelperData.commandDBCheckTypeChannel;
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 import static data.CommentsData.*;

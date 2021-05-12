@@ -9,6 +9,7 @@ import io.qameta.allure.Step;
 import io.qameta.allure.model.Status;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
@@ -59,7 +60,7 @@ public class ServerPage implements SettingsPage{
     @Step(value = "Проверяем, что настройки Push сервера применились")
     public boolean isCheckUpdateLicense(){
         try {
-            $("div.v-input--is-label-active").waitUntil(Condition.enabled, 30000);
+            $(".v-input--is-label-active").shouldBe(Condition.enabled, Duration.ofSeconds(30));
         }catch (ElementNotFound element){
             return false;
         }

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Epic(value = "Голосовое меню")
 @Feature(value = "Звуковые файлы")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesIVRTests.class)
+@ExtendWith(ResourcesIVRPage.class)
 @ExtendWith(WatcherTests.class)
 public class TestMenuPage extends CheckIVRMenu {
 

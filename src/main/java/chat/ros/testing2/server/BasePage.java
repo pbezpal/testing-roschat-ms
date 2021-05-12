@@ -10,6 +10,7 @@ import com.codeborne.selenide.ex.ListSizeMismatch;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.util.Map;
 
 import static com.codeborne.selenide.Condition.*;
@@ -132,7 +133,7 @@ public interface BasePage {
     default boolean isExistsTableText(String text, boolean show){
         if(show) {
             try {
-                tdTableList.findBy(Condition.text(text)).waitUntil(Condition.visible, 60000);
+                tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible, Duration.ofMinutes(1));
             } catch (ElementNotFound elementNotFound) {
                 return false;
             }
@@ -184,7 +185,7 @@ public interface BasePage {
     default boolean isShowElement(SelenideElement element, boolean show){
         if(show){
             try{
-                element.waitUntil(visible, 15000);
+                element.shouldBe(visible, Duration.ofSeconds(15));
             }catch (ElementNotFound error){
                 return false;
             }

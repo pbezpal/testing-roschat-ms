@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.users;
 
-import chat.ros.testing2.ResourcesTests;
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
 import io.qameta.allure.Description;
@@ -20,7 +20,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesUserPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Пользователи")
@@ -49,7 +49,7 @@ public class TestUserAdminPage extends UserPage {
     void test_Add_New_User_Admin(){
         addUser(mapInputValueUser).selectRoleUser(1).clickButtonSave();
         assertTrue(isExistsTableText(USER_LOGIN_ADMIN_TEST, true), "Пользователь " + USER_LOGIN_ADMIN_TEST + " не был добавлен в систему");
-        status_add = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Авторизуемся в систему под новым пользователем с правами Администратор")
@@ -59,7 +59,6 @@ public class TestUserAdminPage extends UserPage {
     @Test
     @Order(2)
     void test_Login_New_User_Admin(){
-        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_ADMIN_TEST, USER_PASSWORD_ADMIN_TEST);
         assertTrue(isLoginUser(USER_LOGIN_ADMIN_TEST), "Не удалось авторизоваться под пользователем " + USER_LOGIN_ADMIN_TEST);
     }
@@ -71,7 +70,6 @@ public class TestUserAdminPage extends UserPage {
     @Test
     @Order(3)
     void test_Delete_New_User_Admin(){
-        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
         assertTrue(isDeleteUser(USER_LOGIN_ADMIN_TEST), "Не удалось удалить пользователя " + USER_LOGIN_ADMIN_TEST);

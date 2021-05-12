@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.users;
 
-import chat.ros.testing2.ResourcesTests;
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.UserPage;
 import io.qameta.allure.Description;
@@ -20,7 +20,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesUserPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Пользователи")
@@ -49,7 +49,7 @@ public class TestUserOperPage extends UserPage {
     void test_Add_New_User_Oper(){
         addUser(mapInputValueUser).selectRoleUser(2).clickButtonSave();
         assertTrue(isExistsTableText(USER_LOGIN_OPER, true), "Пользователь " + USER_LOGIN_OPER + " не был добавлен в систему");
-        status_add = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Входим в систему под новым пользователем с правами Оператор")
@@ -59,7 +59,6 @@ public class TestUserOperPage extends UserPage {
     @Test
     @Order(2)
     void test_Login_New_User_Oper(){
-        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(USER_LOGIN_OPER, USER_PASSWORD_OPER);
         assertTrue(isLoginUser(USER_LOGIN_OPER), "Не удалось авторизоваться под пользователем " + USER_LOGIN_OPER);
     }
@@ -71,7 +70,6 @@ public class TestUserOperPage extends UserPage {
     @Test
     @Order(3)
     void test_Delete_New_User_Oper(){
-        assertTrue(status_add, "Пользователь не создан");
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
         assertTrue(isDeleteUser(USER_LOGIN_OPER), "Не удалось удалить пользователя " + USER_LOGIN_OPER);

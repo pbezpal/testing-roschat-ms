@@ -1,7 +1,7 @@
 package chat.ros.testing2.parameters.telephony;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.parameters.ResourcesParameters;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -11,9 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static chat.ros.testing2.data.SettingsData.TELEPHONY_NETWORK_INPUT_FRONT_DEV;
-import static chat.ros.testing2.data.SettingsData.TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS;
 
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesParameters.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")

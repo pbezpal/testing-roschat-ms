@@ -9,6 +9,7 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class ContactsPage implements BasePage {
         selectShowCountContacts.scrollIntoView(false);
         selectShowCountContacts.click();
         listCountShowContacts.findBy(text("Все")).click();
-        inputSearchContact.waitUntil(visible, 10000);
+        inputSearchContact.shouldBe(visible, Duration.ofSeconds(10));
         return trCountContacts.size();
     }
 

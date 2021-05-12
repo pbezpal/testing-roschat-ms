@@ -1,15 +1,17 @@
 package chat.ros.testing2;
 
-import chat.ros.testing2.server.contacts.UserPage;
+import chat.ros.testing2.server.settings.UserPage;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public abstract class StartWebDriver extends UserPage implements BeforeAllCallback {
+public class StartWebDriver extends UserPage implements BeforeAllCallback {
 
-    private static TestsBase testsBase = new TestsBase();
+    public final String hostServer = "https://" + System.getProperty("hostserver") + ":" + System.getProperty("portms");
+    private static TestsBase testsBase;
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
+        testsBase = new TestsBase();
         testsBase.init();
         TestStatusResult.setTestResult(false);
     }

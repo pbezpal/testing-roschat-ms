@@ -116,7 +116,7 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
                 open("/");
                 logoutMS();
             }else{
-                if (methodTest.contains("Open_Page")) testsBase.openMS(LOGIN_AS_MS,
+                if (methodTest.equals("Open_Page")) testsBase.openMS(LOGIN_AS_MS,
                         PASSWORD_AS_MS,
                         "/settings/users");
                 else testsBase.openMS(LOGIN_AS_MS, PASSWORD_AS_MS,"Настройки");
@@ -134,10 +134,6 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         String method = context.getRequiredTestMethod().getName();
         if(method.contains("TestParameters")){
             refresh();
-        }
-
-        if(method.contains("test_Audio_Player_When_Uploading_File")){
-            TestStatusResult.setTestResult(method, TestStatusResult.getStatusTest());
         }
     }
 

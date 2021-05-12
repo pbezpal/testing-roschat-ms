@@ -1,6 +1,5 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.ResourcesTests;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.MailPage;
 import com.codeborne.selenide.Selenide;
@@ -20,7 +19,7 @@ import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesServerPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Почта")

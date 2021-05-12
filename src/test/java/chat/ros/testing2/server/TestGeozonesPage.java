@@ -1,6 +1,6 @@
 package chat.ros.testing2.server;
 
-import chat.ros.testing2.ResourcesTests;
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.GeozonesPage;
 import com.codeborne.selenide.Selenide;
@@ -19,13 +19,12 @@ import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(ResourcesTests.class)
+@ExtendWith(ResourcesServerPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Геозоны")
 public class TestGeozonesPage extends GeozonesPage {
 
-    private static boolean status_add;
     private Map<String,String> mapInputValueGeozone = new HashMap() {{
         put("Название", GEOZONES_NAME_ZONA);
         put("Широта", GEOZONES_WIDTH_ZONA);
@@ -38,12 +37,6 @@ public class TestGeozonesPage extends GeozonesPage {
         put("Major", GEOZONES_BEACONE_MAJOR);
     }};
 
-    @BeforeAll
-    static void setUp(){
-        status_add = false;
-    }
-
-
     @Story(value = "Добавляем геозону")
     @Description(value = "Переходим в раздел Геозоны, добавляем геозону и проверяем," +
             " что геозона была успешно добавлена на сервер")
@@ -52,7 +45,7 @@ public class TestGeozonesPage extends GeozonesPage {
     void test_Add_Geozone(){
         assertTrue(addGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
                 "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер");
-        status_add = true;
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Добавляем Beacon")
@@ -61,7 +54,6 @@ public class TestGeozonesPage extends GeozonesPage {
     @Test
     @Order(2)
     void test_Add_Beacon(){
-        assertTrue(status_add,"Не создана Геозона");
         assertTrue(addBeacon(GEOZONES_NAME_ZONA, mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
                 "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер");
     }
