@@ -59,7 +59,7 @@ public class TestParametersMailWrongMail extends MailPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowValueInField(
+        assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 MAIL_CONTACT_INPUT_FROM_MAIL,
                 mail,

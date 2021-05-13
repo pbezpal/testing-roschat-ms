@@ -3,12 +3,9 @@ package chat.ros.testing2.parameters.serverpage;
 import chat.ros.testing2.server.settings.ServerPage;
 import org.junit.runners.Parameterized;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static chat.ros.testing2.data.ParametersData.*;
 import static chat.ros.testing2.data.SettingsData.*;
@@ -98,7 +95,7 @@ public abstract class ServerParams extends ServerPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowSymbolsInField(
+        assertTrue(isShowValueInField(
                 SERVER_CONNECT_TITLE_FORM,
                 SERVER_CONNECT_FIELD_PORTS,
                 ports,
@@ -146,7 +143,7 @@ public abstract class ServerParams extends ServerPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowSymbolsInField(
+        assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 SERVER_CONNECT_FIELD_PORTS,
                 ports,

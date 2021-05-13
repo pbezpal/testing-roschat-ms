@@ -44,7 +44,7 @@ public class TestParametersMailMaxLengthPort extends MailPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowSymbolsInField(
+        assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 MAIL_CONNECT_INPUT_EMAIL_PORT,
                 MORE_MAX_VALUE_PORT,

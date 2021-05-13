@@ -20,7 +20,7 @@ public class ResourcesServerPage extends StartWebDriver implements BeforeEachCal
         String methodTest = context.getRequiredTestMethod().getName();
         TestStatusResult.setTestResult(false);
         if (classTest.contains("TestGeozonesPage")) {
-            if (methodTest.equals("Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN,
+            if (methodTest.equals("test_Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,
                     "/settings/geozones");
             else{
@@ -37,13 +37,13 @@ public class ResourcesServerPage extends StartWebDriver implements BeforeEachCal
                     "/settings/mail");
             else getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Почта");
         } else if (classTest.contains("TestServerPage")) {
-            if (methodTest.equals("Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/web-server");
+            if (methodTest.equals("test_Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/web-server");
             else getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Сервер");
         } else if (classTest.contains("TestSNMPPage")) {
-            if (methodTest.equals("Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/snmp");
+            if (methodTest.equals("test_Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/snmp");
             else getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "SNMP");
         } else if (classTest.contains("TestTelephonyPage")) {
-            if (methodTest.equals("Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/telephony");
+            if (methodTest.equals("test_Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"/settings/telephony");
             getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
         }
     }

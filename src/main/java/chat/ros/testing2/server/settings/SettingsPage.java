@@ -18,10 +18,10 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 
 public interface SettingsPage extends BasePage {
 
-    ElementsCollection listItems = $$("div.menuable__content__active a:not([disabled]) div.v-list__tile__title");
-    SelenideElement buttonCloseForm = $("div.modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
-    SelenideElement formConfirmActions = $("div.dialog-header h3");
-    SelenideElement buttonCloseCheckSettingsForm = $("div.msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
+    ElementsCollection listItems = $$(".menuable__content__active a:not([disabled]) div.v-list__tile__title");
+    SelenideElement buttonCloseForm = $(".modal-wrapper button.v-btn.v-btn--flat.theme--light.secondary--text");
+    SelenideElement formConfirmActions = $(".dialog-header h3");
+    SelenideElement buttonCloseCheckSettingsForm = $(".msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $(".loader-wrapper h2");
     SelenideElement mainWrapper = $(".main-wrapper");
 
@@ -107,16 +107,21 @@ public interface SettingsPage extends BasePage {
     }
 
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
-    default boolean isShowSymbolsInField(String form, String field, String value, boolean show){
+    default boolean isShowFieldAndValue(String form, String field, String value, boolean show) {
         SelenideElement element = $$("h2").findBy(text(form)).parent().$$(".block-content__item-name h4").
                 findBy(text(field)).closest("li").find(".v-chip__content");
 
         $$("h2").findBy(text(form)).scrollIntoView(false);
 
-        if(show){
+        if (show) {
             return element.text().contains(value);
-        }else {
-            return ! element.text().contains(value);
+        } else {
+            try{
+                element.shouldNotBe(visible);
+            }catch (ElementShould e){
+                return ! element.text().contains(value);
+            }
+            return true;
         }
     }
 
@@ -196,13 +201,13 @@ public interface SettingsPage extends BasePage {
     default boolean isFormConfirmActions(boolean show){
         if(show){
             try{
-                formConfirmActions.shouldBe(text("Подтвердите свои действия"), Condition.visible);
+                formConfirmActions.shouldBe(text("Подтвердите свои действия"), visible);
             }catch (ElementNotFound element){
                 return false;
             }
         }else{
             try{
-                formConfirmActions.shouldBe(not(text("Подтвердите свои действия")), not(Condition.visible));
+                formConfirmActions.shouldNotBe(visible);
             }catch (ElementShould element){
                 return false;
             }
