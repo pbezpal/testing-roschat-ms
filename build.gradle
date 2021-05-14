@@ -708,21 +708,21 @@ task roschativr(type: Test){
         //excludeTestsMatching "*.users.TestUserAdminForTests"
     }*/
 
-    systemProperties = [
+    /*systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]
+    ]*/
 
     systemProperties System.getProperties()
 
     //Parametrized Test
-    include("**/TestParametersServerConnectValidPorts.class")
-    include("**/TestParametersServerPushValidPort.class")
-    //include("**/TestParametersServerConnectWrongHttpsPort.class")
-    //include("**/TestParametersServerConnectWrongWebsocketPort.class")
+    //include("**/TestParametersTelephonyEmptyNetwork.class")
+    //include("**/TestParametersTelephonyEmptySip.class")
+    include("**/TestParametersTelephonyEmptyTurn.class")
+    //include("**/TestParametersTelephonyTurnWrongMinPort.class")
 
     //include("**/TestSoundPage.class")
     //include("**/TestMenuPage.class")

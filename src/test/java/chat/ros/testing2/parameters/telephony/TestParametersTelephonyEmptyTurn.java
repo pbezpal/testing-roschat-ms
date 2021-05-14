@@ -68,20 +68,29 @@ public class TestParametersTelephonyEmptyTurn extends TelephonyPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        if(minPort.equals("") || maxPort.equals("")) {
-            assertTrue(isShowValuesInField(
+        if(field.equals(TELEPHONY_TURN_INPUT_SECRET)){
+            assertTrue(isShowFieldAndValue(
                     TELEPHONY_TURN_TITLE_FORM,
-                    TELEPHONY_INPUT_SPEECH_PORTS,
+                    TELEPHONY_TURN_INPUT_SECRET,
                     "",
                     false),
                     "В поле " + field + ", сохранилось пустое значение");
-        }else{
-            assertTrue(isShowValueInField(
-                    TELEPHONY_TURN_TITLE_FORM,
-                    field,
-                    "",
-                    false),
-                    "В поле " + field + ", сохранилось пустое значение");
+        }else {
+            if (minPort.equals("") || maxPort.equals("")) {
+                assertTrue(isShowValuesInField(
+                        TELEPHONY_TURN_TITLE_FORM,
+                        TELEPHONY_INPUT_SPEECH_PORTS,
+                        "",
+                        false),
+                        "В поле " + field + ", сохранилось пустое значение");
+            } else {
+                assertTrue(isShowValueInField(
+                        TELEPHONY_TURN_TITLE_FORM,
+                        field,
+                        "",
+                        false),
+                        "В поле " + field + ", сохранилось пустое значение");
+            }
         }
     }
 }

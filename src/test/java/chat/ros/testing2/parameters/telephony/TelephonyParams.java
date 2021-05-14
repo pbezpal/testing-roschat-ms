@@ -72,11 +72,12 @@ public class TelephonyParams extends TelephonyPage {
         );
         if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         else if(isFormChange()) clickButtonClose();
-        assertTrue(isShowField(
+        assertTrue(isShowFieldAndValue(
                 TELEPHONY_NETWORK_TITLE_FORM,
                 field,
+                value,
                 false),
-                "Поле " + field + ", отображается в форме " + TELEPHONY_NETWORK_TITLE_FORM);
+                "Значение " + value + " отображается в поле " + field);
     }
 
     protected void wrong_sip_ports(String field, String value, String text_error){

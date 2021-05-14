@@ -141,10 +141,17 @@ public interface SettingsPage extends BasePage {
                 return false;
             }
         }else {
-            try {
-                elements.findBy(not(text(value)));
-            }catch (ElementShould e){
-                return false;
+            if(value.length() == 0)
+                for(int i = 0; i < elements.size(); i++){
+                    if(elements.get(i).text().length() == 0)
+                        return false;
+                }
+            else {
+                try {
+                    elements.findBy(not(text(value)));
+                } catch (ElementShould e) {
+                    return false;
+                }
             }
         }
 
