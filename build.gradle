@@ -721,7 +721,7 @@ task roschativr(type: Test){
     //Parametrized Test
     //include("**/TestParametersTelephonyEmptyNetwork.class")
     //include("**/TestParametersTelephonyEmptySip.class")
-    include("**/TestParametersTelephonyEmptyTurn.class")
+    include("**/TestFaxPage.class")
     //include("**/TestParametersTelephonyTurnWrongMinPort.class")
 
     //include("**/TestSoundPage.class")

@@ -20,7 +20,6 @@ public class IVRPage extends ServicesPage {
     private SelenideElement inputUploadSoundFile = $("#upload");
     private SelenideElement modalWindowContent = getModalWindow().find(".modal-window__content");
     private SelenideElement inputUploadSoundFileByModalWindow = getModalWindow().find("#upload");
-    private ElementsCollection buttonActionOfModalWindow = getModalWindow().$$(".modal-window__actions button div");
     private SelenideElement buttonClose = getModalWindow().find(".v-btn--flat");
     private ElementsCollection listContextMenu = activeContextMenu.$$(".list__tile__title");
     private SelenideElement buttonAddDTMF = $(".dtmf-header button");
@@ -38,12 +37,6 @@ public class IVRPage extends ServicesPage {
         return this;
     }
 
-    @Step(value = "Нажимаем кнопку {button} в модальном окне")
-    public IVRPage clickActionButtonOfModalWindow(String button){
-        buttonActionOfModalWindow.findBy(text(button)).click();
-        return this;
-    }
-
     @Step(value = "Нажимаем кнопку Отменить в модальном окне")
     private IVRPage clickButtonCloseOfModalWindow(){
         buttonClose.click();
@@ -54,15 +47,12 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Добавляем звуковой файл {file}")
     private IVRPage uploadSoundFile(String file){
-        //js.executeScript("arguments[0].style.display = 'block';", inputUploadSoundFile);
-        //inputUploadSoundFile.sendKeys(file);
         inputUploadSoundFile.uploadFile(new File(file));
         return this;
     }
 
     @Step(value = "Заменяем звуковой файл на {file}")
     private IVRPage uploadSoundFileByModalWindow(String file){
-        //js.executeScript("arguments[0].style.display = 'block';", inputUploadSoundFileByModalWindow);
         inputUploadSoundFileByModalWindow.uploadFile(new File(file));
         return this;
     }
@@ -80,7 +70,6 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Нажимаем кнопку проигрывания звукового файла")
     public IVRPage clickPlayAudio(){
-        //js.executeScript("document.querySelector(\".modal-window__content audio\").play();");
         Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").play();");
         return this;
     }

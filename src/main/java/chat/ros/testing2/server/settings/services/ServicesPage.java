@@ -1,6 +1,7 @@
 package chat.ros.testing2.server.settings.services;
 
 import chat.ros.testing2.server.settings.SettingsPage;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
@@ -16,6 +17,7 @@ public class ServicesPage implements SettingsPage {
 
     private SelenideElement modalWindow = $(".modal-window");
     private SelenideElement titleModalWindow = modalWindow.find("h2");
+    private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
 
     private SelenideElement getServiceSection(String title){
         return $x("//h2[text()='" + title + "']//parent::*[@class='block-wrapper']");
@@ -23,6 +25,12 @@ public class ServicesPage implements SettingsPage {
 
     public SelenideElement getModalWindow() {
         return modalWindow;
+    }
+
+    @Step(value = "Нажимаем кнопку {button} в модальном окне")
+    public ServicesPage clickActionButtonOfModalWindow(String button){
+        buttonActionOfModalWindow.findBy(text(button)).click();
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку Добавить в разделе {title}")

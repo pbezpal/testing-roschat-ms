@@ -14,8 +14,8 @@ import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Epic(value = "Голосовое меню")
-@Feature(value = "Звуковые файлы")
+@Epic(value = "Сервисы")
+@Feature(value = "Голосовое меню")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesIVRPage.class)
 @ExtendWith(WatcherTests.class)

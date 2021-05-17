@@ -18,8 +18,8 @@ import java.util.HashMap;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Epic(value = "Голосовое меню")
-@Feature(value = "Звуковые файлы")
+@Epic(value = "Сервисы")
+@Feature(value = "Голосовое меню")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesIVRPage.class)
 @ExtendWith(WatcherTests.class)
@@ -99,7 +99,9 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Новое голосовое меню",
                         "Не найден заголовок модального окна при добавлении голосового меню"),
                 () -> {
-                    addVoiceMenu(type, type, wavFile1, String.valueOf(num)).clickActionButtonOfModalWindow("Сохранить");},
+                    addVoiceMenu(type, type, wavFile1, String.valueOf(num));
+                    clickActionButtonOfModalWindow("Сохранить");
+                    },
                 () -> assertTrue(isItemTable(IVR_MENU_TITLE, descriptionMenu, true),
                         "Описание " + descriptionMenu + " голосового меню " + type + " " +
                                 "не найдено в таблице меню")
@@ -127,7 +129,9 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Создание точки входа",
                         "Не найден заголовок модального окна при добавлении точки входа"),
                 () -> {
-                    sendModalWindowOfEntryPoint(number, aon, typeMenu).clickActionButtonOfModalWindow("Сохранить");},
+                    sendModalWindowOfEntryPoint(number, aon, typeMenu);
+                    clickActionButtonOfModalWindow("Сохранить");
+                    },
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
                         "АОН " + aon + " меню " + typeMenu + " " +
                                 "не найдено в таблице точек входа"),
@@ -159,7 +163,8 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Новое голосовое меню",
                         "Не найден заголовок модального окна при добавлении голосового меню"),
                 () -> {
-                    addVoiceMenu("Перейти в меню " + type, "Перейти в меню", wavFile1, String.valueOf(num), type).clickActionButtonOfModalWindow("Сохранить");},
+                    addVoiceMenu("Перейти в меню " + type, "Перейти в меню", wavFile1, String.valueOf(num), type);
+                    clickActionButtonOfModalWindow("Сохранить");},
                 () -> assertTrue(isItemTable(IVR_MENU_TITLE, descriptionMenu, true),
                         "Описание " + descriptionMenu + " голосового меню " +
                                 "не найдено в таблице меню")
@@ -187,7 +192,8 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Создание точки входа",
                         "Не найден заголовок модального окна при добавлении точки входа"),
                 () -> {
-                    sendModalWindowOfEntryPoint(number, aon, titleGoToMenu).clickActionButtonOfModalWindow("Сохранить");},
+                    sendModalWindowOfEntryPoint(number, aon, titleGoToMenu);
+                    clickActionButtonOfModalWindow("Сохранить");},
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
                         "АОН " + aon + " меню " + titleGoToMenu + " " +
                                 "не найдено в таблице точек входа"),
@@ -270,7 +276,8 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Редактирование точки входа",
                         "Не найден заголовок модального окна при редактировании точки входа " + typeMenu),
                 () -> {
-                    sendModalWindowOfEntryPoint(number, aon, newMenu).clickActionButtonOfModalWindow("Сохранить");},
+                    sendModalWindowOfEntryPoint(number, aon, newMenu);
+                    clickActionButtonOfModalWindow("Сохранить");},
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
                         "АОН " + aon + " меню " + typeMenu + " " +
                                 "не найдено в таблице точек входа"),
@@ -301,7 +308,8 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Редактирование голосового меню",
                         "Не найден заголовок модального окна при редактировании голосового меню"),
                 () -> {
-                    editVoiceMenu(newTitleGoToMenu, "Перейти в меню", wavFile2, secondText).clickActionButtonOfModalWindow("Сохранить");
+                    editVoiceMenu(newTitleGoToMenu, "Перейти в меню", wavFile2, secondText);
+                    clickActionButtonOfModalWindow("Сохранить");
                 },
                 () -> assertTrue(isItemTable(IVR_MENU_TITLE, newDescriptionGoToMenu, true),
                         "Описание " + newDescriptionGoToMenu + " голосового меню " +
@@ -335,7 +343,9 @@ public class TestMenuPage extends CheckIVRMenu {
                         "Редактирование точки входа",
                         "Не найден заголовок модального окна при редактировании точки входа " + oldTitleEntryPoint),
                 () -> {
-                    sendModalWindowOfEntryPoint(number, aon, finalNameMenu).clickActionButtonOfModalWindow("Сохранить");},
+                    sendModalWindowOfEntryPoint(number, aon, finalNameMenu);
+                    clickActionButtonOfModalWindow("Сохранить");
+                    },
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
                         "АОН " + aon + " меню " + finalNameMenu + " " +
                                 "не найдено в таблице точек входа"),

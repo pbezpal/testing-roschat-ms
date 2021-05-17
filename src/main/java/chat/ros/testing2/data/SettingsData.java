@@ -197,6 +197,13 @@ public interface SettingsData {
 
     String CONTACT_FOR_FAX = "7100";
 
+    String FAX_NUMBERS_TITLE = "Номера факсов";
+    String FAX_NUMBER_WITH_DESCRIPTION = "7100";
+    String FAX_NUMBER_WITHOUT_DESCRIPTION = "7101";
+    String FAX_DESCRIPTION_FAX = "Это тестовый номер для факса";
+
+    String FAX_USERS_TITLE = "Пользователи факсов";
+
     /******************************************* Раздел Пользователи СУ **********************************************/
 
     /**
