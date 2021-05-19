@@ -686,56 +686,6 @@ task roschatгusers(type: Test){
 
 }
 
-task roschativr(type: Test){
-    useJUnitPlatform()
-
-    /*systemProperties = [
-            'junit.jupiter.execution.parallel.enabled':'true',
-            'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
-            'junit.jupiter.execution.parallel.mode.default':'same_thread',
-            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]*/
-
-    /*systemProperties System.getProperties()
-
-    filter {
-        //include specific method in any of the tests
-        includeTestsMatching "*.server.TestSNMPPage.test_SNMP_server"
-        excludeTestsMatching "*.server.services.*"
-        excludeTestsMatching "*.server.integration.*"
-        excludeTestsMatching "*.server.users.*"
-        //excludeTestsMatching "*.users.TestUserAdminForTests"
-    }*/
-
-    /*systemProperties = [
-            'junit.jupiter.execution.parallel.enabled':'true',
-            'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
-            'junit.jupiter.execution.parallel.mode.default':'same_thread',
-            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]*/
-
-    systemProperties System.getProperties()
-
-    //Parametrized Test
-    //include("**/TestParametersTelephonyEmptyNetwork.class")
-    //include("**/TestParametersTelephonyEmptySip.class")
-    include("**/TestFaxPage.class")
-    //include("**/TestParametersTelephonyTurnWrongMinPort.class")
-
-    //include("**/TestSoundPage.class")
-    //include("**/TestMenuPage.class")
-
-    dependsOn 'cleanTest'
-
-    // Show test results.
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-
-}
-
 task contact_for_fax(type: Test) {
 
     useJUnitPlatform()
@@ -753,6 +703,30 @@ task contact_for_fax(type: Test) {
         includeTestsMatching "*.TestContactsPage.test_Add_Contact_For_Fax"
     }
 
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+}
+
+task roschativr(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    //Parametrized Test
+    //include("**/TestParametersTelephonyEmptyNetwork.class")
+    //include("**/TestParametersTelephonyEmptySip.class")
+    include("**/TestFaxPage.class")
+    //include("**/TestParametersTelephonyTurnWrongMinPort.class")
+
+    //include("**/TestSoundPage.class")
+    //include("**/TestMenuPage.class")
+
+    //dependsOn contact_for_fax
+    dependsOn 'cleanTest'
+
+    // Show test results.
     testLogging {
         events "passed", "skipped", "failed"
     }

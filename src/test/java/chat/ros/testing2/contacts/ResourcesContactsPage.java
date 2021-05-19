@@ -10,7 +10,7 @@ import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 public class ResourcesContactsPage extends StartWebDriver implements BeforeEachCallback {
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
+    public void beforeEach(ExtensionContext context) {
         String classTest = context.getTestClass().toString();
         if (classTest.contains("TestServicePage") || classTest.contains("TestContactsPage"))
             getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");

@@ -3,6 +3,8 @@ package chat.ros.testing2.server.settings.services;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ex.ElementNotFound;
+import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$$;
@@ -18,9 +20,27 @@ public class FaxPage extends ServicesPage {
         return this;
     }
 
-    @Step(value = "Получаем контакт {contact}")
+    @Step(value = "Получаем элемент контакта {contact}")
     public SelenideElement getContactName(String contact){
         if(itemTableContactName.size() == 0) return null;
         else return itemTableContactName.findBy(Condition.text(contact));
+    }
+
+    @Step(value = "Проверяем, что найден {search} контакт {contact}")
+    public boolean isContactName(String contact, boolean search){
+        if(search) {
+            try {
+                getContactName(contact).shouldBe(Condition.visible);
+            } catch (ElementNotFound e) {
+                return false;
+            }
+        }else{
+            try {
+                getContactName(contact).shouldNotBe(Condition.visible);
+            } catch (ElementShould e) {
+                return false;
+            }
+        }
+        return true;
     }
 }
