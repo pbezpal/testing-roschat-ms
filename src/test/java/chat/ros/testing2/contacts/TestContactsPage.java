@@ -109,13 +109,4 @@ public class TestContactsPage extends ContactsPage {
         userPage = actionsContact(CLIENT_7010).addUserAccount(CLIENT_7010, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
         userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
     }
-
-    @Story(value = "Добавление контакта для проверки факса")
-    @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
-            "создаём учётную запись для пользователя")
-    @Test
-    void test_Add_Contact_For_Fax(){
-        actionsContact(CONTACT_FOR_FAX).addUserAccount(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
-    }
-
 }

@@ -1,5 +1,6 @@
 package chat.ros.testing2.server;
 
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.TelephonyPage;
 import com.codeborne.selenide.Selenide;
@@ -19,7 +20,6 @@ import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesServerPage.class)
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
@@ -39,6 +39,17 @@ public class TestTelephonyPage extends TelephonyPage {
     private Map<String,String> mapInputWrongValueSipServer = new HashMap() {{
         put(TELEPHONY_SIP_INPUT_MIN_PORT, TELEPHONY_SIP_MIN_PORT_MORE_MAX_PORT);
         put(TELEPHONY_SIP_INPUT_MAX_PORT, TELEPHONY_SIP_MAX_PORT);
+    }};
+    private Map<String, String> mapInputValueProviderWithReg = new HashMap() {{
+        put(TELEPHONY_PROVIDER_INPUT_NAME, TELEPHONY_PROVIDER_TITLE_WITH_REG);
+        put(TELEPHONY_PROVIDER_INPUT_DESCRIPTION, TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG);
+        put(TELEPHONY_PROVIDER_INPUT_ADDRESS, TELEPHONY_PROVIDER_ADDRESS_WITH_REG);
+        put(TELEPHONY_PROVIDER_INPUT_AON, TELEPHONY_PROVIDER_AON_WITH_REG);
+    }};
+    private Map<String, String> mapInputValueProviderReg = new HashMap() {{
+        put(TELEPHONY_PROVIDER_INPUT_USERNAME, TELEPHONY_PROVIDER_USERNAME_WITH_REG);
+        put(TELEPHONY_PROVIDER_INPUT_PASSWORD, TELEPHONY_PROVIDER_PASSWORD_WITH_REG);
+        put(TELEPHONY_PROVIDER_INPUT_INTERVAL, TELEPHONY_PROVIDER_INTERVAL_WITH_REG);
     }};
     private Map<String, String> mapInputValueTurnServer = new HashMap() {{
         put(TELEPHONY_TURN_INPUT_MIN_PORT, TELEPHONY_TURN_MIN_PORT);

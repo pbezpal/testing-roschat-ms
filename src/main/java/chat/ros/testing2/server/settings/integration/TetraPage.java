@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class TetraPage implements IntegrationPage {
 
-    SelenideElement buttonSaveTetra = $("div.modal-wrapper button.v-btn.primary--text");
+    SelenideElement buttonSaveTetra = $(".modal-wrapper button.v-btn.primary--text");
     private String locatorInput = "//div[@class='naming' and contains(text(), '%1$s')]" +
             "//ancestor::div[@class='modal-fields']//input";
 

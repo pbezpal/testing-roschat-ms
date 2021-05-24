@@ -24,6 +24,7 @@ public interface SettingsPage extends BasePage {
     SelenideElement buttonCloseCheckSettingsForm = $(".msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $(".loader-wrapper h2");
     SelenideElement mainWrapper = $(".main-wrapper");
+    String locatorButtonTable = "table td[contains(text(),'%1$s')]//ancestor::tr//button";
 
     /**
      * Items for combo box
@@ -32,6 +33,8 @@ public interface SettingsPage extends BasePage {
     SelenideElement divComboBoxActive = $(".v-select--is-menu-active");
     SelenideElement activeContextMenu = $(".menuable__content__active");
     ElementsCollection listItemsComboBox = activeContextMenu.$$(".v-list__tile__title");
+
+    SelenideElement modalWindowTitle = modalWindow.find("h2");
 
     @Step(value = "Проверяем, находимся ли мы в разделе {itemContainer}")
     default boolean isNotSectionSettings(String itemContainer){
@@ -42,6 +45,16 @@ public interface SettingsPage extends BasePage {
         }
 
         return true;
+    }
+
+    @Step(value = "Возвращаем заголовок модального окна")
+    default String getTitleOfModalWindow(){
+        try {
+            modalWindowTitle.shouldBe(visible);
+        }catch (ElementNotFound e){
+            return null;
+        }
+        return modalWindowTitle.getText();
     }
 
     @Step(value = "Проверяем, отображается ли {show} поле {field}")

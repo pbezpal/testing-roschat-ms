@@ -66,6 +66,8 @@ dependencies {
     implementation group: 'com.codeborne', name: 'selenide', version: '5.20.4'
     // https://mvnrepository.com/artifact/org.selenide/selenide-selenoid
     implementation group: 'org.selenide', name: 'selenide-selenoid', version: '1.1.1'
+    // https://mvnrepository.com/artifact/ru.stqa.selenium/webdriver-factory
+    compile group: 'ru.stqa.selenium', name: 'webdriver-factory', version: '4.3'
 
     //dependencies for reporting
     // https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5
@@ -686,29 +688,6 @@ task roschatгusers(type: Test){
 
 }
 
-task contact_for_fax(type: Test) {
-
-    useJUnitPlatform()
-
-    systemProperties System.getProperties()
-
-    description "Тестирование добавления пользователя для тестирования закрытых каналов"
-
-    dependsOn 'cleanTest'
-
-    //Parametrized Test
-
-    filter {
-        //include specific method in any of the tests
-        includeTestsMatching "*.TestContactsPage.test_Add_Contact_For_Fax"
-    }
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-
-}
-
 task roschativr(type: Test){
     useJUnitPlatform()
 
@@ -717,8 +696,13 @@ task roschativr(type: Test){
     //Parametrized Test
     //include("**/TestParametersTelephonyEmptyNetwork.class")
     //include("**/TestParametersTelephonyEmptySip.class")
-    include("**/TestFaxPage.class")
+    //include("**/TestFaxPage.class")
     //include("**/TestParametersTelephonyTurnWrongMinPort.class")
+
+    filter {
+        //include specific method in any of the tests
+        includeTestsMatching "*.TestProviderWithoutRegPage"
+    }
 
     //include("**/TestSoundPage.class")
     //include("**/TestMenuPage.class")

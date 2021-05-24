@@ -2,6 +2,7 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.server.contacts.ContactsPage;
 import chat.ros.testing2.server.settings.services.FaxPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -10,6 +11,8 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
+import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +22,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(ResourcesFaxPage.class)
 @ExtendWith(WatcherTests.class)
 public class TestFaxPage extends FaxPage {
+
+    private ContactsPage contactsPage = new ContactsPage();
+
+    @Story(value = "Добавление контакта для проверки факса")
+    @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
+            "создаём учётную запись для пользователя")
+    @Test
+    @Order(1)
+    void test_Add_Contact_For_Fax(){
+        contactsPage.actionsContact(CONTACT_FOR_FAX).addUserAccount(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        TestStatusResult.setTestResult(true);
+    }
 
     @Story(value = "Добавление номер факса с описанием")
     @Description(value = "1. Переходим в раздел Сервисы -> Факс \n" +
@@ -50,7 +65,7 @@ public class TestFaxPage extends FaxPage {
             "5. Проверяем, что номер сохранён в таблице Номер факсов"
     )
     @Test
-    @Order(1)
+    @Order(2)
     void test_Add_Number_Fax_Without_Description(){
         assertAll("1. Вводим номер для факса\n" +
                         "2. Сохраняем\n" +
@@ -72,7 +87,7 @@ public class TestFaxPage extends FaxPage {
             "4. Проверяем, что номер отсутствует в таблице Номер факсов"
     )
     @Test
-    @Order(2)
+    @Order(3)
     void test_Delete_Number_Fax_Without_Description(){
         clickButtonTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, IVR_BUTTON_DELETE);
         assertTrue(isFormConfirmActions(true),
@@ -90,6 +105,7 @@ public class TestFaxPage extends FaxPage {
             "5. Сохраняем пользователя\n" +
             "6. Проверяем, что пользователь добавлен в таблице Пользователи факсов")
     @Test
+    @Order(4)
     void test_Add_User_For_Fax(){
         assertAll("1. Ищем пользователя для факса\n" +
                         "2. Проверяем, что пользователь найден\n" +

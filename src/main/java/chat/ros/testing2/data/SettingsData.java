@@ -66,6 +66,45 @@ public interface SettingsData {
     String TELEPHONY_SIP_INPUT_MAX_PORT = "Максимальный порт";
     String TELEPHONY_SIP_MAX_PORT = "49150";
 
+    /****** Параметры для настройки провайдера ******/
+    String TELEPHONY_PROVIDER_TITLE_FORM = "Провайдеры";
+    String TELEPHONY_PROVIDER_INPUT_NAME = "Название";
+    String TELEPHONY_PROVIDER_INPUT_DESCRIPTION = "Описание";
+    String TELEPHONY_PROVIDER_INPUT_ADDRESS = "Aдрес провайдера (с портом)";
+    String TELEPHONY_PROVIDER_INPUT_AON = "AOH";
+    String TELEPHONY_PROVIDER_INPUT_USERNAME = "Имя пользователя";
+    String TELEPHONY_PROVIDER_INPUT_PASSWORD = "Пароль";
+    String TELEPHONY_PROVIDER_INPUT_INTERVAL = "Интервал регистрации";
+
+    String TELEPHONY_PROVIDER_TITLE_WITHOUT_REG = "Asterisk";
+    String TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG = "Это тестовое описание для провайдера Asterisk";
+    String TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG = "127.0.0.1:5062";
+    String TELEPHONY_PROVIDER_AON_WITHOUT_REG = "Asterisk";
+
+    String TELEPHONY_PROVIDER_EDIT_TITLE_WITHOUT_REG = TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + "Edit";
+    String TELEPHONY_PROVIDER_EDIT_DESCRIPTION_WITHOUT_REG = "Это отредактированное тестовое описание для провайдера Asterisk";
+    String TELEPHONY_PROVIDER_EDIT_ADDRESS_WITHOUT_REG = "127.0.0.100";
+    String TELEPHONY_PROVIDER_EDIT_AON_WITHOUT_REG = TELEPHONY_PROVIDER_AON_WITHOUT_REG + "Edit";
+
+    String TELEPHONY_PROVIDER_TITLE_WITH_REG = "MX-1000";
+    String TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG = "Это тестовое описание для провайдера MX-1000";
+    String TELEPHONY_PROVIDER_ADDRESS_WITH_REG = "127.0.0.1";
+    String TELEPHONY_PROVIDER_AON_WITH_REG = "MX-1000";
+    String TELEPHONY_PROVIDER_USERNAME_WITH_REG = "MX1000";
+    String TELEPHONY_PROVIDER_PASSWORD_WITH_REG = "123456";
+    String TELEPHONY_PROVIDER_INTERVAL_WITH_REG = "360";
+
+    String TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG = "admin";
+    String TELEPHONY_PROVIDER_EDIT_PASSWORD_WITH_REG = "654321";
+    String TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG = "180";
+
+    String TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER = "Провайдер";
+
+    String TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE = "Маршруты";
+    String TELEPHONE_PROVIDER_EDIT_ROUTE_NUMBER_PATTERN_INPUT = "Шаблон номера";
+    String TELEPHONE_PROVIDER_EDIT_ROUTE_REPLACE_PATTERN_INPUT = "Шаблон замены";
+
+
     /****** Параметры для настройки TURN сервера ******/
     String TELEPHONY_TURN_TITLE_FORM = "TURN/STUN";
     String TELEPHONY_TURN_INPUT_MIN_PORT = "Минимальный порт";

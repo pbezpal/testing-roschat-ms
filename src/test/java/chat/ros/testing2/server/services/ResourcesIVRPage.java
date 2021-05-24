@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.*;
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
-public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
+public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -138,10 +138,5 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
             else if(testMethod.equals("test_Delete_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
         }
-    }
-
-    @Override
-    public void afterAll(ExtensionContext context) {
-        Selenide.closeWebDriver();
     }
 }

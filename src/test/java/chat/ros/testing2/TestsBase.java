@@ -7,12 +7,19 @@ import chat.ros.testing2.server.contacts.ContactsPage;
 import client.ClientPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.FileDownloadMode;
+import com.codeborne.selenide.WebDriverRunner;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.net.NetworkUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import ru.stqa.selenium.factory.WebDriverPool;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.logging.Level;
 
 import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
@@ -50,6 +57,33 @@ public class TestsBase implements ClientPage {
         Configuration.browserPosition = "2x2";
         Configuration.fileDownload = FileDownloadMode.FOLDER;
         Configuration.screenshots = false;
+
+        /*DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setBrowserName("chrome");
+        capabilities.setVersion("88.0");
+        capabilities.setCapability("enableVNC", true);
+        capabilities.setCapability("enableVideo", false);
+        capabilities.setCapability("acceptInsecureCerts", true);
+
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+        capabilities.setCapability("goog:loggingPrefs", logPrefs);
+
+        try {
+            driver = new RemoteWebDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().window().setPosition(new Point(2,2));
+        driver.setFileDetector(new LocalFileDetector());
+        WebDriverRunner.setWebDriver(driver);
+        Configuration.browserSize = "1920x1080";
+        Configuration.browserPosition = "2x2";
+        Configuration.fileDownload = FileDownloadMode.FOLDER;
+
+        Configuration.screenshots = false;*/
     }
 
     public String getSshCommandIsContact(){

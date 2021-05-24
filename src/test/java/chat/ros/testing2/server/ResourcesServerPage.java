@@ -18,7 +18,6 @@ public class ResourcesServerPage extends StartWebDriver implements BeforeEachCal
         TestStatusResult.setTestResult(false);
         String classTest = context.getTestClass().toString();
         String methodTest = context.getRequiredTestMethod().getName();
-        TestStatusResult.setTestResult(false);
         if (classTest.contains("TestGeozonesPage")) {
             if (methodTest.equals("test_Open_Page")) getInstanceTestBase().openMS(USER_LOGIN_ADMIN,
                     USER_PASSWORD_ADMIN,

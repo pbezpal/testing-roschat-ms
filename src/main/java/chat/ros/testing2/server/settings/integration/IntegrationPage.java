@@ -20,7 +20,6 @@ public interface IntegrationPage extends SettingsPage {
     ElementsCollection buttonComplex = $$("div.block-content.complex button div");
     SelenideElement buttonSaveContacts = $("div.sync-wrapper button.primary");
     SelenideElement divLoading = $("div.loader-wrapper");
-    String locatorButton = "//table//td[contains(text(),'%1$s')]//ancestor::tr//button";
 
     @Step(value = "Проверяем, доступен ли сервис {service} для выбора")
     default boolean isAvailableTypeService(String service){
@@ -70,7 +69,12 @@ public interface IntegrationPage extends SettingsPage {
     }
 
     default Object clickServiceType(String service){
-        $x(String.format(locatorButton,service)).shouldBe(Condition.visible,Duration.ofMinutes(1)).click();
+        $$("table td")
+                .findBy(Condition.text(service))
+                .shouldBe(Condition.visible,Duration.ofMinutes(1))
+                .closest("tr")
+                .find("button")
+                .click();
         switch(service){
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();

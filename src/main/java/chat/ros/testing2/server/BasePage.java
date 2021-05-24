@@ -24,7 +24,7 @@ public interface BasePage {
     SelenideElement buttonSave = $(".modal-wrapper .primary");
     SelenideElement buttonClose = $(".modal-wrapper .secondary--text");
     ElementsCollection tdTableList = $$("table.v-datatable td");
-    SelenideElement buttonAdd = $("div.action-bar button.primary");
+    SelenideElement buttonAdd = $(".action-bar button.primary");
     SelenideElement textWrong = $(".v-messages__message");
     ElementsCollection listLeftItemMenu = $$(".v-list--dense .v-list__tile__title");
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
@@ -105,7 +105,7 @@ public interface BasePage {
 
     @Step(value = "Нажимаем кнопку Добавить")
     default void clickButtonAdd(){
-        buttonAdd.shouldBe(visible).click();
+        buttonAdd.click();
     }
 
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
@@ -209,13 +209,11 @@ public interface BasePage {
         }
 
         return true;
-
     }
 
     @Step(value = "Проверяем, отображается ли текст модального окна")
     default String getTextModalWindow(String locator){
         return modalWindow.find(locator).text();
-
     }
 
 }
