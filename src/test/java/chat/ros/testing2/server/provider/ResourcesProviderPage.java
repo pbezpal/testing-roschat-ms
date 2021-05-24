@@ -12,7 +12,7 @@ import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
 public class ResourcesProviderPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
+    public void afterEach(ExtensionContext context) {
         String classTest = context.getTestClass().toString();
         String methodTest = context.getRequiredTestMethod().getName();
         if(methodTest.equals("test_Add_Provider_Without_Registration"))
@@ -20,15 +20,15 @@ public class ResourcesProviderPage extends StartWebDriver implements BeforeEachC
     }
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
+    public void beforeEach(ExtensionContext context) {
         String classTest = context.getTestClass().toString();
         String methodTest = context.getRequiredTestMethod().getName();
         TestStatusResult.setTestResult(false);
-        if(classTest.contains("TestProviderWithoutRegPage")){
-            if(methodTest.equals("test_Add_Rout_Of_Provider_Without_Reg"))
+        if (classTest.contains("TestProviderWithoutRegPage")) {
+            if (methodTest.equals("test_Add_Rout_In_Of_Provider_Without_Reg") || methodTest.equals("test_Add_Rout_Out_Of_Provider_Without_Reg") || methodTest.equals("test_Show_Settings_Provider_Without_Reg"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Provider_Without_Registration"),
                         "The provider without registration don't add. Skip the test!");
-            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки", "Телефония");
+            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN, "Настройки", "Телефония");
         }
     }
 }

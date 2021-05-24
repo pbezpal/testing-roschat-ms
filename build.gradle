@@ -702,6 +702,7 @@ task roschativr(type: Test){
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*.TestProviderWithoutRegPage"
+        //includeTestsMatching "*.TestGeozonesPage"
     }
 
     //include("**/TestSoundPage.class")

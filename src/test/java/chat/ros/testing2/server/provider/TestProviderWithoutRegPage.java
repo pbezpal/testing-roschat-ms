@@ -7,8 +7,10 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(ResourcesProviderPage.class)
 @ExtendWith(WatcherTests.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Epic(value = "Настройки")
 @Feature(value = "Телефония")
 public class TestProviderWithoutRegPage extends TelephonyPage {
@@ -70,9 +73,19 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
                         "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице провайдеров")
         );
+        TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем отображение настроек провайдера")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку изменить у провайдера\n" +
+            "3. Проверяем, что настройки провайдера корректно отображаются в разеделе Провайдер")
+    @Order(2)
+    @Test
+    void test_Show_Settings_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
         assertAll("1. Нажимаем кнопку изманить\n" +
-                "2. Проверяем, что в разделе Провайдер отображаются настройки провайдера " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG,
+                        "2. Проверяем, что в разделе Провайдер отображаются настройки провайдера " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG,
                 () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
                         "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в настройках провадера"),
                 () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, true),
@@ -82,7 +95,6 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                 () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITHOUT_REG, true),
                         "Не отображается АОН " + TELEPHONY_PROVIDER_AON_WITHOUT_REG + " в настройках провадера")
         );
-        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Добавляем входящий маршрут")
@@ -92,8 +104,8 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "4. Заполняем поля и нажимаем кнопку Сохранить" +
             "4. Проверяем, что маршрут появился в таблице маршрутизаторов")
     @Test
-    @Order(2)
-    void test_Add_Rout_Of_Provider_Without_Reg(){
+    @Order(3)
+    void test_Add_Rout_In_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
         clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Создать маршрут");
         assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
@@ -103,16 +115,48 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                         "Провайдеры",
                         "Не найден заголовок модального окна при добавлении провайдера"),
                 () -> {
-                    setRoute("5000", "Входящий", true, "/^1([0-9]{3})$/5\\1/");
+                    setRoute(TELEPHONY_PROVIDER_ROUT_IN_NUMBER_WITHOUT_REG, TELEPHONY_PROVIDER_ROUT_IN, true, "/^1([0-9]{3})$/5\\1/");
                     clickButtonSave();
                     clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
                 },
-                () -> assertTrue(isExistsTableText("Входящий", true),
-                        "Не отображается название Входящий в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText("5000", true),
-                        "Не отображается описание 5000 в таблице маршрутизаторов"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUT_IN, true),
+                        "Не отображается название " + TELEPHONY_PROVIDER_ROUT_IN + " в таблице маршрутов"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUT_IN_NUMBER_WITHOUT_REG, true),
+                        "Не отображается описание " + TELEPHONY_PROVIDER_ROUT_IN_NUMBER_WITHOUT_REG + " в таблице маршрутизаторов"),
                 () -> assertTrue(isExistsTableText("/^1([0-9]{3})$/5\\1/", true),
-                        "Не отображается адрес /^1([0-9]{3})$/5\\1/ в таблице провайдеров")
+                        "Не отображается Шаблон замены /^1([0-9]{3})$/5\\1/ в таблице провайдеров")
+        );
+        TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Добавляем исходящий маршрут")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку Новый маршрут\n" +
+            "4. Заполняем поля и нажимаем кнопку Сохранить" +
+            "4. Проверяем, что маршрут появился в таблице маршрутизаторов")
+    @Test
+    @Order(4)
+    void test_Add_Rout_Out_Of_Provider_Without_Reg(){
+        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
+        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Новый маршрут");
+        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
+                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
+                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
+                () -> assertEquals(getTitleOfModalWindow(),
+                        "Провайдеры",
+                        "Не найден заголовок модального окна при добавлении провайдера"),
+                () -> {
+                    setRoute("5001", TELEPHONY_PROVIDER_ROUT_OUT, true, "");
+                    clickButtonSave();
+                    clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+                },
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUT_OUT, true),
+                        "Не отображается название " + TELEPHONY_PROVIDER_ROUT_OUT + " в таблице маршрутов"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUT_OUT_NUMBER_WITHOUT_REG, true),
+                        "Не отображается описание " + TELEPHONY_PROVIDER_ROUT_OUT_NUMBER_WITHOUT_REG + " в таблице маршрутизаторов"),
+                () -> assertTrue(isExistsTableText("\\0", true),
+                        "Не отображается Шаблон замены \\0 в таблице провайдеров")
         );
         TestStatusResult.setTestResult(true);
     }

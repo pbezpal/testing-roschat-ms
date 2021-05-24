@@ -28,16 +28,13 @@ public class GeozonesPage implements SettingsPage {
         buttonAddBeacon.click();
     }
 
-    public boolean addGeozone(Map<String, String> mapInputValueGeozone, String geozone){
-        clickButtonAdd();
+    public boolean sendDataGeozone(Map<String, String> mapInputValueGeozone, String geozone){
         sendLabelInputsForm(mapInputValueGeozone);
         clickButtonSave();
         return isExistsTableText(geozone,true);
     }
 
-    public boolean addBeacon(String geozone, Map<String, String> mapInputValueBeacon, String beacon){
-        clickOpenGeoZone(geozone);
-        clickButtonAddBeacons();
+    public boolean sendDataBeacon(Map<String, String> mapInputValueBeacon, String beacon){
         sendLabelInputsForm(mapInputValueBeacon);
         clickButtonSave();
         return isExistsTableText(beacon, true);

@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Selenide.sleep;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesServerPage.class)
@@ -43,9 +43,25 @@ public class TestGeozonesPage extends GeozonesPage {
     @Test
     @Order(1)
     void test_Add_Geozone(){
-        assertTrue(addGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
-                "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер");
+        clickButtonAdd();
+        assertAll("1. Проверяем, отображается ли заголовок модального окна\n" +
+                        "2. Вводим данные и сохраняем настройки геозоны\n" +
+                        "3. Проверяем, появилась ли запись о геозоне в таблице",
+                () -> assertEquals(getTitleOfModalWindow(),
+                        "Добавление геозоны",
+                        "Не найден заголовок модального окна при добавлении геозоны"),
+                () -> assertTrue(sendDataGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
+                        "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер")
+        );
         TestStatusResult.setTestResult(true);
+        assertAll("Проверяем, отображаются ли все значения в таблице Геозоне",
+                () -> assertTrue(isExistsTableText(GEOZONES_WIDTH_ZONA,true), "Не найдено значение широты " +
+                        "" + GEOZONES_WIDTH_ZONA + " в таблице Геозоне"),
+                () -> assertTrue(isExistsTableText(GEOZONES_LENGHT_ZONA,true), "Не отображается значение долготы " +
+                        "" + GEOZONES_LENGHT_ZONA + " в таблице Геозоне"),
+                () -> assertTrue(isExistsTableText(GEOZONES_RADIUS_ZONA,true), "Не отображается значение радиуса " +
+                        "" + GEOZONES_RADIUS_ZONA + " в таблице Геозоне")
+        );
     }
 
     @Story(value = "Добавляем Beacon")
@@ -54,8 +70,24 @@ public class TestGeozonesPage extends GeozonesPage {
     @Test
     @Order(2)
     void test_Add_Beacon(){
-        assertTrue(addBeacon(GEOZONES_NAME_ZONA, mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
-                "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер");
+        clickOpenGeoZone(GEOZONES_NAME_ZONA);
+        clickButtonAddBeacons();
+        assertAll("1. Проверяем, отображается ли заголовок модального окна\n" +
+                        "2. Вводим данные и сохраняем настройки геозоны\n" +
+                        "3. Проверяем, появилась ли запись о геозоне в таблице",
+                () -> assertEquals(getTitleOfModalWindow(),
+                        "Добавление бекона",
+                        "Не найден заголовок модального окна при добавлении бекона"),
+                () -> assertTrue(sendDataBeacon(mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
+                        "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер")
+        );
+        TestStatusResult.setTestResult(true);
+        assertAll("Проверяем, отображаются ли все значения в таблице Beacons",
+                () -> assertTrue(isExistsTableText(GEOZONES_BEACONE_MINOR,true), "Не найдено значение minor " +
+                        "" + GEOZONES_BEACONE_MINOR + " в таблице Beacons"),
+                () -> assertTrue(isExistsTableText(GEOZONES_BEACONE_MAJOR,true), "Не отображается значение major " +
+                        "" + GEOZONES_BEACONE_MAJOR + " в таблице Геозоне")
+        );
     }
 
     @Story(value = "Перезагрузка страницы")
