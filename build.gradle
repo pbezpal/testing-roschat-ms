@@ -425,6 +425,49 @@ task test_roschatdb {
     finalizedBy(testservice, contactconnect, testclosedchannels)
 }
 
+task test_push_server(type: Test){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    description "Тестирование настройки push сервера"
+
+    filter {
+        includeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
+    }
+
+    dependsOn "cleanTest"
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task roschatservices(type: Test, dependsOn: test_push_server){
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    description "Тестирование сервера услуг"
+
+    filter {
+        includeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
+    }
+
+    dependsOn test_push_server
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task test_roschatservices(type: Test){
+    dependsOn testuseradmin
+    finalizedBy(roschatservices)
+}
+
 task roschatserver(type: Test){
     useJUnitPlatform()
 
@@ -437,6 +480,8 @@ task roschatserver(type: Test){
         includeTestsMatching "*.server.*"
         excludeTestsMatching "*.server.integration.*"
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
+        excludeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
+        excludeTestsMatching "*.services.*"
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
@@ -447,7 +492,7 @@ task roschatserver(type: Test){
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(testconnect, testintegration, testservice, testclosedchannels)
+    finalizedBy(testconnect, testintegration, testservice, testclosedchannels, roschatservices)
 }
 
 task test_roschatserver {
@@ -693,17 +738,28 @@ task roschativr(type: Test){
 
     systemProperties System.getProperties()
 
+    /*systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]*/
+
     //Parametrized Test
     //include("**/TestParametersTelephonyEmptyNetwork.class")
     //include("**/TestParametersTelephonyEmptySip.class")
     //include("**/TestFaxPage.class")
     //include("**/TestParametersTelephonyTurnWrongMinPort.class")
 
-    filter {
+    include("**/TestProviderWithoutRegPage.class")
+    include("**/TestProviderWithRegPage.class")
+    /*filter {
         //include specific method in any of the tests
         includeTestsMatching "*.TestProviderWithoutRegPage"
+        includeTestsMatching "*.TestProviderWithRegPage"
         //includeTestsMatching "*.TestGeozonesPage"
-    }
+    }*/
 
     //include("**/TestSoundPage.class")
     //include("**/TestMenuPage.class")

@@ -67,6 +67,7 @@ public interface SettingsData {
     String TELEPHONY_SIP_MAX_PORT = "49150";
 
     /****** Параметры для настройки провайдера ******/
+    //The data for form of provider
     String TELEPHONY_PROVIDER_TITLE_FORM = "Провайдеры";
     String TELEPHONY_PROVIDER_INPUT_NAME = "Название";
     String TELEPHONY_PROVIDER_INPUT_DESCRIPTION = "Описание";
@@ -76,40 +77,59 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_INPUT_PASSWORD = "Пароль";
     String TELEPHONY_PROVIDER_INPUT_INTERVAL = "Интервал регистрации";
 
+    String TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER = "Провайдер";
+
+    //The data for creating the first provider without registration
     String TELEPHONY_PROVIDER_TITLE_WITHOUT_REG = "Asterisk";
     String TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG = "Это тестовое описание для провайдера Asterisk";
     String TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG = "127.0.0.1:5062";
-    String TELEPHONY_PROVIDER_AON_WITHOUT_REG = "Asterisk";
+    String TELEPHONY_PROVIDER_AON_WITHOUT_REG = "Ksiretsa";
 
-    String TELEPHONY_PROVIDER_ROUT_IN = "Входящий";
-    String TELEPHONY_PROVIDER_ROUT_OUT = "Исходящий";
+    //The data for create provider with registration
+    String TELEPHONY_PROVIDER_TITLE_WITH_REG = "MX-1000";
+    String TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG = "Это тестовое описание для провайдера MX-1000";
+    String TELEPHONY_PROVIDER_ADDRESS_WITH_REG = "127.0.0.1";
+    String TELEPHONY_PROVIDER_AON_WITH_REG = "XM001";
+    String TELEPHONY_PROVIDER_USERNAME_WITH_REG = "MX1000";
+    String TELEPHONY_PROVIDER_PASSWORD_WITH_REG = "123456";
+    String TELEPHONY_PROVIDER_INTERVAL_WITH_REG = "299";
 
-    String TELEPHONY_PROVIDER_ROUT_IN_NUMBER_WITHOUT_REG = "5000";
-    String TELEPHONY_PROVIDER_ROUT_OUT_NUMBER_WITHOUT_REG = "5001";
+    //The data for edit registration provider
+    String TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG = "admin";
+    String TELEPHONY_PROVIDER_EDIT_PASSWORD_WITH_REG = "654321";
+    String TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG = "31";
+
+    String TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE = "Маршруты";
+
+    //Type route
+    String TELEPHONY_PROVIDER_ROUTE_IN = "Входящий";
+    String TELEPHONY_PROVIDER_ROUTE_OUT = "Исходящий";
+
+    //The fields for route with simple mode
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER = "Шаблон номера";
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE = "Шаблон замены";
+
+    //The fields for route with normal mode
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER = "Рег. выр. номера";
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE = "Рег. выр. замены";
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE = "Группы замены";
+
+    //Data for route with simple mode
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER = "5000";
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE = "1+5|XXX";
+
+    //Data for route with normal mode
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER = "^(5001)$";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER = "^(5000)$";
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE = "^(1[0-9]{3})$";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE = "^5([0-9]{3})$";
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE = "5\\1";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE = "1\\1";
 
     String TELEPHONY_PROVIDER_EDIT_TITLE_WITHOUT_REG = TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + "Edit";
     String TELEPHONY_PROVIDER_EDIT_DESCRIPTION_WITHOUT_REG = "Это отредактированное тестовое описание для провайдера Asterisk";
     String TELEPHONY_PROVIDER_EDIT_ADDRESS_WITHOUT_REG = "127.0.0.100";
     String TELEPHONY_PROVIDER_EDIT_AON_WITHOUT_REG = TELEPHONY_PROVIDER_AON_WITHOUT_REG + "Edit";
-
-    String TELEPHONY_PROVIDER_TITLE_WITH_REG = "MX-1000";
-    String TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG = "Это тестовое описание для провайдера MX-1000";
-    String TELEPHONY_PROVIDER_ADDRESS_WITH_REG = "127.0.0.1";
-    String TELEPHONY_PROVIDER_AON_WITH_REG = "MX-1000";
-    String TELEPHONY_PROVIDER_USERNAME_WITH_REG = "MX1000";
-    String TELEPHONY_PROVIDER_PASSWORD_WITH_REG = "123456";
-    String TELEPHONY_PROVIDER_INTERVAL_WITH_REG = "360";
-
-    String TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG = "admin";
-    String TELEPHONY_PROVIDER_EDIT_PASSWORD_WITH_REG = "654321";
-    String TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG = "180";
-
-    String TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER = "Провайдер";
-
-    String TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE = "Маршруты";
-    String TELEPHONE_PROVIDER_EDIT_ROUTE_NUMBER_PATTERN_INPUT = "Шаблон номера";
-    String TELEPHONE_PROVIDER_EDIT_ROUTE_REPLACE_PATTERN_INPUT = "Шаблон замены";
-
 
     /****** Параметры для настройки TURN сервера ******/
     String TELEPHONY_TURN_TITLE_FORM = "TURN/STUN";

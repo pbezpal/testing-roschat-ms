@@ -1,0 +1,51 @@
+#!groovy
+
+def SERVER_VER="${params.VER}"
+
+properties([disableConcurrentBuilds()])
+
+pipeline{
+    agent {
+        label 'server_tests'
+    }
+    stages{
+        stage("Cleaning the build directory"){
+            steps{
+                deleteDir();
+            }
+        }
+        stage("Cloning from a git repository"){
+            steps{
+                script{
+                    try{
+                        git credentialsId: '9a38faee-c257-4dbd-bf80-1022e4e6cea0', url: 'http://10.10.199.12:7990/scm/test/test-roschat-ms.git'
+                    }catch(err){
+                        currentBuild.result = "FAILURE"
+                        error("Error copying from git repository")
+                    }
+                }
+            }
+        }
+        stage("Testing"){
+            steps{
+                script{
+                    try{
+                        sh "./gradlew clean test_roschatservices -Dhostserver=${params.SERVER} -Dportms=${params.PORT} -Dselenoid=${params.SELENOID}"
+                    }catch(err){
+                        currentBuild.result = 'FAILURE';
+                    }
+                }
+            }
+        }
+        stage("Report creating"){
+            steps{
+                allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
+            }
+        }
+    }
+    post{
+        always{
+            emailext body: "Server version testing - ${SERVER_VER} \n Result testing - ${currentBuild.result} \n Report - ${BUILD_URL}allure", subject: 'Roschat server testing', to: 'bezpalko', from: 'jenkins@infotek.ru'
+        }
+    }
+}

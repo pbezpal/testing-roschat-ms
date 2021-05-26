@@ -39,23 +39,36 @@ public class TelephonyPage implements SettingsPage {
         return this;
     }
 
-    public TelephonyPage setProvider(Map<String, String> mapSettingsProviderServer, boolean reg, Map<String, String>... mapSettingsRegProvider){
+    public TelephonyPage setProvider(Map<String, String> mapSettingsProviderServer){
         sendInputsForm(mapSettingsProviderServer);
-        selectCheckboxRegProvider(false);
-        if(reg) sendInputsForm(mapSettingsRegProvider[0]);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         return this;
     }
 
-    @Step(value = "Включаем {select} регистрацию провайдера")
-    public TelephonyPage selectCheckboxRegProvider(boolean select){
-        SelenideElement checkBoxRegProvider = modalWindow.findAll("input").findBy(Condition.type("checkbox"));
+    public TelephonyPage setProvider(Map<String, String> mapSettingsProviderServer, Map<String, String> mapSettingsRegProvider, boolean registration){
+        sendInputsForm(mapSettingsProviderServer);
+        selectCheckboxProvider(registration);
+        if(registration) sendInputsForm(mapSettingsRegProvider);
+        clickButtonSave();
+        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        return this;
+    }
+
+    @Step(value = "Включаем {select}")
+    public TelephonyPage selectCheckboxProvider(boolean select){
+        SelenideElement inputCheckBox = modalWindow.findAll("input").findBy(Condition.type("checkbox"));
+        SelenideElement checkBox = modalWindow.find(".v-input--selection-controls__ripple");
         if(select) {
-            checkBoxRegProvider.setSelected(true);
-            checkBoxRegProvider.shouldBe(Condition.selected);
+            if( ! inputCheckBox.isSelected())
+                checkBox.click();
+            inputCheckBox.shouldBe(Condition.selected);
         }
-        else checkBoxRegProvider.shouldNotBe(Condition.selected);
+        else {
+            if (inputCheckBox.isSelected())
+                checkBox.click();
+            inputCheckBox.shouldNotBe(Condition.selected);
+        }
         return this;
     }
 
@@ -66,7 +79,6 @@ public class TelephonyPage implements SettingsPage {
         }catch (ElementShould e){
             return false;
         }
-
         return true;
     }
 
@@ -80,7 +92,7 @@ public class TelephonyPage implements SettingsPage {
         return this;
     }
 
-    @Step(value = "Проверяем отображается ли настройка {content} провайдера в форме настроек провайдера")
+    @Step(value = "Проверяем отображается {show} ли настройка {content} провайдера в форме настроек провайдера")
     public boolean isContentSettingProvider(String content, boolean show){
         if(show) {
             try {
@@ -99,18 +111,30 @@ public class TelephonyPage implements SettingsPage {
         return true;
     }
 
-    @Step(value = "Создаём новый маршрут {number} для направления {typeRoute}")
-    public TelephonyPage setRoute(String number, String typeRoute, boolean simpleMode, String... replaceNumber){
-        SelenideElement checkboxSimpleMode = modalWindow.findAll("input").findBy(Condition.type("checkbox"));
+    @Step(value = "Создаём новый маршрут для направления {typeRoute}")
+    public TelephonyPage createRoute(String typeRoute, boolean simpleMode, Map<String, String> dataRoute){
         selectTypeRout.click();
         listTypeRoute.findBy(Condition.text(typeRoute)).click();
-        sendInputForm("Шаблон номера", number);
-        if(replaceNumber.length > 0) sendInputForm("Шаблон замены", replaceNumber[0]);
-        if(simpleMode) checkboxSimpleMode.shouldBe(Condition.checked);
-        else{
-            checkboxSimpleMode.setSelected(false);
-            checkboxSimpleMode.shouldNotBe(Condition.checked);
-        }
+        selectCheckboxProvider(simpleMode);
+        sendInputsForm(dataRoute);
+        return this;
+    }
+
+    @Step(value = "Редактируем маршрут {dataRoute}")
+    public TelephonyPage editRoute(Map<String, String> dataRoute, boolean... simpleMode){
+        if(simpleMode.length > 0) selectCheckboxProvider(simpleMode[0]);
+        sendInputsForm(dataRoute);
+        return this;
+    }
+
+    @Step(value = "Нажимаем кнопку {button} в таблице маршрутов у маршрута {route}")
+    public TelephonyPage clickButtonTableRoute(String route, String button){
+        $$("table td")
+                .findBy(Condition.text(route))
+                .parent()
+                .findAll("button i")
+                .findBy(Condition.text(button))
+                .click();
         return this;
     }
 
