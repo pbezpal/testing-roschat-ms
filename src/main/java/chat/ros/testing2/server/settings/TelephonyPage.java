@@ -10,12 +10,12 @@ import io.qameta.allure.Step;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TelephonyPage implements SettingsPage {
 
     //Общие переменные
-    private String telephoneSection = "Телефония";
     private SelenideElement selectTypeRout = $(".v-input__icon--append i");
     private ElementsCollection listTypeRoute = $$(".v-select-list .v-list__tile__title");
     private ElementsCollection subtitlesModalWindow = modalWindow.findAll("h3");
@@ -84,7 +84,10 @@ public class TelephonyPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button} в таблице провайдеров у провайдера {provider}")
     public TelephonyPage clickButtonTableProvider(String provider, String button){
-        $$("table td")
+        SelenideElement sectionProvider = $$("h2").findBy(text("Провайдеры")).parent();
+        sectionProvider.scrollIntoView(false);
+        sectionProvider.
+                findAll("table td")
                 .findBy(Condition.text(provider))
                 .parent()
                 .find("button i[title='" + button + "']")

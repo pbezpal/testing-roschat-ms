@@ -425,6 +425,32 @@ task test_roschatdb {
     finalizedBy(testservice, contactconnect, testclosedchannels)
 }
 
+task testproviders(type: Test) {
+    useJUnitPlatform()
+
+    description "Тестирование раздела Лицензирование и обсуживание на невалидные значения"
+
+    dependsOn 'cleanTest'
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    systemProperties System.getProperties()
+
+    //Parametrized Test
+    include("**/TestProviderWithoutRegPage.class")
+    include("**/TestProviderWithRegPage.class")
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 task test_push_server(type: Test){
     useJUnitPlatform()
 
@@ -444,7 +470,7 @@ task test_push_server(type: Test){
     }
 }
 
-task roschatservices(type: Test, dependsOn: test_push_server){
+task roschatservices(type: Test){
     useJUnitPlatform()
 
     systemProperties System.getProperties()
@@ -452,7 +478,7 @@ task roschatservices(type: Test, dependsOn: test_push_server){
     description "Тестирование сервера услуг"
 
     filter {
-        includeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
+        includeTestsMatching "*.services.*"
     }
 
     dependsOn test_push_server
@@ -482,6 +508,7 @@ task roschatserver(type: Test){
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
         excludeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
         excludeTestsMatching "*.services.*"
+        excludeTestsMatching "*.provider.*"
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
@@ -492,7 +519,7 @@ task roschatserver(type: Test){
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(testconnect, testintegration, testservice, testclosedchannels, roschatservices)
+    finalizedBy(testconnect, testintegration, testservice, testclosedchannels, roschatservices, testproviders)
 }
 
 task test_roschatserver {
@@ -749,11 +776,11 @@ task roschativr(type: Test){
     //Parametrized Test
     //include("**/TestParametersTelephonyEmptyNetwork.class")
     //include("**/TestParametersTelephonyEmptySip.class")
-    //include("**/TestFaxPage.class")
+    include("**/TestFaxPage.class")
     //include("**/TestParametersTelephonyTurnWrongMinPort.class")
 
-    include("**/TestProviderWithoutRegPage.class")
-    include("**/TestProviderWithRegPage.class")
+    //include("**/TestProviderWithoutRegPage.class")
+    //include("**/TestProviderWithRegPage.class")
     /*filter {
         //include specific method in any of the tests
         includeTestsMatching "*.TestProviderWithoutRegPage"
@@ -761,10 +788,6 @@ task roschativr(type: Test){
         //includeTestsMatching "*.TestGeozonesPage"
     }*/
 
-    //include("**/TestSoundPage.class")
-    //include("**/TestMenuPage.class")
-
-    //dependsOn contact_for_fax
     dependsOn 'cleanTest'
 
     // Show test results.
@@ -773,3 +796,6 @@ task roschativr(type: Test){
     }
 
 }
+
+
+

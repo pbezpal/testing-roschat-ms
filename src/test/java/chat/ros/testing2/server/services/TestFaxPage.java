@@ -124,6 +124,7 @@ public class TestFaxPage extends FaxPage {
                 () -> assertTrue(isItemTable(FAX_USERS_TITLE, CONTACT_FOR_FAX, true),
                         "Не найдена запись " + CONTACT_FOR_FAX + " в таблице " + FAX_USERS_TITLE)
         );
+        TestStatusResult.setTestResult(true);
     }
 
 }

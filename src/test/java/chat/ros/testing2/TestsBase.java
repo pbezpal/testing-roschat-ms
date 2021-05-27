@@ -36,6 +36,7 @@ public class TestsBase implements ClientPage {
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
     private RemoteWebDriver driver = null;
     private String ipAddress = new NetworkUtils().getIp4NonLoopbackAddressOfThisMachine().getHostAddress();
+    private LoginPage loginPage = new LoginPage();
 
     public TestsBase () {}
 
@@ -117,10 +118,15 @@ public class TestsBase implements ClientPage {
                     "авторизации");
     }
 
+    public void rememberLogin(String host, String login, String password, boolean remember){
+        Configuration.baseUrl = host;
+        open("/");
+        loginPage.loginOnServer(login, password, remember);
+    }
+
     public void openMS(String login, String password, String... navigation){
         sleep(1000);
         Configuration.baseUrl = hostServer;
-        LoginPage loginPage = new LoginPage();
         open("/");
         if( ! loginPage.isLoginMS()) loginPage.loginOnServer(login, password);
         if(navigation.length == 2){

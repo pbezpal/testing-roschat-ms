@@ -2,15 +2,20 @@ package chat.ros.testing2.server.provider;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
+import chat.ros.testing2.TestsBase;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
-public class ResourcesProviderPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesProviderPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
+
+    private TestsBase testsBase = new TestsBase();
+
     @Override
     public void afterEach(ExtensionContext context) {
         String methodTest = context.getRequiredTestMethod().getName();
@@ -67,6 +72,11 @@ public class ResourcesProviderPage extends StartWebDriver implements BeforeEachC
             Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Rout_In_With_Simple_Mode"),
                     "The inbox route didn't add. Skip the test!");
 
-        getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN, "Настройки", "Телефония");
+        testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN, "Настройки", "Телефония");
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) throws Exception {
+        testsBase.init();
     }
 }

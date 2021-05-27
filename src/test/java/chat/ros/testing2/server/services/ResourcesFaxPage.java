@@ -3,7 +3,6 @@ package chat.ros.testing2.server.services;
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -13,14 +12,12 @@ import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
 public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
 
+    private final String hostFaxPage = "http://"  + System.getProperty("hostserver") + ":5000";
+
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
-        String classTest = context.getTestClass().toString();
         String methodTest = context.getRequiredTestMethod().getName();
-        if(classTest.contains("TestFaxPage")){
-            if(methodTest.equals("test_Add_Number_Fax_Without_Description") || methodTest.equals("test_Add_Contact_For_Fax"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
-        }
+        TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
     }
 
     @Override

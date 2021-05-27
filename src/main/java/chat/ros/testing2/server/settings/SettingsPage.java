@@ -24,7 +24,6 @@ public interface SettingsPage extends BasePage {
     SelenideElement buttonCloseCheckSettingsForm = $(".msg-actions.actions-wrapper button.v-btn.v-btn--flat.theme--light");
     SelenideElement elementLoaderSettings = $(".loader-wrapper h2");
     SelenideElement mainWrapper = $(".main-wrapper");
-    String locatorButtonTable = "table td[contains(text(),'%1$s')]//ancestor::tr//button";
 
     /**
      * Items for combo box

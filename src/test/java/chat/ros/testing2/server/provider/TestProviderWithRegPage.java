@@ -429,7 +429,7 @@ public class TestProviderWithRegPage extends TelephonyPage {
                         "Не найден подзаголовок 'Общее' модального окна"),
                 () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
                         "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {setProvider(dataGeneralProvider).selectCheckboxProvider(false);},
+                () -> {selectCheckboxProvider(false).setProvider(dataGeneralProvider);},
                 () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, true),
                         "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в настройках" +
                                 " провадера"),

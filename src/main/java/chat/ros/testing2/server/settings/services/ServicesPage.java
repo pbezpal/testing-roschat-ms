@@ -10,8 +10,7 @@ import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class ServicesPage implements SettingsPage {
 
@@ -20,7 +19,7 @@ public class ServicesPage implements SettingsPage {
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
 
     private SelenideElement getServiceSection(String title){
-        return $x("//h2[text()='" + title + "']//parent::*[@class='block-wrapper']");
+        return $$("h2").findBy(text(title)).parent();
     }
 
     public SelenideElement getModalWindow() {
