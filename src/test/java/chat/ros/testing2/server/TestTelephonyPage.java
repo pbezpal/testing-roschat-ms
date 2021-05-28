@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestTelephonyPage extends TelephonyPage {
 
     private String field;
+    //The data for section network
     private Map<String, String> mapInputValueNetwork = new HashMap() {{
         put(TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS, TELEPHONY_NETWORK_PUBLIC_ADDRESS);
         put(TELEPHONY_NETWORK_INPUT_FRONT_DEV, TELEPHONY_NETWORK_FRONT_IP);

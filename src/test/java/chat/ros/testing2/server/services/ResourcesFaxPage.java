@@ -2,17 +2,20 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
+import chat.ros.testing2.TestsBase;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
-public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesFaxPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
 
     private final String hostFaxPage = "http://"  + System.getProperty("hostserver") + ":5000";
+    private TestsBase testsBase = new TestsBase();
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
@@ -33,9 +36,14 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Contact_For_Fax"),
                         "The contact for fax don't created. Skip the test!");
             if(methodTest.equals("test_Add_Contact_For_Fax"))
-                getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
+                testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
             else
-                getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Факс");
+                testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Факс");
         }
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) throws Exception {
+        testsBase.init();
     }
 }

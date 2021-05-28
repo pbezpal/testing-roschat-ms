@@ -438,8 +438,8 @@ public class TestMenuPage extends CheckIVRMenu {
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Go_To_Menu(String type){
         String menu = "Перейти в меню " + type + " отредактировано";
-        if(TestStatusResult.getTestResult().get("Edit go to menu=" + type) == null || ! TestStatusResult.getTestResult().get("Edit go to menu=" + type)) menu = "Перейти в меню " + type;
-        else menu = "Перейти в меню " + type + " отредактировано";
+        /*if(TestStatusResult.getTestResult().get("Edit go to menu=" + type) == null || ! TestStatusResult.getTestResult().get("Edit go to menu=" + type)) menu = "Перейти в меню " + type;
+        else menu = "Перейти в меню " + type + " отредактировано";*/
         clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
         assertTrue(isFormConfirmActions(true),
                 "Не появилась форма для удаления меню " + menu);

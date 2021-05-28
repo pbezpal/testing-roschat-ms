@@ -13,8 +13,7 @@ import java.time.Duration;
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class ServerPage implements SettingsPage{
@@ -57,13 +56,44 @@ public class ServerPage implements SettingsPage{
         return this;
     }
 
-    @Step(value = "Проверяем, что настройки Push сервера применились")
-    public boolean isCheckUpdateLicense(){
+    @Step(value = "Проверяем, что Лицензия успешно обновилась и иконка с красной поменялась на зелёную")
+    public boolean isCheckLicense(){
+        SelenideElement parentLicense = $$(".content-license h4")
+                .findBy(Condition.text("Лицензия"))
+                .parent();
         try {
-            $(".v-input--is-label-active").shouldBe(Condition.enabled, Duration.ofSeconds(30));
+            parentLicense.$(".success--text").shouldBe(Condition.visible, Duration.ofSeconds(5));
         }catch (ElementNotFound element){
             return false;
         }
+        return true;
+    }
+
+    @Step(value = "Проверяем, что Лицензирования применились для сервера услуг {service}")
+    public boolean isCheckLicenseServices(String service){
+        SelenideElement parentService = $$(".block-sorm .block-body__item-text")
+                .findBy(Condition.text(service))
+                .parent();
+        try {
+            parentService.$(".v-input--is-label-active").shouldBe(Condition.visible, Duration.ofSeconds(5));
+        }catch (ElementNotFound element){
+            return false;
+        }
+        return true;
+    }
+
+    @Step(value = "Проверяем, что Лицензия применилась для {action}")
+    public boolean isCheckLicenseAction(String action){
+        SelenideElement parentAction = $$(".content-license h4")
+                .findBy(Condition.text(action))
+                .parent()
+                .parent();
+        try {
+            parentAction.$(".v-input--is-label-active").shouldBe(Condition.visible, Duration.ofSeconds(5));
+        }catch (ElementNotFound e){
+            return false;
+        }
+
         return true;
     }
 

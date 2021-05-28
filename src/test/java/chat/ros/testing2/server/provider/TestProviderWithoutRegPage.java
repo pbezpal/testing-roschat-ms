@@ -55,9 +55,9 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     }};
     //The data for edit route with simple mode
     private Map<String,String> dataEditRouteSimpleMode = new HashMap(){{
-        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER);
-        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE);
-        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE, TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_REPLACE);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE, TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE);
     }};
     //The data for edit route with expert mode
     private Map<String,String> dataEditRouteExpertMode = new HashMap(){{
@@ -125,7 +125,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "4. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
     @Order(3)
-    void test_Add_Rout_In_With_Simple_Mode(){
+    void test_Add_Rout_In_With_Simple_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
         clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Создать маршрут");
         assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
@@ -140,14 +140,16 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                     clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
                 },
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_IN, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_ROUTE_IN + " в таблице маршрутов"),
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_IN +
+                                " в столбце Направление в таблице маршрутов"),
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER + " в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE, true),
-                        "Не отображается Шаблон замены " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE + " " +
-                                "в таблице провайдеров")
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов")
         );
         TestStatusResult.setTestResult(true);
+        assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE, true),
+                "Не отображается Шаблон замены " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE +
+                        " в столбце Шаблон номера в таблице маршрутов");
     }
 
     @Story(value = "Добавляем исходящий маршрут")
@@ -158,7 +160,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "4. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
     @Order(4)
-    void test_Add_Rout_Out_With_Expert_Mode(){
+    void test_Add_Rout_Out_With_Expert_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
         clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Новый маршрут");
         assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
@@ -168,18 +170,26 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                         "Провайдеры",
                         "Не найден заголовок модального окна при добавлении провайдера"),
                 () -> {
-                    createRoute(TELEPHONY_PROVIDER_ROUTE_OUT, false, dataEditRouteSimpleMode);
+                    createRoute(TELEPHONY_PROVIDER_ROUTE_OUT, false, dataRouteExpertMode);
                     clickButtonSave();
                     clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
                 },
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_OUT, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_ROUTE_OUT + " в таблице маршрутов"),
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_OUT +
+                                " в столбце Направление в таблице маршрутов"),
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER + " в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE, true),
-                        "Не отображается Шаблон замены " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE + " в таблице провайдеров")
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов")
         );
         TestStatusResult.setTestResult(true);
+        assertAll("Проверяем, отображается ли значение в столбце Шаблон замены после создания маршрута",
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов")
+        );
     }
 
     @Story(value = "Редактирование Исходящего маршрута")
@@ -190,7 +200,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "4. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
     @Order(5)
-    void test_Edit_Route_Out_With_Expert_Mode(){
+    void test_Edit_Route_Out_With_Expert_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
                 .clickButtonTableRoute(TELEPHONY_PROVIDER_ROUTE_OUT, "edit");
         assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
@@ -205,16 +215,18 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                     clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
                 },
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_OUT, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_ROUTE_OUT + " в таблице маршрутов " +
-                                "после редактирования"),
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_OUT +
+                                " в столбце Направление в таблице маршрутов после редактирования"),
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER + " в " +
-                                "таблице маршрутов после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE, true),
-                        "Не отображается Шаблон замены " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE +
-                                " в таблице провайдеров после редактирования")
+                        "Не отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов после редактирования"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов после редактирования"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов после редактирования")
         );
-        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Редактирование Входящего маршрута")
@@ -225,7 +237,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
     @Order(6)
-    void test_Edit_Route_In_Update_From_Simple_Mode_To_Expert_Mode(){
+    void test_Edit_Route_In_Update_From_Simple_Mode_To_Expert_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
                 .clickButtonTableRoute(TELEPHONY_PROVIDER_ROUTE_IN, "edit");
         assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
@@ -235,20 +247,23 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                         "Провайдеры",
                         "Не найден заголовок модального окна при добавлении провайдера"),
                 () -> {
-                    editRoute(dataRouteExpertMode, false);
+                    editRoute(dataEditRouteSimpleMode, false);
                     clickButtonSave();
                     clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
                 },
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_IN, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_ROUTE_IN + " в таблице маршрутов после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER + " " +
-                                "в таблице маршрутов после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER, true),
-                        "Не отображается Шаблон замены " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER + " " +
-                                "в таблице провайдеров после редактирования")
+                        "Не отображается значение " + TELEPHONY_PROVIDER_ROUTE_IN +
+                                " в столбце Направление в таблице маршрутов после редактирования"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER, true),
+                        "Не отображается описание " + TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов после редактирования"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов после редактирования"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице маршрутов после редактирования")
         );
-        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Удаление Входящего маршрута")
@@ -259,35 +274,34 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "5. Проверяем, что запись о входящем маршруте пропадала в таблице маршрутов после удаления")
     @Test
     @Order(7)
-    void test_Delete_Route_In_Simple_Mode(){
-        String number = null;
-        String replace = null;
-        if(TestStatusResult.getTestResult().get("test_Edit_Route_In_Update_From_Simple_Mode_To_Expert_Mode") == null
-                || ! TestStatusResult.getTestResult().get("test_Edit_Route_In_Update_From_Simple_Mode_To_Expert_Mode")){
-            number = TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER;
-            replace = TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE;
-        }else{
-            number = TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER;
-            replace = TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE;
-        }
-        final String Number = number;
-        final String Replace = replace;
+    void test_Delete_Route_In_Simple_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
                 .clickButtonTableRoute(TELEPHONY_PROVIDER_ROUTE_IN, "delete");
         clickButtonConfirmAction("Продолжить");
         assertAll("Проверяем, что после удаления входящего маршрута:\n" +
                         "1. Не отображается в таблице маршрутов отсуствует Направление Входящий\n" +
-                        "2. Не отображается в таблице маршрутов отсуствует Шаблон номера " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER +"\n" +
-                        "3. Не отображается в таблице маршрутов отсуствует Шаблон замены " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE,
+                        "2. Не отображается в таблице маршрутов отсуствует Шаблон номера " +
+                        TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER +"\n" +
+                        "3. Не отображается в таблице маршрутов отсуствует Шаблон замены " +
+                        TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE,
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_IN, false),
-                        "Отображается название " + TELEPHONY_PROVIDER_ROUTE_IN + " в таблице маршрутов после " +
-                                "удаления маршрута"),
-                () -> assertTrue(isExistsTableText(Number, false),
-                        "Отображается описание " + Number + " в таблице " +
-                                "маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(Replace, false),
-                        "Отображается Шаблон замены " + Replace +
-                                " в таблице провайдеров после удаления маршрута")
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_IN +
+                                " в столбце Направление в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER +
+                                " с столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER +
+                                " с столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута")
         );
     }
 
@@ -299,19 +313,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "5. Проверяем, что запись о исходящего маршруте пропадала в таблице маршрутов после удаления")
     @Test
     @Order(8)
-    void test_Delete_Route_Out_With_Expert_Mode(){
-        String number = null;
-        String replace = null;
-        if(TestStatusResult.getTestResult().get("test_Edit_Route_Out_With_Expert_Mode") == null
-                || ! TestStatusResult.getTestResult().get("test_Edit_Route_Out_With_Expert_Mode")){
-            number = TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER;
-            replace = TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE;
-        }else{
-            number = TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER;
-            replace = TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE;
-        }
-        final String Number = number;
-        final String Replace = replace;
+    void test_Delete_Route_Out_With_Expert_Mode_Of_Provider_Without_Reg(){
         clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
                 .clickButtonTableRoute(TELEPHONY_PROVIDER_ROUTE_OUT, "delete");
         clickButtonConfirmAction("Продолжить");
@@ -322,14 +324,26 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                         "3. Не отображается в таблице маршрутов отсуствует Шаблон замены " +
                         TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE,
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_OUT, false),
-                        "Отображается название " + TELEPHONY_PROVIDER_ROUTE_OUT + " в таблице маршрутов после " +
-                                "удаления маршрута"),
-                () -> assertTrue(isExistsTableText(Number, false),
-                        "Отображается описание " + Number + " в таблице " +
-                                "маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(Replace, false),
-                        "Отображается Шаблон замены " + Replace +
-                                " в таблице провайдеров после удаления маршрута")
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_OUT + " в столбце Направление " +
+                                "в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER +
+                                " в столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута"),
+                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE, false),
+                        "Отображается значение " + TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE +
+                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута")
         );
     }
 
@@ -437,7 +451,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
             "3. Проверяем, что отображается Адрес в таблице провайдеров")
     @Test
     @Order(12)
-    void test_Exist_Provider_Wit_Registration(){
+    void test_Exist_Provider_With_Registration(){
         assertAll("1. Проверяем, что правильно отображаются Название в таблице провайдеров\n" +
                         "2. Проверяем, что правильно отображаются Адрес в таблице провайдеров",
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),

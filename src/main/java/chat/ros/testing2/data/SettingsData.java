@@ -33,13 +33,13 @@ public interface SettingsData {
     String SERVER_PUSH_INPUT_HOST = "Адрес сервера";
     String SERVER_PUSH_HOST_SERVER = "firelink.me";
     String SERVER_PUSH_INPUT_LOGIN = "Логин";
-    String SERVER_PUSH_LOGIN_SERVER = "testing2";
-    //String SERVER_PUSH_LOGIN_SERVER = "ormp2";
+    //String SERVER_PUSH_LOGIN_SERVER = "testing2";
+    String SERVER_PUSH_LOGIN_SERVER = "ormp2";
     String SERVER_PUSH_INPUT_PORT = "Порт";
     String SERVER_PUSH_PORT_SERVER = "8088";
     String SERVER_PUSH_INPUT_PASSWORD = "Пароль";
-    //String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
-    String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
+    String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
+    //String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
     String SERVER_PUSH_BUTTON_UPDATE_LICENSE = "Обновить лицензию";
     String SERVER_PUSH_TEXT_CHECK_LICENSE = "Лицензия успешно обновлена";
 
@@ -88,7 +88,7 @@ public interface SettingsData {
     //The data for create provider with registration
     String TELEPHONY_PROVIDER_TITLE_WITH_REG = "MX-1000";
     String TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG = "Это тестовое описание для провайдера MX-1000";
-    String TELEPHONY_PROVIDER_ADDRESS_WITH_REG = "127.0.0.1";
+    String TELEPHONY_PROVIDER_ADDRESS_WITH_REG = "10.10.1.100";
     String TELEPHONY_PROVIDER_AON_WITH_REG = "XM001";
     String TELEPHONY_PROVIDER_USERNAME_WITH_REG = "MX1000";
     String TELEPHONY_PROVIDER_PASSWORD_WITH_REG = "123456";
@@ -115,21 +115,19 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE = "Группы замены";
 
     //Data for route with simple mode
-    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER = "5000";
-    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE = "1+5|XXX";
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_NUMBER = "3000";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_NUMBER = "^(3001)$";
+    String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_REPLACE = "1+3|XXX";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_REPLACE = "^(3[0-9]{3})$;";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_SIMPLE_MODE_GROUP_REPLACE = "3\\1";
 
     //Data for route with normal mode
-    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER = "^(5001)$";
-    String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER = "^(5000)$";
+    String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_NUMBER = "^(5002)$";
+    String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_NUMBER = "^(5003)$";
     String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_REPLACE = "^(1[0-9]{3})$";
     String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_REPLACE = "^5([0-9]{3})$";
     String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_GROUP_REPLACE = "5\\1";
     String TELEPHONY_PROVIDER_EDIT_ROUTE_EXPERT_MODE_GROUP_REPLACE = "1\\1";
-
-    String TELEPHONY_PROVIDER_EDIT_TITLE_WITHOUT_REG = TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + "Edit";
-    String TELEPHONY_PROVIDER_EDIT_DESCRIPTION_WITHOUT_REG = "Это отредактированное тестовое описание для провайдера Asterisk";
-    String TELEPHONY_PROVIDER_EDIT_ADDRESS_WITHOUT_REG = "127.0.0.100";
-    String TELEPHONY_PROVIDER_EDIT_AON_WITHOUT_REG = TELEPHONY_PROVIDER_AON_WITHOUT_REG + "Edit";
 
     /****** Параметры для настройки TURN сервера ******/
     String TELEPHONY_TURN_TITLE_FORM = "TURN/STUN";
@@ -248,7 +246,7 @@ public interface SettingsData {
     String IVR_MENU_TITLE = "Меню";
     String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Положить трубку",
             "Вернуться в родительское меню", "Вернуться в корневое меню", "Повторить меню"};
-    String[] IVR_MENU_ITEMS_1 = {"Звонок"};
+    //String[] IVR_MENU_ITEMS = {"Звонок"};
     String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
     String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";
 

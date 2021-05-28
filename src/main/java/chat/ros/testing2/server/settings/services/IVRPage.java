@@ -4,7 +4,6 @@ import com.codeborne.selenide.*;
 import com.codeborne.selenide.ex.ElementNotFound;
 import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 
 import java.io.File;
@@ -16,7 +15,6 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class IVRPage extends ServicesPage {
 
-    private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement inputUploadSoundFile = $("#upload");
     private SelenideElement modalWindowContent = getModalWindow().find(".modal-window__content");
     private SelenideElement inputUploadSoundFileByModalWindow = getModalWindow().find("#upload");
@@ -449,7 +447,7 @@ public class IVRPage extends ServicesPage {
      */
 
     public IVRPage uploadSoundFile(String file, String ...description){
-        contentWrapper.scrollIntoView(false);
+        getContentWrapper().scrollIntoView(false);
         uploadSoundFile(file);
         sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
         return this;

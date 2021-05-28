@@ -2,14 +2,16 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
-import com.codeborne.selenide.Selenide;
+import chat.ros.testing2.TestsBase;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
 
-public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
+
+    private TestsBase testsBase = new TestsBase();
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -103,7 +105,7 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
         }
 
         if(testClass.contains("TestSoundPage") || testClass.contains("TestMenuPage"))
-            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
+            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
     }
 
     @Override
@@ -138,5 +140,10 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
             else if(testMethod.equals("test_Delete_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
         }
+    }
+
+    @Override
+    public void beforeAll(ExtensionContext context) throws Exception {
+        testsBase.init();
     }
 }

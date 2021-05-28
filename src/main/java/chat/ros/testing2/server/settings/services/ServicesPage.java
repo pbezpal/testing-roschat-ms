@@ -8,15 +8,21 @@ import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import static chat.ros.testing2.data.SettingsData.IVR_MENU_TITLE;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ServicesPage implements SettingsPage {
 
+    private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement modalWindow = $(".modal-window");
     private SelenideElement titleModalWindow = modalWindow.find("h2");
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
+
+    protected SelenideElement getContentWrapper(){
+        return contentWrapper;
+    }
 
     private SelenideElement getServiceSection(String title){
         return $$("h2").findBy(text(title)).parent();
@@ -68,6 +74,7 @@ public class ServicesPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {section} у записи {item}")
     public ServicesPage clickButtonTable(String section, String item, String button){
+        if(section.equals(IVR_MENU_TITLE)) contentWrapper.scrollIntoView(false);
         getServiceSection(section).scrollIntoView(false);
         getServiceSection(section)
                 .$("table")

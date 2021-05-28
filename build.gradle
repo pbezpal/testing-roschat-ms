@@ -428,7 +428,7 @@ task test_roschatdb {
 task testproviders(type: Test) {
     useJUnitPlatform()
 
-    description "Тестирование раздела Лицензирование и обсуживание на невалидные значения"
+    description "Тестирование настроек провайдера"
 
     dependsOn 'cleanTest'
 
@@ -473,13 +473,21 @@ task test_push_server(type: Test){
 task roschatservices(type: Test){
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
     description "Тестирование сервера услуг"
 
-    filter {
-        includeTestsMatching "*.services.*"
-    }
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
+    systemProperties System.getProperties()
+
+    include("**/TestFaxPage.class")
+    include("**/TestMenuPage.class")
+    include("**/TestSoundPage.class")
 
     dependsOn test_push_server
 
@@ -763,32 +771,28 @@ task roschatгusers(type: Test){
 task roschativr(type: Test){
     useJUnitPlatform()
 
-    systemProperties System.getProperties()
-
-    /*systemProperties = [
+    systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
             'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]*/
+    ]
 
-    //Parametrized Test
-    //include("**/TestParametersTelephonyEmptyNetwork.class")
-    //include("**/TestParametersTelephonyEmptySip.class")
-    include("**/TestFaxPage.class")
-    //include("**/TestParametersTelephonyTurnWrongMinPort.class")
+    systemProperties System.getProperties()
 
-    //include("**/TestProviderWithoutRegPage.class")
-    //include("**/TestProviderWithRegPage.class")
-    /*filter {
+    //include("**/TestFaxPage.class")
+    //include("**/TestMenuPage.class")
+    //include("**/TestSoundPage.class")
+
+    filter {
         //include specific method in any of the tests
         includeTestsMatching "*.TestProviderWithoutRegPage"
         includeTestsMatching "*.TestProviderWithRegPage"
         //includeTestsMatching "*.TestGeozonesPage"
-    }*/
+    }
 
-    dependsOn 'cleanTest'
+    dependsOn "cleanTest"
 
     // Show test results.
     testLogging {
@@ -796,6 +800,3 @@ task roschativr(type: Test){
     }
 
 }
-
-
-

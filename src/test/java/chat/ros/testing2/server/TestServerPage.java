@@ -110,8 +110,23 @@ public class TestServerPage extends ServerPage {
     @Test
     void test_Settings_Push_Server(){
         setPushService(mapInputValuePush);
-        assertTrue(isCheckUpdateLicense(), "Настройки не применились");
+        sleep(5000);
         assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
+        assertAll("Проверяем, что настройки лицензии успешно применились после обновления лицензии",
+                () -> assertTrue(isCheckLicense(), "Не появилась иконка об успешном обновление лицензии"),
+                () -> assertTrue(isCheckLicenseServices("Система оповещения:"), "Настройки не применились для" +
+                        " системы оповещения"),
+                () -> assertTrue(isCheckLicenseServices("Голосовое меню:"), "Настройки не применились для" +
+                        " голосового меню"),
+                () -> assertTrue(isCheckLicenseServices("Факс:"), "Настройки не применились для" +
+                        " факса"),
+                () -> assertTrue(isCheckLicenseServices("Факс:"), "Настройки не применились для" +
+                        " факса"),
+                () -> assertTrue(isCheckLicenseAction("Push-уведомления"), "Настройки не применились для" +
+                        " Push сервера"),
+                () -> assertTrue(isCheckLicenseAction("Геолокация"), "Настройки не применились для" +
+                        " Геолокации")
+                );
     }
 
     @Story(value = "Перезагрузка страницы")
