@@ -20,10 +20,10 @@ public class TelephonyPage implements SettingsPage {
     private ElementsCollection listTypeRoute = $$(".v-select-list .v-list__tile__title");
     private ElementsCollection subtitlesModalWindow = modalWindow.findAll("h3");
     private ElementsCollection printsSettingsProvider = $$(".block-content__item p");
-    private SelenideElement mainModalInfo = $(".v-dialog .modal-info");
-    private ElementsCollection headersModalInfo = mainModalInfo.findAll("h2");
-    private ElementsCollection contentModalInfo = mainModalInfo.findAll(".modal-infoContent div");
-    private SelenideElement buttonCloseModalInfo = mainModalInfo.find("button");
+    private SelenideElement activeModalInfo = $(".v-dialog:not([style='max-width: 700px; display: none;']) .modal-info");
+    private ElementsCollection headersModalInfo = activeModalInfo.findAll("h2");
+    private ElementsCollection contentModalInfo = activeModalInfo.findAll(".modal-infoContent div");
+    private SelenideElement buttonCloseModalInfo = activeModalInfo.find("button");
 
     public TelephonyPage () {}
 
@@ -181,13 +181,13 @@ public class TelephonyPage implements SettingsPage {
     public boolean isVisibleInfoWrapper(boolean visible){
         if(visible){
             try{
-                mainModalInfo.shouldBe(Condition.visible);
+                activeModalInfo.shouldBe(Condition.visible);
             }catch (ElementNotFound e){
                 return false;
             }
         }else{
             try{
-                mainModalInfo.shouldNotBe(Condition.visible);
+                activeModalInfo.shouldNotBe(Condition.visible);
             }catch (ElementShould e){
                 return false;
             }
