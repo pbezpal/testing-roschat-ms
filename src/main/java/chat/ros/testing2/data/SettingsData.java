@@ -10,7 +10,6 @@ public interface SettingsData {
     String SETTINGS_BUTTON_DELETE = "Удалить";
     String SETTINGS_BUTTON_CONTINUE = "Продолжить";
 
-
     /*********************************************** Раздел Сервер ***************************************************/
 
     /****** Параметры для настройки раздела Подключение ******/
@@ -42,7 +41,6 @@ public interface SettingsData {
     //String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
     String SERVER_PUSH_BUTTON_UPDATE_LICENSE = "Обновить лицензию";
     String SERVER_PUSH_TEXT_CHECK_LICENSE = "Лицензия успешно обновлена";
-
 
     /********************************************** Раздел Телефония *************************************************/
 
@@ -94,6 +92,14 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_PASSWORD_WITH_REG = "123456";
     String TELEPHONY_PROVIDER_INTERVAL_WITH_REG = "299";
 
+    //Data for creating a provider for testing the route in simple mode
+    String TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE = "Provider - route simple node";
+    String TELEPHONY_PROVIDER_ADDRESS_ROUTE_SIMPLE_MODE = "127.0.0.1";
+
+    //Data for creating a provider for testing the route in expert mode
+    String TELEPHONY_PROVIDER_TITLE_ROUTE_EXPERT_MODE = "Provider - route expert node";
+    String TELEPHONY_PROVIDER_ADDRESS_ROUTE_EXPERT_MODE = "127.0.0.1";
+
     //The data for edit registration provider
     String TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG = "admin";
     String TELEPHONY_PROVIDER_EDIT_PASSWORD_WITH_REG = "654321";
@@ -108,6 +114,9 @@ public interface SettingsData {
     //The fields for route with simple mode
     String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER = "Шаблон номера";
     String TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE = "Шаблон замены";
+
+    String[] TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_FIELDS = {TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER,
+            TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE};
 
     //The fields for route with normal mode
     String TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER = "Рег. выр. номера";
@@ -299,7 +308,7 @@ public interface SettingsData {
     String USER_PASSWORD_ADMIN_TEST = "qwerty123456";
 
     /**
-     * Администратор
+     * Оператор
      */
     String USER_FIRST_NAME_OPER = "Оператор";
     String USER_LAST_NAME_OPER = "Операторов";

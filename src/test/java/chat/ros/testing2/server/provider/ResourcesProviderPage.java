@@ -47,7 +47,8 @@ public class ResourcesProviderPage implements BeforeAllCallback, BeforeEachCallb
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Rout_Out_With_Expert_Mode_Of_Provider_Without_Reg"),
                         "The outbox route didn't add. Skip the test!");
             else if (methodTest.equals("test_Edit_Route_In_Update_From_Simple_Mode_To_Expert_Mode_Of_Provider_Without_Reg")
-                    || methodTest.equals("test_Delete_Route_In_Simple_Mode_Of_Provider_Without_Reg"))
+                    || methodTest.equals("test_Delete_Route_In_Simple_Mode_Of_Provider_Without_Reg")
+                    || methodTest.equals("test_Edit_Rout_In_With_Simple_Mode_Without_Replace_Of_Provider_Without_Reg"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Rout_In_With_Simple_Mode_Of_Provider_Without_Reg"),
                         "The inbox route didn't add. Skip the test!");
         }
