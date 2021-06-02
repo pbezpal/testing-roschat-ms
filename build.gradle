@@ -774,7 +774,7 @@ task roschativr(type: Test){
     /*systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]*/
@@ -787,8 +787,8 @@ task roschativr(type: Test){
 
     filter {
         //include specific method in any of the tests
-        //includeTestsMatching "*.TestProviderWithoutRegPage"
-        //includeTestsMatching "*.TestProviderWithRegPage"
+        /*includeTestsMatching "*.TestProviderWithoutRegPage"
+        includeTestsMatching "*.TestProviderWithRegPage"*/
         includeTestsMatching "*.TestProviderRouteSimpleMode"
         //includeTestsMatching "*.TestGeozonesPage"
     }
