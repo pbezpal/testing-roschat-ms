@@ -431,9 +431,15 @@ public class TestProviderRouteSimpleMode extends TelephonyPage {
                 () -> assertTrue(isExistsTableText(direction, true),
                         "Не отображается значение " + direction +
                                 " в столбце Направление в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText(finalPatternNumber, true),
-                        "Не отображается значение " + finalPatternNumber +
-                                " в столбце Шаблон номера в таблице маршрутов")
+                () -> {
+                    assertTrue(isExistsTableText(finalPatternNumber, true),
+                            "Не отображается значение " + finalPatternNumber +
+                                    " в столбце Шаблон номера в таблице маршрутов");
+                    if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                        patternNumbersIncomingRoute.add(finalPatternNumber);
+                    else
+                        patternNumbersOutgoingRoute.add(finalPatternNumber);
+                }
         );
         TestStatusResult.setTestResult(true);
         assertTrue(isExistsTableText(patternReplace, true),
