@@ -20,6 +20,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.Selenide.sleep;
 import static data.CommentsData.CLIENT_7010;
 import static org.junit.gen5.api.Assertions.assertTrue;
@@ -112,6 +113,7 @@ public class TestServerPage extends ServerPage {
         setPushService(mapInputValuePush);
         sleep(5000);
         assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
+        refresh();
         assertAll("Проверяем, что настройки лицензии успешно применились после обновления лицензии",
                 () -> assertTrue(isCheckLicense(), "Не появилась иконка об успешном обновление лицензии"),
                 () -> assertTrue(isCheckLicenseServices("Система оповещения:"), "Настройки не применились для" +

@@ -107,6 +107,11 @@ public interface SettingsData {
 
     String TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE = "Маршруты";
 
+    //Button for add route
+    String TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE = "Создать маршрут";
+    String TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE = "Новый маршрут";
+
+
     //Type route
     String TELEPHONY_PROVIDER_INCOMING_ROUTE = "Входящий";
     String TELEPHONY_PROVIDER_OUTGOING_ROUTE = "Исходящий";
@@ -141,7 +146,7 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_TO_EXPERT_MODE_REPLACE = "^(4[0-9]{3})$";
     String TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_TO_EXPERT_MODE_GROUP_REPLACE = "4\\1";
 
-    //Data for route incoming with normal mode
+    //Data for route incoming with expert mode
     String TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_NUMBER = "^(5000)$";
     String TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_EXPERT_MODE_NUMBER = "^(6000)$";
     String TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_REPLACE = "^(5[0-9]{3})$";
@@ -149,7 +154,7 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_GROUP_REPLACE = "5\\1";
     String TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_EXPERT_MODE_GROUP_REPLACE = "6\\2";
 
-    //Data for outgoing route with normal mode
+    //Data for outgoing route with expert mode
     String TELEPHONY_PROVIDER_OUTGOING_ROUTE_EXPERT_MODE_NUMBER = "^(7000)$";
     String TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_EXPERT_MODE_NUMBER = "^(8000)$";
     String TELEPHONY_PROVIDER_OUTGOING_ROUTE_EXPERT_MODE_REPLACE = "^(7[0-9]{3})$";

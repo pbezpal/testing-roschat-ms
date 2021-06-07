@@ -98,7 +98,7 @@ public class ServerPage implements SettingsPage{
     }
 
     @Step(value = "Проверяем, установилось ли соединение с Push сервером")
-    public boolean isEsteblishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEstablishedPush); }
+    public boolean isEstablishedPush(){ return SSHManager.isCheckQuerySSH(commandCheckEstablishedPush); }
 
     public boolean isUpdateLicense(){
         $("html").scrollIntoView(false);
@@ -112,13 +112,6 @@ public class ServerPage implements SettingsPage{
         setSettingsServer(mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        //Ждём, когда настройки применятся
-        //assertTrue(isCheckUpdateLicense(), "Настройки не применились");
-        //Прокручиваем страницу вниз
-        //Нажимаем кнопку Обновить лицензию
-        //if(!isUpdateLicense()) Allure.step("Warning: Не удалось обновить лицензию. Запускаю поторное обновление лицензии.", Status.BROKEN);
-        //sleep(30000);
-
         return this;
     }
 }

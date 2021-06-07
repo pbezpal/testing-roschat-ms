@@ -3,15 +3,12 @@ package chat.ros.testing2.server.settings;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
-import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TelephonyPage implements SettingsPage {
@@ -96,21 +93,24 @@ public class TelephonyPage implements SettingsPage {
         return this;
     }
 
+    public SelenideElement getParentProviderSection(){
+        return $$("h2").findBy(text("Провайдеры")).parent();
+    }
+
     @Step(value = "Проверяем, отображается ли подзаголовок {subtitle} модального окна")
     public boolean isSubtitleModalWindow(String subtitle){
-        try {
-            subtitlesModalWindow.findBy(Condition.text(subtitle)).shouldBe(Condition.visible);
-        }catch (ElementShould e){
-            return false;
-        }
-        return true;
+        return isVisibleElement(subtitlesModalWindow, subtitle, true);
+    }
+
+    @Step(value = "Проверяем, отображаются ли {show} подзаголовки в разделе Провайдер")
+    public boolean isSubtitleProviderForm(String subtitle, boolean show){
+        return isVisibleElement(getParentProviderSection().findAll("h3"), subtitle, show);
     }
 
     @Step(value = "Нажимаем кнопку {button} в таблице провайдеров у провайдера {provider}")
     public TelephonyPage clickButtonTableProvider(String provider, String button){
-        SelenideElement sectionProvider = $$("h2").findBy(text("Провайдеры")).parent();
-        sectionProvider.scrollIntoView(false);
-        sectionProvider.
+        getParentProviderSection().scrollIntoView(false);
+        getParentProviderSection().
                 findAll("table td")
                 .findBy(Condition.text(provider))
                 .parent()
@@ -119,23 +119,9 @@ public class TelephonyPage implements SettingsPage {
         return this;
     }
 
-    @Step(value = "Проверяем отображается {show} ли настройка {content} провайдера в форме настроек провайдера")
-    public boolean isContentSettingProvider(String content, boolean show){
-        if(show) {
-            try {
-                printsSettingsProvider.findBy(Condition.text(content)).shouldBe(Condition.visible);
-            } catch (ElementNotFound e) {
-                return false;
-            }
-        }else {
-            try {
-                printsSettingsProvider.findBy(Condition.text(content)).shouldNotBe(Condition.visible);
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-
-        return true;
+    @Step(value = "Проверяем отображается {visible} ли настройка {content} провайдера в форме настроек провайдера")
+    public boolean isContentSettingProvider(String content, boolean visible){
+        return isVisibleElement(printsSettingsProvider, content, visible);
     }
 
     @Step(value = "Создаём новый маршрут для направления {typeRoute}")
@@ -179,41 +165,17 @@ public class TelephonyPage implements SettingsPage {
 
     @Step(value = "Проверяем, отобрается {visible} ли модальное окно с информацией")
     public boolean isVisibleInfoWrapper(boolean visible){
-        if(visible){
-            try{
-                activeModalInfo.shouldBe(Condition.visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try{
-                activeModalInfo.shouldNotBe(Condition.visible);
-            }catch (ElementShould e){
-                return false;
-            }
-        }
-
-        return true;
+        return isVisibleElement(activeModalInfo, visible);
     }
 
     @Step(value = "Проверяем, отображается ли заголовок {title} модального окна с информацией")
     public boolean isTitleInfoWrapper(String title){
-        try {
-            headersModalInfo.findBy(text(title)).shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+        return isVisibleElement(headersModalInfo, title, true);
     }
 
     @Step(value = "Проверяем, отображается ли контент {content} модального окна с информацией")
     public boolean isContentInfoWrapper(String content){
-        try{
-            contentModalInfo.findBy(text(content)).shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+        return isVisibleElement(contentModalInfo, content, true);
     }
 
     @Step(value = "Закрываем модальное окно с информацией")

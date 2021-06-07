@@ -31,6 +31,42 @@ public interface BasePage {
     SelenideElement divProgressBar = $(".modal-progress");
     SelenideElement modalWindow = $(".modal-wrapper");
 
+    default boolean isVisibleElement(SelenideElement element, boolean show){
+        if(show){
+            try {
+                element.shouldBe(visible);
+            }catch (ElementNotFound e){
+                return false;
+            }
+        }else{
+            try {
+                element.shouldNotBe(visible);
+            }catch (ElementShould e){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    default boolean isVisibleElement(ElementsCollection elements, String text, boolean show){
+        if(show){
+            try {
+                elements.findBy(text(text)).shouldBe(visible);
+            }catch (ElementNotFound e){
+                return false;
+            }
+        }else{
+            try {
+                elements.findBy(text(text)).shouldNotBe(visible);
+            }catch (ElementShould e){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
     static void clickItemMenu(String itemMenu){
         try {
@@ -120,13 +156,15 @@ public interface BasePage {
     }
 
     @Step(value = "Нажимаем нопку Сохранить/Восстановить")
-    default void clickButtonSave(){
+    default BasePage clickButtonSave(){
         buttonSave.click();
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку Закрыть")
-    default void clickButtonClose(){
+    default BasePage clickButtonClose(){
         buttonClose.click();
+        return this;
     }
 
     @Step(value = "Проверяем есть ли {show} запись {text} в таблице")

@@ -2,7 +2,8 @@ package chat.ros.testing2.server.provider;
 
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.server.settings.TelephonyPage;
+import chat.ros.testing2.server.provider.codefortests.Provider;
+import chat.ros.testing2.server.provider.codefortests.Routes;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Epic(value = "Настройки")
 @Feature(value = "Телефония -> Провайдер без рагистрации")
-public class TestProviderWithoutRegPage extends TelephonyPage {
+public class TestProviderWithoutRegPage extends Provider {
 
     //The data for the section general in the form provider
     private Map<String, String> dataGeneralProvider = new HashMap() {{
@@ -73,25 +74,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(1)
     void test_Add_Provider_Without_Registration(){
-        clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> assertTrue(isSubtitleModalWindow("Общее"),
-                        "Не найден подзаголовок 'Общее' модального окна"),
-                () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
-                        "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {setProvider(dataGeneralProvider);},
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                        "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице провайдеров")
-        );
+        addProvider(dataGeneralProvider);
         TestStatusResult.setTestResult(true);
     }
 
@@ -102,18 +85,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Order(2)
     @Test
     void test_Show_Settings_Provider_Without_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
-        assertAll("1. Нажимаем кнопку изманить\n" +
-                        "2. Проверяем, что в разделе Провайдер отображаются настройки провайдера " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG,
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                        "Не отображается адрес провайдера " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITHOUT_REG, true),
-                        "Не отображается АОН " + TELEPHONY_PROVIDER_AON_WITHOUT_REG + " в настройках провадера")
-        );
+        verifyShowSettingsProvider(dataGeneralProvider, false);
     }
 
     @Story(value = "Добавляем входящий маршрут")
@@ -125,7 +97,10 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(3)
     void test_Add_Incoming_Rout_In_Simple_Mode(){
-        addRouteInSimpleMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteSimpleMode);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_INCOMING_ROUTE
+                , dataRouteSimpleMode, TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE
+                , true);
     }
 
     @Story(value = "Добавляем исходящий маршрут")
@@ -137,7 +112,11 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(4)
     void test_Add_Outgoing_Rout_In_Expert_Mode(){
-        addRouteInExpertMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteExpertMode);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_OUTGOING_ROUTE
+                , dataRouteExpertMode
+                , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE
+                , false);
     }
 
     @Story(value = "Удаление Входящего маршрута")
@@ -149,7 +128,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(5)
     void test_Delete_Incoming_Route_In_Simple_Mode(){
-        deleteRouteInSimpleMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteSimpleMode);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Удаление Исходящего маршрута")
@@ -161,7 +140,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(6)
     void test_Delete_Outgoing_Route_In_Expert_Mode(){
-        deleteRouteInExpertMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteExpertMode);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Редактируем провайдера без регистрации")
@@ -227,7 +206,10 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(9)
     void test_Add_Outgoing_Rout_In_Simple_Mode_After_Edit_Provider(){
-        addRouteInSimpleMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteSimpleModeAfterEditProvider);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_OUTGOING_ROUTE
+                , dataRouteSimpleModeAfterEditProvider
+                , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE, true);
     }
 
     @Story(value = "Добавляем Входящий маршрут после редактирования провайдера")
@@ -239,7 +221,10 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(10)
     void test_Add_Incoming_Rout_In_Expert_Mode_After_Edit_Provider(){
-        addRouteInExpertMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteExpertModeAfterEditProvider);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_INCOMING_ROUTE
+                , dataRouteExpertModeAfterEditProvider
+                , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE, false);
     }
 
     @Story(value = "Удаление исходящего маршрута после редактирование провайдера")
@@ -251,7 +236,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(11)
     void test_Delete_Outgoing_Route_In_Simple_Mode_After_Edit_Provider(){
-        deleteRouteInSimpleMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteSimpleModeAfterEditProvider);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Удаление входящего маршрута после редактирования провайдера")
@@ -263,7 +248,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(12)
     void test_Delete_Incoming_Route_In_Expert_Mode_After_Edit_Provider(){
-        deleteRouteInExpertMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteExpertModeAfterEditProvider);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Редактируем провайдера с регистрацией")
@@ -339,7 +324,10 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(15)
     void test_Add_Incoming_Rout_In_Simple_Mode_After_Edit_Provider_With_Reg(){
-        addRouteInSimpleMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteSimpleMode);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_INCOMING_ROUTE
+                , dataRouteSimpleMode
+                , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE, true);
     }
 
     @Story(value = "Добавляем исходящий маршрут после редактирования провайдера с регистрацией")
@@ -351,7 +339,10 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(16)
     void test_Add_Outgoing_Rout_In_Expert_Mode_After_Edit_Provider_With_Reg(){
-        addRouteInExpertMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteExpertMode);
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+                , TELEPHONY_PROVIDER_OUTGOING_ROUTE
+                , dataRouteExpertMode
+                , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE, false);
     }
 
     @Story(value = "Удаление Входящего маршрута после редактирование провайдера с регистрацией")
@@ -363,7 +354,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(17)
     void test_Delete_Incoming_Route_In_Simple_Mode_After_Edit_Provider_With_Reg(){
-        deleteRouteInSimpleMode(TELEPHONY_PROVIDER_INCOMING_ROUTE, dataRouteSimpleMode);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Удаление Исходящего маршрута после редактирования провайдера с регистрацией")
@@ -375,7 +366,7 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
     @Test
     @Order(18)
     void test_Delete_Outgoing_Route_In_Expert_Mode_After_Edit_Provider_With_Reg(){
-        deleteRouteInExpertMode(TELEPHONY_PROVIDER_OUTGOING_ROUTE, dataRouteExpertMode);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Удаляем провайдера")
@@ -400,156 +391,6 @@ public class TestProviderWithoutRegPage extends TelephonyPage {
                 () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, false),
                         "Отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице " +
                                 "провайдеров после удаления")
-        );
-    }
-
-    private void addRouteInSimpleMode(String direction, Map<String, String> dataRoute){
-        String patternNumber = null;
-        String patternReplace = null;
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER))
-                patternNumber = data.getValue().toString();
-            else
-                patternReplace = data.getValue().toString();
-        }
-
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Создать маршрут");
-        final String finalPatternNumber = patternNumber;
-        assertAll("1. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "2. Проверяем, что маршрут добавлен в таблицу маршрутов",
-                () -> {
-                    createRoute(direction, true, dataRoute);
-                    clickButtonSave();
-                    clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-                },
-                () -> assertTrue(isExistsTableText(direction, true),
-                        "Не отображается значение " + direction +
-                                " в столбце Направление в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText(finalPatternNumber, true),
-                        "Не отображается значение " + finalPatternNumber +
-                                " в столбце Шаблон номера в таблице маршрутов")
-        );
-        TestStatusResult.setTestResult(true);
-        assertTrue(isExistsTableText(patternReplace, true),
-                "Не отображается Шаблон замены " + patternReplace +
-                        " в столбце Шаблон номера в таблице маршрутов");
-    }
-
-    private void addRouteInExpertMode(String direction, Map<String, String> dataRoute){
-        String number = null;
-        String replace = null;
-        String groupReplace = null;
-
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER))
-                number = data.getValue().toString();
-            else if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE))
-                replace = data.getValue().toString();
-            else
-                groupReplace = data.getValue().toString();
-        }
-
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, "Новый маршрут");
-        String patternReplace = replace + groupReplace;
-        String finalNumber = number;
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что маршрут добавлен в таблицу маршрутов",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> {
-                    createRoute(direction, false, dataRoute);
-                    clickButtonSave();
-                    clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-                },
-                () -> assertTrue(isExistsTableText(direction, true),
-                        "Не отображается значение " + direction +
-                                " в столбце Направление в таблице маршрутов"),
-                () -> assertTrue(isExistsTableText(finalNumber, true),
-                        "Не отображается значение " + finalNumber +
-                                " в столбце Шаблон номера в таблице маршрутов")
-        );
-        TestStatusResult.setTestResult(true);
-        assertTrue(isExistsTableText(patternReplace, true),
-                "Не отображается значение " + patternReplace + " в столбце Шаблон замены в таблице маршрутов");
-    }
-
-    private void deleteRouteInSimpleMode(String direction, Map<String, String> dataRoute){
-        String patternNumber = null;
-        String patternReplace = null;
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER))
-                patternNumber = data.getValue().toString();
-            else
-                patternReplace = data.getValue().toString();
-        }
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
-                .clickButtonTableRoute(direction, "delete");
-        clickButtonConfirmAction("Продолжить");
-        final String finalPatternNumber = patternNumber;
-        final String finalPatternReplace = patternReplace;
-        assertAll("Проверяем, что после удаления входящего маршрута:\n" +
-                        "1. Не отображается в таблице маршрутов отсуствует Направление Входящий\n" +
-                        "2. Не отображается в таблице маршрутов отсуствует Шаблон номера " +
-                        patternNumber +"\n" +
-                        "3. Не отображается в таблице маршрутов отсуствует Шаблон замены " +
-                        patternReplace,
-                () -> assertTrue(isExistsTableText(direction, false),
-                        "Отображается значение " + direction +
-                                " в столбце Направление в таблице маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(finalPatternNumber, false),
-                        "Отображается значение " + finalPatternNumber +
-                                " с столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(finalPatternReplace, false),
-                        "Отображается значение " + finalPatternReplace +
-                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута")
-        );
-    }
-
-    private void deleteRouteInExpertMode(String direction, Map<String, String> dataRoute){
-        String number = null;
-        String replace = null;
-        String groupReplace = null;
-
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER))
-                number = data.getValue().toString();
-            else if(data.getValue().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE))
-                replace = data.getValue().toString();
-            else
-                groupReplace = data.getValue().toString();
-        }
-
-        String patternReplace = replace + groupReplace;
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить")
-                .clickButtonTableRoute(direction, "delete");
-        clickButtonConfirmAction("Продолжить");
-        final String finalNumber = number;
-        final String finalReplace = replace;
-        final String finalGroupReplace = groupReplace;
-        assertAll("Проверяем, что после удаления входящего маршрута:\n" +
-                        "1. Не отображается в таблице маршрутов отсуствует Направление Исходящий\n" +
-                        "2. Не отображается в таблице маршрутов отсуствует Шаблон номера " +
-                        number +"\n" +
-                        "3. Не отображается в таблице маршрутов отсуствует Шаблон замены",
-                () -> assertTrue(isExistsTableText(direction, false),
-                        "Отображается значение " + direction + " в столбце Направление " +
-                                "в таблице маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(finalNumber, false),
-                        "Отображается значение " + finalNumber +
-                                " в столбце Шаблон номера в таблице маршрутов после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(finalReplace, false),
-                        "Отображается значение " + finalReplace + " в столбце Шаблон замены в таблице провайдеров " +
-                                "после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(finalGroupReplace, false),
-                        "Отображается значение " + finalGroupReplace + " в столбце Шаблон замены в таблице " +
-                                "провайдеров после удаления маршрута"),
-                () -> assertTrue(isExistsTableText(patternReplace, false),
-                        "Отображается значение " + patternReplace +
-                                " в столбце Шаблон замены в таблице провайдеров после удаления маршрута")
         );
     }
 }
