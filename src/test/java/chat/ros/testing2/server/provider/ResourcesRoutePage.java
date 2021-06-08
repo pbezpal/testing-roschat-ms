@@ -32,11 +32,16 @@ public class ResourcesRoutePage implements BeforeAllCallback, BeforeEachCallback
             else if(methodTest.equals("test_Edit_Incoming_Route_Simple_Mode")
                     || methodTest.equals("test_Edit_Incoming_Route_Simple_Mode_Without_Pattern_Replace")
                     || methodTest.equals("test_Edit_Incoming_Route_From_Simple_To_Expert_Mode")
-                    || methodTest.equals("test_Delete_Incoming_Route_In_Simple_Mode"))
+                    || methodTest.equals("test_Delete_Incoming_Route_In_Simple_Mode")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Incoming_Route_Simple_Mode")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Incoming_Route_From_Simple_To_Expert_Mode")
+            )
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Incoming_Route_Simple_Mode"),
                         "Test failed - adding a incoming route in simple mode. Skip the test!");
             else if(methodTest.equals("test_Edit_Incoming_Route_Expert_Mode_Without_Group_Replace")
-                    || methodTest.equals("test_Edit_Incoming_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace"))
+                    || methodTest.equals("test_Edit_Incoming_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Incoming_Route_Expert_Mode")
+            )
                 Assumptions.assumeTrue(TestStatusResult
                                 .getTestResult()
                                 .get("test_Edit_Incoming_Route_From_Simple_To_Expert_Mode"),
@@ -44,11 +49,16 @@ public class ResourcesRoutePage implements BeforeAllCallback, BeforeEachCallback
             else if(methodTest.equals("test_Edit_Outgoing_Route_Simple_Mode")
                     || methodTest.equals("test_Edit_Outgoing_Route_Simple_Mode_Without_Pattern_Replace")
                     || methodTest.equals("test_Edit_Outgoing_Route_From_Simple_To_Expert_Mode")
-                    || methodTest.equals("test_Delete_Outgoing_Route_In_Simple_Mode"))
+                    || methodTest.equals("test_Delete_Outgoing_Route_In_Simple_Mode")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Outgoing_Route_Simple_Mode")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Outgoing_Route_From_Simple_To_Expert_Mode")
+            )
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Outgoing_Route_Simple_Mode"),
                         "Test failed - adding a outgoing route in simple mode. Skip the test!");
             else if(methodTest.equals("test_Edit_Outgoing_Route_Expert_Mode_Without_Group_Replace")
-                    || methodTest.equals("test_Edit_Outgoing_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace"))
+                    || methodTest.equals("test_Edit_Outgoing_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace")
+                    || methodTest.equals("test_Close_Modal_Window_When_Edit_Outgoing_Route_Expert_Mode")
+            )
                 Assumptions.assumeTrue(TestStatusResult
                                 .getTestResult()
                                 .get("test_Edit_Outgoing_Route_From_Simple_To_Expert_Mode"),

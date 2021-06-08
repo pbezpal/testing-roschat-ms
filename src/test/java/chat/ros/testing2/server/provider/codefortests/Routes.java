@@ -16,146 +16,214 @@ public class Routes extends TelephonyPage implements IRoutes {
 
     public Routes() {}
 
-    @Override
-    public void closeModalWindowForAddRoute(String provider, String addButton, boolean simpleMode) {
-        clickButtonTableProvider(provider, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, addButton);
-        selectCheckboxProvider(simpleMode);
-        assertTrue(clickButtonClose().isShowElement(modalWindow, false),
-                "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
-    }
+    private String patternNumber = null;
+    private String patternReplace = null;
+    private String groupReplace = null;
+    private String startMessageError = null;
 
-    @Override
-    public void addRouteVerifyTitleModalWindow(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode) {
-        clickButtonTableProvider(provider, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, addButton);
-        createRoute(direction, simpleMode, dataRoute);
-        String titleModalWindow = getTitleOfModalWindow();
-        clickButtonSave();
-        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        assertEquals(titleModalWindow,
-                "Добавление маршрута",
-                "Не найден заголовок Добавление маршрута в модальном окне при добавление маршрута");
-        assertTrue(isExistsTableText(direction, true),
-                "Не отображается значение " + direction +
-                        " в столбце Направление в таблице маршрутов");
-    }
-
-    @Override
-    public void addRoute(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode) {
-        String patternNumber = null;
-        String patternReplace = null;
-        String groupReplace = null;
+    private String verifyAddRoute(String direction, Map<String, String> dataRoute, boolean simpleMode, boolean showTable){
+        patternNumber = null;
+        patternReplace = null;
+        groupReplace = null;
         for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER))
+            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER)
+                    || data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER))
                 patternNumber = data.getValue().toString();
             else
-            if(simpleMode)
-                patternReplace = data.getValue().toString();
-            else{
-                if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE))
+                if(simpleMode)
                     patternReplace = data.getValue().toString();
-                else
-                    groupReplace = data.getValue().toString();
-            }
+                else{
+                    if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE))
+                        patternReplace = data.getValue().toString();
+                    else
+                        groupReplace = data.getValue().toString();
+                }
         }
 
-        final String finalPatternNumber = patternNumber;
-        String finalPatternReplace  = null;
+        String finalPatternReplace = null;
+
+        if(showTable) startMessageError = "Не отображается значение ";
+        else startMessageError = "Отображается значение ";
+
         if(simpleMode)
             finalPatternReplace = patternReplace;
         else
             finalPatternReplace = patternReplace + groupReplace;
 
-        clickButtonTableProvider(provider, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, addButton);
-        createRoute(direction, simpleMode, dataRoute);
-        clickButtonSave();
-        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         assertAll("\"1. Проверяем, правильно ли отображается заголовок модального окна\n" +
                         "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что в столбце Шаблон номера отображается значение " + finalPatternNumber + "\n" +
-                        "4. Проверяем, что в столбце Шаблон замены отображается значение " + patternReplace,
-                () -> assertTrue(isExistsTableText(direction, true),
-                        "Не отображается значение " + direction +
+                        "3. Проверяем, что в столбце Шаблон номера отображается значение " + patternNumber + "\n" +
+                        "4. Проверяем, что в столбце Шаблон замены отображается значение " + finalPatternReplace,
+                () -> assertTrue(isExistsTableText(direction, showTable),
+                        startMessageError + direction +
                                 " в столбце Направление в таблице маршрутов"),
                 () -> {
-                    assertTrue(isExistsTableText(finalPatternNumber, true),
-                            "Не отображается значение " + finalPatternNumber +
+                    assertTrue(isExistsTableText(patternNumber, showTable),
+                            startMessageError + patternNumber +
                                     " в столбце Шаблон номера в таблице маршрутов");
-                    if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                        patternNumbersIncomingRoute.add(finalPatternNumber);
-                    else
-                        patternNumbersOutgoingRoute.add(finalPatternNumber);
                 }
         );
-        TestStatusResult.setTestResult(true);
-        assertTrue(isExistsTableText(finalPatternReplace, true),
-                "Не отображается Шаблон замены " + finalPatternReplace +
-                        " в столбце Шаблон номера в таблице маршрутов");
-        if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-            patternsReplaceIncomingRouteSimpleMode.add(finalPatternReplace);
-        else
-            patternsReplaceOutgoingRouteSimpleMode.add(finalPatternReplace);
+
+        return finalPatternReplace;
+    }
+
+    private String verifyEditRoute(String direction, boolean verifyDirection, Map<String, String> dataRoute, boolean simpleMode, boolean showTable){
+        patternNumber = null;
+        patternReplace = null;
+        groupReplace = null;
+        String finalPatternReplace = null;
+
+        if(simpleMode){
+            for(Map.Entry data: dataRoute.entrySet()){
+                if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER))
+                    patternNumber = data.getValue().toString();
+                else
+                    patternReplace = data.getValue().toString();
+            }
+
+            finalPatternReplace = patternReplace;
+
+            if(showTable) startMessageError = "Не отображается значение ";
+            else startMessageError = "Отображается значение ";
+
+            assertAll("1. Проверяем, правильно ли отображается заголовок модального окна\n" +
+                            "2. Заполняем поля модального окна и сохраняем настройки\n" +
+                            "3. Проверяем, что в столбце Шаблон номера отображается значение " + patternNumber + "\n" +
+                            "4. Проверяем, что в столбце Шаблон замены отображается значение " + patternReplace,
+                    () ->{
+                        if(verifyDirection)
+                            assertTrue(isExistsTableText(direction, showTable),
+                                    startMessageError + direction +
+                                            " в столбце Направление в таблице маршрутов");
+                    },
+                    () -> {
+                        assertTrue(isExistsTableText(patternNumber, showTable),
+                                startMessageError + patternNumber +
+                                        " в столбце Шаблон номера в таблице маршрутов");
+                        if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                            patternNumbersIncomingRoute.add(patternNumber);
+                        else
+                            patternNumbersOutgoingRoute.add(patternNumber);
+                    }
+            );
+        }else{
+            for(Map.Entry data: dataRoute.entrySet()){
+                if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER))
+                    patternNumber = data.getValue().toString();
+                else if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE))
+                    patternReplace = data.getValue().toString();
+                else
+                    groupReplace = data.getValue().toString();
+            }
+
+            finalPatternReplace = patternReplace + groupReplace;
+
+            assertAll("Проверяем, что корректно отображаютс данные в таблице маршрутов:\n" +
+                            "1. В столбце Шаблон номера отображается значение " + patternNumber + "\n" +
+                            "2. В столбце Шаблон замены отображается значение " + patternReplace,
+                    () -> {
+                        if(showTable)
+                            assertTrue(isExistsTableText(direction, showTable),
+                                    startMessageError + direction +
+                                            " в столбце Направление в таблице маршрутов");
+                    },
+                    () -> {
+                        assertTrue(isExistsTableText(patternNumber, showTable),
+                                startMessageError + patternNumber +
+                                        " в столбце Шаблон номера в таблице маршрутов");
+                        if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                            patternNumbersIncomingRoute.add(patternNumber);
+                        else
+                            patternNumbersOutgoingRoute.add(patternNumber);
+                    }
+            );
+        }
+
+        return finalPatternReplace;
     }
 
     @Override
-    public void editRouteVerifyTitleModalWindow(String provider, String direction, boolean... simpleMode) {
+    public void closeModalWindowForAddRoute(String provider, String direction, Map<String, String> dataRoute, String button, boolean simpleMode) {
+        clickButtonTableProvider(provider, "Изменить");
+        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, button);
+        createRoute(direction, simpleMode, dataRoute);
+        assertTrue(clickButtonClose().isShowElement(modalWindow, false),
+                "Модальное окно для добавления маршрута не заркылось после нажатия кнопки Закрыть");
+        String patternReplace = verifyAddRoute(direction, dataRoute, simpleMode, false);
+        assertTrue(isExistsTableText(patternReplace, false),
+                "Отображается Шаблон замены " + patternReplace +
+                        " в столбце Шаблон замены в таблице маршрутов");
+    }
+
+    @Override
+    public void closeModalWindowForEditRoute(String provider, String direction, Map<String, String> dataRoute, boolean... simpleMode) {
+        String patternReplace = null;
         clickButtonTableProvider(provider, "Изменить")
                 .clickButtonTableRoute(direction, "edit");
-        if(simpleMode.length > 0)
-            selectCheckboxProvider(simpleMode[0]);
-        assertTrue(clickButtonClose().isShowElement(modalWindow, false),
-                "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
+        if(simpleMode.length > 0) {
+            editRoute(dataRoute, simpleMode[0]);
+            assertTrue(clickButtonClose().isShowElement(modalWindow, false),
+                    "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
+            if (simpleMode[0])
+                patternReplace = verifyEditRoute(direction, false, dataRoute, true, false);
+            else
+                patternReplace = verifyEditRoute(direction, false, dataRoute, false, false);
+        }else {
+            editRoute(dataRoute);
+            assertTrue(clickButtonClose().isShowElement(modalWindow, false),
+                    "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
+            patternReplace = verifyEditRoute(direction, false, dataRoute, false, false);
+        }
+        assertTrue(isExistsTableText(patternReplace, false),
+                "Отображается Шаблон замены " + patternReplace +
+                        " в столбце Шаблон замены в таблице маршрутов");
+    }
+
+    @Override
+    public void addRoute(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode) {
+        clickButtonTableProvider(provider, "Изменить");
+        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, addButton);
+        if( ! getTitleOfModalWindow().equals("Добавление маршрута"))
+            Allure.step("Не найден заголовок модального окна Добавление маршрута", Status.FAILED);
+        createRoute(direction, simpleMode, dataRoute);
+        clickButtonSave();
+        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        String patternReplace = verifyAddRoute(direction, dataRoute, simpleMode, true);
+        if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+            patternNumbersIncomingRoute.add(patternNumber);
+        else
+            patternNumbersOutgoingRoute.add(patternNumber);
+        TestStatusResult.setTestResult(true);
+        assertTrue(isExistsTableText(patternReplace, true),
+                "Не отображается Шаблон замены " + patternReplace +
+                        " в столбце Шаблон номера в таблице маршрутов");
+        if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+            patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
+        else
+            patternsReplaceOutgoingRouteSimpleMode.add(patternReplace);
     }
 
     @Override
     public void editRouteSimpleMode(String provider, String direction, Map<String, String> dataRoute) {
-        String patternNumber = null;
-        String patternReplace = null;
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER))
-                patternNumber = data.getValue().toString();
-            else
-                patternReplace = data.getValue().toString();
-        }
-
         clickButtonTableProvider(provider, "Изменить")
                 .clickButtonTableRoute(direction, "edit");
         if(! getTitleOfModalWindow().equals("Редактирование маршрута"))
             Allure.step("Не найден заголовок Редактирование маршрута модального окна при редактирование маршрута",
                     Status.FAILED);
-        final String finalPatternNumber = patternNumber;
         editRoute(dataRoute, true);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        assertAll("1. Проверяем, правильно ли отображается заголовок модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что в столбце Шаблон номера отображается значение " + finalPatternNumber + "\n" +
-                        "4. Проверяем, что в столбце Шаблон замены отображается значение " + patternReplace,
-                () -> assertTrue(isExistsTableText(direction, true),
-                        "Не отображается значение " + direction +
-                                " в столбце Направление в таблице маршрутов"),
-                () -> {
-                    assertTrue(isExistsTableText(finalPatternNumber, true),
-                            "Не отображается значение " + finalPatternNumber +
-                                    " в столбце Шаблон номера в таблице маршрутов");
-                    if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                        patternNumbersIncomingRoute.add(finalPatternNumber);
-                    else
-                        patternNumbersOutgoingRoute.add(finalPatternNumber);
-                }
-        );
+        String patternReplace = verifyEditRoute(direction, true, dataRoute, true, true);
         TestStatusResult.setTestResult(true);
 
         if(patternReplace.equals("")){
             patternsReplaceIncomingRouteSimpleMode.forEach((replace) -> assertTrue(isExistsTableText(replace, false),
                     "Отображается Шаблон замены " + replace +
-                            " в столбце Шаблон номера в таблице маршрутов"));
+                            " в столбце Шаблон замены в таблице маршрутов"));
         }else {
             assertTrue(isExistsTableText(patternReplace, true),
                     "Не отображается Шаблон замены " + patternReplace +
-                            " в столбце Шаблон номера в таблице маршрутов");
+                            " в столбце Шаблон замены в таблице маршрутов");
             if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
                 patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
             else
@@ -165,55 +233,25 @@ public class Routes extends TelephonyPage implements IRoutes {
 
     @Override
     public void editRouteExpertMode(String provider, String direction, Map<String, String> dataRoute, boolean... expertMode) {
-        String number = null;
-        String replace = null;
-        String groupReplace = null;
-
-        for(Map.Entry data: dataRoute.entrySet()){
-            if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER))
-                number = data.getValue().toString();
-            else if(data.getKey().equals(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE))
-                replace = data.getValue().toString();
-            else
-                groupReplace = data.getValue().toString();
-        }
-
         clickButtonTableProvider(provider, "Изменить")
                 .clickButtonTableRoute(direction, "edit");
         if(! getTitleOfModalWindow().equals("Редактирование маршрута"))
             Allure.step("Не найден заголовок Редактирование маршрута модального окна при редактирование маршрута",
                     Status.FAILED);
-        String patternReplace = replace + groupReplace;
-        String finalNumber = number;
         if(expertMode.length > 0 && expertMode[0])
             editRoute(dataRoute, false);
         else
             editRoute(dataRoute);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        assertAll("Проверяем, что корректно отображаютс данные в таблице маршрутов:\n" +
-                        "1. В столбце Шаблон номера отображается значение " + finalNumber + "\n" +
-                        "2. В столбце Шаблон замены отображается значение " + patternReplace,
-                () -> assertTrue(isExistsTableText(direction, true),
-                        "Не отображается значение " + direction +
-                                " в столбце Направление в таблице маршрутов"),
-                () -> {
-                    assertTrue(isExistsTableText(finalNumber, true),
-                            "Не отображается значение " + finalNumber +
-                                    " в столбце Шаблон номера в таблице маршрутов");
-                    if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                        patternNumbersIncomingRoute.add(finalNumber);
-                    else
-                        patternNumbersOutgoingRoute.add(finalNumber);
-                }
-        );
+        String groupPatternReplace = verifyEditRoute(direction, true, dataRoute, false, true);
         TestStatusResult.setTestResult(true);
-        if(groupReplace.equals("") && ! replace.equals("")) {
-            assertTrue(isExistsTableText(patternReplace, true),
-                    "Не отображается значение " + patternReplace + " в столбце Шаблон замены в таблице маршрутов");
-            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE)) replacesIncomingRouteExpertMode.add(replace);
-            else replacesOutgoingRouteExpertMode.add(replace);
-        }else if(groupReplace.equals("") && replace.equals("")){
+        if(groupReplace.equals("") && ! patternReplace.equals("")) {
+            assertTrue(isExistsTableText(groupPatternReplace, true),
+                    "Не отображается значение " + groupPatternReplace + " в столбце Шаблон замены в таблице маршрутов");
+            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE)) replacesIncomingRouteExpertMode.add(patternReplace);
+            else replacesOutgoingRouteExpertMode.add(patternReplace);
+        }else if(groupReplace.equals("") && patternReplace.equals("")){
             if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE)) {
                 replacesIncomingRouteExpertMode.forEach((rep) -> assertTrue(isExistsTableText(rep, false),
                         "Отображается значение " + rep + " в столбце Шаблон замены в таблице маршрутов"));
@@ -232,13 +270,13 @@ public class Routes extends TelephonyPage implements IRoutes {
             }
         }else{
             if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE)) {
-                replacesIncomingRouteExpertMode.add(replace);
+                replacesIncomingRouteExpertMode.add(patternReplace);
                 groupReplacesIncomingRouteExpertMode.add(groupReplace);
-                patternIncomingRouteExpertMode.add(patternReplace);
+                patternIncomingRouteExpertMode.add(groupPatternReplace);
             }else{
-                replacesOutgoingRouteExpertMode.add(replace);
+                replacesOutgoingRouteExpertMode.add(patternReplace);
                 groupReplacesOutgoingRouteExpertMode.add(groupReplace);
-                patternOutgoingRouteExpertMode.add(patternReplace);
+                patternOutgoingRouteExpertMode.add(groupPatternReplace);
             }
         }
     }

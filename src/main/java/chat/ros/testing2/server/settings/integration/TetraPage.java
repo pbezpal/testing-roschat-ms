@@ -33,8 +33,9 @@ public class TetraPage implements IntegrationPage {
 
     @Step(value = "Нажимаем нопку Сохранить")
     @Override
-    public void clickButtonSave(){
+    public TetraPage clickButtonSave(){
         buttonSaveTetra.click();
+        return this;
     }
 
 

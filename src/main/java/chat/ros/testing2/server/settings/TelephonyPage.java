@@ -93,8 +93,8 @@ public class TelephonyPage implements SettingsPage {
         return this;
     }
 
-    public SelenideElement getParentProviderSection(){
-        return $$("h2").findBy(text("Провайдеры")).parent();
+    public SelenideElement getParentProviderSection(String titleForm){
+        return $$("h2").findBy(text(titleForm)).parent();
     }
 
     @Step(value = "Проверяем, отображается ли подзаголовок {subtitle} модального окна")
@@ -104,13 +104,13 @@ public class TelephonyPage implements SettingsPage {
 
     @Step(value = "Проверяем, отображаются ли {show} подзаголовки в разделе Провайдер")
     public boolean isSubtitleProviderForm(String subtitle, boolean show){
-        return isVisibleElement(getParentProviderSection().findAll("h3"), subtitle, show);
+        return isVisibleElement(getParentProviderSection(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER).findAll("h3"), subtitle, show);
     }
 
     @Step(value = "Нажимаем кнопку {button} в таблице провайдеров у провайдера {provider}")
     public TelephonyPage clickButtonTableProvider(String provider, String button){
-        getParentProviderSection().scrollIntoView(false);
-        getParentProviderSection().
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).
                 findAll("table td")
                 .findBy(Condition.text(provider))
                 .parent()

@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature(value = "Телефония -> Провайдер без рагистрации")
 public class TestProviderWithoutRegPage extends Provider {
 
+    private String buttonEdit = "Редактировать";
+    private String buttonChange = "Изменить";
+
     //The data for the section general in the form provider
     private Map<String, String> dataGeneralProvider = new HashMap() {{
         put(TELEPHONY_PROVIDER_INPUT_NAME, TELEPHONY_PROVIDER_TITLE_WITHOUT_REG);
@@ -85,6 +88,7 @@ public class TestProviderWithoutRegPage extends Provider {
     @Order(2)
     @Test
     void test_Show_Settings_Provider_Without_Reg(){
+        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, buttonChange);
         verifyShowSettingsProvider(dataGeneralProvider, false);
     }
 
@@ -151,28 +155,10 @@ public class TestProviderWithoutRegPage extends Provider {
     @Test
     @Order(7)
     void test_Edit_Provider_Without_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Редактировать");
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> assertTrue(isSubtitleModalWindow("Общее"),
-                        "Не найден подзаголовок 'Общее' модального окна"),
-                () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
-                        "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {setProvider(dataEditGeneralProvider);},
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в таблице" +
-                                " провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в таблице" +
-                                " провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                        "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице" +
-                                " провайдеров после реадктирования")
-        );
+        editProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG,
+                dataEditGeneralProvider,
+                false,
+                buttonEdit);
         TestStatusResult.setTestResult(true);
     }
 
@@ -183,18 +169,8 @@ public class TestProviderWithoutRegPage extends Provider {
     @Order(8)
     @Test
     void test_Show_Settings_Provider_Without_Reg_After_Edit(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
-        assertAll("1. Нажимаем кнопку изманить\n" +
-                        "2. Проверяем, что в разделе Провайдер отображаются настройки провайдера " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG,
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                        "Не отображается адрес провайдера " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITHOUT_REG, false),
-                        "Отображается АОН " + TELEPHONY_PROVIDER_AON_WITHOUT_REG + " в настройках провадера")
-        );
+        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, buttonChange);
+        verifyShowSettingsProvider(dataEditGeneralProvider, false);
     }
 
     @Story(value = "Добавляем исходящий маршрут после редактирования провайдера")
@@ -260,38 +236,10 @@ public class TestProviderWithoutRegPage extends Provider {
     @Test
     @Order(13)
     void test_Edit_Provider_With_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> assertTrue(isSubtitleModalWindow("Общее"),
-                        "Не найден подзаголовок 'Общее' модального окна"),
-                () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
-                        "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {setProvider(dataGeneralProvider, dataRegistrationProvider, true);},
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в настройках" +
-                                " провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, true),
-                "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в " +
-                        "настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                "Не отображается адрес провайдера " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в " +
-                        "настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITHOUT_REG, true),
-                "Не отображается АОН " + TELEPHONY_PROVIDER_AON_WITHOUT_REG + " в настройках провадера после" +
-                        " редактирования"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_USERNAME_WITH_REG, true),
-                "Не отображается Имя пользователя " + TELEPHONY_PROVIDER_USERNAME_WITH_REG + " в настройках" +
-                        " провадера после редактирования"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_INTERVAL_WITH_REG, true),
-                "Не отображается Интервал регистрации " + TELEPHONY_PROVIDER_INTERVAL_WITH_REG + " в " +
-                        "настройках провадера после редактирования")
-        );
+        Map<String, String> dataProvider = new HashMap<>();
+        dataProvider.putAll(dataEditGeneralProvider);
+        dataProvider.putAll(dataRegistrationProvider);
+        editProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, dataProvider, true, buttonChange);
         TestStatusResult.setTestResult(true);
     }
 
@@ -302,17 +250,7 @@ public class TestProviderWithoutRegPage extends Provider {
     @Test
     @Order(14)
     void test_Exist_Provider_With_Registration(){
-        assertAll("1. Проверяем, что правильно отображаются Название в таблице провайдеров\n" +
-                        "2. Проверяем, что правильно отображаются Адрес в таблице провайдеров",
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в таблице " +
-                                "провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, true),
-                        "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице " +
-                                "провайдеров после редактирования")
-        );
+        verifyTableProvider(dataEditGeneralProvider, true);
     }
 
     @Story(value = "Добавляем входящий маршрут после редактирования провайдера с регистрацией")
@@ -377,20 +315,6 @@ public class TestProviderWithoutRegPage extends Provider {
     @Test
     @Order(19)
     void test_Delete_Provider_With_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, "Удалить");
-        clickButtonConfirmAction("Продолжить");
-        assertAll("1. Проверяем, что отсутствует Название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " не" +
-                        " отображается в таблице провайдеров после удаления \n 2. Проверяем, что отсутствует Адрес " +
-                        "" + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " не отображается в таблице провайдеров",
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, false),
-                        "Отображается название " + TELEPHONY_PROVIDER_TITLE_WITHOUT_REG + " в таблице " +
-                                "провайдеров после удаления"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITHOUT_REG + " в таблице " +
-                                "провайдеров после удаления"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG, false),
-                        "Отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITHOUT_REG + " в таблице " +
-                                "провайдеров после удаления")
-        );
+        deleteProvider(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, dataGeneralProvider, true);
     }
 }

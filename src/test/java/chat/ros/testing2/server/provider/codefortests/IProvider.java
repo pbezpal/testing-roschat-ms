@@ -1,7 +1,5 @@
 package chat.ros.testing2.server.provider.codefortests;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public interface IProvider {
@@ -10,5 +8,11 @@ public interface IProvider {
 
     void addProvider(Map<String, String> dataProvider);
 
+    void editProvider(String provider, Map<String, String> dataProvider, boolean registration, String buttonEdit);
+
     void verifyShowSettingsProvider(Map<String, String> dataProvider, boolean registration);
+
+    void verifyTableProvider(Map<String, String> dataProvider, boolean show);
+
+    void deleteProvider(String provider, Map<String, String> dataProvider, boolean tableDelete);
 }

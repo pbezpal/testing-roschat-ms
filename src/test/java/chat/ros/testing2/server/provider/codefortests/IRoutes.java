@@ -18,13 +18,11 @@ public interface IRoutes {
     List<String> groupReplacesOutgoingRouteExpertMode = new ArrayList<String>();
     List<String> patternOutgoingRouteExpertMode = new ArrayList<String>();
 
-    void closeModalWindowForAddRoute(String provider, String addButton, boolean simpleMod);
+    void closeModalWindowForAddRoute(String provider, String direction, Map<String, String> dataRoute, String button, boolean simpleMod);
 
-    void addRouteVerifyTitleModalWindow(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode);
+    void closeModalWindowForEditRoute(String provider, String route, Map<String, String> dataRoute, boolean... simpleMode);
 
     void addRoute(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode);
-
-    void editRouteVerifyTitleModalWindow(String provider, String direction, boolean... simpleMode);
 
     void editRouteSimpleMode(String provider, String direction, Map<String, String> dataRoute);
 

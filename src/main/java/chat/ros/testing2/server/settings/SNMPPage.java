@@ -30,8 +30,9 @@ public class SNMPPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку Сохранить")
     @Override
-    public void clickButtonSave(){
+    public SNMPPage clickButtonSave(){
         buttonSave.click();
+        return this;
     }
 
     public String getSettingsSNMPPage(String server, String port){

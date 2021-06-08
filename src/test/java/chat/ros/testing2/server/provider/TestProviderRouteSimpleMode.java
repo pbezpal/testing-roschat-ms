@@ -50,13 +50,19 @@ public class TestProviderRouteSimpleMode extends Provider {
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE, "");
     }};
+    //The data for testing close modal window when edit incoming route on expert mode
+    private Map<String,String> dataEditIncomingRouteExpertMode = new HashMap(){{
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_NUMBER);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_REPLACE);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE, TELEPHONY_PROVIDER_INCOMING_ROUTE_EXPERT_MODE_GROUP_REPLACE);
+    }};
     //The data edit incoming route from simple to expert mode
     private Map<String,String> dataEditIncomingRouteFromSimpleToExpertMode = new HashMap(){{
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_TO_EXPERT_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_TO_EXPERT_MODE_REPLACE);
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_TO_EXPERT_MODE_GROUP_REPLACE);
     }};
-    //The data edit incoming route in expert mode without group replace
+    //The data for edit incoming route in expert mode without group replace
     private Map<String,String> dataEdiIncomingtRouteInExpertModeWithoutGroupReplace = new HashMap(){{
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_TO_EXPERT_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_EDIT_INCOMING_ROUTE_SIMPLE_TO_EXPERT_MODE_REPLACE);
@@ -80,12 +86,18 @@ public class TestProviderRouteSimpleMode extends Provider {
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_MODE_REPLACE);
     }};
-    //The data for edit щгепщштп route in simple mode without pattern replace
+    //The data for edit outgoing route in simple mode without pattern replace
     private Map<String,String> dataEditOutgoingRouteSimpleModeWithoutReplace = new HashMap(){{
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_SIMPLE_MODE_INPUT_REPLACE, "");
     }};
-    //The data edit outgoing route from simple to expert mode
+    //The data for testing close modal window when edit outgoing route on expert mode
+    private Map<String,String> dataEditOutgoingRouteExpertMode = new HashMap(){{
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_OUTGOING_ROUTE_EXPERT_MODE_NUMBER);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_OUTGOING_ROUTE_EXPERT_MODE_REPLACE);
+        put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_GROUP_REPLACE, TELEPHONY_PROVIDER_OUTGOING_ROUTE_EXPERT_MODE_GROUP_REPLACE);
+    }};
+    //The data for edit outgoing route from simple to expert mode
     private Map<String,String> dataEditOutgoingRouteFromSimpleToExpertMode = new HashMap(){{
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_NUMBER, TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_TO_EXPERT_MODE_NUMBER);
         put(TELEPHONY_PROVIDER_ROUTE_EXPERT_MODE_INPUT_REPLACE, TELEPHONY_PROVIDER_EDIT_OUTGOING_ROUTE_SIMPLE_TO_EXPERT_MODE_REPLACE);
@@ -224,6 +236,25 @@ public class TestProviderRouteSimpleMode extends Provider {
                 () -> assertTrue(clickButtonCloseModalInfo().isVisibleInfoWrapper(false),
                         "Модальное окно с информацией не закрылось после нажатия кнопки 'Закрыть'")
         );
+
+        assertTrue(clickButtonClose().isShowElement(modalWindow, false),
+                "Модальное окно для добавления маршрута не заркылось после нажатия кнопки Закрыть");
+    }
+
+    @Story(value = "Закрываем модальное окно при добавление входящего маршрута")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку Создать маршрут\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что маршрут не отображается в таблице маршрутов")
+    @Test
+    @Order(3)
+    void test_Close_Modal_Window_When_Add_Incoming_Route_Simple_Mode(){
+        closeModalWindowForAddRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_INCOMING_ROUTE,
+                dataIncomingRouteSimpleMode,
+                TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE,
+                true);
     }
 
     @Story(value = "Добавляем входящий маршрут")
@@ -233,13 +264,29 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(3)
+    @Order(4)
     void test_Add_Incoming_Route_Simple_Mode(){
         addRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataIncomingRouteSimpleMode
                 , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE
                 , true);
+    }
+
+    @Story(value = "Закрываем модальное окно при добавление исходящего маршрута")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку Новый маршрут\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что маршрут не отображается в таблице маршрутов")
+    @Test
+    @Order(5)
+    void test_Close_Modal_Window_When_Add_Outgoing_Route_Simple_Mode(){
+        closeModalWindowForAddRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_OUTGOING_ROUTE,
+                dataOutgoingRouteSimpleMode,
+                TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE,
+                true);
     }
 
     @Story(value = "Добавляем исходящий маршрут")
@@ -249,13 +296,28 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(4)
+    @Order(6)
     void test_Add_Outgoing_Route_Simple_Mode(){
         addRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataOutgoingRouteSimpleMode
                 , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE
                 , true);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование входящего маршрута")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что изменения не сохранились в таблице маршрутов")
+    @Test
+    @Order(7)
+    void test_Close_Modal_Window_When_Edit_Incoming_Route_Simple_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_INCOMING_ROUTE,
+                dataEditIncomingRouteSimpleMode,
+                true);
     }
 
     @Story(value = "Редактируем входящий маршрут")
@@ -265,11 +327,26 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(5)
+    @Order(8)
     void test_Edit_Incoming_Route_Simple_Mode(){
         editRouteSimpleMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataEditIncomingRouteSimpleMode);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование исходящего маршрута")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что изменения не сохранились в таблице маршрутов")
+    @Test
+    @Order(9)
+    void test_Close_Modal_Window_When_Edit_Outgoing_Route_Simple_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_OUTGOING_ROUTE,
+                dataEditOutgoingRouteSimpleMode,
+                true);
     }
 
     @Story(value = "Редактируем исходящий маршрут")
@@ -279,7 +356,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(6)
+    @Order(10)
     void test_Edit_Outgoing_Route_Simple_Mode(){
         editRouteSimpleMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
@@ -293,7 +370,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(7)
+    @Order(11)
     void test_Edit_Incoming_Route_Simple_Mode_Without_Pattern_Replace(){
         editRouteSimpleMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
@@ -307,11 +384,27 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(8)
+    @Order(12)
     void test_Edit_Outgoing_Route_Simple_Mode_Without_Pattern_Replace(){
         editRouteSimpleMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataEditOutgoingRouteSimpleModeWithoutReplace);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование входящего маршрута c переключением в экспертный режим")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Переключаем настройки в экспертный режим\n" +
+            "5. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "6. Проверяем, что изменеия не сохранились в таблице маршрутов")
+    @Test
+    @Order(13)
+    void test_Close_Modal_Window_When_Edit_Incoming_Route_From_Simple_To_Expert_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_INCOMING_ROUTE,
+                dataEditIncomingRouteFromSimpleToExpertMode,
+                false);
     }
 
     @Story(value = "Редактируем входящий маршрут с переключением в экспертный режим")
@@ -322,11 +415,27 @@ public class TestProviderRouteSimpleMode extends Provider {
             "5. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "6. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(9)
+    @Order(14)
     void test_Edit_Incoming_Route_From_Simple_To_Expert_Mode(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataEditIncomingRouteFromSimpleToExpertMode, true);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование исходящего маршрута c переключением в экспертный режим")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Переключаем настройки в экспертный режим\n" +
+            "5. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "6. Проверяем, что изменеия не сохранились в таблице маршрутов")
+    @Test
+    @Order(15)
+    void test_Close_Modal_Window_When_Edit_Outgoing_Route_From_Simple_To_Expert_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_OUTGOING_ROUTE,
+                dataEditOutgoingRouteFromSimpleToExpertMode,
+                false);
     }
 
     @Story(value = "Редактируем исходящий маршрут с переключением в экспертный режим")
@@ -337,12 +446,26 @@ public class TestProviderRouteSimpleMode extends Provider {
             "5. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "6. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(10)
+    @Order(16)
     void test_Edit_Outgoing_Route_From_Simple_To_Expert_Mode(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataEditOutgoingRouteFromSimpleToExpertMode
                 , true);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование входящего маршрута в экспертном режиме")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что изменеия не сохранились в таблице маршрутов")
+    @Test
+    @Order(17)
+    void test_Close_Modal_Window_When_Edit_Incoming_Route_Expert_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_INCOMING_ROUTE,
+                dataEditIncomingRouteExpertMode);
     }
 
     @Story(value = "Редактируем входящий маршрут в экспертном режиме без группы замены")
@@ -352,11 +475,25 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(11)
+    @Order(18)
     void test_Edit_Incoming_Route_Expert_Mode_Without_Group_Replace(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataEdiIncomingtRouteInExpertModeWithoutGroupReplace);
+    }
+
+    @Story(value = "Закрываем модальное окно при редактирование исходящего маршрута в экспертном режиме")
+    @Description(value = "1. Переходим в раздел Настройки -> Телефония\n" +
+            "2. Нажимаем кнопку Изменить у провадера в таблице провайдеров\n" +
+            "3. Нажимаем кнопку edit у входящего маршрута\n" +
+            "4. Заполняем поля и нажимаем кнопку Закрыть\n" +
+            "5. Проверяем, что изменеия не сохранились в таблице маршрутов")
+    @Test
+    @Order(19)
+    void test_Close_Modal_Window_When_Edit_Outgoing_Route_Expert_Mode(){
+        closeModalWindowForEditRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE,
+                TELEPHONY_PROVIDER_OUTGOING_ROUTE,
+                dataEditOutgoingRouteExpertMode);
     }
 
     @Story(value = "Редактируем исходящий маршрут в экспертном режиме без группы замены")
@@ -366,7 +503,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(12)
+    @Order(20)
     void test_Edit_Outgoing_Route_Expert_Mode_Without_Group_Replace(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
@@ -380,7 +517,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(13)
+    @Order(21)
     void test_Edit_Incoming_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
@@ -394,7 +531,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Заполняем поля и нажимаем кнопку Сохранить\n" +
             "5. Проверяем, что маршрут появился в таблице маршрутов")
     @Test
-    @Order(14)
+    @Order(22)
     void test_Edit_Outgoing_Route_Expert_Mode_Without_Pattern_Replace_And_Group_Replace(){
         editRouteExpertMode(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
@@ -408,7 +545,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Подтверждаем удаление входящего маршрута" +
             "5. Проверяем, что запись о входящем маршруте пропадала в таблице маршрутов после удаления")
     @Test
-    @Order(15)
+    @Order(23)
     void test_Delete_Incoming_Route_In_Simple_Mode(){
         deleteRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
@@ -420,7 +557,7 @@ public class TestProviderRouteSimpleMode extends Provider {
             "4. Подтверждаем удаление исходящего маршрута" +
             "5. Проверяем, что запись о исходящем маршруте пропадала в таблице маршрутов после удаления")
     @Test
-    @Order(16)
+    @Order(24)
     void test_Delete_Outgoing_Route_In_Simple_Mode(){
         deleteRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }

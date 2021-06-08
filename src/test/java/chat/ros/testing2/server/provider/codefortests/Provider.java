@@ -19,17 +19,23 @@ public class Provider extends Routes implements IProvider {
     private String usernameProvider = null;
     private String intervalProvider = null;
 
-    private void verifyBeforeAddedProvider(){
-        clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
-        if( ! getTitleOfModalWindow().equals("Провайдеры"))
-            Allure.step("Не найден заголовок модального окна Провайдеры", Status.FAILED);
+    /**
+     * this method verifies title and subtitle on modal window
+     */
+    private void verifyTitleAndSubtitleModalWindow(){
+        if( ! getTitleOfModalWindow().equals(TELEPHONY_PROVIDER_TITLE_FORM))
+            Allure.step("Не найден заголовок модального окна " + TELEPHONY_PROVIDER_TITLE_FORM, Status.FAILED);
         if( ! isSubtitleModalWindow("Общее"))
             Allure.step("Не найден подзаголовок модального окна Общее", Status.FAILED);
         if( ! isSubtitleModalWindow("Регистрация настроек провайдера"))
             Allure.step("Не найден подзаголовок модального окна Регистрация настроек провайдера", Status.FAILED);
     }
 
-    private void verifyAfterAddedProvider(Map<String, String> dataProvider){
+    /**
+     * this method verifies the provider data on table
+     * @param dataProvider the provider data
+     */
+    private void verifyProviderDataOnTable(Map<String, String> dataProvider, boolean show){
 
         titleProvider = null;
         descriptionProvider = null;
@@ -45,11 +51,14 @@ public class Provider extends Routes implements IProvider {
         }
 
         assertAll("Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertTrue(isExistsTableText(titleProvider, true),
+                () -> assertTrue(isExistsTableText(titleProvider, show),
                         "Не отображается название " + titleProvider + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(descriptionProvider, true),
-                        "Не отображается описание " + descriptionProvider + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(addressProvider, true),
+                () -> {
+                        if(!descriptionProvider.equals(""))
+                            assertTrue(isExistsTableText(descriptionProvider, show),
+                                            "Не отображается описание " + descriptionProvider + " в таблице провайдеров");
+                },
+                () -> assertTrue(isExistsTableText(addressProvider, show),
                         "Не отображается адрес " + addressProvider + " в таблице провайдеров")
         );
     }
@@ -57,16 +66,31 @@ public class Provider extends Routes implements IProvider {
 
     @Override
     public void addProvider(Map<String, String> dataGeneralProvider, Map<String, String> dataRegistrationProvider) {
-        verifyBeforeAddedProvider();
+        clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
+        verifyTitleAndSubtitleModalWindow();
         setProvider(dataGeneralProvider, dataRegistrationProvider, true);
-        verifyAfterAddedProvider(dataGeneralProvider);
+        verifyProviderDataOnTable(dataGeneralProvider, true);
     }
 
     @Override
     public void addProvider(Map<String, String> dataProvider) {
-        verifyBeforeAddedProvider();
+        clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
+        verifyTitleAndSubtitleModalWindow();
         setProvider(dataProvider);
-        verifyAfterAddedProvider(dataProvider);
+        verifyProviderDataOnTable(dataProvider, true);
+    }
+
+    @Override
+    public void editProvider(String provider, Map<String, String> dataProvider, boolean registration, String buttonEdit) {
+        clickButtonTableProvider(provider, buttonEdit);
+        if(buttonEdit.equals("Изменить"))
+            clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
+        verifyTitleAndSubtitleModalWindow();
+        selectCheckboxProvider(registration).setProvider(dataProvider);
+        if(buttonEdit.equals("Изменить"))
+            verifyShowSettingsProvider(dataProvider, registration);
+        else
+            verifyProviderDataOnTable(dataProvider, true);
     }
 
     @Override
@@ -95,20 +119,24 @@ public class Provider extends Routes implements IProvider {
             }
         }
 
-        clickButtonTableProvider(titleProvider, "Изменить");
-
-        assertAll("1. Нажимаем кнопку изманить\n" +
+        assertAll("1. Нажимаем кнопку изменить\n" +
                         "2. Проверяем, что в разделе Провайдер отображаются общие настройки провайдера " + titleProvider,
                 () -> assertTrue(isSubtitleProviderForm("Общее", true),
                         "Не отображается подзаголовок Общее в настройках Провайдера " + titleProvider),
                 () -> assertTrue(isContentSettingProvider(titleProvider, true),
                         "Не отображается название " + titleProvider + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(descriptionProvider, true),
-                        "Не отображается описание " + descriptionProvider + " в настройках провадера"),
+                () -> {
+                        if(!descriptionProvider.equals(""))
+                            assertTrue(isContentSettingProvider(descriptionProvider, true),
+                                "Не отображается описание " + descriptionProvider + " в настройках провадера");
+                },
                 () -> assertTrue(isContentSettingProvider(addressProvider, true),
                         "Не отображается адрес провайдера " + addressProvider + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(aonProvider, true),
-                        "Не отображается АОН " + aonProvider + " в настройках провадера"),
+                () ->{
+                    if(!aonProvider.equals(""))
+                        assertTrue(isContentSettingProvider(aonProvider, true),
+                                "Не отображается АОН " + aonProvider + " в настройках провадера");
+                },
                 () -> {
                     if(registration){
                         assertAll("Проверяем, что в разделе Провайдер отображаются отображаются настройки регистрации",
@@ -129,5 +157,22 @@ public class Provider extends Routes implements IProvider {
 
         );
 
+    }
+
+    @Override
+    public void verifyTableProvider(Map<String, String> dataProvider, boolean show) {
+        verifyProviderDataOnTable(dataProvider, show);
+    }
+
+    @Override
+    public void deleteProvider(String provider, Map<String, String> dataProvider, boolean tableDelete) {
+        if(tableDelete)
+            clickButtonTableProvider(provider, "Удалить");
+        else {
+            clickButtonTableProvider(provider, "Изменить");
+            clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Удалить");
+        }
+        clickButtonConfirmAction("Продолжить");
+        verifyProviderDataOnTable(dataProvider, false);
     }
 }

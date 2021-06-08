@@ -93,7 +93,7 @@ public interface SettingsData {
     String TELEPHONY_PROVIDER_INTERVAL_WITH_REG = "299";
 
     //Data for creating a provider for testing the route in simple mode
-    String TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE = "Provider - route in simple node";
+    String TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE = "Provider - route in simple mode";
     String TELEPHONY_PROVIDER_ADDRESS_ROUTE_SIMPLE_MODE = "127.0.0.1";
 
     //Data for creating a provider for testing the route in expert mode

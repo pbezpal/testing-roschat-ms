@@ -26,6 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature(value = "Телефония -> Провайдер c рагистрацией")
 public class TestProviderWithRegPage extends Provider {
 
+    private String buttonEdit = "Редактировать";
+    private String buttonChange = "Изменить";
+
     //The data for the section general in the form provider
     private Map<String, String> dataGeneralProvider = new HashMap() {{
         put(TELEPHONY_PROVIDER_INPUT_NAME, TELEPHONY_PROVIDER_TITLE_WITH_REG);
@@ -98,7 +101,8 @@ public class TestProviderWithRegPage extends Provider {
         Map<String, String> dataProvider = new HashMap<>();
         dataProvider.putAll(dataGeneralProvider);
         dataProvider.putAll(dataRegistrationProvider);
-        verifyShowSettingsProvider(dataGeneralProvider, true);
+        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, buttonChange);
+        verifyShowSettingsProvider(dataProvider, true);
     }
 
     @Story(value = "Добавляем входящий маршрут")
@@ -110,8 +114,8 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(3)
     void test_Add_Incoming_Rout_In_Simple_Mode(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
-                , TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
+                , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataRouteSimpleMode
                 , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE, true);
     }
@@ -125,7 +129,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(4)
     void test_Add_Outgoing_Rout_In_Expert_Mode(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataRouteExpertMode
                 , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE, false);
@@ -140,7 +144,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(5)
     void test_Delete_Incoming_Route_In_Simple_Mode(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Удаление Исходящего маршрута")
@@ -152,7 +156,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(6)
     void test_Delete_Route_Out_With_Expert_Mode_Of_Provider_With_Reg(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Редактируем провайдера с регистрацией")
@@ -163,28 +167,10 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(7)
     void test_Edit_Provider_With_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, "Редактировать");
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> assertTrue(isSubtitleModalWindow("Общее"),
-                        "Не найден подзаголовок 'Общее' модального окна"),
-                () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
-                        "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {setProvider(dataEditGeneralProvider, dataEditRegistrationProvider, true);},
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITH_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в таблице" +
-                                " провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG + " в таблице" +
-                                " провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITH_REG, true),
-                        "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " в таблице" +
-                                " провайдеров после реадктирования")
-        );
+        Map<String, String> dataProvider = new HashMap<>();
+        dataProvider.putAll(dataEditGeneralProvider);
+        dataProvider.putAll(dataEditRegistrationProvider);
+        editProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, dataProvider, true, buttonEdit);
         TestStatusResult.setTestResult(true);
     }
 
@@ -195,24 +181,11 @@ public class TestProviderWithRegPage extends Provider {
     @Order(8)
     @Test
     void test_Show_Settings_Provider_With_Reg_After_Edit(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, "Изменить");
-        assertAll("1. Нажимаем кнопку изманить\n" +
-                        "2. Проверяем, что в разделе Провайдер отображаются настройки провайдера " + TELEPHONY_PROVIDER_TITLE_WITH_REG,
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_ADDRESS_WITH_REG, true),
-                        "Не отображается адрес провайдера " + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITH_REG, false),
-                        "Отображается АОН " + TELEPHONY_PROVIDER_AON_WITH_REG + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG, true),
-                        "Не отображается Имя пользователя " + TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG + " в настройках" +
-                                " провадера после редактирования"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG, true),
-                        "Не отображается Интервал регистрации " + TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG + " в " +
-                                "настройках провадера после редактирования")
-        );
+        Map<String, String> dataProvider = new HashMap<>();
+        dataProvider.putAll(dataEditGeneralProvider);
+        dataProvider.putAll(dataEditRegistrationProvider);
+        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, buttonChange);
+        verifyShowSettingsProvider(dataProvider, true);
     }
 
     @Story(value = "Добавляем исходящий маршрут после редактирования провайдера")
@@ -224,7 +197,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(9)
     void test_Add_Outgoing_Rout_In_Simple_Mode_After_Edit_Provider(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataRouteSimpleModeAfterEditProvider
                 , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE, true);
@@ -239,7 +212,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(10)
     void test_Add_Incoming_Rout_In_Expert_Mode_After_Edit_Provider(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataRouteExpertModeAfterEditProvider
                 , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE, false);
@@ -254,7 +227,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(11)
     void test_Delete_Outgoing_Route_In_Simple_Mode_After_Edit_Provider(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Удаление входящего маршрута после редактирования провайдера")
@@ -266,7 +239,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(12)
     void test_Delete_Incoming_Route_In_Expert_Mode_After_Edit_Provider(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Редактируем провайдера без регистрации")
@@ -278,38 +251,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(13)
     void test_Edit_Provider_Without_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
-        assertAll("1. Проверяем, что правильно отображаются заголовок и подзаголовки модального окна\n" +
-                        "2. Заполняем поля модального окна и сохраняем настройки\n" +
-                        "3. Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Провайдеры",
-                        "Не найден заголовок модального окна при добавлении провайдера"),
-                () -> assertTrue(isSubtitleModalWindow("Общее"),
-                        "Не найден подзаголовок 'Общее' модального окна"),
-                () -> assertTrue(isSubtitleModalWindow("Регистрация настроек провайдера"),
-                        "Не найден подзаголовок 'Регистрация настроек провайдера' модального окна"),
-                () -> {selectCheckboxProvider(false).setProvider(dataGeneralProvider);},
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в настройках" +
-                                " провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG + " в " +
-                                "настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_ADDRESS_WITH_REG, true),
-                        "Не отображается адрес провайдера " + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " в " +
-                                "настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_AON_WITH_REG, true),
-                        "Не отображается АОН " + TELEPHONY_PROVIDER_AON_WITH_REG + " в настройках провадера после" +
-                                " редактирования"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG, false),
-                        "Отображается Имя пользователя " + TELEPHONY_PROVIDER_EDIT_USERNAME_WITH_REG + " в настройках" +
-                                " провадера после редактирования"),
-                () -> assertTrue(isContentSettingProvider(TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG, false),
-                        "Отображается Интервал регистрации " + TELEPHONY_PROVIDER_EDIT_INTERVAL_WITH_REG + " в " +
-                                "настройках провадера после редактирования")
-        );
+        editProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, dataGeneralProvider, false, buttonChange);
         TestStatusResult.setTestResult(true);
     }
 
@@ -320,17 +262,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(14)
     void test_Exist_Provider_Without_Registration_After_Edit(){
-        assertAll("1. Проверяем, что правильно отображаются Название в таблице провайдеров\n" +
-                        "2. Проверяем, что правильно отображаются Адрес в таблице провайдеров",
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITH_REG, true),
-                        "Не отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в таблице провайдеров"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG, true),
-                        "Не отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG + " в таблице " +
-                                "провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITH_REG, true),
-                        "Не отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " в таблице " +
-                                "провайдеров после редактирования")
-        );
+        verifyTableProvider(dataGeneralProvider, true);
     }
 
     @Story(value = "Добавляем входящий маршрут после редактирования провайдера без регистрации")
@@ -342,7 +274,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(15)
     void test_Add_Incoming_Rout_In_Simple_Mode_After_Edit_Provider_Without_Reg(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
                 , TELEPHONY_PROVIDER_INCOMING_ROUTE
                 , dataRouteSimpleMode
                 , TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE, true);
@@ -357,7 +289,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(16)
     void test_Add_Outgoing_Rout_In_Expert_Mode_After_Edit_Provider_Without_Reg(){
-        addRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG
+        addRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG
                 , TELEPHONY_PROVIDER_OUTGOING_ROUTE
                 , dataRouteExpertMode
                 , TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE, false);
@@ -372,7 +304,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(17)
     void test_Delete_Incoming_Route_In_Simple_Mode_After_Edit_Provider_Without_Reg(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_INCOMING_ROUTE);
     }
 
     @Story(value = "Удаление Исходящего маршрута после редактирования провайдера с регистрацией")
@@ -384,7 +316,7 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(18)
     void test_Delete_Outgoing_Route_In_Expert_Mode_After_Edit_Provider_Without_Reg(){
-        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITHOUT_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
+        deleteRoute(TELEPHONY_PROVIDER_TITLE_WITH_REG, TELEPHONY_PROVIDER_OUTGOING_ROUTE);
     }
 
     @Story(value = "Удаляем провайдера")
@@ -395,21 +327,6 @@ public class TestProviderWithRegPage extends Provider {
     @Test
     @Order(19)
     void test_Delete_Provider_Without_Reg(){
-        clickButtonTableProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, "Изменить");
-        clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Удалить");
-        clickButtonConfirmAction("Продолжить");
-        assertAll("1. Проверяем, что отсутствует Название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " не" +
-                        " отображается в таблице провайдеров после удаления \n 2. Проверяем, что отсутствует Адрес " +
-                        "" + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " не отображается в таблице провайдеров",
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_WITH_REG, false),
-                        "Отображается название " + TELEPHONY_PROVIDER_TITLE_WITH_REG + " в таблице " +
-                                "провайдеров после удаления"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG, false),
-                        "Отображается описание " + TELEPHONY_PROVIDER_DESCRIPTION_WITH_REG + " в таблице " +
-                                "провайдеров после редактирования"),
-                () -> assertTrue(isExistsTableText(TELEPHONY_PROVIDER_ADDRESS_WITH_REG, false),
-                        "Отображается адрес " + TELEPHONY_PROVIDER_ADDRESS_WITH_REG + " в таблице " +
-                                "провайдеров после удаления")
-        );
+        deleteProvider(TELEPHONY_PROVIDER_TITLE_WITH_REG, dataGeneralProvider, false);
     }
 }

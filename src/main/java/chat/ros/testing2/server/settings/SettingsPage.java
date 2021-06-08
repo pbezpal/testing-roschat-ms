@@ -174,7 +174,7 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
         SelenideElement element = $$("h2").findBy(text(form)).parent();
-        if(isShowElement(element,false)) mainWrapper.scrollIntoView(false);
+        if(isShowElement(element,false)) $(".v-content__wrap").scrollIntoView(false);
         SelenideElement buttonForm = element.$$(".v-btn__content").findBy(text(button));
         element.scrollIntoView(false);
         buttonForm.click();
