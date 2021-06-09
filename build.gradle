@@ -425,32 +425,6 @@ task test_roschatdb {
     finalizedBy(testservice, contactconnect, testclosedchannels)
 }
 
-task testproviders(type: Test) {
-    useJUnitPlatform()
-
-    description "Тестирование настроек провайдера"
-
-    dependsOn 'cleanTest'
-
-    systemProperties = [
-            'junit.jupiter.execution.parallel.enabled':'true',
-            'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'2',
-            'junit.jupiter.execution.parallel.mode.default':'same_thread',
-            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]
-
-    systemProperties System.getProperties()
-
-    //Parametrized Test
-    include("**/TestProviderWithoutRegPage.class")
-    include("**/TestProviderWithRegPage.class")
-
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
-
 task test_push_server(type: Test){
     useJUnitPlatform()
 
@@ -475,13 +449,13 @@ task roschatservices(type: Test){
 
     description "Тестирование сервера услуг"
 
-    systemProperties = [
+    /*systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
             'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]
+    ]*/
 
     systemProperties System.getProperties()
 
@@ -516,7 +490,6 @@ task roschatserver(type: Test){
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
         excludeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
         excludeTestsMatching "*.services.*"
-        excludeTestsMatching "*.provider.*"
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
@@ -527,7 +500,7 @@ task roschatserver(type: Test){
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(testconnect, testintegration, testservice, testclosedchannels, roschatservices, testproviders)
+    finalizedBy(testconnect, testintegration, testservice, testclosedchannels, roschatservices)
 }
 
 task test_roschatserver {
@@ -774,7 +747,7 @@ task roschativr(type: Test){
     /*systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]*/
@@ -787,9 +760,11 @@ task roschativr(type: Test){
 
     filter {
         //include specific method in any of the tests
-        //includeTestsMatching "*.TestProviderWithoutRegPage"
-        //includeTestsMatching "*.TestProviderWithRegPage"
+        includeTestsMatching "*.provider.*"
+        /*includeTestsMatching "*.TestProviderWithoutRegPage"
+        includeTestsMatching "*.TestProviderWithRegPage"
         includeTestsMatching "*.TestProviderRouteSimpleMode"
+        includeTestsMatching "*.TestProviderRouteExpertMode"*/
         //includeTestsMatching "*.TestGeozonesPage"
     }
 

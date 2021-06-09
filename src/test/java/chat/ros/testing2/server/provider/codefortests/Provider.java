@@ -50,13 +50,15 @@ public class Provider extends Routes implements IProvider {
                 addressProvider = data.getValue().toString();
         }
 
+
+
         assertAll("Проверяем, что провайдер добавлен в таблицу провайдеров",
                 () -> assertTrue(isExistsTableText(titleProvider, show),
                         "Не отображается название " + titleProvider + " в таблице провайдеров"),
-                () -> {
-                        if(!descriptionProvider.equals(""))
-                            assertTrue(isExistsTableText(descriptionProvider, show),
-                                            "Не отображается описание " + descriptionProvider + " в таблице провайдеров");
+               () -> {
+                   if (descriptionProvider != null && descriptionProvider.length() > 0)
+                       assertTrue(isExistsTableText(descriptionProvider, show),
+                               "Не отображается описание " + descriptionProvider + " в таблице провайдеров");
                 },
                 () -> assertTrue(isExistsTableText(addressProvider, show),
                         "Не отображается адрес " + addressProvider + " в таблице провайдеров")
@@ -123,17 +125,25 @@ public class Provider extends Routes implements IProvider {
                         "2. Проверяем, что в разделе Провайдер отображаются общие настройки провайдера " + titleProvider,
                 () -> assertTrue(isSubtitleProviderForm("Общее", true),
                         "Не отображается подзаголовок Общее в настройках Провайдера " + titleProvider),
+                () -> assertTrue(isContentSettingProvider("Название", true),
+                        "Не отображается заголовок Название в настройках провадера"),
                 () -> assertTrue(isContentSettingProvider(titleProvider, true),
                         "Не отображается название " + titleProvider + " в настройках провадера"),
+                () -> assertTrue(isContentSettingProvider("Описание", true),
+                        "Не отображается заголовок Описание в настройках провадера"),
                 () -> {
-                        if(!descriptionProvider.equals(""))
+                        if(descriptionProvider != null && descriptionProvider.length() > 0)
                             assertTrue(isContentSettingProvider(descriptionProvider, true),
                                 "Не отображается описание " + descriptionProvider + " в настройках провадера");
                 },
+                () -> assertTrue(isContentSettingProvider("Aдрес провайдера (с портом)", true),
+                        "Не отображается заголовок Aдрес провайдера (с портом) в настройках провадера"),
                 () -> assertTrue(isContentSettingProvider(addressProvider, true),
                         "Не отображается адрес провайдера " + addressProvider + " в настройках провадера"),
+                () -> assertTrue(isContentSettingProvider("AOH", true),
+                        "Не отображается заголовок AOH в настройках провадера"),
                 () ->{
-                    if(!aonProvider.equals(""))
+                    if(aonProvider != null && aonProvider.length() > 0)
                         assertTrue(isContentSettingProvider(aonProvider, true),
                                 "Не отображается АОН " + aonProvider + " в настройках провадера");
                 },
@@ -142,9 +152,13 @@ public class Provider extends Routes implements IProvider {
                         assertAll("Проверяем, что в разделе Провайдер отображаются отображаются настройки регистрации",
                                 () -> assertTrue(isSubtitleProviderForm("Регистрация", true),
                                         "Не отображается подзаголовок Регистрация в настройках Провайдера " + titleProvider),
+                                () -> assertTrue(isContentSettingProvider("Имя пользователя", true),
+                                        "Не отображается заголовок Имя пользователя в настройках провадера"),
                                 () -> assertTrue(isContentSettingProvider(usernameProvider, true),
                                         "Не отображается Имя пользователя " + usernameProvider + " в настройках" +
                                                 " провадера после редактирования"),
+                                () -> assertTrue(isContentSettingProvider("Интервал регистрации", true),
+                                        "Не отображается заголовок Интервал регистрации в настройках провадера"),
                                 () -> assertTrue(isContentSettingProvider(intervalProvider, true),
                                         "Не отображается Интервал регистрации " + intervalProvider + " в " +
                                                 "настройках провадера после редактирования")

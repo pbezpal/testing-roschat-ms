@@ -20,8 +20,7 @@ import java.util.Map;
 
 import static chat.ros.testing2.TestHelper.isWebServerStatus;
 import static chat.ros.testing2.data.SettingsData.*;
-import static com.codeborne.selenide.Selenide.refresh;
-import static com.codeborne.selenide.Selenide.sleep;
+import static com.codeborne.selenide.Selenide.*;
 import static data.CommentsData.CLIENT_7010;
 import static org.junit.gen5.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -113,7 +112,9 @@ public class TestServerPage extends ServerPage {
         setPushService(mapInputValuePush);
         sleep(5000);
         assertTrue(isUpdateLicense(), "Не удалось обновить лицензию");
+        sleep(5000);
         refresh();
+        scrollDownForm("Лицензирование и обслуживание");
         assertAll("Проверяем, что настройки лицензии успешно применились после обновления лицензии",
                 () -> assertTrue(isCheckLicense(), "Не появилась иконка об успешном обновление лицензии"),
                 () -> assertTrue(isCheckLicenseServices("Система оповещения:"), "Настройки не применились для" +
@@ -122,13 +123,11 @@ public class TestServerPage extends ServerPage {
                         " голосового меню"),
                 () -> assertTrue(isCheckLicenseServices("Факс:"), "Настройки не применились для" +
                         " факса"),
-                () -> assertTrue(isCheckLicenseServices("Факс:"), "Настройки не применились для" +
-                        " факса"),
                 () -> assertTrue(isCheckLicenseAction("Push-уведомления"), "Настройки не применились для" +
                         " Push сервера"),
                 () -> assertTrue(isCheckLicenseAction("Геолокация"), "Настройки не применились для" +
                         " Геолокации")
-                );
+        );
     }
 
     @Story(value = "Перезагрузка страницы")

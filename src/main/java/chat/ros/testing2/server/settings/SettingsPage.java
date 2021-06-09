@@ -170,13 +170,17 @@ public interface SettingsPage extends BasePage {
         return true;
     }
 
+    @Step(value = "Провкручиваем внизу до формы {form}")
+    default SelenideElement scrollDownForm(String form){
+        SelenideElement element = $$("h2").findBy(text(form)).parent();
+        if(isShowElement(element,false)) $(".v-content__wrap").scrollIntoView(false);
+        element.scrollIntoView(false);
+        return element;
+    }
 
     @Step(value = "Нажимаем кнопку {button} в разделе {form}")
     default SettingsPage clickButtonSettings(String form, String button){
-        SelenideElement element = $$("h2").findBy(text(form)).parent();
-        if(isShowElement(element,false)) $(".v-content__wrap").scrollIntoView(false);
-        SelenideElement buttonForm = element.$$(".v-btn__content").findBy(text(button));
-        element.scrollIntoView(false);
+        SelenideElement buttonForm = scrollDownForm(form).findAll(".v-btn__content").findBy(text(button));
         buttonForm.click();
         return this;
     }

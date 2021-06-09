@@ -2,7 +2,6 @@ package chat.ros.testing2.server.integration;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
-import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -11,8 +10,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
-public class ResourcesIntegrationPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesIntegrationPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         String methodTest = context.getRequiredTestMethod().getName();
@@ -55,6 +55,11 @@ public class ResourcesIntegrationPage extends StartWebDriver implements BeforeEa
             else if(methodTest.contains("test_Delete_SKUD"))
                 TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
         }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 
     private void beforeEachSkud(String classTest, String methodTest, String SKUD){

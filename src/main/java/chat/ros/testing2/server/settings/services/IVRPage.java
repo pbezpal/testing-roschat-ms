@@ -449,7 +449,7 @@ public class IVRPage extends ServicesPage {
     public IVRPage uploadSoundFile(String file, String ...description){
         getContentWrapper().scrollIntoView(false);
         uploadSoundFile(file);
-        sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        sendInputModalWindow(IVR_SOUND_FILES_FIELD_NAME, description);
         return this;
     }
 
@@ -461,7 +461,7 @@ public class IVRPage extends ServicesPage {
      */
     public IVRPage uploadSoundFileByModalWindow(String file, String ...description){
         uploadSoundFileByModalWindow(file);
-        sendInputModalWindow(IVR_SOUND_FILES_FIELD_DESCRIPTION, description);
+        sendInputModalWindow(IVR_SOUND_FILES_FIELD_NAME, description);
         return this;
     }
 

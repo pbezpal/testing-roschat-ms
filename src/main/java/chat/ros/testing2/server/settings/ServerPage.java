@@ -58,6 +58,7 @@ public class ServerPage implements SettingsPage{
 
     @Step(value = "Проверяем, что Лицензия успешно обновилась и иконка с красной поменялась на зелёную")
     public boolean isCheckLicense(){
+        $("html").scrollIntoView(false);
         SelenideElement parentLicense = $$(".content-license h4")
                 .findBy(Condition.text("Лицензия"))
                 .parent();
@@ -75,7 +76,7 @@ public class ServerPage implements SettingsPage{
                 .findBy(Condition.text(service))
                 .parent();
         try {
-            parentService.$(".v-input--is-label-active").shouldBe(Condition.visible, Duration.ofSeconds(5));
+            parentService.find(".accent--text").shouldBe(Condition.visible, Duration.ofSeconds(10));
         }catch (ElementNotFound element){
             return false;
         }
@@ -84,12 +85,10 @@ public class ServerPage implements SettingsPage{
 
     @Step(value = "Проверяем, что Лицензия применилась для {action}")
     public boolean isCheckLicenseAction(String action){
-        SelenideElement parentAction = $$(".content-license h4")
-                .findBy(Condition.text(action))
-                .parent()
-                .parent();
+        //SelenideElement parentAction = $$("h4").findBy(Condition.text(action)).
+        SelenideElement parentAction = $x("//h4[text()='" + action + "']//ancestor::div[@class='block-body__item']");
         try {
-            parentAction.$(".v-input--is-label-active").shouldBe(Condition.visible, Duration.ofSeconds(5));
+            parentAction.find(".accent--text").shouldBe(Condition.visible, Duration.ofSeconds(10));
         }catch (ElementNotFound e){
             return false;
         }

@@ -8,8 +8,9 @@ import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
-public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
+public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
     private TestsBase testsBase = new TestsBase();
 
@@ -145,5 +146,10 @@ public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
         testsBase.init();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 }

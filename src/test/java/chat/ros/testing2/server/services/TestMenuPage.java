@@ -2,10 +2,8 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
+import io.qameta.allure.model.Status;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -68,10 +66,9 @@ public class TestMenuPage extends CheckIVRMenu {
     @Test
     @Order(1)
     void test_Upload_Sound_File(){
-        assertEquals(uploadSoundFile(pathWAVFile1, IVR_SOUND_FILES_DESCRIPTION_WAV_1)
-                        .isVisibleTitleModalWrapper(),
-                "Новый звуковой файл",
-                "Не найден заголовок модального окна при добавлении звукового файла");
+        if(!uploadSoundFile(pathWAVFile1, IVR_SOUND_FILES_DESCRIPTION_WAV_1)
+                .isVisibleTitleModalWrapper().equals("Новый звуковой файл"))
+            Allure.step("Не найден заголовок модального окна при добавлении звукового файла", Status.FAILED);
         clickActionButtonOfModalWindow("Сохранить");
         assertAll("Проверяем, добавлен файл и описание к нему в таблицу",
                 () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, wavFile1, true),

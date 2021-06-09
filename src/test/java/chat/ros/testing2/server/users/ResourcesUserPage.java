@@ -8,9 +8,10 @@ import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.LoginData.LOGIN_AS_MS;
 import static chat.ros.testing2.data.LoginData.PASSWORD_AS_MS;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
-public class ResourcesUserPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesUserPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
@@ -44,5 +45,10 @@ public class ResourcesUserPage extends StartWebDriver implements BeforeEachCallb
         if(methodTest.contains("Add") && ! methodTest.equals("test_Add_New_User_Admin_MS"))
             TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
         logoutMS();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 }

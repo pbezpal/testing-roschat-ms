@@ -10,8 +10,9 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
-public class ResourcesServerPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
+public class ResourcesServerPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -55,5 +56,10 @@ public class ResourcesServerPage extends StartWebDriver implements BeforeEachCal
             if (methodTest.equals("test_Add_Geozone"))
                 TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
         }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 }

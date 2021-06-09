@@ -7,9 +7,10 @@ import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.refresh;
 
-public class ResourcesParameters implements BeforeAllCallback, AfterEachCallback {
+public class ResourcesParameters implements BeforeAllCallback, AfterEachCallback, AfterAllCallback {
 
     private String classTest;
     private TestsBase testsBase = new TestsBase();
@@ -32,5 +33,10 @@ public class ResourcesParameters implements BeforeAllCallback, AfterEachCallback
         if(classTest.contains("TestParameters")){
             refresh();
         }
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 }

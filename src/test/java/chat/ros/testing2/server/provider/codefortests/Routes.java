@@ -50,7 +50,7 @@ public class Routes extends TelephonyPage implements IRoutes {
         else
             finalPatternReplace = patternReplace + groupReplace;
 
-        assertAll("\"1. Проверяем, правильно ли отображается заголовок модального окна\n" +
+        assertAll("1. Проверяем, правильно ли отображается заголовок модального окна\n" +
                         "2. Заполняем поля модального окна и сохраняем настройки\n" +
                         "3. Проверяем, что в столбце Шаблон номера отображается значение " + patternNumber + "\n" +
                         "4. Проверяем, что в столбце Шаблон замены отображается значение " + finalPatternReplace,
@@ -58,9 +58,10 @@ public class Routes extends TelephonyPage implements IRoutes {
                         startMessageError + direction +
                                 " в столбце Направление в таблице маршрутов"),
                 () -> {
-                    assertTrue(isExistsTableText(patternNumber, showTable),
-                            startMessageError + patternNumber +
-                                    " в столбце Шаблон номера в таблице маршрутов");
+                    if(patternNumber != null)
+                        assertTrue(isExistsTableText(patternNumber, showTable),
+                                startMessageError + patternNumber +
+                                        " в столбце Шаблон номера в таблице маршрутов");
                 }
         );
 
@@ -97,13 +98,15 @@ public class Routes extends TelephonyPage implements IRoutes {
                                             " в столбце Направление в таблице маршрутов");
                     },
                     () -> {
-                        assertTrue(isExistsTableText(patternNumber, showTable),
-                                startMessageError + patternNumber +
-                                        " в столбце Шаблон номера в таблице маршрутов");
-                        if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                            patternNumbersIncomingRoute.add(patternNumber);
-                        else
-                            patternNumbersOutgoingRoute.add(patternNumber);
+                        if (patternNumber != null) {
+                            assertTrue(isExistsTableText(patternNumber, showTable),
+                                    startMessageError + patternNumber +
+                                            " в столбце Шаблон номера в таблице маршрутов");
+                            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                                patternNumbersIncomingRoute.add(patternNumber);
+                            else
+                                patternNumbersOutgoingRoute.add(patternNumber);
+                        }
                     }
             );
         }else{
@@ -128,13 +131,15 @@ public class Routes extends TelephonyPage implements IRoutes {
                                             " в столбце Направление в таблице маршрутов");
                     },
                     () -> {
-                        assertTrue(isExistsTableText(patternNumber, showTable),
-                                startMessageError + patternNumber +
-                                        " в столбце Шаблон номера в таблице маршрутов");
-                        if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                            patternNumbersIncomingRoute.add(patternNumber);
-                        else
-                            patternNumbersOutgoingRoute.add(patternNumber);
+                        if(patternNumber != null) {
+                            assertTrue(isExistsTableText(patternNumber, showTable),
+                                    startMessageError + patternNumber +
+                                            " в столбце Шаблон номера в таблице маршрутов");
+                            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                                patternNumbersIncomingRoute.add(patternNumber);
+                            else
+                                patternNumbersOutgoingRoute.add(patternNumber);
+                        }
                     }
             );
         }
@@ -150,9 +155,10 @@ public class Routes extends TelephonyPage implements IRoutes {
         assertTrue(clickButtonClose().isShowElement(modalWindow, false),
                 "Модальное окно для добавления маршрута не заркылось после нажатия кнопки Закрыть");
         String patternReplace = verifyAddRoute(direction, dataRoute, simpleMode, false);
-        assertTrue(isExistsTableText(patternReplace, false),
-                "Отображается Шаблон замены " + patternReplace +
-                        " в столбце Шаблон замены в таблице маршрутов");
+        if(patternReplace != null)
+            assertTrue(isExistsTableText(patternReplace, false),
+                    "Отображается Шаблон замены " + patternReplace +
+                            " в столбце Шаблон замены в таблице маршрутов");
     }
 
     @Override
@@ -174,9 +180,10 @@ public class Routes extends TelephonyPage implements IRoutes {
                     "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
             patternReplace = verifyEditRoute(direction, false, dataRoute, false, false);
         }
-        assertTrue(isExistsTableText(patternReplace, false),
-                "Отображается Шаблон замены " + patternReplace +
-                        " в столбце Шаблон замены в таблице маршрутов");
+        if(patternReplace != null)
+            assertTrue(isExistsTableText(patternReplace, false),
+                    "Отображается Шаблон замены " + patternReplace +
+                            " в столбце Шаблон замены в таблице маршрутов");
     }
 
     @Override
@@ -194,13 +201,15 @@ public class Routes extends TelephonyPage implements IRoutes {
         else
             patternNumbersOutgoingRoute.add(patternNumber);
         TestStatusResult.setTestResult(true);
-        assertTrue(isExistsTableText(patternReplace, true),
-                "Не отображается Шаблон замены " + patternReplace +
-                        " в столбце Шаблон номера в таблице маршрутов");
-        if(direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-            patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
-        else
-            patternsReplaceOutgoingRouteSimpleMode.add(patternReplace);
+        if(patternReplace != null) {
+            assertTrue(isExistsTableText(patternReplace, true),
+                    "Не отображается Шаблон замены " + patternReplace +
+                            " в столбце Шаблон номера в таблице маршрутов");
+            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
+            else
+                patternsReplaceOutgoingRouteSimpleMode.add(patternReplace);
+        }
     }
 
     @Override
@@ -216,18 +225,20 @@ public class Routes extends TelephonyPage implements IRoutes {
         String patternReplace = verifyEditRoute(direction, true, dataRoute, true, true);
         TestStatusResult.setTestResult(true);
 
-        if(patternReplace.equals("")){
-            patternsReplaceIncomingRouteSimpleMode.forEach((replace) -> assertTrue(isExistsTableText(replace, false),
-                    "Отображается Шаблон замены " + replace +
-                            " в столбце Шаблон замены в таблице маршрутов"));
-        }else {
-            assertTrue(isExistsTableText(patternReplace, true),
-                    "Не отображается Шаблон замены " + patternReplace +
-                            " в столбце Шаблон замены в таблице маршрутов");
-            if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
-                patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
-            else
-                patternsReplaceOutgoingRouteSimpleMode.add(patternReplace);
+        if(patternReplace != null) {
+            if (patternReplace.equals("")) {
+                patternsReplaceIncomingRouteSimpleMode.forEach((replace) -> assertTrue(isExistsTableText(replace, false),
+                        "Отображается Шаблон замены " + replace +
+                                " в столбце Шаблон замены в таблице маршрутов"));
+            } else {
+                assertTrue(isExistsTableText(patternReplace, true),
+                        "Не отображается Шаблон замены " + patternReplace +
+                                " в столбце Шаблон замены в таблице маршрутов");
+                if (direction.equals(TELEPHONY_PROVIDER_INCOMING_ROUTE))
+                    patternsReplaceIncomingRouteSimpleMode.add(patternReplace);
+                else
+                    patternsReplaceOutgoingRouteSimpleMode.add(patternReplace);
+            }
         }
     }
 

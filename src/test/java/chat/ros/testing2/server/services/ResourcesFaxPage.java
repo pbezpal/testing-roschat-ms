@@ -3,16 +3,15 @@ package chat.ros.testing2.server.services;
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.TestsBase;
+import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
-public class ResourcesFaxPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
+public class ResourcesFaxPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
 
     private final String hostFaxPage = "http://"  + System.getProperty("hostserver") + ":5000";
     private TestsBase testsBase = new TestsBase();
@@ -45,5 +44,10 @@ public class ResourcesFaxPage implements BeforeAllCallback, BeforeEachCallback, 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
         testsBase.init();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext context) throws Exception {
+        closeWebDriver();
     }
 }

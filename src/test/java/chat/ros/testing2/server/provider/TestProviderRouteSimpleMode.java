@@ -135,11 +135,7 @@ public class TestProviderRouteSimpleMode extends Provider {
     @Test
     @Order(1)
     void test_Add_Provider_For_Route_In_Simple_Mode(){
-        clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
-        setProvider(dataGeneralProvider);
-        assertTrue(isExistsTableText(TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE, true),
-                "Не отображается название " + TELEPHONY_PROVIDER_TITLE_ROUTE_SIMPLE_MODE +
-                        " в таблице провайдеров");
+        addProvider(dataGeneralProvider);
         TestStatusResult.setTestResult(true);
     }
 
