@@ -277,17 +277,15 @@ public interface SettingsData {
     String IVR_ENTRY_POINTS_TITLE = "Точки входа";
 
     String IVR_MENU_TITLE = "Меню";
-    String[] IVR_MENU_ITEMS = {"Звонок", "Вызвать абонента", "Принять факс", "Положить трубку",
-            "Вернуться в родительское меню", "Вернуться в корневое меню", "Повторить меню"};
-    //String[] IVR_MENU_ITEMS = {"Звонок"};
+    /*String[] IVR_MENU_ITEMS = {"Звонок", "Положить трубку", "Вернуться в родительское меню",
+            "Вернуться в корневое меню", "Повторить меню"};*/
+    String[] IVR_MENU_ITEMS = {"Звонок"};
     String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
     String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";
 
     //Раздел Звуковые файлы
     String IVR_SOUND_FILES_TITLE = "Звуковые файлы";
     String IVR_SOUND_FILES_FIELD_NAME = "Название";
-    String IVR_SOUND_FILES_DESCRIPTION_WAV_1 = "Тестовое описание первого звукового файла";
-    String IVR_SOUND_FILES_DESCRIPTION_WAV_2 = "Тестовое описание второго звукового файла";
 
     /******************************************* Раздел Факс ***********************************************/
 

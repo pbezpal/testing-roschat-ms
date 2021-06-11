@@ -3,10 +3,8 @@ package chat.ros.testing2.server.services;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.settings.services.IVRPage;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
+import io.qameta.allure.model.Status;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -33,44 +31,46 @@ public class TestSoundPage extends IVRPage {
             getResource("sound/" + wavFile2).
             getFile();
 
+    private String soundFile = null;
 
-    @Story(value = "Проверяем работу аудиплеера при добавлении аудиофайла")
+
+    /*@Story(value = "Проверяем работу аудиплеера при добавлении аудиофайла")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
-            "2. Добавляем звуковой файл wav и описание к нему\n" +
+            "2. Добавляем звуковой файл wav и название к нему\n" +
             "3. Проверяем работу аудиплеера " +
-            "4. Проверяем, что звуковой файл wav и описание к нему добавлены в таблицу звуковых файлов")
+            "4. Проверяем, что звуковой файл wav и название к нему сохраняются в таблицу звуковых файлов")
     @Test
     @Order(1)
     void test_Audio_Player_When_Uploading_File(){
-        assertEquals(uploadSoundFile(pathWAVFile1, IVR_SOUND_FILES_DESCRIPTION_WAV_1)
-                        .isVisibleTitleModalWrapper(),
-                "Новый звуковой файл",
-                "Не найден заголовок модального окна при добавлении звукового файла");
-        assertTrue(isAudioPlayer(),
-                "Отсутствует аудиоплеер в модальном окне при добавление аудиофайла");
-        assertAll("Проверяем функции аудиоплеера",
-                () -> assertTrue(clickPlayAudio().isPlayAudioPlayer() > 0, "Проигрывание аудио работает некорректно"),
-                () -> assertTrue(isPauseAudioPlayer(), "Функция паузы аудио работает некорректно"),
-                () -> assertEquals(isDurationAudio(),
-                        "19.121625",
-                        "Продолжительность файла не соотвествует продолжительности загруженного файла"),
-                () -> assertEquals(isVolumeAudioPlayer(),
-                        "0.5",
-                        "Некорректно работает настройки звука"),
-                () -> assertTrue(isMutedAudioPlayer(),
-                        "Некорректно работает выключение звука"),
-                () -> assertFalse(isOutMutedAudioPlayer(),
-                        "Некорректно работает включение звука")
-        );
-        clickActionButtonOfModalWindow("Сохранить");
-        assertAll("Проверяем, добавлен файл и описание к нему в таблицу",
+        if(!uploadSoundFile(pathWAVFile1, wavFile1)
+                .getTextTitleModalWindow().equals("Новый звуковой файл"))
+            Allure.step("Не найден заголовок модального окна при добавлении звукового файла", Status.FAILED);
+        assertAll("Проверяем:\n" +
+                        "1. Функции аудиоплеера\n" +
+                        "2. Сохрание звукового файла",
+                () -> {
+                    assertTrue(isAudioPlayer(),
+                            "Отсутствует аудиоплеер в модальном окне при добавление аудиофайла");
+                    assertAll("Проверяем функции аудиоплеера",
+                            () -> assertTrue(clickPlayAudio().isPlayAudioPlayer() > 0, "Проигрывание аудио работает некорректно"),
+                            () -> assertTrue(isPauseAudioPlayer(), "Функция паузы аудио работает некорректно"),
+                            () -> assertEquals(isDurationAudio(),
+                                    "19.121625",
+                                    "Продолжительность файла не соотвествует продолжительности загруженного файла"),
+                            () -> assertEquals(isVolumeAudioPlayer(),
+                                    "0.5",
+                                    "Некорректно работает настройки звука"),
+                            () -> assertTrue(isMutedAudioPlayer(),
+                                    "Некорректно работает выключение звука"),
+                            () -> assertFalse(isOutMutedAudioPlayer(),
+                                    "Некорректно работает включение звука")
+                    );
+                },
+                () -> assertTrue(clickActionButtonOfModalWindow("Сохранить").isModalWindow(false),
+                        "Не закрылось модальное окно после сохранения"),
                 () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, wavFile1, true),
-                        "Название файла " + wavFile1 + " не найдено в таблице звуковых файлов"),
-                () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, IVR_SOUND_FILES_DESCRIPTION_WAV_1, true),
-                        "Описание " + IVR_SOUND_FILES_DESCRIPTION_WAV_1 + " звукового файла " + wavFile1 + " " +
-                                "не найдено в таблице звуковых файлов")
+                        "Название файла " + wavFile1 + " не найдено в таблице звуковых файлов")
         );
-
         TestStatusResult.setTestResult(true);
     }
 
@@ -82,8 +82,10 @@ public class TestSoundPage extends IVRPage {
     @Order(2)
     void test_Button_Play_After_Add_Sound_File(){
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_PLAY_AUDIO);
-        assertAll("Проверяем налицие закоголовка и работу аудиоплеера в модальном окне",
-                () -> assertEquals(isVisibleTitleModalWrapper(),
+        assertAll("Проверяем:\n" +
+                        "1. Наличие закоголовка модального окна\n" +
+                        "2. и работу аудиоплеера в модальном окне",
+                () -> assertEquals(getTextTitleModalWindow(),
                         "Редактирование звукового файла",
                         "Не найден заголовок модального окна при воспроизведение"),
                 () -> {
@@ -103,9 +105,11 @@ public class TestSoundPage extends IVRPage {
                             () -> assertFalse(isOutMutedAudioPlayer(),
                                     "Некорректно работает включение звука")
                     );
-                }
+                },
+                () -> assertTrue(clickActionButtonOfModalWindow("Отменить").isModalWindow(false),
+                        "Модальное окно не закрылось")
         );
-        clickActionButtonOfModalWindow("Отменить");
+
     }
 
     @Story(value = "Редактируем звуковой фал")
@@ -117,9 +121,8 @@ public class TestSoundPage extends IVRPage {
     @Order(3)
     void test_AudioPlayer_When_Edit_Sound_File() {
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile1, IVR_BUTTON_EDIT);
-        uploadSoundFileByModalWindow(pathWAVFile2, IVR_SOUND_FILES_DESCRIPTION_WAV_2);
         assertAll("Проверяем, появился ли заголовок и аудиоплеер в модальном окне редактирования звукового файла",
-                () -> assertEquals(isVisibleTitleModalWrapper(),
+                () -> assertEquals(uploadSoundFileByModalWindow(pathWAVFile2, wavFile2).getTextTitleModalWindow(),
                         "Редактирование звукового файла",
                         "Не найден заголовок модального окна при добавлении звукового файла"),
                 () -> {
@@ -139,15 +142,11 @@ public class TestSoundPage extends IVRPage {
                             () -> assertFalse(isOutMutedAudioPlayer(),
                                     "Некорректно работает включение звука")
                     );
-                }
-        );
-        clickActionButtonOfModalWindow("Сохранить");
-        assertAll("Проверяем, добавлен файл и описание к нему в таблицу",
+                },
+                () -> assertTrue(clickActionButtonOfModalWindow("Сохранить").isModalWindow(false),
+                        "Не закрылось модальное окно после сохранения"),
                 () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, wavFile2, true),
-                        "Название файла " + wavFile2 + " не найдено в таблице звуковых файлов"),
-                () -> assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, IVR_SOUND_FILES_DESCRIPTION_WAV_2, true),
-                        "Описание " + IVR_SOUND_FILES_DESCRIPTION_WAV_2 + " звукового файла " + wavFile2 + " " +
-                                "не найдено в таблице звуковых файлов")
+                        "Название файла " + wavFile2 + " не найдено в таблице звуковых файлов")
         );
         TestStatusResult.setTestResult(true);
     }
@@ -161,7 +160,7 @@ public class TestSoundPage extends IVRPage {
     void test_Button_Play_After_Edit_Sound_File(){
         clickButtonTable(IVR_SOUND_FILES_TITLE, wavFile2, IVR_BUTTON_PLAY_AUDIO);
         assertAll("Проверяем налицие закоголовка и работу аудиоплеера в модальном окне",
-                () -> assertEquals(isVisibleTitleModalWrapper(),
+                () -> assertEquals(getTextTitleModalWindow(),
                         "Редактирование звукового файла",
                         "Не найден заголовок модального окна при воспроизведение"),
                 () -> {
@@ -181,9 +180,10 @@ public class TestSoundPage extends IVRPage {
                             () -> assertFalse(isOutMutedAudioPlayer(),
                                     "Некорректно работает включение звука")
                     );
-                }
+                },
+                () -> assertTrue(clickActionButtonOfModalWindow("Отменить").isModalWindow(false),
+                        "Модальное окно не закрылось")
         );
-        clickActionButtonOfModalWindow("Отменить");
     }
 
     @Story(value = "Проверяем функцию скачивания файла")
@@ -195,18 +195,21 @@ public class TestSoundPage extends IVRPage {
     @Test
     @Order(5)
     void test_Download_Sound_File() {
-        String soundFile = "";
+        soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
         else soundFile = wavFile2;
-        assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_EDIT)
-                        .isVisibleTitleModalWrapper(),
-                "Редактирование звукового файла",
-                "Не найден заголовок модального окна при воспроизведение");
-        String finalSoundFile = soundFile;
-        assertAll("Проверяем скачивание файла " + soundFile,
-                () -> assertEquals(downloadSoundFile().getName(), finalSoundFile,
-                        "Файл " + finalSoundFile + " не удалось скачать"),
-                () -> {clickActionButtonOfModalWindow("Отменить");}
+        assertAll("Проверяем:\n" +
+                        "1. Наличие заколовка модального окна\n" +
+                        "2. скачивание файла " + soundFile + "\n" +
+                        "3. Закрытие модального окна после нажатия кнопки Отмена",
+                () -> assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_EDIT)
+                                .getTextTitleModalWindow(),
+                        "Редактирование звукового файла",
+                        "Не найден заголовок модального окна при воспроизведение"),
+                () -> assertEquals(downloadSoundFile().getName(), soundFile,
+                        "Файл " + soundFile + " не удалось скачать"),
+                () -> assertTrue(clickActionButtonOfModalWindow("Отменить").isModalWindow(false),
+                        "Модальное окно не закрылось")
         );
     }
 
@@ -217,7 +220,7 @@ public class TestSoundPage extends IVRPage {
     @Test
     @Order(6)
     void test_Delete_Sound_File(){
-        String soundFile = "";
+        soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
         else soundFile = wavFile2;
         clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_DELETE);
@@ -226,5 +229,5 @@ public class TestSoundPage extends IVRPage {
         clickButtonConfirmAction("Удалить");
         assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, soundFile, false),
                 "Название файла " + soundFile + " найдено в таблице звуковых файлов после удаления файла");
-    }
+    }*/
 }

@@ -2,17 +2,37 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
-import chat.ros.testing2.TestsBase;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {
+public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
 
-    private TestsBase testsBase = new TestsBase();
+    private void verifyParamTest(String... tests){
+        String typeMenu = tests[0].split("=")[1];
+        String beforeTest = tests[1] + typeMenu;
+        if(TestStatusResult.getTestResult().get(beforeTest) != null)
+            assumeTrue(TestStatusResult.getTestResult().get(beforeTest),
+                    "Skipping test because test " + beforeTest + " failed");
+        else
+            assumeTrue(false, "Skipping test because test " + beforeTest + " failed");
+    }
+
+    private void beforeVerifyTests(String... tests){
+        if( TestStatusResult.getTestResult().get(tests[0]) != null)
+            assumeTrue(TestStatusResult.getTestResult().get(tests[0]), tests[1]);
+        else
+            assumeTrue(false, tests[1]);
+
+        if(tests.length > 2) {
+            if (TestStatusResult.getTestResult().get(tests[2]) != null)
+                assumeTrue(TestStatusResult.getTestResult().get(tests[2]), tests[3]);
+            else
+                assumeTrue(false, tests[3]);
+        }
+    }
 
     @Override
     public void beforeEach(ExtensionContext context) {
@@ -21,92 +41,51 @@ public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, 
         String testParams = context.getDisplayName();
         TestStatusResult.setTestResult(false);
         if(testClass.contains("TestSoundPage")){
-            if(testMethod.equals("test_Delete_Sound_File_After_Edit")){
-                if( TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")){
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Audio_Player_When_Uploading_File"), "The sound file don't add. Skip the test!");
-                }
-            }if(testMethod.equals("test_Download_Sound_File")){
-                if( TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")){
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Audio_Player_When_Uploading_File"), "The sound file don't add. Skip the test!");
-                }
-            }else if(testMethod.equals("test_Button_Play_After_Edit_Sound_File"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File"), "The sound file don't edit. Skip the test!");
-            else if( ! testMethod.equals("test_Audio_Player_When_Uploading_File"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Audio_Player_When_Uploading_File"), "The sound file don't add. Skip the test!");
+            if(testMethod.equals("test_Delete_Sound_File_After_Edit")
+                    || testMethod.equals("test_Download_Sound_File")
+                    || testMethod.equals("test_Button_Play_After_Edit_Sound_File")
+                    || testMethod.equals("test_AudioPlayer_When_Edit_Sound_File")
+            )
+                beforeVerifyTests("test_Audio_Player_When_Uploading_File", "The sound file don't add. Skip the test!");
         }else if(testClass.contains("TestMenuPage")){
             if(testMethod.equals("test_Add_Menu"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
-            else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) {
-                String typeMenu = testParams.replace("Add entry point with simple menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add menu=" + typeMenu),
-                        "Skipping test because menu adding test Add menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Add_Go_To_Menu")){
-                String typeMenu = testParams.replace("Add go to menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add menu=" + typeMenu),
-                        "Skipping test because menu adding test Add menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")){
-                String typeMenu = testParams.replace("Add entry point with go to menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add go to menu=" + typeMenu),
-                        "Skipping test because menu adding test Add go to menu=" + typeMenu + " failed");
-            }
-            else if(testMethod.equals("test_Edit_Simple_Menu")){
-                String typeMenu = testParams.replace("Edit menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_Without_Description"),
+                assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
+            else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
+            else if(testMethod.equals("test_Look_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
+            else if(testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
+            else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
+            else if(testMethod.equals("test_Look_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
+            else if(testMethod.equals("test_Edit_Simple_Menu")) {
+                assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
                         "The sound file without description don't add. Skip the test!");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add menu=" + typeMenu),
-                        "Skipping test because menu adding test Add menu=" + typeMenu + " failed");
-            }
-            else if(testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu")){
-                String typeMenu = testParams.replace("Edit entry point=", "");
-                if(TestStatusResult.getTestResult().get("Edit menu=" + typeMenu) == null || ! TestStatusResult.getTestResult().get("Edit menu=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add menu=" + typeMenu),
-                            "Skipping test because menu adding test Add menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Edit_Go_To_Menu")){
-                String typeMenu = testParams.replace("Edit go to menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_Without_Description"),
+                verifyParamTest(testParams, "Add menu=");
+            }else if(testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu"))
+                verifyParamTest(testParams, "Edit menu=");
+            else if(testMethod.equals("test_Look_Simple_Menu_After_Edit")) verifyParamTest(testParams, "Edit menu=");
+            else if(testMethod.equals("test_Edit_Go_To_Menu")){
+                assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
                         "The sound file without description don't add. Skip the test!");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add go to menu=" + typeMenu),
-                        "Skipping test because menu adding test Add go to menu=" + typeMenu + " failed");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Edit menu=" + typeMenu),
-                        "Skipping test because menu adding test Edit menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")){
-                String typeMenu = testParams.replace("Edit entry point with go to menu=", "");
-                if(TestStatusResult.getTestResult().get("Edit go to menu=" + typeMenu) == null && ! TestStatusResult.getTestResult().get("Edit go to menu=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add go to menu=" + typeMenu),
-                            "Skipping test because menu adding test Add go to menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Delete_Sound_File"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
+                verifyParamTest(testParams, "Add go to menu=");
+                verifyParamTest(testParams, "Edit menu=");
+            }else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Edit go to menu=");
+            else if(testMethod.equals("test_Delete_Sound_File"))
+                assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"),
+                        "The sound file don't add. Skip the test!");
             else if(testMethod.equals("test_Delete_Entry_Point_With_Simple_Menu")) {
-                String typeMenu = testParams.replace("Delete entry point with simple menu=", "");
-                if (TestStatusResult.getTestResult().get("Edit entry point=" + typeMenu) == null || ! TestStatusResult.getTestResult().get("Edit entry point=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add entry point with simple menu=" + typeMenu),
-                            "Skipping test because menu adding test Add entry point with simple menu=" + typeMenu + " failed");
+                verifyParamTest(testParams, "Add entry point with simple menu=");
+                verifyParamTest(testParams, "Edit entry point=");
             }else if(testMethod.equals("test_Delete_Entry_Point_With_Go_To_Menu")) {
-                String typeMenu = testParams.replace("Delete entry point with go to menu=", "");
-                if (TestStatusResult.getTestResult().get("Edit entry point with go to menu=" + typeMenu) == null || !TestStatusResult.getTestResult().get("Edit entry point with go to menu=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add entry point with go to menu=" + typeMenu),
-                            "Skipping test because menu adding test Add entry point with go to menu=" + typeMenu + " failed");
+                verifyParamTest(testParams, "Add entry point with go to menu=");
             }else if(testMethod.equals("test_Delete_Simple_Menu")) {
-                String typeMenu = testParams.replace("Delete menu=", "");
-                if (TestStatusResult.getTestResult().get("Edit menu=" + typeMenu) == null || !TestStatusResult.getTestResult().get("Edit menu=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add menu=" + typeMenu),
-                            "Skipping test because menu adding test Add menu=" + typeMenu + " failed");
+                verifyParamTest(testParams, "Add menu=");
             }else if(testMethod.equals("test_No_Links_Go_To_Menu")) {
-                String typeMenu = testParams.replace("Check links go to menu=", "");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Edit go to menu=" + typeMenu),
-                        "Skipping test because menu adding test Edit go to menu=" + typeMenu + " failed");
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Delete menu=" + typeMenu),
-                        "Skipping test because menu adding test Delete menu=" + typeMenu + " failed");
-            }else if(testMethod.equals("test_Delete_Go_To_Menu")) {
-                String typeMenu = testParams.replace("Delete go to menu=", "");
-                if (TestStatusResult.getTestResult().get("Edit go to menu=" + typeMenu) == null || !TestStatusResult.getTestResult().get("Edit go to menu=" + typeMenu))
-                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("Add go to menu=" + typeMenu),
-                            "Skipping test because menu adding test Add go to menu=" + typeMenu + " failed");
-            }
+                verifyParamTest(testParams, "Add go to menu=");
+                verifyParamTest(testParams, "Delete menu=");
+            }else if(testMethod.equals("test_Delete_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
         }
 
         if(testClass.contains("TestSoundPage") || testClass.contains("TestMenuPage"))
-            testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
+            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
     }
 
     @Override
@@ -120,11 +99,11 @@ public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, 
             else if (testMethod.equals("test_AudioPlayer_When_Edit_Sound_File"))
                 TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusTest());
         }else if(testClass.contains("TestMenuPage")){
-            if(testMethod.equals("test_Upload_Sound_File") || testMethod.equals("test_Upload_Sound_File_Without_Description"))
+            if(testMethod.equals("test_Upload_Sound_File") || testMethod.equals("test_Upload_Sound_File_2"))
                 TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusTest());
-            else if(testMethod.equals("test_Add_Menu"))
+            else if(testMethod.equals("test_Add_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
-            else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu"))
+            else if(testMethod.equals("test_Add_Entry_Point_With_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
             else if(testMethod.equals("test_Add_Go_To_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
@@ -141,15 +120,5 @@ public class ResourcesIVRPage implements BeforeAllCallback, BeforeEachCallback, 
             else if(testMethod.equals("test_Delete_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
         }
-    }
-
-    @Override
-    public void beforeAll(ExtensionContext context) throws Exception {
-        testsBase.init();
-    }
-
-    @Override
-    public void afterAll(ExtensionContext context) throws Exception {
-        closeWebDriver();
     }
 }

@@ -459,11 +459,12 @@ task roschatservices(type: Test){
 
     systemProperties System.getProperties()
 
-    include("**/TestFaxPage.class")
+    //include("**/TestFaxPage.class")
     include("**/TestMenuPage.class")
-    include("**/TestSoundPage.class")
+    //include("**/TestSoundPage.class")
 
-    dependsOn test_push_server
+    //dependsOn test_push_server
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {

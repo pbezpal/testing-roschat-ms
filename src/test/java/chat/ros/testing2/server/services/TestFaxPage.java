@@ -25,7 +25,7 @@ public class TestFaxPage extends FaxPage {
 
     private ContactsPage contactsPage = new ContactsPage();
 
-    @Story(value = "Добавление контакта для проверки факса")
+    /*@Story(value = "Добавление контакта для проверки факса")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
@@ -46,7 +46,7 @@ public class TestFaxPage extends FaxPage {
     @Test
     void test_Add_Number_Fax_With_Description(){
         assertAll("Добаялем номер факса с описанием и проверяем, что номер с описанием был добавлен",
-                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).isVisibleTitleModalWrapper(),
+                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
                         "Добавление номера факса",
                         "Не найден заголовок модального окна при добавлении номера факса"),
                 () -> {sendNumberFaxes(FAX_NUMBER_WITH_DESCRIPTION, FAX_DESCRIPTION_FAX, "Сохранить");},
@@ -70,7 +70,7 @@ public class TestFaxPage extends FaxPage {
         assertAll("1. Вводим номер для факса\n" +
                         "2. Сохраняем\n" +
                         "3. Проверяем, что номер сохранён в таблице",
-                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).isVisibleTitleModalWrapper(),
+                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
                         "Добавление номера факса",
                         "Не найден заголовок модального окна при добавлении номера факса"),
                 () -> {sendNumberFaxes(FAX_NUMBER_WITHOUT_DESCRIPTION, "", "Сохранить");},
@@ -111,7 +111,7 @@ public class TestFaxPage extends FaxPage {
                         "2. Проверяем, что пользователь найден\n" +
                         "3. Сохраняем пользователя\n" +
                         "4. Проверяем, что пользователь добавлен в таблице",
-                () -> assertEquals(clickButtonAdd(FAX_USERS_TITLE).isVisibleTitleModalWrapper(),
+                () -> assertEquals(clickButtonAdd(FAX_USERS_TITLE).getTextTitleModalWindow(),
                         "Добавление пользователя",
                         "Не найден заголовок модального окна при добавлении пользователя для факса"),
                 () -> {sendInputModalWindow("Поиск контакта", CONTACT_FOR_FAX);},
@@ -125,6 +125,6 @@ public class TestFaxPage extends FaxPage {
                         "Не найдена запись " + CONTACT_FOR_FAX + " в таблице " + FAX_USERS_TITLE)
         );
         TestStatusResult.setTestResult(true);
-    }
+    }*/
 
 }

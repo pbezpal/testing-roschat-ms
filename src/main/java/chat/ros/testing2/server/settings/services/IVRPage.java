@@ -29,7 +29,7 @@ public class IVRPage extends ServicesPage {
 
     /******************** Работа с модальным окном ***********************/
 
-    @Step(value = "Прокручиваем контекст модального")
+    @Step(value = "Прокручиваем контекст модального окна")
     public IVRPage scrollContentModalWindow(boolean scroll){
         modalWindowContent.scrollIntoView(false);
         return this;
@@ -56,14 +56,10 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем, отображается ли плеер")
-    public boolean isAudioPlayer(){
-        try {
-            audioPlayer.shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
+    public IVRPage isAudioPlayer(){
+        audioPlayer.shouldBe(visible);
 
-        return true;
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку проигрывания звукового файла")
@@ -121,6 +117,17 @@ public class IVRPage extends ServicesPage {
 
     /********************** Работа с разделом Меню ****************************/
 
+    @Step(value = "Выбираем звуковой файл {sound} в разделе {section}")
+    private IVRPage selectSoundFile(String section, String sound){
+        $$("h4")
+                .findBy(text(section))
+                .parent()
+                .find(".mdi-menu-down")
+                .click();
+        listItemsComboBox.findBy(text(sound)).click();
+        return this;
+    }
+
     @Step(value = "Нажимаем на поле {field} для вызова контекстного меню")
     private IVRPage clickSelectField(String field){
         SelenideElement selectField = $(".custom-select input[aria-label='" + field + "']");
@@ -145,43 +152,27 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем наличие иконки звукового файла в модальном окне")
-    public boolean isIconSoundOfModalWindowVoiceMenu(SelenideElement firstElement){
-        try{
-            firstElement.$(".blue-grey--text").shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    public IVRPage isIconSoundOfModalWindowVoiceMenu(SelenideElement firstElement){
+        firstElement.$(".blue-grey--text").shouldBe(visible);
+        return this;
     }
 
     @Step(value = "Проверяем наличие иконки таймаута в модальном окне")
-    public boolean isIconTimeOutOfModalWindowMenu(SelenideElement firstElement){
-        try{
-            firstElement.$(".text--darken-3").shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    public IVRPage isIconTimeOutOfModalWindowMenu(SelenideElement firstElement){
+        firstElement.$(".text--darken-3").shouldBe(visible);
+        return this;
     }
 
     @Step(value = "Проверяем наличие иконки неправильного набора в модальном окне")
-    public boolean isIconErrorOutlineOfModalWindowMenu(SelenideElement firstElement){
-        try{
-            firstElement.$(".text-darken-1").shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    public IVRPage isIconErrorOutlineOfModalWindowMenu(SelenideElement firstElement){
+        firstElement.$(".text-darken-1").shouldBe(visible);
+        return this;
     }
 
     @Step(value = "Проверяем наличие иконки DTMF в модальном окне")
-    public boolean isIconDTMFOfModalWindowMenu(SelenideElement firstElement){
-        try{
-            firstElement.$(".indigo--text").shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    public IVRPage isIconDTMFOfModalWindowMenu(SelenideElement firstElement){
+        firstElement.$(".indigo--text").shouldBe(visible);
+        return this;
     }
 
     @Step(value = "Проверяем, параметр {span} при просмотре меню")
@@ -208,22 +199,11 @@ public class IVRPage extends ServicesPage {
                 .find(".ivr-item__sub");
     }
 
-    public boolean isElementMenuOfGoToAction(String span, boolean show){
-        if(show) {
-            try {
-                getElementMenuOfGoToAction(span).shouldBe(visible);
-            } catch (ElementNotFound e) {
-                return false;
-            }
-        }else{
-            try {
-                getElementMenuOfGoToAction(span).shouldBe(not(visible));
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-
-        return true;
+    @Step(value = "")
+    public IVRPage isElementMenuOfGoToAction(String span, boolean show){
+        if(show) getElementMenuOfGoToAction(span).shouldBe(visible);
+        else getElementMenuOfGoToAction(span).shouldNotBe(visible);
+        return this;
     }
 
     /***
@@ -237,22 +217,10 @@ public class IVRPage extends ServicesPage {
                 .find(".ivr-item__sub");
     }
 
-    public boolean isElementMenuOfGoToActionWithDTMF(boolean show){
-        if(show) {
-            try {
-                getElementMenuOfGoToActionWithDTMF().shouldBe(visible);
-            } catch (ElementNotFound e) {
-                return false;
-            }
-        }else{
-            try {
-                getElementMenuOfGoToActionWithDTMF().shouldBe(not(visible));
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-
-        return true;
+    public IVRPage isElementMenuOfGoToActionWithDTMF(boolean show){
+        if(show) getElementMenuOfGoToActionWithDTMF().shouldBe(visible);
+        else getElementMenuOfGoToActionWithDTMF().shouldBe(not(visible));
+        return this;
     }
 
     private SelenideElement getElementGoToAction(String span){
@@ -267,22 +235,10 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем, наличие ссылки {show} у элемента {span}")
-    public boolean isGoToActionOfSpanOfModalWindow(String span, boolean show){
-        if(show) {
-            try {
-                getElementGoToAction(span).shouldBe(visible);
-            } catch (ElementNotFound e) {
-                return false;
-            }
-        }else{
-            try {
-                getElementGoToAction(span).shouldBe(not(visible));
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-
-        return true;
+    public IVRPage isGoToActionOfSpanOfModalWindow(String span, boolean show){
+        if(show) getElementGoToAction(span).shouldBe(visible);
+        else getElementGoToAction(span).shouldNotBe((visible));
+        return this;
     }
 
     @Step(value = "Проверяем, отображается ли первая часть текста ссылки у элемента {span}")
@@ -372,41 +328,19 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем отображается ли {show} поле Набрано в DTMF")
-    public boolean isInputNumberDTMF(boolean show){
-        if(show){
-            try {
-                inputNumberDTMF.shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try {
-                inputNumberDTMF.shouldBe(not(visible));
-            }catch (ElementShould e){
-                return false;
-            }
-        }
+    public IVRPage isInputNumberDTMF(boolean show){
+        if(show) inputNumberDTMF.shouldBe(visible);
+        else inputNumberDTMF.shouldNotBe(visible);
 
-        return true;
+        return this;
     }
 
     @Step(value = "Проверяем отображается ли {show} поле Действие в DTMF")
-    public boolean isInputActionDTMF(boolean show){
-        if(show){
-            try {
-                inputActionDTMF.shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try {
-                inputActionDTMF.shouldBe(not(visible));
-            }catch (ElementShould e){
-                return false;
-            }
-        }
+    public IVRPage isInputActionDTMF(boolean show){
+        if(show) inputActionDTMF.shouldBe(visible);
+        else inputActionDTMF.shouldNotBe(visible);
 
-        return true;
+        return this;
     }
 
     @Step(value = "Проверяем, отображается ли звуковой файл в настройке голосового меню")
@@ -428,16 +362,18 @@ public class IVRPage extends ServicesPage {
         return true;
     }
 
-    /*@Step(value = "Проверяем, параметры настройки голосового меню")
-    public boolean getTextSpansGoToMenuOfModalWindowVoiceMenu(String span) {
-        try {
+    @Step(value = "Проверяем, есть ли иконка АОН у записи {number} в таблице точки входа")
+    public IVRPage isIconArrowAON(String number){
+        getServiceSection(IVR_ENTRY_POINTS_TITLE).$("table").scrollIntoView(false);
+        getServiceSection(IVR_ENTRY_POINTS_TITLE)
+                .find("table")
+                .findAll("td")
+                .findBy(text(number))
+                .find(".arrow-icon")
+                .shouldBe(visible);
 
-        }
-        modalWindow.$$("span").findBy(text(span))
-                .parent()
-                .find(".name")
-                .text();
-    }*/
+        return this;
+    }
 
     /**
      * This method add sound file
@@ -484,17 +420,19 @@ public class IVRPage extends ServicesPage {
     }
 
     public IVRPage sendModalWindowOfMenu(String name, String type, String sound, String ...menu){
-        selectItemComboBox(sound);
 
         sendInputModalWindow("Название", name)
-                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name);
-                sendInputModalWindow("Таймаут, сек", "30");
-                clickSelectField("Действие при таймауте");
-                if(type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
-                else selectItemContextMenu(type);
-                clickSelectField("Действие при неправильном наборе");
-                if(type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
-                else selectItemContextMenu(type);
+                .sendInputModalWindow("Описание", IVR_MENU_DESCRIPTION + " " + name).
+                sendInputModalWindow("Время ожидания донабора, сек", "30");
+        selectSoundFile("Настройки", sound)
+                .selectSoundFile("Таймаут донабора", sound)
+                .clickSelectField("Действие по таймауту донабора");
+        if (type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
+        else selectItemContextMenu(type);
+        selectSoundFile("Неверный донабор", sound)
+                .clickSelectField("Действие при неверном донаборе");
+        if (type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
+        else selectItemContextMenu(type);
 
         return this;
     }
@@ -503,34 +441,37 @@ public class IVRPage extends ServicesPage {
      * This method send inputs modal window of voice menu
      * @param name item context menu
      * @param sound
+     * @param number
+     * @param menu
      * @return
      */
     public IVRPage addVoiceMenu(String name, String type, String sound, String number, String ...menu){
-
         sendModalWindowOfMenu(name, type, sound, menu)
+                .scrollContentModalWindow(false)
                 .clickButtonAddDTMF()
+                .scrollContentModalWindow(false)
                 .clickSelectField("Действие");
                 if(type.equals("Перейти в меню")) selectItemContextMenu("Перейти в меню", menu[0]);
                 else selectItemContextMenu(type);
                 sendInputModalWindow("Набрано", number);
 
         if(type.equals("Звонок")){
-            return sendInputDialNumber(number, "Действие при таймауте"
-                    ,"Действие при неправильном наборе"
+            return sendInputDialNumber(number, "Действие по таймауту донабора"
+                    ,"Действие при неверном донаборе"
                     ,"Действие");
         }
 
         return this;
     }
 
-    public IVRPage editVoiceMenu(String name, String type, String sound, String numberOrMenu){
-        if(type.equals("Перейти в меню")) sendModalWindowOfMenu(name, type, sound, numberOrMenu).clickButtonDeleteDTMF();
+    public IVRPage editVoiceMenu(String name, String type, String sound, String numberOfMenu){
+        if(type.equals("Перейти в меню")) sendModalWindowOfMenu(name, type, sound, numberOfMenu).clickButtonDeleteDTMF();
         else {
             sendModalWindowOfMenu(name, type, sound)
                     .clickButtonDeleteDTMF();
             if (type.equals("Звонок")) {
-                return sendInputDialNumber(numberOrMenu, "Действие при таймауте"
-                        , "Действие при неправильном наборе");
+                return sendInputDialNumber(numberOfMenu, "Действие по таймауту донабора"
+                        ,"Действие при неверном донаборе");
             }
         }
 

@@ -18,18 +18,26 @@ public class ServicesPage implements SettingsPage {
     private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement modalWindow = $(".modal-window");
     private SelenideElement titleModalWindow = modalWindow.find("h2");
+    private SelenideElement contentMenu = modalWindow.find(".modal-window__content");
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
 
     protected SelenideElement getContentWrapper(){
         return contentWrapper;
     }
 
-    private SelenideElement getServiceSection(String title){
+    protected SelenideElement getServiceSection(String title){
         return $$("h2").findBy(text(title)).parent();
     }
 
     public SelenideElement getModalWindow() {
         return modalWindow;
+    }
+
+    @Step(value = "Проверяем, отображается {show} ли моадльное окно")
+    public ServicesPage isModalWindow(boolean show){
+        if(show) modalWindow.shouldBe(visible);
+        else modalWindow.shouldNotBe(visible);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку {button} в модальном окне")
@@ -46,30 +54,13 @@ public class ServicesPage implements SettingsPage {
     }
 
     @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
-    public boolean isItemTable(String section, String item, boolean show){
+    public ServicesPage isItemTable(String section, String item, boolean show){
         getServiceSection(section).scrollTo();
         getServiceSection(section).$("table").scrollIntoView(false);
-        if(show){
-            try{
-                getServiceSection(section)
-                        .$("table")
-                        .$(byText(item))
-                        .shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try{
-                getServiceSection(section).
-                        $("table")
-                        .$(byText(item))
-                        .shouldBe(not(visible));
-            }catch (ElementShould e){
-                return false;
-            }
-        }
-
-        return true;
+        SelenideElement itemTable = getServiceSection(section).$("table").$(byText(item));
+        if(show) itemTable.shouldBe(visible);
+        else itemTable.shouldNotBe(visible);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку {button} в разделе {section} у записи {item}")
@@ -78,22 +69,16 @@ public class ServicesPage implements SettingsPage {
         getServiceSection(section).scrollIntoView(false);
         getServiceSection(section)
                 .$("table")
-                .$(byText(item))
-                .parent()
-                .$$(".layout i")
+                .find(byText(item))
+                .closest("tr")
+                .findAll(".layout i")
                 .findBy(text(button))
                 .click();
         return this;
     }
 
     @Step(value = "Проверяем, отображается ли заголовок модального окна")
-    public String isVisibleTitleModalWrapper(){
-        try {
-            titleModalWindow.shouldBe(visible);
-        }catch (ElementNotFound e){
-            return null;
-        }
-
+    public String getTextTitleModalWindow(){
         return titleModalWindow.getText();
     }
 
