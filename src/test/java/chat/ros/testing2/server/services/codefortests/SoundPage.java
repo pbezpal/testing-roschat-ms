@@ -3,7 +3,14 @@ package chat.ros.testing2.server.services.codefortests;
 import chat.ros.testing2.server.settings.services.IVRPage;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Allure;
+import io.qameta.allure.AllureResultsWriteException;
+import io.qameta.allure.AllureResultsWriter;
 import io.qameta.allure.model.Status;
+import io.qameta.allure.model.TestResult;
+import io.qameta.allure.model.TestResultContainer;
+import org.junit.jupiter.api.TestInstance;
+
+import java.io.InputStream;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,41 +42,60 @@ public class SoundPage extends IVRPage implements ISoundPage {
 
     @Override
     public void uploadMusicFile(String pathToFile, String filename) {
-        if(!uploadSoundFile(pathToFile, filename)
-                .getTextTitleModalWindow().equals("Новый звуковой файл"))
-            Allure.step("Не найден заголовок модального окна при добавлении звукового файла", Status.FAILED);
-        clickActionButtonOfModalWindow("Сохранить")
-                .isModalWindow(false)
-                .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
+        assertAll("Проверяем добавление звукового файла " + filename,
+                () -> assertEquals(uploadSoundFile(pathToFile, filename)
+                        .getTextTitleModalWindow()
+                        , "Новый звуковой файл",
+                        "Не найден заголовок модального окна при добавлении звукового файла"),
+                () -> {
+                    clickActionButtonOfModalWindow("Сохранить")
+                            .isModalWindow(false)
+                            .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
+                }
+        );
     }
 
     @Override
     public void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu) {
-        if(clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow().equals("Новое голосовое меню"))
-            Allure.step("Не найден заголовок модального окна при добавлении голосового меню", Status.FAILED);
-        if(type.equals("Перейти в меню")) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
-        else addVoiceMenu(type, type, pathSound, number);
-        saveAndVerifyMenu(name, description);
+        assertAll("Проверяем добавление меню " + name,
+                () -> assertEquals(clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow()
+                        , "Новое голосовое меню"
+                        , "Не найден заголовок модального окна при добавлении голосового меню"),
+                () -> {
+                    if(type.equals("Перейти в меню") && goToMenu.length > 0) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
+                    else addVoiceMenu(type, type, pathSound, number);
+                    saveAndVerifyMenu(name, description);
+                }
+        );
     }
 
     @Override
     public void addEntryPoint(String number, String aon, String menu, String schedule) {
-        if(clickButtonAdd(IVR_ENTRY_POINTS_TITLE)
-                .isModalWindow(true)
-                .getTextTitleModalWindow()
-                .equals("Создание точки входа"))
-            Allure.step("Не найден заголовок модального окна при добавлении чки входа", Status.FAILED);
-        sendModalWindowOfEntryPoint(number, aon, menu);
-        saveAndVerifyEntryPoint(number, aon, menu, schedule);
+        assertAll("Проверяем добавление точки входа",
+                () -> assertEquals(clickButtonAdd(IVR_ENTRY_POINTS_TITLE)
+                        .isModalWindow(true)
+                        .getTextTitleModalWindow()
+                        , "Создание точки входа"
+                        ,"Не найден заголовок модального окна при добавлении чки входа"),
+                () -> {
+                    sendModalWindowOfEntryPoint(number, aon, menu);
+                    saveAndVerifyEntryPoint(number, aon, menu, schedule);
+                });
     }
 
     @Override
-    public void editMenu(String name, String type, String description, String pathSound, String numberOrTypeMenu) {
-        if(!clickButtonTable(IVR_MENU_TITLE, type, IVR_BUTTON_EDIT).getTextTitleModalWindow().equals("Редактирование голосового меню"))
-            Allure.step("Не найден заголовок модального окна при редактировании голосового меню " + type, Status.FAILED);
-        editVoiceMenu(name, type, pathSound, numberOrTypeMenu);
-        isInputNumberDTMF(false).isInputActionDTMF(false);
-        saveAndVerifyMenu(name, description);
+    public void editMenu(String newNameMenu, String oldNameMenu, String type, String description, String pathSound, String numberOrTypeMenu) {
+        assertAll("Проверяем редактирование меню " + oldNameMenu,
+                () -> assertEquals(
+                        clickButtonTable(IVR_MENU_TITLE, oldNameMenu, IVR_BUTTON_EDIT).getTextTitleModalWindow(),
+                        "Редактирование голосового меню"
+                        , "Не найден заголовок модального окна при редактировании голосового меню " + oldNameMenu),
+                () -> {
+                    editVoiceMenu(newNameMenu, type, pathSound, numberOrTypeMenu);
+                    isInputNumberDTMF(false).isInputActionDTMF(false);
+                    saveAndVerifyMenu(newNameMenu, description);
+                }
+                );
     }
 
     @Override

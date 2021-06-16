@@ -123,7 +123,7 @@ public class TestMenuPage extends SoundPage {
         TestStatusResult.setTestResult(true);
     }
 
-    @Story(value = "Добавление перехода в меню")
+    @Story(value = "Добавление меню с переходом в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем Меню \n" +
             "3. Выбираем тип Перейти в меню\n" +
@@ -135,12 +135,12 @@ public class TestMenuPage extends SoundPage {
         String title = "Перейти в меню " + type;
         String descriptionMenu = IVR_MENU_DESCRIPTION + " " + title;
         String numberSimpleMenu = mapMenu.get(type);
-        addMenu("Перейти в меню " + type, "Перейти в меню", wavFile1, String.valueOf(num), type);
+        addMenu("Перейти в меню " + type, "Перейти в меню", descriptionMenu, wavFile1, String.valueOf(num), type);
         mapMenu.put(title, String.valueOf(num));
         TestStatusResult.setTestResult(true);
     }
 
-    @Story(value = "Проверяем отображение настроек простого меню")
+    @Story(value = "Проверяем отображение настроек меню с переходом в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
@@ -194,7 +194,7 @@ public class TestMenuPage extends SoundPage {
             "2. Добавляем звуковой файл \n" +
             "3. Проверяем, что новый файл добавлен в таблицу звуковых файлов")
     @Test
-    @Order(6)
+    @Order(8)
     void test_Upload_Sound_File_2(){
         uploadMusicFile(pathWAVFile2, wavFile2);
         TestStatusResult.setTestResult(true);
@@ -204,22 +204,23 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем Меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
-    @Order(7)
+    @Order(9)
     @ParameterizedTest(name="Edit menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Simple_Menu(String type){
         num++;
+        String oldNameMenu = type;
         String newNameMenu = type + " отредактировано";
         String newDescriptionMenu = IVR_MENU_DESCRIPTION + " " + newNameMenu;
-        editMenu(newNameMenu, type, newDescriptionMenu, wavFile2, String.valueOf(num));
+        editMenu(newNameMenu, oldNameMenu, type, newDescriptionMenu, wavFile2, String.valueOf(num));
         TestStatusResult.setTestResult(true);
     }
 
-    @Story(value = "Проверяем отображение настроек простого меню сле редактирования")
+    @Story(value = "Проверяем отображение настроек простого меню после редактирования")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
-    @Order(3)
+    @Order(10)
     @ParameterizedTest(name="Look simple menu after edit={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Simple_Menu_After_Edit(String type){
@@ -231,7 +232,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
-    @Order(8)
+    @Order(11)
     @Disabled
     @ParameterizedTest(name="Edit entry point={0}")
     @MethodSource(value = "receiveMenuItems")
@@ -265,24 +266,38 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем меню - переход в меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
-    @Order(9)
+    @Order(12)
     @ParameterizedTest(name="Edit go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Go_To_Menu(String type){
         String simpleMenu = type + " отредактировано";
+        String oldNameMenu = "Перейти в меню " + type;
         String newTitleGoToMenu = "Перейти в меню " + type + " отредактировано";
         String newDescriptionGoToMenu = IVR_MENU_DESCRIPTION + " " + newTitleGoToMenu;
-        editMenu(newTitleGoToMenu, "Перейти в меню", newDescriptionGoToMenu, wavFile2, simpleMenu);
+        editMenu(newTitleGoToMenu, oldNameMenu, "Перейти в меню", newDescriptionGoToMenu, wavFile2, simpleMenu);
 
         checkLookModalWindowOfMenu(newTitleGoToMenu, simpleMenu, type, wavFile2, true, false, false);
         TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем отображение настроек меню с переходом в другое меню после редактирования")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем у меню кнопку Показать \n" +
+            "3. Проверяем, что настройки отображаются корректно")
+    @Order(13)
+    @ParameterizedTest(name="Look go to menu after edit={0}")
+    @MethodSource(value = "receiveMenuItems")
+    void test_Look_Go_to_Menu_After_Edit(String type){
+        String newTitleGoToMenu = "Перейти в меню " + type + " отредактировано";
+        String simpleMenu = type + " отредактировано";
+        checkLookModalWindowOfMenu(newTitleGoToMenu, simpleMenu, type, wavFile2, true, false, false);
     }
 
     @Story(value = "Редактирование точки входа c меню перехода в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
-    @Order(10)
+    @Order(14)
     @Disabled
     @ParameterizedTest(name="Edit entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
@@ -321,7 +336,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем точки входа \n" +
             "3. Проверяем, что в таблице удалённые точки входа не отображается")
-    @Order(11)
+    @Order(15)
     @Disabled
     @ParameterizedTest(name="Delete entry point with simple menu={0}")
     @MethodSource(value = "receiveMenuItems")
@@ -341,7 +356,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем точки входа \n" +
             "3. Проверяем, что в таблице удалённые точки входа не отображается")
-    @Order(12)
+    @Order(16)
     @Disabled
     @ParameterizedTest(name="Delete entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
@@ -361,7 +376,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем Меню \n" +
             "3. Проверяем, что в таблице удалённое меню не отображается")
-    @Order(13)
+    @Order(17)
     @ParameterizedTest(name="Delete menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Simple_Menu(String type){
@@ -381,7 +396,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Открываем просмотр настроек меню перехода в другое меню\n" +
             "3. Проверяем, что отсутствуют ссылки в настройках меню")
-    @Order(14)
+    @Order(18)
     @ParameterizedTest(name="Check links go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_No_Links_Go_To_Menu(String type){
@@ -394,7 +409,7 @@ public class TestMenuPage extends SoundPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем Меню \n" +
             "3. Проверяем, что в таблице удалённое меню не отображается")
-    @Order(15)
+    @Order(19)
     @ParameterizedTest(name="Delete go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Go_To_Menu(String type){

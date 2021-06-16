@@ -67,7 +67,9 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
                         "The sound file without description don't add. Skip the test!");
                 verifyParamTest(testParams, "Add go to menu=");
                 verifyParamTest(testParams, "Edit menu=");
-            }else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Edit go to menu=");
+            }
+            else if(testMethod.equals("test_Look_Go_to_Menu_After_Edit")) verifyParamTest(testParams, "Edit go to menu=");
+            else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Edit go to menu=");
             else if(testMethod.equals("test_Delete_Sound_File"))
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"),
                         "The sound file don't add. Skip the test!");

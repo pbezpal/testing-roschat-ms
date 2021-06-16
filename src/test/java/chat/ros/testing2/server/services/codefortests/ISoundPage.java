@@ -10,7 +10,7 @@ public interface ISoundPage {
 
     void addEntryPoint(String number, String aon, String menu, String schedule);
 
-    void editMenu(String name, String type, String description, String pathSound, String numberOrTypeMenu);
+    void editMenu(String newNameMenu, String oldNameMenu, String type, String description, String pathSound, String numberOrTypeMenu);
 
     void editEntryPoint(String number, String aon, String type, String schedule);
 
