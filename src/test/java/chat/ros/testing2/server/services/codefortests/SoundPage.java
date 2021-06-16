@@ -130,8 +130,28 @@ public class SoundPage extends IVRPage implements ISoundPage {
     }
 
     @Override
-    public void deleteMusicFile(String filename) {
+    public void downloadMusicFile(String filename) {
+        assertAll("Проверяем:\n" +
+                        "1. Наличие заколовка модального окна\n" +
+                        "2. скачивание файла " + filename + "\n" +
+                        "3. Закрытие модального окна после нажатия кнопки Отмена",
+                () -> assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_EDIT)
+                                .getTextTitleModalWindow(),
+                        "Редактирование звукового файла",
+                        "Не найден заголовок модального окна при воспроизведение"),
+                () -> assertEquals(downloadSoundFile().getName(), filename,
+                        "Файл " + filename + " не удалось скачать"),
+                () -> {clickActionButtonOfModalWindow("Отменить").isModalWindow(false);}
+        );
+    }
 
+    @Override
+    public void deleteMusicFile(String filename) {
+        clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_DELETE);
+        assertTrue(isFormConfirmActions(true),
+                "Не появилась форма для удаления звукового файла");
+        clickButtonConfirmAction("Удалить");
+        isItemTable(IVR_SOUND_FILES_TITLE, filename, false);
     }
 
     @Override

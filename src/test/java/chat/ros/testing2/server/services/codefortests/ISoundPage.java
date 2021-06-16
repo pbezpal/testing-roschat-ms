@@ -10,7 +10,9 @@ public interface ISoundPage {
 
     void verifyButtonAudioPlayer(String oldFilename, String durationFile, String volumePlayer);
 
-    void editMusicFile(String filename, , String newFilename, String pathToFile, String durationFile, String volumePlayer);
+    void editMusicFile(String filename, String newFilename, String pathToFile, String durationFile, String volumePlayer);
+
+    void downloadMusicFile(String filename);
 
     void deleteMusicFile(String filename);
 

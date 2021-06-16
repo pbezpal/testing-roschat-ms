@@ -3,15 +3,9 @@ package chat.ros.testing2.server.services;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.services.codefortests.SoundPage;
-import chat.ros.testing2.server.settings.services.IVRPage;
 import io.qameta.allure.*;
-import io.qameta.allure.model.Status;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static chat.ros.testing2.data.SettingsData.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Epic(value = "Сервисы")
 @Feature(value = "Голосовое меню")
@@ -91,19 +85,7 @@ public class TestSoundPage extends SoundPage {
         soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
         else soundFile = wavFile2;
-        assertAll("Проверяем:\n" +
-                        "1. Наличие заколовка модального окна\n" +
-                        "2. скачивание файла " + soundFile + "\n" +
-                        "3. Закрытие модального окна после нажатия кнопки Отмена",
-                () -> assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_EDIT)
-                                .getTextTitleModalWindow(),
-                        "Редактирование звукового файла",
-                        "Не найден заголовок модального окна при воспроизведение"),
-                () -> assertEquals(downloadSoundFile().getName(), soundFile,
-                        "Файл " + soundFile + " не удалось скачать"),
-                () -> assertTrue(clickActionButtonOfModalWindow("Отменить").isModalWindow(false),
-                        "Модальное окно не закрылось")
-        );
+        downloadMusicFile(soundFile);
     }
 
     @Story(value = "Удаляем звуковой файл")
@@ -116,11 +98,6 @@ public class TestSoundPage extends SoundPage {
         soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
         else soundFile = wavFile2;
-        clickButtonTable(IVR_SOUND_FILES_TITLE, soundFile, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления звукового файла");
-        clickButtonConfirmAction("Удалить");
-        assertTrue(isItemTable(IVR_SOUND_FILES_TITLE, soundFile, false),
-                "Название файла " + soundFile + " найдено в таблице звуковых файлов после удаления файла");
+        deleteMusicFile(soundFile);
     }
 }
