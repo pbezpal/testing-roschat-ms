@@ -459,13 +459,23 @@ task roschatservices(type: Test){
 
     description "Тестирование сервера услуг"
 
+    dependsOn test_push_server
+
+    systemProperties = [
+            'junit.jupiter.execution.parallel.enabled':'true',
+            'junit.jupiter.execution.parallel.config.strategy':'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.mode.default':'same_thread',
+            'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
+    ]
+
     systemProperties System.getProperties()
 
-    include("**/TestFaxPage.class")
-    include("**/TestMenuPage.class")
-    include("**/TestSoundPage.class")
-
-    dependsOn test_push_server
+    filter {
+        includeTestsMatching "*.TestFaxPage"
+        includeTestsMatching "*.TestMenuPage"
+        includeTestsMatching "*.TestSoundPage"
+    }
 
     // Show test results.
     testLogging {
@@ -495,7 +505,7 @@ task roschatserver(type: Test){
         excludeTestsMatching "*.users.TestUserAdminForTests"
     }
 
-    //dependsOn 'cleanTest'
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {
@@ -696,7 +706,7 @@ task paramtests_connect_wrong(type: Test) {
 
     description "Тестирование раздела Подключение на невалидные значения"
 
-    dependsOn testuseradmin
+    //dependsOn testuseradmin
 
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
@@ -718,7 +728,7 @@ task paramtests_connect_wrong(type: Test) {
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(paramtests_push_wrong)
+    //finalizedBy(paramtests_push_wrong)
 }
 
 task roschatгusers(type: Test){

@@ -6,6 +6,14 @@ public interface ISoundPage {
 
     void uploadMusicFile(String pathToFile, String filename);
 
+    void uploadMusicFile(String pathToFile, String filename, String durationFile, String volumePlayer);
+
+    void verifyButtonAudioPlayer(String oldFilename, String durationFile, String volumePlayer);
+
+    void editMusicFile(String filename, , String newFilename, String pathToFile, String durationFile, String volumePlayer);
+
+    void deleteMusicFile(String filename);
+
     void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu);
 
     void addEntryPoint(String number, String aon, String menu, String schedule);

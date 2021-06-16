@@ -25,7 +25,7 @@ public class TestFaxPage extends FaxPage {
 
     private ContactsPage contactsPage = new ContactsPage();
 
-    /*@Story(value = "Добавление контакта для проверки факса")
+    @Story(value = "Добавление контакта для проверки факса")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
@@ -125,6 +125,6 @@ public class TestFaxPage extends FaxPage {
                         "Не найдена запись " + CONTACT_FOR_FAX + " в таблице " + FAX_USERS_TITLE)
         );
         TestStatusResult.setTestResult(true);
-    }*/
+    }
 
 }

@@ -9,7 +9,7 @@ public class WatcherTests extends AttachToReport implements TestWatcher {
     @Override
     public void testFailed(ExtensionContext context, Throwable throwable) {
         AttachScreen();
-        ABrowserLogNetwork();
-        ABrowserLogConsole();
+        /*ABrowserLogNetwork();
+        ABrowserLogConsole();*/
     }
 }

@@ -58,7 +58,6 @@ public class IVRPage extends ServicesPage {
     @Step(value = "Проверяем, отображается ли плеер")
     public IVRPage isAudioPlayer(){
         audioPlayer.shouldBe(visible);
-
         return this;
     }
 

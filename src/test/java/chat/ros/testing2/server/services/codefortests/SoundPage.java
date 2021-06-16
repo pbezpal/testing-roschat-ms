@@ -40,6 +40,24 @@ public class SoundPage extends IVRPage implements ISoundPage {
         isIconArrowAON(number);
     }
 
+    private void verifyAudioPlayer(String duration, String volume){
+        isAudioPlayer();
+        assertAll("Проверяем функции аудиоплеера",
+                () -> assertTrue(clickPlayAudio().isPlayAudioPlayer() > 0, "Проигрывание аудио работает некорректно"),
+                () -> assertTrue(isPauseAudioPlayer(), "Функция паузы аудио работает некорректно"),
+                () -> assertEquals(isDurationAudio(),
+                        duration,
+                        "Продолжительность файла не соотвествует продолжительности загруженного файла"),
+                () -> assertEquals(isVolumeAudioPlayer(),
+                        volume,
+                        "Некорректно работает настройки звука"),
+                () -> assertTrue(isMutedAudioPlayer(),
+                        "Некорректно работает выключение звука"),
+                () -> assertFalse(isOutMutedAudioPlayer(),
+                        "Некорректно работает включение звука")
+        );
+    }
+
     @Override
     public void uploadMusicFile(String pathToFile, String filename) {
         assertAll("Проверяем добавление звукового файла " + filename,
@@ -53,6 +71,67 @@ public class SoundPage extends IVRPage implements ISoundPage {
                             .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
                 }
         );
+    }
+
+    @Override
+    public void uploadMusicFile(String pathToFile, String filename, String durationFile, String volumePlayer) {
+        assertAll("Проверяем:\n" +
+                        "1. Заголовок модального окна\n" +
+                        "2. Функции аудиоплеера\n" +
+                        "3. Сохрание звукового файла",
+                () -> assertEquals(uploadSoundFile(pathToFile, filename)
+                        .getTextTitleModalWindow()
+                        ,"Новый звуковой файл",
+                        "Не найден заголовок модального окна при добавлении звукового файла " + filename),
+                () -> {
+                    verifyAudioPlayer(durationFile, volumePlayer);
+                },
+                () -> {clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);},
+                () -> {isItemTable(IVR_SOUND_FILES_TITLE, filename, true);}
+        );
+    }
+
+    @Override
+    public void verifyButtonAudioPlayer(String filename, String durationFile, String volumePlayer) {
+        assertAll("Проверяем:\n" +
+                "1. Заголовок модального окна\n" +
+                "2. Функции аудиоплеера\n" +
+                "3. Закрытие модального окна",
+                () -> assertEquals(
+                        clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_PLAY_AUDIO).getTextTitleModalWindow()
+                        , "Редактирование звукового файла"
+                        ,"Не найден заголовок модального окна при прослушивании звукового файла " + filename),
+                () -> {
+                    verifyAudioPlayer(durationFile, volumePlayer);
+                },
+                () -> {clickActionButtonOfModalWindow("Отменить").isModalWindow(false);}
+        );
+    }
+
+    @Override
+    public void editMusicFile(String oldFilename, String newFilename, String pathToFile, String durationFile, String volumePlayer) {
+        assertAll("Проверяем:\n" +
+                        "1. Заголовок модального окна\n" +
+                        "2. Функции аудиоплеера\n" +
+                        "3. Закрытие модального окна",
+                () -> assertEquals(
+                        clickButtonTable(IVR_SOUND_FILES_TITLE, oldFilename, IVR_BUTTON_PLAY_AUDIO).getTextTitleModalWindow()
+                        , "Редактирование звукового файла"
+                        ,"Не найден заголовок модального окна при прослушивании звукового файла " + oldFilename),
+                () -> {
+                    uploadSoundFileByModalWindow(pathToFile, newFilename);
+                },
+                () -> {
+                    verifyAudioPlayer(durationFile, volumePlayer);
+                },
+                () -> {clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);},
+                () -> {isItemTable(IVR_SOUND_FILES_TITLE, newFilename, true);}
+        );
+    }
+
+    @Override
+    public void deleteMusicFile(String filename) {
+
     }
 
     @Override
