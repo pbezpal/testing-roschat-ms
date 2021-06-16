@@ -4,3 +4,4 @@
 /.idea/
 /build/
 /allure-results/
+*.txt

@@ -8,6 +8,8 @@ import client.ClientPage;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.FileDownloadMode;
 import com.codeborne.selenide.WebDriverRunner;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.RootLogger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.logging.LogType;
@@ -34,8 +36,6 @@ public class TestsBase implements ClientPage {
     private final String hostServer = "https://" + System.getProperty("hostserver") + ":" + System.getProperty("portms");
     private final String hostClient = "https://" + System.getProperty("hostserver");
     private final String sshCommandIsContact = "sudo -u roschat psql -c \"select cid, login from users;\" | grep %1$s";
-    private RemoteWebDriver driver = null;
-    private String ipAddress = new NetworkUtils().getIp4NonLoopbackAddressOfThisMachine().getHostAddress();
     private LoginPage loginPage = new LoginPage();
 
     public TestsBase () {}
