@@ -275,8 +275,6 @@ public class TestMenuPage extends SoundPage {
         String newTitleGoToMenu = "Перейти в меню " + type + " отредактировано";
         String newDescriptionGoToMenu = IVR_MENU_DESCRIPTION + " " + newTitleGoToMenu;
         editMenu(newTitleGoToMenu, oldNameMenu, "Перейти в меню", newDescriptionGoToMenu, wavFile2, simpleMenu);
-
-        checkLookModalWindowOfMenu(newTitleGoToMenu, simpleMenu, type, wavFile2, true, false, false);
         TestStatusResult.setTestResult(true);
     }
 
