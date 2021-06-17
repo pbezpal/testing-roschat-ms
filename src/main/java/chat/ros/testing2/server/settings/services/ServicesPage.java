@@ -3,12 +3,11 @@ package chat.ros.testing2.server.settings.services;
 import chat.ros.testing2.server.settings.SettingsPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ex.ElementNotFound;
-import com.codeborne.selenide.ex.ElementShould;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
 import static chat.ros.testing2.data.SettingsData.IVR_MENU_TITLE;
+import static chat.ros.testing2.data.SettingsData.IVR_SOUND_FILES_TITLE;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -65,7 +64,7 @@ public class ServicesPage implements SettingsPage {
 
     @Step(value = "Нажимаем кнопку {button} в разделе {section} у записи {item}")
     public ServicesPage clickButtonTable(String section, String item, String button){
-        if(section.equals(IVR_MENU_TITLE)) contentWrapper.scrollIntoView(false);
+        if(section.equals(IVR_MENU_TITLE) || section.equals(IVR_SOUND_FILES_TITLE)) contentWrapper.scrollIntoView(false);
         getServiceSection(section).scrollIntoView(false);
         getServiceSection(section)
                 .$("table")

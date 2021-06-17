@@ -32,13 +32,13 @@ public interface SettingsData {
     String SERVER_PUSH_INPUT_HOST = "Адрес сервера";
     String SERVER_PUSH_HOST_SERVER = "firelink.me";
     String SERVER_PUSH_INPUT_LOGIN = "Логин";
-    String SERVER_PUSH_LOGIN_SERVER = "testing2";
-    //String SERVER_PUSH_LOGIN_SERVER = "ormp2";
+    //String SERVER_PUSH_LOGIN_SERVER = "testing2";
+    String SERVER_PUSH_LOGIN_SERVER = "ormp2";
     String SERVER_PUSH_INPUT_PORT = "Порт";
     String SERVER_PUSH_PORT_SERVER = "8088";
     String SERVER_PUSH_INPUT_PASSWORD = "Пароль";
-    //String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
-    String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
+    String SERVER_PUSH_PASSWORD_SERVER = "ZiAHFaJaGx";
+    //String SERVER_PUSH_PASSWORD_SERVER = "lJddfDnwycX0ag7o";
     String SERVER_PUSH_BUTTON_UPDATE_LICENSE = "Обновить лицензию";
     String SERVER_PUSH_TEXT_CHECK_LICENSE = "Лицензия успешно обновлена";
 
@@ -277,9 +277,9 @@ public interface SettingsData {
     String IVR_ENTRY_POINTS_TITLE = "Точки входа";
 
     String IVR_MENU_TITLE = "Меню";
-    /*String[] IVR_MENU_ITEMS = {"Положить трубку", "Вернуться в родительское меню",
-            "Вернуться в корневое меню", "Повторить меню"};*/
-    String[] IVR_MENU_ITEMS = {"Положить трубку"};
+    String[] IVR_MENU_ITEMS = {"Положить трубку", "Вернуться в родительское меню",
+            "Вернуться в корневое меню", "Повторить меню"};
+    //String[] IVR_MENU_ITEMS = {"Положить трубку"};
     String IVR_MENU_DESCRIPTION = "Тестирование меню"; // + добавить одно из названий
     String IVR_MENU_BUTTON_LOOK_MENU = "remove_red_eye";
 

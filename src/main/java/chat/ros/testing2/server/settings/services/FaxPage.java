@@ -27,20 +27,9 @@ public class FaxPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем, что найден {search} контакт {contact}")
-    public boolean isContactName(String contact, boolean search){
-        if(search) {
-            try {
-                getContactName(contact).shouldBe(Condition.visible);
-            } catch (ElementNotFound e) {
-                return false;
-            }
-        }else{
-            try {
-                getContactName(contact).shouldNotBe(Condition.visible);
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-        return true;
+    public FaxPage isContactName(String contact, boolean search) {
+        if (search) getContactName(contact).shouldBe(Condition.visible);
+        else getContactName(contact).shouldNotBe(Condition.visible);
+        return this;
     }
 }

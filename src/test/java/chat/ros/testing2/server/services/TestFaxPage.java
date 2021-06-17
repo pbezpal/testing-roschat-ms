@@ -45,16 +45,8 @@ public class TestFaxPage extends FaxPage {
     )
     @Test
     void test_Add_Number_Fax_With_Description(){
-        assertAll("Добаялем номер факса с описанием и проверяем, что номер с описанием был добавлен",
-                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
-                        "Добавление номера факса",
-                        "Не найден заголовок модального окна при добавлении номера факса"),
-                () -> {sendNumberFaxes(FAX_NUMBER_WITH_DESCRIPTION, FAX_DESCRIPTION_FAX, "Сохранить");},
-                () -> assertTrue(isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITH_DESCRIPTION, true),
-                        "Не найдена запись " + FAX_NUMBER_WITH_DESCRIPTION + " в таблице " + FAX_NUMBERS_TITLE),
-                () -> assertTrue(isItemTable(FAX_NUMBERS_TITLE, FAX_DESCRIPTION_FAX, true),
-                        "Не найдена запись " + FAX_DESCRIPTION_FAX + " в таблице " + FAX_NUMBERS_TITLE)
-                );
+        addNumberFax(FAX_NUMBER_WITH_DESCRIPTION, FAX_DESCRIPTION_FAX);
+        TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Добавление номер факса без описания")
@@ -67,16 +59,7 @@ public class TestFaxPage extends FaxPage {
     @Test
     @Order(2)
     void test_Add_Number_Fax_Without_Description(){
-        assertAll("1. Вводим номер для факса\n" +
-                        "2. Сохраняем\n" +
-                        "3. Проверяем, что номер сохранён в таблице",
-                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
-                        "Добавление номера факса",
-                        "Не найден заголовок модального окна при добавлении номера факса"),
-                () -> {sendNumberFaxes(FAX_NUMBER_WITHOUT_DESCRIPTION, "", "Сохранить");},
-                () -> assertTrue(isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, true),
-                        "Не найдена запись " + FAX_NUMBER_WITHOUT_DESCRIPTION + " в таблице " + FAX_NUMBERS_TITLE)
-        );
+        addNumberFax(FAX_NUMBER_WITHOUT_DESCRIPTION, "");
         TestStatusResult.setTestResult(true);
     }
 
@@ -93,8 +76,7 @@ public class TestFaxPage extends FaxPage {
         assertTrue(isFormConfirmActions(true),
                 "Не появилась форма для удаления меню " + FAX_NUMBER_WITHOUT_DESCRIPTION);
         clickButtonConfirmAction("Удалить");
-        assertTrue(isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, false),
-                "Найдена запись " + FAX_NUMBER_WITHOUT_DESCRIPTION + " в таблице " + FAX_NUMBERS_TITLE);
+        isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, false);
     }
 
     @Story(value = "Добавление пользователя для факса")
@@ -114,17 +96,28 @@ public class TestFaxPage extends FaxPage {
                 () -> assertEquals(clickButtonAdd(FAX_USERS_TITLE).getTextTitleModalWindow(),
                         "Добавление пользователя",
                         "Не найден заголовок модального окна при добавлении пользователя для факса"),
-                () -> {sendInputModalWindow("Поиск контакта", CONTACT_FOR_FAX);},
-                () -> assertTrue(isContactName(CONTACT_FOR_FAX, true),
-                        "Не найдена запись " + CONTACT_FOR_FAX + " в списке пользователей"),
                 () -> {
-                    getContactName(CONTACT_FOR_FAX).click();
-                    clickActionButtonOfModalWindow("Сохранить");
-                },
-                () -> assertTrue(isItemTable(FAX_USERS_TITLE, CONTACT_FOR_FAX, true),
-                        "Не найдена запись " + CONTACT_FOR_FAX + " в таблице " + FAX_USERS_TITLE)
+                    sendInputModalWindow("Поиск контакта", CONTACT_FOR_FAX);
+                    isContactName(CONTACT_FOR_FAX, true)
+                            .getContactName(CONTACT_FOR_FAX).click();
+                    clickActionButtonOfModalWindow("Сохранить")
+                            .isModalWindow(false)
+                            .isItemTable(FAX_USERS_TITLE, CONTACT_FOR_FAX, true);
+                }
         );
         TestStatusResult.setTestResult(true);
     }
 
+    private void addNumberFax(String number, String description){
+        assertAll("Добаялем номер факса с описанием и проверяем, что номер с описанием был добавлен",
+                () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
+                        "Добавление номера факса",
+                        "Не найден заголовок модального окна при добавлении номера факса"),
+                () -> {
+                    sendNumberFaxes(number, description, "Сохранить");
+                    isItemTable(FAX_NUMBERS_TITLE, number, true);
+                    isItemTable(FAX_NUMBERS_TITLE, number, true);
+                }
+        );
+    }
 }
