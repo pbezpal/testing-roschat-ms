@@ -43,7 +43,7 @@ public class ResourcesUserPage extends StartWebDriver implements BeforeEachCallb
     public void afterEach(ExtensionContext context) {
         String methodTest = context.getRequiredTestMethod().getName();
         if(methodTest.contains("Add") && ! methodTest.equals("test_Add_New_User_Admin_MS"))
-            TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+            TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
         logoutMS();
     }
 

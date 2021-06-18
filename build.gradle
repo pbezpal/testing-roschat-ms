@@ -459,22 +459,22 @@ task roschatservices(type: Test){
 
     description "Тестирование сервера услуг"
 
-    dependsOn test_push_server
+    //dependsOn test_push_server
 
-    systemProperties = [
+    /*systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
             'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
-    ]
+    ]*/
 
     systemProperties System.getProperties()
 
     filter {
-        includeTestsMatching "*.TestFaxPage"
-        includeTestsMatching "*.TestMenuPage"
-        includeTestsMatching "*.TestSoundPage"
+        //includeTestsMatching "*.TestFaxPage"
+        includeTestsMatching "*.TestMenuPage.test_Add_Rules"
+        //includeTestsMatching "*.TestSoundPage"
     }
 
     // Show test results.

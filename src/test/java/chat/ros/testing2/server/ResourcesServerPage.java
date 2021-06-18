@@ -2,7 +2,6 @@ package chat.ros.testing2.server;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
-import chat.ros.testing2.TestsBase;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
@@ -54,7 +53,7 @@ public class ResourcesServerPage extends StartWebDriver implements BeforeEachCal
         String classTest = context.getTestClass().toString();
         if(classTest.contains("TestGeozonesPage")) {
             if (methodTest.equals("test_Add_Geozone"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
         }
     }
 

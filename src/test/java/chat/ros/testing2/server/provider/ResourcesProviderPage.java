@@ -2,7 +2,6 @@ package chat.ros.testing2.server.provider;
 
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.TestsBase;
-import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.*;
 
@@ -17,7 +16,7 @@ public class ResourcesProviderPage implements BeforeAllCallback, BeforeEachCallb
     @Override
     public void afterEach(ExtensionContext context) {
         String methodTest = context.getRequiredTestMethod().getName();
-        TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+        TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
     }
 
     @Override

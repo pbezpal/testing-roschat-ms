@@ -1,16 +1,10 @@
 package chat.ros.testing2.server.services.codefortests;
 
+import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.server.settings.services.IVRPage;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Allure;
-import io.qameta.allure.AllureResultsWriteException;
-import io.qameta.allure.AllureResultsWriter;
 import io.qameta.allure.model.Status;
-import io.qameta.allure.model.TestResult;
-import io.qameta.allure.model.TestResultContainer;
-import org.junit.jupiter.api.TestInstance;
-
-import java.io.InputStream;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -156,16 +150,47 @@ public class SoundPage extends IVRPage implements ISoundPage {
 
     @Override
     public void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu) {
-        assertAll("Проверяем добавление меню " + name,
-                () -> assertEquals(clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow()
-                        , "Новое голосовое меню"
-                        , "Не найден заголовок модального окна при добавлении голосового меню"),
-                () -> {
-                    if(type.equals("Перейти в меню") && goToMenu.length > 0) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
-                    else addVoiceMenu(type, type, pathSound, number);
-                    saveAndVerifyMenu(name, description);
-                }
-        );
+        if(!clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow().equals("Новое голосовое меню"))
+            Allure.step("Не найден заголовок модального окна при добавлении голосового меню", Status.FAILED);
+        if(type.equals("Перейти в меню") && goToMenu.length > 0) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
+        else addVoiceMenu(type, type, pathSound, number);
+        saveAndVerifyMenu(name, description);
+    }
+
+    @Override
+    public void addSchedule(String name) {
+        clickButtonAddSchedule().sendModalWindowOfSchedule(name);
+        if(getTextTitleModalWindow().equals("Новое расписание"))
+            Allure.step("Не найден заголовок модального окна при добаление нового рапсписания", Status.FAILED);
+        clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
+        isVisibleSchedule(name, true);
+    }
+
+    @Override
+    public void addRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except) {
+        String date = null;
+        String startTime;
+        String endTime;
+
+        isTitleRules().clickSchedule(schedule).clickButtonAddRules().selectTypeDate(typeDate).selectException(except);
+
+        if(typeDate.equals(IVR_SCHEDULE_RULE_TYPE_WEEK_DAY)) date = getWeekDaysRules(dates);
+        else {
+            for(int i = 0; i < dates.length; i++){
+                if(i == 0) date = getDateRules(dates[i]) + " - ";
+                else date = date + getDateRules(dates[i]);
+            }
+        }
+
+        startTime = getTimeRules("Время начала", startTimes[0], startTimes[1]);
+        endTime = getTimeRules("Время окончания", endTimes[0], endTimes[1]);
+
+        if( ! getTextTitleModalWindow().equals("Новое правило"))
+            Allure.step("Не найден заголовок модального окна при добаление нового правила", Status.FAILED);
+
+        clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
+
+        isItemRules(date, startTime + " - " + endTime, except);
     }
 
     @Override

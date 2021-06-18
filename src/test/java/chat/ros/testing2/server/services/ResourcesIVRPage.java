@@ -2,6 +2,8 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.StartWebDriver;
 import chat.ros.testing2.TestStatusResult;
+import io.qameta.allure.Allure;
+import io.qameta.allure.model.Status;
 import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
@@ -50,6 +52,8 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
         }else if(testClass.contains("TestMenuPage")){
             if(testMethod.equals("test_Add_Menu"))
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
+            else if(testMethod.equals("test_Add_Rules"))
+                verifyParamTest(testParams, "Add schedule=");
             else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
             else if(testMethod.equals("test_Look_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
             else if(testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
@@ -97,30 +101,34 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
         String testParams = context.getDisplayName();
         if(testClass.contains("TestSoundPage")) {
             if (testMethod.equals("test_Audio_Player_When_Uploading_File"))
-                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusResult());
             else if (testMethod.equals("test_AudioPlayer_When_Edit_Sound_File"))
-                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusResult());
         }else if(testClass.contains("TestMenuPage")){
             if(testMethod.equals("test_Upload_Sound_File") || testMethod.equals("test_Upload_Sound_File_2"))
-                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Add_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Add_Entry_Point_With_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Add_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Edit_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Edit_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Delete_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
+            else if(testMethod.equals("test_Add_Schedule"))
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
+            else if(testMethod.equals("test_Add_Rules"))
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
         }
     }
 }

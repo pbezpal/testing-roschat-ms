@@ -115,7 +115,7 @@ public class ResourcesRoutePage implements BeforeAllCallback, BeforeEachCallback
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
         String methodTest = context.getRequiredTestMethod().getName();
-        TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+        TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
     }
 
     @Override

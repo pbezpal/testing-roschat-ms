@@ -7,6 +7,7 @@ public abstract class TestStatusResult {
 
     private static Map<String, Boolean> testResult = new HashMap<>();
     private static boolean status = false;
+    private static boolean statusTest = false;
 
     public static void setTestResult(String method, boolean result){
         TestStatusResult.testResult.put(method, result);
@@ -20,7 +21,7 @@ public abstract class TestStatusResult {
         return testResult;
     }
 
-    public static boolean getStatusTest(){
+    public static boolean getStatusResult(){
         return status;
     }
 

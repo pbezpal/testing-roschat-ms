@@ -8,6 +8,10 @@ import org.openqa.selenium.Keys;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
@@ -26,6 +30,23 @@ public class IVRPage extends ServicesPage {
     private SelenideElement inputActionDTMF = $(".flex.xs8");
     private SelenideElement audioPlayer = $(".modal-window__content audio");
     private SelenideElement buttonDownloadFile = getModalWindow().$(".melody-buttons").find("button[title='Скачать']");
+
+    //Elements for schedule
+    private SelenideElement scheduleColumnLeft = $(".schedule-column.left");
+    private SelenideElement titleScheduleColumnLeft = scheduleColumnLeft.find("h4");
+    private SelenideElement buttonAddSchedule = scheduleColumnLeft.find(".column-header button");
+    private ElementsCollection scheduleItemsText = scheduleColumnLeft.findAll(".schedule-items .schedule-item__text");
+
+    private SelenideElement scheduleColumnRight = $(".schedule-column.right");
+    private SelenideElement titleScheduleColumnRight = scheduleColumnRight.find("h4");
+    private SelenideElement buttonAddRules = scheduleColumnRight.find(".column-header button");
+    private ElementsCollection weekDays = getModalWindow().findAll(".week-days span");
+    private ElementsCollection comboBoxWeekDays = getModalWindow().findAll(".inputs .v-input--selection-controls__ripple");
+    private ElementsCollection inputComboBoxWeekDays = getModalWindow().findAll(".inputs input");
+    private SelenideElement datePicker = $(".v-picker__body");
+    private SelenideElement buttonNextMonth = datePicker.find(".mdi-chevron-right");
+    private ElementsCollection dateList = datePicker.findAll("td");
+    private SelenideElement tableRulesOfSchedule = $(".schedule-column.right table");
 
     /******************** Работа с модальным окном ***********************/
 
@@ -361,6 +382,155 @@ public class IVRPage extends ServicesPage {
         return true;
     }
 
+    /**************************** Расписание *****************************/
+
+    @Step(value = "Проверяем заголовок в столбце Расписание")
+    public IVRPage isTitleSchedule(){
+        titleScheduleColumnLeft.shouldHave(text("Расписание"));
+        return this;
+    }
+
+    @Step(value = "Нажимаем кнопку добавить Расписание")
+    public IVRPage clickButtonAddSchedule(){
+        buttonAddSchedule.click();
+        return this;
+    }
+
+    @Step(value = "Проверяем, отображается ли {show} расписание {schedule}")
+    public IVRPage isVisibleSchedule(String schedule, boolean show){
+        if(show) scheduleItemsText.findBy(text(schedule)).shouldBe(visible);
+        else scheduleItemsText.findBy(text(schedule)).shouldNotBe(visible);
+        return this;
+    }
+
+    @Step(value = "Выбираем распиание {schedule}")
+    public IVRPage clickSchedule(String schedule){
+        scheduleItemsText.findBy(text(schedule)).click();
+        return this;
+    }
+
+    @Step(value = "Надимаем кнопку {button} у раписания {schedule}")
+    public IVRPage clickButtonActionSchedule(String schedule, String button){
+        scheduleItemsText.findBy(text(schedule)).parent().findAll("i").findBy(text(button)).click();
+        return this;
+    }
+
+    @Step(value = "Проверяем заголовок в столбце Правила")
+    public IVRPage isTitleRules(){
+        titleScheduleColumnRight.shouldHave(text("Правила"));
+        return this;
+    }
+
+    @Step(value = "Нажимаем кнопку добавить Правила")
+    public IVRPage clickButtonAddRules(){
+        buttonAddRules.click();
+        return this;
+    }
+
+    @Step(value = "Выбираем Тип {type}")
+    public IVRPage selectTypeDate(String type){
+        $$("label").findBy(text("Тип")).parent().find(".v-select__selections").click();
+        $$(".v-list__tile__title").findBy(text(type)).click();
+        return this;
+    }
+
+    private Date datePlusDays(int days){
+        Date currentDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+        c.add(Calendar.DATE, days);
+        return c.getTime();
+    }
+
+    @Step(value = "Выбираем {typeDate}")
+    public String getDateRules(String typeDate){
+        getModalWindow().find("input[aria-label='" + typeDate + "']").click();
+        datePicker.shouldBe(visible);
+        DateFormat onlyDayFormat = new SimpleDateFormat("dd");
+        DateFormat onlyMonthFormat = new SimpleDateFormat("MM");
+        DateFormat fullDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date startDate = new Date();
+        String date;
+        String fullDate;
+        if (typeDate.equals("Дата начала")) {
+            date = onlyDayFormat.format(startDate);
+            fullDate = fullDateFormat.format(startDate);
+        } else {
+            Date endDate = datePlusDays(7);
+            String startMonth = onlyMonthFormat.format(startDate);
+            String endMonth = onlyMonthFormat.format(endDate);
+            if (!startMonth.equals(endMonth)) buttonNextMonth.shouldBe(visible).click();
+            date = onlyDayFormat.format(endDate);
+            fullDate = fullDateFormat.format(endDate);
+        }
+
+        dateList.findBy(text(date)).shouldBe(visible).click();
+        datePicker.shouldNotBe(visible);
+
+        return fullDate;
+    }
+
+    @Step(value = "Выбираем дни недели {day}")
+    public String getWeekDaysRules(String... days){
+        String listWeekDays = null;
+        for(int d = 0; d < days.length; d++) {
+            int i = 0;
+            for (; i < weekDays.size() - 1; i++) {
+                if (weekDays.get(i).text().equals(days[d])) break;
+            }
+            comboBoxWeekDays.get(i).click();
+            inputComboBoxWeekDays.get(i).shouldBe(selected);
+            if(d == 0) listWeekDays = days[d].replace(".","");
+            else listWeekDays = listWeekDays + ", " + days[d].replace(".","");
+        }
+
+        return listWeekDays;
+    }
+
+    private SelenideElement parentElement(String text){
+        return getModalWindow()
+                .findAll(".content-item__title")
+                .findBy(text(text))
+                .parent();
+    }
+
+    @Step(value = "Выбираем час {hour} и минуты {minute} для {typeTime}")
+    public String getTimeRules(String typeTime, String hour, String minute){
+        ElementsCollection listTime = $$(".v-select-list .v-list__tile__title");
+        parentElement(typeTime).find("input[aria-label='Час']").parent().click();
+        listTime.findBy(text(hour)).shouldBe(visible).click();
+        parentElement(typeTime).find("input[aria-label='Минута']").parent().click();
+        listTime.findBy(text(hour)).shouldBe(visible).click();
+        return hour + ":" + minute;
+    }
+
+    @Step(value = "Выбираем исключение {select}")
+    public IVRPage selectException(boolean select){
+        SelenideElement comboBoxException = parentElement("Исключение").find(".v-input--selection-controls__ripple");
+        SelenideElement inputComboBoxException = parentElement("Исключение").find("input");
+        if(select){
+            if(!inputComboBoxException.isSelected())
+                comboBoxException.click();
+            inputComboBoxException.shouldBe(selected);
+        }else{
+            if(inputComboBoxException.isSelected())
+                comboBoxException.click();
+            inputComboBoxException.shouldNotBe(selected);
+        }
+
+        return this;
+    }
+
+    @Step(value = "Проверяем параметры правила после добавления/редактирования")
+    public IVRPage isItemRules(String date, String time, boolean exception){
+        if(exception) tableRulesOfSchedule.find(".schedule-except").shouldBe(visible);
+        tableRulesOfSchedule.findAll("td").findBy(text(date)).shouldBe(visible);
+        tableRulesOfSchedule.findAll("td").findBy(text(time)).shouldBe(visible);
+        return this;
+    }
+
+    /**************************** Точки входа ***************************************/
+
     @Step(value = "Проверяем, есть ли иконка АОН у записи {number} в таблице точки входа")
     public IVRPage isIconArrowAON(String number){
         getServiceSection(IVR_ENTRY_POINTS_TITLE).$("table").scrollIntoView(false);
@@ -474,6 +644,11 @@ public class IVRPage extends ServicesPage {
             }
         }
 
+        return this;
+    }
+
+    public IVRPage sendModalWindowOfSchedule(String schedule){
+        sendInputModalWindow("Название", schedule);
         return this;
     }
 

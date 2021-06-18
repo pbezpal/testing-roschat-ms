@@ -44,16 +44,16 @@ public class ResourcesIntegrationPage extends StartWebDriver implements BeforeEa
         String methodTest = context.getRequiredTestMethod().getName();
         String classTest = context.getTestClass().toString();
         if(methodTest.equals("test_Add_Service_Active_Directory"))
-            TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+            TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
         if(classTest.contains("TestMonitorSkud")){
             if(methodTest.contains("test_Add_SKUD"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
             else if(methodTest.contains("test_Sync_Contacts_SKUD"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
             else if(methodTest.contains("test_Change_Data_Disconnect"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
             else if(methodTest.contains("test_Delete_SKUD"))
-                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusTest());
+                TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
         }
     }
 

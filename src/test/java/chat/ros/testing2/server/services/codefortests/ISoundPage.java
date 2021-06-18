@@ -18,6 +18,10 @@ public interface ISoundPage {
 
     void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu);
 
+    void addSchedule(String name);
+
+    void addRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except);
+
     void addEntryPoint(String number, String aon, String menu, String schedule);
 
     void editMenu(String newNameMenu, String oldNameMenu, String type, String description, String pathSound, String numberOrTypeMenu);
