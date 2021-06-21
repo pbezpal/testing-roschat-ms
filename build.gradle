@@ -473,7 +473,7 @@ task roschatservices(type: Test){
 
     filter {
         includeTestsMatching "*.TestFaxPage"
-        includeTestsMatching "*.TestMenuPage.test_Add_Rules"
+        includeTestsMatching "*.TestMenuPage"
         includeTestsMatching "*.TestSoundPage"
     }
 
