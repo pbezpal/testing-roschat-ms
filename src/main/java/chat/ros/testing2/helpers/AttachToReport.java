@@ -9,6 +9,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.qameta.allure.Attachment;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
@@ -24,14 +26,7 @@ public class AttachToReport {
 
     @Attachment(type = "image/png")
     public byte[] AttachScreen() {
-        File screenshot = Screenshots.getLastScreenshot();
-        try {
-            return screenshot == null ? null : Files.toByteArray(screenshot);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        //return ((TakesScreenshot) Selenide.).getScreenshotAs(OutputType.BYTES);
+        return ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
     }
 
     @Attachment(value = "Browser network log", type = "text/plain")

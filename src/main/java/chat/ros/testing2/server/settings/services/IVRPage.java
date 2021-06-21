@@ -446,7 +446,7 @@ public class IVRPage extends ServicesPage {
     public String getDateRules(String typeDate){
         getModalWindow().find("input[aria-label='" + typeDate + "']").click();
         datePicker.shouldBe(visible);
-        DateFormat onlyDayFormat = new SimpleDateFormat("dd");
+        DateFormat onlyDayFormat = new SimpleDateFormat("d");
         DateFormat onlyMonthFormat = new SimpleDateFormat("MM");
         DateFormat fullDateFormat = new SimpleDateFormat("dd.MM.yyyy");
         Date startDate = new Date();
@@ -456,7 +456,7 @@ public class IVRPage extends ServicesPage {
             date = onlyDayFormat.format(startDate);
             fullDate = fullDateFormat.format(startDate);
         } else {
-            Date endDate = datePlusDays(7);
+            Date endDate = datePlusDays(14);
             String startMonth = onlyMonthFormat.format(startDate);
             String endMonth = onlyMonthFormat.format(endDate);
             if (!startMonth.equals(endMonth)) buttonNextMonth.shouldBe(visible).click();
