@@ -49,9 +49,8 @@ public class ServerPage implements SettingsPage{
         //Загружаем приватный ключ
         inputPrivateKey.uploadFile(new File("/opt/license/private.key"));
         //Проверяем, что кнопка Сохранить активна
-        assertTrue(isActiveButtonSave(), "Не возможно сохранить настройки, кнопка 'Сохранить' не активна");
-        //Нажимаем кнопку Сохранить
-        clickButtonSave();
+        isActiveButtonSave()
+                .clickButtonSave();
 
         return this;
     }

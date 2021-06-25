@@ -85,16 +85,11 @@ public abstract class ServerParams extends ServerPage {
 
         serverPage.clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         serverPage.sendInputsForm(mapInputValueConnect);
-        assertAll("Проверяем значение порта " + field + " на невалидные значения",
-                () -> assertEquals(isShowTextWrongValue(field),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Формы редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowValueInField(
                 SERVER_CONNECT_TITLE_FORM,
                 SERVER_CONNECT_FIELD_PORTS,
@@ -138,11 +133,8 @@ public abstract class ServerParams extends ServerPage {
         serverPage.clickButtonSettings(SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         serverPage.sendInputsForm(mapInputValueConnect);
         clickButtonSave();
-        assertAll("Проверяем значение портов на валидные значение",
-                () ->assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 SERVER_CONNECT_FIELD_PORTS,

@@ -31,7 +31,11 @@ public class IVRPage extends ServicesPage {
     private SelenideElement audioPlayer = $(".modal-window__content audio");
     private SelenideElement buttonDownloadFile = getModalWindow().$(".melody-buttons").find("button[title='Скачать']");
 
+    //Elements for entry point
+    ElementsCollection labelsComboBoxWindowModal = getModalWindow().findAll("div[role='combobox'] label");
+
     //Elements for schedule
+    private SelenideElement scheduleForm = $(".schedule");
     private SelenideElement scheduleColumnLeft = $(".schedule-column.left");
     private SelenideElement titleScheduleColumnLeft = scheduleColumnLeft.find("h4");
     private SelenideElement buttonAddSchedule = scheduleColumnLeft.find(".column-header button");
@@ -179,13 +183,19 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Проверяем наличие иконки таймаута в модальном окне")
     public IVRPage isIconTimeOutOfModalWindowMenu(SelenideElement firstElement){
-        firstElement.$(".text--darken-3").shouldBe(visible);
+        firstElement.find(".text--darken-3").shouldBe(visible);
         return this;
     }
 
     @Step(value = "Проверяем наличие иконки неправильного набора в модальном окне")
     public IVRPage isIconErrorOutlineOfModalWindowMenu(SelenideElement firstElement){
-        firstElement.$(".text-darken-1").shouldBe(visible);
+        firstElement.find(".text-darken-1").shouldBe(visible);
+        return this;
+    }
+
+    @Step(value = "Проверяем наличие иконки звукового файла у {typeAction}")
+    public IVRPage isIconMusicFileOfAction(SelenideElement firstElement, String action){
+        firstElement.findAll("span").findBy(text(action)).find(".mdi-music-note-eighth").shouldBe(visible);
         return this;
     }
 
@@ -219,7 +229,7 @@ public class IVRPage extends ServicesPage {
                 .find(".ivr-item__sub");
     }
 
-    @Step(value = "")
+    @Step(value = "Проверяем открылась ли {show} ссылка у {span}")
     public IVRPage isElementMenuOfGoToAction(String span, boolean show){
         if(show) getElementMenuOfGoToAction(span).shouldBe(visible);
         else getElementMenuOfGoToAction(span).shouldNotBe(visible);
@@ -237,6 +247,7 @@ public class IVRPage extends ServicesPage {
                 .find(".ivr-item__sub");
     }
 
+    @Step(value = "Проверяем открылась ли {show} ссылка у DTMF")
     public IVRPage isElementMenuOfGoToActionWithDTMF(boolean show){
         if(show) getElementMenuOfGoToActionWithDTMF().shouldBe(visible);
         else getElementMenuOfGoToActionWithDTMF().shouldBe(not(visible));
@@ -244,6 +255,7 @@ public class IVRPage extends ServicesPage {
     }
 
     private SelenideElement getElementGoToAction(String span){
+        //return getModalWindow().findAll("span").findBy(text(span)).closest("div").find(".go-to-action");
         return $x("//span[contains(text(),'" + span + "')]//following-sibling::*[@class='go-to-action']");
     }
 
@@ -398,6 +410,7 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Проверяем, отображается ли {show} расписание {schedule}")
     public IVRPage isVisibleSchedule(String schedule, boolean show){
+        scheduleForm.scrollIntoView(false);
         if(show) scheduleItemsText.findBy(text(schedule)).shouldBe(visible);
         else scheduleItemsText.findBy(text(schedule)).shouldNotBe(visible);
         return this;
@@ -405,6 +418,7 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Выбираем распиание {schedule}")
     public IVRPage clickSchedule(String schedule){
+        scheduleForm.scrollIntoView(false);
         scheduleItemsText.findBy(text(schedule)).click();
         return this;
     }
@@ -523,6 +537,7 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Проверяем параметры правила после добавления/редактирования")
     public IVRPage isItemRules(String date, String time, boolean exception){
+        scheduleForm.scrollIntoView(false);
         if(exception) tableRulesOfSchedule.find(".schedule-except").shouldBe(visible);
         tableRulesOfSchedule.findAll("td").findBy(text(date)).shouldBe(visible);
         tableRulesOfSchedule.findAll("td").findBy(text(time)).shouldBe(visible);
@@ -530,6 +545,12 @@ public class IVRPage extends ServicesPage {
     }
 
     /**************************** Точки входа ***************************************/
+
+    @Step(value = "Вызываем контекстное меню в поле {field}")
+    public IVRPage clickCallContextMenu(String field){
+        labelsComboBoxWindowModal.findBy(text(field)).parent().find(".mdi-menu-down").click();
+        return this;
+    }
 
     @Step(value = "Проверяем, есть ли иконка АОН у записи {number} в таблице точки входа")
     public IVRPage isIconArrowAON(String number){
@@ -652,10 +673,13 @@ public class IVRPage extends ServicesPage {
         return this;
     }
 
-    public IVRPage sendModalWindowOfEntryPoint(String number, String aon, String type){
+    public IVRPage sendModalWindowOfEntryPoint(String number, String aon, String menu, String schedule){
         sendInputModalWindow("Набираемый номер", number)
                 .sendInputModalWindow("АОН", aon);
-        selectItemComboBox(type);
+        clickCallContextMenu("Меню");
+        selectItemComboBox(menu);
+        clickCallContextMenu("Расписание");
+        selectItemComboBox(schedule);
         return this;
     }
 }

@@ -8,19 +8,21 @@ public class SKUDPage implements IntegrationPage {
 
     public SKUDPage() {}
 
-    public boolean settingsSKUD(Map<String, String> mapInputValueOM, String skud){
+    public SKUDPage settingsSKUD(Map<String, String> mapInputValueOM, String skud){
         clickButtonActionService(SETTINGS_BUTTON_SETTING);
         sendInputsForm(mapInputValueOM);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        return isExistsTableText(skud, true);
+        isExistsTableText(skud, true);
+        return this;
     }
 
-    public boolean deleteSKUD(String skud){
+    public SKUDPage deleteSKUD(String skud){
         clickButtonActionService(SETTINGS_BUTTON_DELETE);
         clickButtonConfirmAction(SETTINGS_BUTTON_CONTINUE);
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        return isExistsTableText(skud, false);
+        isExistsTableText(skud, false);
+        return this;
     }
 
 }

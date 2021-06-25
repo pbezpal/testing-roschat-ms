@@ -95,15 +95,11 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
         if(ip.equals("")) field = "IP адрес";
         else if(port.equals("")) field = "Порт БД";
         else field = "Имя пользователя БД";
-        assertAll("Проверяем настрйоки СКУД ОМ с пустыми полями",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия"));
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем невалидные значение IP адреса в настройках СКУД Офис-Монитор")
@@ -115,16 +111,11 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
     @MethodSource("getWrongValueServerOM")
     void test_Wrong_IP_OM(String ip){
         sendInputForm("IP адрес", ip);
-        assertAll("Проверяем IP адрес на невалидные значения",
-                () -> assertEquals(isShowTextWrongValue("IP адрес"),"Невалидный IP адрес",
-                        "Надпись 'Невалидный IP адрес' не появилась"),
-                () -> {clickButtonSave();},
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-                );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue("IP адрес"),"Невалидный IP адрес",
+                "Надпись 'Невалидный IP адрес' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем невалидные значения портов в настройках СКУД Офис-Монитор")
@@ -136,16 +127,11 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
     @MethodSource("getWrongSymbolsPortOM")
     void test_Wrong_Symbols_Ports_OM(Character c){
         sendInputForm("Порт БД", c.toString());
-        assertAll("Проверяем настройки Порт БД с невалидными значениями",
-                () -> assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем номер максимального порта в настройках СКУД Офис-Монитор")
@@ -156,16 +142,11 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
     @Test
     void test_Max_Length_Ports_OM(){
         sendInputForm("Порт БД", MORE_MAX_VALUE_PORT);
-        assertAll("Вводим порт БД больше максимально возможного",
-                () -> assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-                );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue("Порт БД"),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем валидные значения портов в настройках СКУД Офис-Монитор")
@@ -176,9 +157,7 @@ public class TestParametersIntegrationOMPage extends ServerPage implements Integ
     void test_Valid_Symbols_Ports_OM(Character c){
         sendInputForm("Порт БД", c.toString());
         clickButtonSave();
-        assertAll("Проверяем валидное значение " + c.toString(),
-                () -> assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        isFormConfirmActions(true)
+            .clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
     }
 }

@@ -42,16 +42,11 @@ public class TestParametersMailWrongHostServer extends MailPage {
         this.mapValueMail = getSettingsMailServer(address, MAIL_INFOTEK_USERNAME,
                 MAIL_INFOTEK_PASSWORD, MAIL_PORT_NO_SECURITY, MAIL_INFOTEK_FROM_USER, MAIL_INFOTEK_FROM_MAIL);
         settingsMailServerWithoutSave(this.mapValueMail, MAIL_TYPE_SECURITY_NO);
-        assertAll("Проверка на некорректный адрес почтового сервера " + address,
-                () -> assertEquals(isShowTextWrongValue(MAIL_CONNECT_INPUT_EMAIL_SERVER),"Неверный адрес",
-                        "Надпись 'Неверный адрес' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(MAIL_CONNECT_INPUT_EMAIL_SERVER),"Неверный адрес",
+                "Надпись 'Неверный адрес' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 MAIL_CONNECT_INPUT_EMAIL_SERVER,

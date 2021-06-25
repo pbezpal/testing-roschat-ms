@@ -34,16 +34,11 @@ public class TestParametersMailMaxLengthPort extends MailPage {
         this.mapValueMail = getSettingsMailServer(MAIL_INFOTEK_SERVER, MAIL_INFOTEK_USERNAME,
                 MAIL_INFOTEK_PASSWORD, "65536", MAIL_INFOTEK_FROM_USER, MAIL_INFOTEK_FROM_MAIL);
         settingsMailServerWithoutSave(this.mapValueMail, MAIL_TYPE_SECURITY_NO);
-        assertAll("Проверяем значение порта на максимально возможное значение",
-                () -> assertEquals(isShowTextWrongValue(MAIL_CONNECT_INPUT_EMAIL_PORT),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Формы редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(MAIL_CONNECT_INPUT_EMAIL_PORT),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowFieldAndValue(
                 SERVER_CONNECT_TITLE_FORM,
                 MAIL_CONNECT_INPUT_EMAIL_PORT,

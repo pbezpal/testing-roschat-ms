@@ -68,16 +68,11 @@ public class TestParametersServerConnectWrongHost extends ServerParams {
             field = SERVER_CONNECT_INPUT_WEBSOCKET_PORT;
             ports = http + ", " + https + ",";
         }
-        assertAll("Проверяем настройки подключения на пустые значения",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         if(server.equals("")){
             assertTrue(isShowValueInField(
                     SERVER_CONNECT_TITLE_FORM,
@@ -107,16 +102,11 @@ public class TestParametersServerConnectWrongHost extends ServerParams {
             put(SERVER_CONNECT_INPUT_PUBLIC_NETWORK, address);
         }};
         setSettingsServer(mapInputValueConnect, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем невалидные значения внешнего адреса сервера " + address,
-                () -> assertEquals(isShowTextWrongValue(SERVER_CONNECT_INPUT_PUBLIC_NETWORK),"Неверный адрес",
-                        "Надпись 'Неверный адрес' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(SERVER_CONNECT_INPUT_PUBLIC_NETWORK),"Неверный адрес",
+                "Надпись 'Неверный адрес' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowValueInField(
                 SERVER_CONNECT_TITLE_FORM,
                 SERVER_CONNECT_INPUT_PUBLIC_NETWORK,

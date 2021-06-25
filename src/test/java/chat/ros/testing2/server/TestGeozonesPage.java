@@ -44,24 +44,14 @@ public class TestGeozonesPage extends GeozonesPage {
     @Order(1)
     void test_Add_Geozone(){
         clickButtonAdd();
-        assertAll("1. Проверяем, отображается ли заголовок модального окна\n" +
-                        "2. Вводим данные и сохраняем настройки геозоны\n" +
-                        "3. Проверяем, появилась ли запись о геозоне в таблице",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Добавление геозоны",
-                        "Не найден заголовок модального окна при добавлении геозоны"),
-                () -> assertTrue(sendDataGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA), "Геозона " +
-                        "" + GEOZONES_NAME_ZONA + " не была добавлена на сервер")
-        );
+        assertEquals(getTitleOfModalWindow(),
+                "Добавление геозоны",
+                "Не найден заголовок модального окна при добавлении геозоны");
+        sendDataGeozone(mapInputValueGeozone, GEOZONES_NAME_ZONA);
         TestStatusResult.setTestResult(true);
-        assertAll("Проверяем, отображаются ли все значения в таблице Геозоне",
-                () -> assertTrue(isExistsTableText(GEOZONES_WIDTH_ZONA,true), "Не найдено значение широты " +
-                        "" + GEOZONES_WIDTH_ZONA + " в таблице Геозоне"),
-                () -> assertTrue(isExistsTableText(GEOZONES_LENGHT_ZONA,true), "Не отображается значение долготы " +
-                        "" + GEOZONES_LENGHT_ZONA + " в таблице Геозоне"),
-                () -> assertTrue(isExistsTableText(GEOZONES_RADIUS_ZONA,true), "Не отображается значение радиуса " +
-                        "" + GEOZONES_RADIUS_ZONA + " в таблице Геозоне")
-        );
+        isExistsTableText(GEOZONES_WIDTH_ZONA,true)
+                .isExistsTableText(GEOZONES_LENGHT_ZONA,true)
+                .isExistsTableText(GEOZONES_RADIUS_ZONA,true);
     }
 
     @Story(value = "Добавляем Beacon")
@@ -72,22 +62,12 @@ public class TestGeozonesPage extends GeozonesPage {
     void test_Add_Beacon(){
         clickOpenGeoZone(GEOZONES_NAME_ZONA);
         clickButtonAddBeacons();
-        assertAll("1. Проверяем, отображается ли заголовок модального окна\n" +
-                        "2. Вводим данные и сохраняем настройки геозоны\n" +
-                        "3. Проверяем, появилась ли запись о геозоне в таблице",
-                () -> assertEquals(getTitleOfModalWindow(),
-                        "Добавление бекона",
-                        "Не найден заголовок модального окна при добавлении бекона"),
-                () -> assertTrue(sendDataBeacon(mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR), "Beacon " +
-                        "" + GEOZONES_BEACONE_INDICATOR + " не был добавлен на сервер")
-        );
+        assertEquals(getTitleOfModalWindow(),
+                "Добавление бекона",
+                "Не найден заголовок модального окна при добавлении бекона");
+        sendDataBeacon(mapInputValueBeacon, GEOZONES_BEACONE_INDICATOR);
         TestStatusResult.setTestResult(true);
-        assertAll("Проверяем, отображаются ли все значения в таблице Beacons",
-                () -> assertTrue(isExistsTableText(GEOZONES_BEACONE_MINOR,true), "Не найдено значение minor " +
-                        "" + GEOZONES_BEACONE_MINOR + " в таблице Beacons"),
-                () -> assertTrue(isExistsTableText(GEOZONES_BEACONE_MAJOR,true), "Не отображается значение major " +
-                        "" + GEOZONES_BEACONE_MAJOR + " в таблице Геозоне")
-        );
+        isExistsTableText(GEOZONES_BEACONE_MINOR,true).isExistsTableText(GEOZONES_BEACONE_MAJOR,true);
     }
 
     @Story(value = "Перезагрузка страницы")
@@ -97,8 +77,7 @@ public class TestGeozonesPage extends GeozonesPage {
     void test_Refresh_Page(){
         Selenide.refresh();
         sleep(5000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 
     @Story(value = "Переходим на страницу через адресную строку")
@@ -107,7 +86,6 @@ public class TestGeozonesPage extends GeozonesPage {
     @Test
     void test_Open_Page(){
         sleep(5000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 }

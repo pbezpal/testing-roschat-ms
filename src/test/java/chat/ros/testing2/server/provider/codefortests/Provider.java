@@ -1,8 +1,5 @@
 package chat.ros.testing2.server.provider.codefortests;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.model.Status;
-
 import java.util.Map;
 
 import static chat.ros.testing2.data.SettingsData.*;
@@ -22,13 +19,9 @@ public class Provider extends Routes implements IProvider {
     /**
      * this method verifies title and subtitle on modal window
      */
-    private void verifyTitleAndSubtitleModalWindow(){
-        if( ! getTitleOfModalWindow().equals(TELEPHONY_PROVIDER_TITLE_FORM))
-            Allure.step("Не найден заголовок модального окна " + TELEPHONY_PROVIDER_TITLE_FORM, Status.FAILED);
-        if( ! isSubtitleModalWindow("Общее"))
-            Allure.step("Не найден подзаголовок модального окна Общее", Status.FAILED);
-        if( ! isSubtitleModalWindow("Регистрация настроек провайдера"))
-            Allure.step("Не найден подзаголовок модального окна Регистрация настроек провайдера", Status.FAILED);
+    private void checkHeaderAndSubheadersModalWindow(){
+        assertEquals(getTitleOfModalWindow(), TELEPHONY_PROVIDER_TITLE_FORM, "Не найден заголовок модального окна " + TELEPHONY_PROVIDER_TITLE_FORM);
+        isSubtitleModalWindow("Общее").isSubtitleModalWindow("Регистрация настроек провайдера");
     }
 
     /**
@@ -51,25 +44,29 @@ public class Provider extends Routes implements IProvider {
         }
 
 
-
-        assertAll("Проверяем, что провайдер добавлен в таблицу провайдеров",
-                () -> assertTrue(isExistsTableText(titleProvider, show),
-                        "Не отображается название " + titleProvider + " в таблице провайдеров"),
-               () -> {
-                   if (descriptionProvider != null && descriptionProvider.length() > 0)
-                       assertTrue(isExistsTableText(descriptionProvider, show),
-                               "Не отображается описание " + descriptionProvider + " в таблице провайдеров");
-                },
-                () -> assertTrue(isExistsTableText(addressProvider, show),
-                        "Не отображается адрес " + addressProvider + " в таблице провайдеров")
-        );
+        isExistsTableText(titleProvider, show)
+                .isExistsTableText(addressProvider, show);
+        if (descriptionProvider != null && descriptionProvider.length() > 0)
+            isExistsTableText(descriptionProvider, show);
     }
 
+    @Override
+    public void checkHeaderAndSubtitlesWindowModalProvider(String... provider) {
+        if(provider.length > 0){
+            clickButtonTableProvider(provider[0], provider[1]);
+            if(provider[1].equals("Изменить"))
+                clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
+        }
+        else clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
+        isModalWindow(true);
+        checkHeaderAndSubheadersModalWindow();
+        clickButtonClose().isModalWindow(false);
+    }
 
     @Override
     public void addProvider(Map<String, String> dataGeneralProvider, Map<String, String> dataRegistrationProvider) {
         clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
-        verifyTitleAndSubtitleModalWindow();
+        isModalWindow(true);
         setProvider(dataGeneralProvider, dataRegistrationProvider, true);
         verifyProviderDataOnTable(dataGeneralProvider, true);
     }
@@ -77,9 +74,24 @@ public class Provider extends Routes implements IProvider {
     @Override
     public void addProvider(Map<String, String> dataProvider) {
         clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
-        verifyTitleAndSubtitleModalWindow();
+        isModalWindow(true);
         setProvider(dataProvider);
         verifyProviderDataOnTable(dataProvider, true);
+    }
+
+    @Override
+    public void checkHeadersAndTitlesViewProviderSettings(String provider, boolean registration) {
+        clickButtonTableProvider(provider, "Изменить");
+        isSubtitleProviderForm("Общее", true)
+                .isContentSettingProvider("Название", true)
+                .isContentSettingProvider("Описание", true)
+                .isContentSettingProvider("Aдрес провайдера (с портом)", true)
+                .isContentSettingProvider("AOH", true);
+        if(registration){
+            isSubtitleProviderForm("Регистрация", true)
+                    .isContentSettingProvider("Имя пользователя", true)
+                    .isContentSettingProvider("Интервал регистрации", true);
+        }else isSubtitleProviderForm("Регистрация", false);
     }
 
     @Override
@@ -87,16 +99,16 @@ public class Provider extends Routes implements IProvider {
         clickButtonTableProvider(provider, buttonEdit);
         if(buttonEdit.equals("Изменить"))
             clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
-        verifyTitleAndSubtitleModalWindow();
+        isModalWindow(true);
         selectCheckboxProvider(registration).setProvider(dataProvider);
         if(buttonEdit.equals("Изменить"))
-            verifyShowSettingsProvider(dataProvider, registration);
+            checkViewProviderSettings(dataProvider, registration);
         else
             verifyProviderDataOnTable(dataProvider, true);
     }
 
     @Override
-    public void verifyShowSettingsProvider(Map<String, String> dataProvider, boolean registration) {
+    public void checkViewProviderSettings(Map<String, String> dataProvider, boolean registration) {
         titleProvider = null;
         descriptionProvider = null;
         addressProvider = null;
@@ -113,68 +125,32 @@ public class Provider extends Routes implements IProvider {
                 addressProvider = data.getValue().toString();
             else if (data.getKey().equals(TELEPHONY_PROVIDER_INPUT_AON))
                 aonProvider = data.getValue().toString();
-            if(registration) {
+            if (registration) {
                 if (data.getKey().equals(TELEPHONY_PROVIDER_INPUT_USERNAME))
                     usernameProvider = data.getValue().toString();
-                else if(data.getKey().equals(TELEPHONY_PROVIDER_INPUT_INTERVAL))
+                else if (data.getKey().equals(TELEPHONY_PROVIDER_INPUT_INTERVAL))
                     intervalProvider = data.getValue().toString();
             }
         }
 
-        assertAll("1. Нажимаем кнопку изменить\n" +
-                        "2. Проверяем, что в разделе Провайдер отображаются общие настройки провайдера " + titleProvider,
-                () -> assertTrue(isSubtitleProviderForm("Общее", true),
-                        "Не отображается подзаголовок Общее в настройках Провайдера " + titleProvider),
-                () -> assertTrue(isContentSettingProvider("Название", true),
-                        "Не отображается заголовок Название в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(titleProvider, true),
-                        "Не отображается название " + titleProvider + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider("Описание", true),
-                        "Не отображается заголовок Описание в настройках провадера"),
-                () -> {
-                        if(descriptionProvider != null && descriptionProvider.length() > 0)
-                            assertTrue(isContentSettingProvider(descriptionProvider, true),
-                                "Не отображается описание " + descriptionProvider + " в настройках провадера");
-                },
-                () -> assertTrue(isContentSettingProvider("Aдрес провайдера (с портом)", true),
-                        "Не отображается заголовок Aдрес провайдера (с портом) в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider(addressProvider, true),
-                        "Не отображается адрес провайдера " + addressProvider + " в настройках провадера"),
-                () -> assertTrue(isContentSettingProvider("AOH", true),
-                        "Не отображается заголовок AOH в настройках провадера"),
-                () ->{
-                    if(aonProvider != null && aonProvider.length() > 0)
-                        assertTrue(isContentSettingProvider(aonProvider, true),
-                                "Не отображается АОН " + aonProvider + " в настройках провадера");
-                },
-                () -> {
-                    if(registration){
-                        assertAll("Проверяем, что в разделе Провайдер отображаются отображаются настройки регистрации",
-                                () -> assertTrue(isSubtitleProviderForm("Регистрация", true),
-                                        "Не отображается подзаголовок Регистрация в настройках Провайдера " + titleProvider),
-                                () -> assertTrue(isContentSettingProvider("Имя пользователя", true),
-                                        "Не отображается заголовок Имя пользователя в настройках провадера"),
-                                () -> assertTrue(isContentSettingProvider(usernameProvider, true),
-                                        "Не отображается Имя пользователя " + usernameProvider + " в настройках" +
-                                                " провадера после редактирования"),
-                                () -> assertTrue(isContentSettingProvider("Интервал регистрации", true),
-                                        "Не отображается заголовок Интервал регистрации в настройках провадера"),
-                                () -> assertTrue(isContentSettingProvider(intervalProvider, true),
-                                        "Не отображается Интервал регистрации " + intervalProvider + " в " +
-                                                "настройках провадера после редактирования")
-                        );
-                    }else{
-                        assertTrue(isSubtitleProviderForm("Регистрация", false),
-                                "Отображается подзаголовок Регистрация в настройках Провайдера " + titleProvider);
-                    }
-                }
+        isContentSettingProvider(titleProvider, true)
+                .isContentSettingProvider(addressProvider, true);
 
-        );
+        if (descriptionProvider != null && descriptionProvider.length() > 0)
+            isContentSettingProvider(descriptionProvider, true);
 
+        if (aonProvider != null && aonProvider.length() > 0)
+            isContentSettingProvider(aonProvider, true);
+
+        if (registration) {
+            isContentSettingProvider(usernameProvider, true)
+                    .isContentSettingProvider(intervalProvider, true);
+        }
     }
 
+
     @Override
-    public void verifyTableProvider(Map<String, String> dataProvider, boolean show) {
+    public void checkExistProviderInTableProviders(Map<String, String> dataProvider, boolean show) {
         verifyProviderDataOnTable(dataProvider, show);
     }
 

@@ -48,7 +48,7 @@ public class TestUserOperPage extends UserPage {
     @Order(1)
     void test_Add_New_User_Oper(){
         addUser(mapInputValueUser).selectRoleUser(2).clickButtonSave();
-        assertTrue(isExistsTableText(USER_LOGIN_OPER, true), "Пользователь " + USER_LOGIN_OPER + " не был добавлен в систему");
+        isExistsTableText(USER_LOGIN_OPER, true);
         TestStatusResult.setTestResult(true);
     }
 
@@ -72,6 +72,6 @@ public class TestUserOperPage extends UserPage {
     void test_Delete_New_User_Oper(){
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
-        assertTrue(isDeleteUser(USER_LOGIN_OPER), "Не удалось удалить пользователя " + USER_LOGIN_OPER);
+        isDeleteUser(USER_LOGIN_OPER);
     }
 }

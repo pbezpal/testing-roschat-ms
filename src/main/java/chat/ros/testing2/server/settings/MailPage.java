@@ -16,6 +16,8 @@ import static org.junit.gen5.api.Assertions.assertTrue;
 
 public class MailPage implements SettingsPage {
 
+    private SelenideElement iconSelectSecurityMethod = $(".mdi-menu-down");
+
     public MailPage(){}
 
     public Map<String, String> getSettingsMailServer(String server, String username, String password, String port,
@@ -34,7 +36,8 @@ public class MailPage implements SettingsPage {
     public MailPage settingsMailServerWithCheck(Map<String, String> settingsMainServer, String security){
         //Настраиваем раздел Подключение
         setSettingsServer(settingsMainServer, SERVER_CONNECT_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        selectItemComboBox(security);
+        iconSelectSecurityMethod.click();
+        isItemsComboBox().selectItemComboBox(security);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
 

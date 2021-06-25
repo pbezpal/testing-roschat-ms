@@ -48,11 +48,7 @@ public interface SettingsPage extends BasePage {
 
     @Step(value = "Возвращаем заголовок модального окна")
     default String getTitleOfModalWindow(){
-        try {
-            modalWindowTitle.shouldBe(visible);
-        }catch (ElementNotFound e){
-            return null;
-        }
+        modalWindowTitle.shouldBe(visible);
         return modalWindowTitle.getText();
     }
 
@@ -87,11 +83,7 @@ public interface SettingsPage extends BasePage {
 
         $$("h2").findBy(text(form)).scrollIntoView(false);
 
-        try{
-            element.should(enabled);
-        }catch (ElementNotFound e){
-            return false;
-        }
+        element.should(visible);
 
         if(show){
             return element.text().equals(value);
@@ -103,11 +95,8 @@ public interface SettingsPage extends BasePage {
     @Step(value = "Проверяем отображается {show} значение {value} в поле {field}")
     default boolean isShowValueInField(String field, String value, boolean show){
         SelenideElement element = $$("h4").findBy(text(field)).closest("li").find("span.v-chip__content");
-        try{
-            element.should(enabled);
-        }catch (ElementNotFound e){
-            return false;
-        }
+
+        element.shouldBe(visible);
 
         element.scrollIntoView(false);
 
@@ -126,14 +115,10 @@ public interface SettingsPage extends BasePage {
         $$("h2").findBy(text(form)).scrollIntoView(false);
 
         if (show) {
-            return element.text().contains(value);
+            return element.text().equals(value);
         } else {
-            try{
-                element.shouldNotBe(visible);
-            }catch (ElementShould e){
-                return ! element.text().contains(value);
-            }
-            return true;
+            element.shouldNotBe(visible);
+            return ! element.text().equals(value);
         }
     }
 
@@ -146,24 +131,17 @@ public interface SettingsPage extends BasePage {
 
         elements.last().scrollIntoView(false);
 
-        if(show){
-            try {
-                elements.findBy(text(value));
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else {
+        if(show)
+            elements.findBy(text(value)).shouldBe(visible);
+        else {
             if(value.length() == 0)
-                for(int i = 0; i < elements.size(); i++){
-                    if(elements.get(i).text().length() == 0)
+                for(SelenideElement element: elements){
+                    if(element.text().length() == 0)
                         return false;
                 }
-            else {
-                try {
-                    elements.findBy(not(text(value)));
-                } catch (ElementShould e) {
-                    return false;
-                }
+            else{
+                if(value.equals(" ")) elements.findBy(not(text(value)));
+                else elements.findBy(text(value)).shouldNotBe(visible);
             }
         }
 
@@ -198,19 +176,14 @@ public interface SettingsPage extends BasePage {
         }
     }
 
-    @Step(value = "Проверяем, появилась ли надпись о пустом/невалидном значении")
+    @Step(value = "Проверяем, появилась ли надпись о пустом/невалидном значении у поля {field}")
     default String isShowTextWrongValue(String field){
         SelenideElement element = $$(".modal-item__title h4")
                 .findBy(text(field))
                 .parent()
                 .parent()
                 .find(".v-messages__message");
-        try{
-            element.shouldBe(visible);
-        }catch (ElementNotFound e){
-            return null;
-        }
-
+        element.shouldBe(visible);
         return element.text();
     }
 
@@ -220,24 +193,11 @@ public interface SettingsPage extends BasePage {
         return this;
     }
 
-    @Step(value = "Проверяем, что появилась форма 'Подтвердите свои действия'")
-    default boolean isFormConfirmActions(boolean show){
-        if(show){
-            try{
-                formConfirmActions.shouldBe(text("Подтвердите свои действия"), visible);
-            }catch (ElementNotFound element){
-                return false;
-            }
-        }else{
-            try{
-                formConfirmActions.shouldNotBe(visible);
-            }catch (ElementShould element){
-                return false;
-            }
-        }
-
-
-        return true;
+    @Step(value = "Проверяем, отображается ли {show} форма 'Подтвердите свои действия'")
+    default SettingsPage isFormConfirmActions(boolean show){
+        if(show) formConfirmActions.shouldBe(text("Подтвердите свои действия"), visible);
+        else formConfirmActions.shouldNotBe(text("Подтвердите свои действия"), visible);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку {button} в форме 'Подвердите свои действия'")
@@ -261,32 +221,20 @@ public interface SettingsPage extends BasePage {
     }
 
     @Step(value = "Ждём, когда пропадёт элемент загрузки настроек")
-    default boolean isNotShowLoaderSettings(){
-        try{
-            elementLoaderSettings.shouldNotBe(visible, Duration.ofSeconds(30));
-        }catch (ElementShould e){
-            return false;
-        }
-
-        return true;
+    default SettingsPage isNotShowLoaderSettings(){
+        elementLoaderSettings.shouldNotBe(visible, Duration.ofSeconds(30));
+        return this;
     }
 
     @Step(value = "Проверяем, что появился список")
-    default boolean isItemsComboBox(){
-        try{
-            divComboBoxActive.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
+    default SettingsPage isItemsComboBox(){
+        activeContextMenu.shouldBe(Condition.visible);
+        return this;
     }
 
     @Step(value = "Выбираем элемент {item} из списка")
     default SettingsPage selectItemComboBox(String item){
-        //Call up a list of items
-        elementComboBox.click();
-        assertTrue(isItemsComboBox(), "Не появился список с элементами");
+        isItemsComboBox();
         //Select item
         listItemsComboBox.findBy(Condition.text(item)).click();
 

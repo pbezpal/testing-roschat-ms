@@ -55,15 +55,10 @@ public class TestParametersTelephonyEmptyNetwork extends TelephonyPage {
         if(publicIP.equals("")) field = TELEPHONY_NETWORK_INPUT_PUBLIC_ADDRESS;
         else if(frontIP.equals("")) field = TELEPHONY_NETWORK_INPUT_FRONT_DEV;
         else field = TELEPHONY_NETWORK_INPUT_INSIDE_DEV;
-        assertAll("Проверяем настройки сети на пустые значения",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 }

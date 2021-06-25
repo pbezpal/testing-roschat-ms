@@ -95,7 +95,8 @@ public class TestServerPage extends ServerPage {
         );
         sleep(5000);
         assertTrue(isWebServerStatus(), "Web сервер не запустился в течение минуты");
-        client = "https://" + server;
+        if(https.equals("446")) client = "https://" + server + ":446";
+        else client = "https://" + server;
         testsBase.openClient(client, account, false);
     }
 
@@ -137,8 +138,7 @@ public class TestServerPage extends ServerPage {
     void test_Refresh_Page(){
         Selenide.refresh();
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 
     @Story(value = "Переходим на страницу через адресную строку")
@@ -147,7 +147,6 @@ public class TestServerPage extends ServerPage {
     @Test
     void test_Open_Page(){
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 }

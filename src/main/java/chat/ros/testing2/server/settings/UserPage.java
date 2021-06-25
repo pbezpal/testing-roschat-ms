@@ -51,16 +51,18 @@ public class UserPage extends LoginPage implements SettingsPage {
         return this;
     }
 
-    public boolean changeUser(Map<String, String> mapInputValueUser, String user){
+    public UserPage changeUser(Map<String, String> mapInputValueUser, String user){
         clickButtonActionUser(user,"edit");
         sendLabelInputsForm(mapInputValueUser);
         clickButtonSave();
-        return isExistsTableText(user, true);
+        isExistsTableText(user, true);
+        return this;
     }
 
-    public boolean isDeleteUser(String user){
+    public UserPage isDeleteUser(String user){
         clickButtonActionUser(user,"delete");
         clickButtonConfirmAction(USER_BUTTON_CONTINUE);
-        return isNotExistsTableText(user);
+        isExistsTableText(user, false);
+        return this;
     }
 }

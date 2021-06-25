@@ -142,26 +142,26 @@ public class SoundPage extends IVRPage implements ISoundPage {
     @Override
     public void deleteMusicFile(String filename) {
         clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления звукового файла");
-        clickButtonConfirmAction("Удалить");
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Удалить");
         isItemTable(IVR_SOUND_FILES_TITLE, filename, false);
     }
 
     @Override
     public void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu) {
-        if(!clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow().equals("Новое голосовое меню"))
-            Allure.step("Не найден заголовок модального окна при добавлении голосового меню", Status.FAILED);
+        clickButtonAdd(IVR_MENU_TITLE);
+        /*if(!clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow().equals("Новое голосовое меню"))
+            Allure.step("Не найден заголовок модального окна при добавлении голосового меню", Status.FAILED);*/
         if(type.equals("Перейти в меню") && goToMenu.length > 0) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
-        else addVoiceMenu(type, type, pathSound, number);
+        else addVoiceMenu(name, type, pathSound, number);
         saveAndVerifyMenu(name, description);
     }
 
     @Override
     public void addSchedule(String name) {
         clickButtonAddSchedule().sendModalWindowOfSchedule(name);
-        if(getTextTitleModalWindow().equals("Новое расписание"))
-            Allure.step("Не найден заголовок модального окна при добаление нового рапсписания", Status.FAILED);
+        /*if(getTextTitleModalWindow().equals("Новое расписание"))
+            Allure.step("Не найден заголовок модального окна при добаление нового рапсписания", Status.FAILED);*/
         clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
         isVisibleSchedule(name, true);
     }
@@ -185,8 +185,8 @@ public class SoundPage extends IVRPage implements ISoundPage {
         startTime = getTimeRules("Время начала", startTimes[0], startTimes[1]);
         endTime = getTimeRules("Время окончания", endTimes[0], endTimes[1]);
 
-        if( ! getTextTitleModalWindow().equals("Новое правило"))
-            Allure.step("Не найден заголовок модального окна при добаление нового правила", Status.FAILED);
+        /*if( ! getTextTitleModalWindow().equals("Новое правило"))
+            Allure.step("Не найден заголовок модального окна при добаление нового правила", Status.FAILED);*/
 
         clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
 
@@ -195,16 +195,9 @@ public class SoundPage extends IVRPage implements ISoundPage {
 
     @Override
     public void addEntryPoint(String number, String aon, String menu, String schedule) {
-        assertAll("Проверяем добавление точки входа",
-                () -> assertEquals(clickButtonAdd(IVR_ENTRY_POINTS_TITLE)
-                        .isModalWindow(true)
-                        .getTextTitleModalWindow()
-                        , "Создание точки входа"
-                        ,"Не найден заголовок модального окна при добавлении чки входа"),
-                () -> {
-                    sendModalWindowOfEntryPoint(number, aon, menu);
-                    saveAndVerifyEntryPoint(number, aon, menu, schedule);
-                });
+        clickButtonAdd(IVR_ENTRY_POINTS_TITLE);
+        sendModalWindowOfEntryPoint(number, aon, menu, schedule);
+        saveAndVerifyEntryPoint(number, aon, menu, schedule);
     }
 
     @Override
@@ -223,8 +216,10 @@ public class SoundPage extends IVRPage implements ISoundPage {
     }
 
     @Override
-    public void editEntryPoint(String number, String aon, String type, String schedule) {
-
+    public void editEntryPoint(String number, String aon, String oldMenu, String newMenu, String schedule) {
+        clickButtonTable(IVR_ENTRY_POINTS_TITLE, oldMenu, IVR_BUTTON_EDIT);
+        sendModalWindowOfEntryPoint(number, aon, newMenu, schedule);
+        saveAndVerifyEntryPoint(number, aon, newMenu, schedule);
     }
 
     @Override
@@ -268,7 +263,7 @@ public class SoundPage extends IVRPage implements ISoundPage {
     }
 
     @Override
-    public void checkLookModalWindowOfMenu(String title, String textGoToMenu, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number) {
+    public void checkLookModalWindowOfMenu(String title, String textGoToMenu, String secondTextLink, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number) {
         String numberSimpleMenu;
         if (dtmfSimpleMenu && dtmf) numberSimpleMenu = number[1];
         else if (dtmfSimpleMenu && !dtmf) numberSimpleMenu = number[0];
@@ -291,14 +286,14 @@ public class SoundPage extends IVRPage implements ISoundPage {
                         "Перейти в меню",
                         "Отсуствует текст Перейти в меню в поле По таймауту"),
                 () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(timeout_field, action),
-                        "«" + textGoToMenu + "»",
-                        "Отсуствует текст «" + textGoToMenu + "» в поле " + timeout_field),
+                        "«" + secondTextLink + "»",
+                        "Отсуствует текст «" + secondTextLink + "» в поле " + timeout_field),
                 () -> assertEquals(getFirstTextGoToActionOfSpanOfModalWindow(wrong_number_field, action),
                         "Перейти в меню",
                         "Отсуствует текст Перейти в меню в поле " + wrong_number_field),
                 () -> assertEquals(getSecondTextGoToActionOfSpanOfModalWindow(wrong_number_field, action),
-                        "«" + textGoToMenu + "»",
-                        "Отсуствует текст " + textGoToMenu + " в поле " + wrong_number_field)
+                        "«" + secondTextLink + "»",
+                        "Отсуствует текст " + secondTextLink + " в поле " + wrong_number_field)
         );
         if (dtmf) {
             isIconDTMFOfModalWindowMenu(getModalWindow());
@@ -309,8 +304,8 @@ public class SoundPage extends IVRPage implements ISoundPage {
                     "Перейти в меню",
                     "Отсуствует текст Перейти в меню в поле DTMF");
             assertEquals(getSecondTextGoToActionOfDTMFOfModalWindowMenu(),
-                    "«" + textGoToMenu + "»",
-                    "Отсуствует текст " + textGoToMenu + " в поле DTMF");
+                    "«" + secondTextLink + "»",
+                    "Отсуствует текст " + secondTextLink + " в поле DTMF");
             clickGoToActionOfDTMF().scrollContentModalWindow(false);
             checkLookModalWindowOfMenu(title, type, getElementMenuOfGoToActionWithDTMF(), soundFile, dtmfSimpleMenu, numberSimpleMenu);
             clickGoToActionOfDTMF().isElementMenuOfGoToActionWithDTMF(false);

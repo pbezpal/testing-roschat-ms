@@ -59,15 +59,13 @@ public class ResourcesTests extends UserPage implements BeforeAllCallback, Befor
         if((classTest.contains("Skud") || classTest.contains("TestParametersIntegrationOMPage")) && SSHManager.isCheckQuerySSH(commandDBCheckSKUD)){
             testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
             skudPage = (SKUDPage) clickServiceType("СКУД");
-            assertTrue(skudPage.deleteSKUD("СКУД"),
-                    "После удаления, сервис СКУД найден в таблице Подключенные сервисы");
+            skudPage.deleteSKUD("СКУД");
         }
 
         if(classTest.contains("TestParametersIntegrationOMPage")){
             testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
             skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
-            assertTrue(skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE),
-                    "Сервис СКУД Офис-Монитор не найден в тиблице 'Подключенные сервисы'");
+            skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE);
         }
 
         if(classTest.contains("TestReservationPage")) testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Обслуживание","Резервирование");

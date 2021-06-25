@@ -79,6 +79,7 @@ public class TestMenuPage extends SoundPage {
             "2. Добавляем звуковой файл wav и описание к нему\n" +
             "3. Проверяем, что звуковой файл wav и описание к нему добавлены в таблицу звуковых файлов")
     @Test
+    @Disabled
     @Order(1)
     void test_Upload_Sound_File(){
         uploadMusicFile(pathWAVFile1, wavFile1);
@@ -93,8 +94,9 @@ public class TestMenuPage extends SoundPage {
     @ParameterizedTest(name="Add menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Simple_Menu(String type){
-        String descriptionMenu = IVR_MENU_DESCRIPTION + " " + type;
-        addMenu(type, type, descriptionMenu, wavFile1, String.valueOf(num));
+        String nameMenu = "Меню " + type;
+        String descriptionMenu = IVR_MENU_DESCRIPTION + nameMenu;
+        addMenu(nameMenu, type, descriptionMenu, wavFile1, String.valueOf(num));
         mapMenu.put(type,String.valueOf(num));
         TestStatusResult.setTestResult(true);
     }
@@ -104,11 +106,13 @@ public class TestMenuPage extends SoundPage {
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
     @Order(3)
+    @Disabled
     @ParameterizedTest(name="Look simple menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Simple_Menu(String type){
+        String nameMenu = "Меню " + type;
         String numberSimpleMenu = mapMenu.get(type);
-        checkLookModalWindowOfMenu(type, type, getModalWindow(), wavFile1, true, numberSimpleMenu);
+        checkLookModalWindowOfMenu(nameMenu, type, getModalWindow(), wavFile1, true, numberSimpleMenu);
     }
 
     @Story(value = "Добавляем расписание")
@@ -116,6 +120,7 @@ public class TestMenuPage extends SoundPage {
             "2. Добавляем расписание\n" +
             "3. Проверяем, что расписание успешно добавлено")
     @Order(4)
+    @Disabled
     @ParameterizedTest(name="Add schedule={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Schedule(String schedule){
@@ -129,6 +134,7 @@ public class TestMenuPage extends SoundPage {
             "3. Проверяем, что правило успешно добавлено")
     @ParameterizedTest(name="Add rule with week days={0}")
     @MethodSource(value = "receiveMenuItems")
+    @Disabled
     @Order(5)
     void test_Add_Rules_With_Week_Days(String schedule){
         String[] fullWeekDays;
@@ -155,6 +161,7 @@ public class TestMenuPage extends SoundPage {
             "3. Проверяем, что правило успешно добавлено")
     @ParameterizedTest(name="Add rule with calendar date={0}")
     @MethodSource(value = "receiveMenuItems")
+    @Disabled
     @Order(6)
     void test_Add_Rules_With_Calendar_Date(String schedule){
         String[] typeDate = {"Дата начала", "Дата окончания"};
@@ -181,19 +188,13 @@ public class TestMenuPage extends SoundPage {
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Entry_Point_With_Simple_Menu(String typeMenu){
         num++;
+        String nameMenu = "Меню " + typeMenu;
         String number = String.valueOf(num);
-        String aon = typeMenu + " " + number;
-        String schedule = "Расписание " + typeMenu;
-        if(clickButtonAdd(IVR_ENTRY_POINTS_TITLE)
-                .isModalWindow(true)
-                .getTextTitleModalWindow().equals("Создание точки входа"))
-            Allure.step("Не найден заголовок модального окна при добавлении чки входа", Status.FAILED);
-        sendModalWindowOfEntryPoint(number, aon, typeMenu);
-        clickActionButtonOfModalWindow("Сохранить")
-                .isModalWindow(false)
-                .isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true)
-                .isItemTable(IVR_ENTRY_POINTS_TITLE, number, true)
-                .isItemTable(IVR_ENTRY_POINTS_TITLE, typeMenu, true);
+        num++;
+        String aonNumber = String.valueOf(num);
+        String aon = number + "," + aonNumber;
+        String schedule = typeMenu;
+        addEntryPoint(number, aon, nameMenu, schedule);
         TestStatusResult.setTestResult(true);
     }
 
@@ -207,7 +208,7 @@ public class TestMenuPage extends SoundPage {
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Go_To_Menu(String type){
         String title = "Перейти в меню " + type;
-        String descriptionMenu = IVR_MENU_DESCRIPTION + " " + title;
+        String descriptionMenu = IVR_MENU_DESCRIPTION + title;
         String numberSimpleMenu = mapMenu.get(type);
         addMenu("Перейти в меню " + type, "Перейти в меню", descriptionMenu, wavFile1, String.valueOf(num), type);
         mapMenu.put(title, String.valueOf(num));
@@ -224,8 +225,9 @@ public class TestMenuPage extends SoundPage {
     void test_Look_Go_To_Menu(String type){
         String numberSimpleMenu = mapMenu.get(type);
         String titleGoToMenu = "Перейти в меню " + type;
+        String secondTextLink = "Меню " + type;
         String numberGoToMenu = mapMenu.get(titleGoToMenu);
-        checkLookModalWindowOfMenu(titleGoToMenu, type, type, wavFile1, true, true, true, numberGoToMenu, numberSimpleMenu);
+        checkLookModalWindowOfMenu(titleGoToMenu, type, secondTextLink, type, wavFile1, true, true, true, numberGoToMenu, numberSimpleMenu);
     }
 
     @Story(value = "Добавление точки входа с меню перехода в другое меню")
@@ -233,33 +235,17 @@ public class TestMenuPage extends SoundPage {
             "2. Добавляем точку входа \n" +
             "3. Проверяем, что точка входа успешно добавлена")
     @Order(10)
-    @Disabled
     @ParameterizedTest(name="Add entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Entry_Point_With_Go_To_Menu(String type){
         String titleGoToMenu = "Перейти в меню " + type;
         num++;
         String number = String.valueOf(num);
-        String aon = titleGoToMenu + " " + number;
-        /*if(clickButtonAdd(IVR_ENTRY_POINTS_TITLE).getTextTitleModalWindow().equals("Создание точки входа"))
-            Allure.step("Не найден заголовок модального окна при добавлении чки входа", Status.FAILED);
-        assertAll("1. Добавляем точку входа " + titleGoToMenu + " \n" +
-                        "проверяем, что точка входа " + titleGoToMenu + " была добавлена в таблицу",
-                () -> assertEquals(clickButtonAdd(IVR_ENTRY_POINTS_TITLE).getTextTitleModalWindow(),
-                        "Создание точки входа",
-                        "Не найден заголовок модального окна при добавлении точки входа"),
-                () -> {
-                    sendModalWindowOfEntryPoint(number, aon, titleGoToMenu);
-                    clickActionButtonOfModalWindow("Сохранить");},
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
-                        "АОН " + aon + " меню " + titleGoToMenu + " " +
-                                "не найдено в таблице точек входа"),
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
-                        "Набираемый номер " + number + " меню " + titleGoToMenu + " " +
-                                "не найдено в таблице точек входа"),
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, true),
-                        "Меню " + titleGoToMenu + " не найдено в таблице точек входа")
-        );*/
+        num++;
+        String aonNumber = String.valueOf(num);
+        String aon = number + "," + aonNumber;
+        String schedule = type;
+        addEntryPoint(number, aon, titleGoToMenu, schedule);
         TestStatusResult.setTestResult(true);
     }
 
@@ -283,9 +269,9 @@ public class TestMenuPage extends SoundPage {
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Simple_Menu(String type){
         num++;
-        String oldNameMenu = type;
-        String newNameMenu = type + " отредактировано";
-        String newDescriptionMenu = IVR_MENU_DESCRIPTION + " " + newNameMenu;
+        String oldNameMenu = "Меню " + type;
+        String newNameMenu = "Меню " + type + " отредактировано";
+        String newDescriptionMenu = IVR_MENU_DESCRIPTION + newNameMenu;
         editMenu(newNameMenu, oldNameMenu, type, newDescriptionMenu, wavFile2, String.valueOf(num));
         TestStatusResult.setTestResult(true);
     }
@@ -298,7 +284,7 @@ public class TestMenuPage extends SoundPage {
     @ParameterizedTest(name="Look simple menu after edit={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Simple_Menu_After_Edit(String type){
-        String nameMenu = type + " отредактировано";
+        String nameMenu = "Меню " + type + " отредактировано";
         checkLookModalWindowOfMenu(nameMenu, type, getModalWindow(), wavFile2, false);
     }
 
@@ -307,32 +293,18 @@ public class TestMenuPage extends SoundPage {
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
     @Order(14)
-    @Disabled
     @ParameterizedTest(name="Edit entry point={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Entry_Point_With_Simple_Menu(String typeMenu){
-        String newMenu = typeMenu + " отредактировано";
+        String oldMenu = "Меню " + typeMenu;
+        String newMenu = "Меню " + typeMenu + " отредактировано";
         num++;
         String number = String.valueOf(num);
-        /*String aon = newMenu + " " + number;
-        assertAll("1. Редактируем точку входа " + typeMenu + " \n" +
-                        "проверяем, что точка входа " + newMenu + " отображается в таблице после редактирования",
-                () -> assertEquals(clickButtonTable(IVR_ENTRY_POINTS_TITLE, typeMenu, IVR_BUTTON_EDIT)
-                                .getTextTitleModalWindow(),
-                        "Редактирование точки входа",
-                        "Не найден заголовок модального окна при редактировании точки входа " + typeMenu),
-                () -> {
-                    sendModalWindowOfEntryPoint(number, aon, newMenu);
-                    clickActionButtonOfModalWindow("Сохранить");},
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, aon, true),
-                        "АОН " + aon + " меню " + typeMenu + " " +
-                                "не найдено в таблице точек входа"),
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, number, true),
-                        "Набираемый номер " + number + " меню " + typeMenu + " " +
-                                "не найдено в таблице точек входа"),
-                () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, newMenu, true),
-                        "Меню " + newMenu + " не найдено в таблице точек входа")
-        );*/
+        num++;
+        String aonNumber = String.valueOf(num);
+        String aon = number + "," + aonNumber;
+        String schedule = typeMenu;
+        editEntryPoint(number, aon, oldMenu, newMenu, schedule);
         TestStatusResult.setTestResult(true);
     }
 
@@ -361,11 +333,12 @@ public class TestMenuPage extends SoundPage {
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Go_to_Menu_After_Edit(String type){
         String newTitleGoToMenu = "Перейти в меню " + type + " отредактировано";
-        String simpleMenu = type + " отредактировано";
-        checkLookModalWindowOfMenu(newTitleGoToMenu, simpleMenu, type, wavFile2, true, false, false);
+        String simpleMenu = "Меню " + type + " отредактировано";
+        checkLookModalWindowOfMenu(newTitleGoToMenu, type, simpleMenu, type, wavFile2, true, true, true, numberGoToMenu, numberSimpleMenu);
+        //checkLookModalWindowOfMenu(newTitleGoToMenu, simpleMenu, type, wavFile2, true, false, false);
     }
 
-    @Story(value = "Редактирование точки входа c меню перехода в другое меню")
+    /*@Story(value = "Редактирование точки входа c меню перехода в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
@@ -381,7 +354,7 @@ public class TestMenuPage extends SoundPage {
         String oldTitleEntryPoint = "Перейти в меню " + typeMenu;
         String number = String.valueOf(num);
         String aon = "Перейти в меню " + typeMenu + " отредактировано " + number;
-        String finalNameMenu = nameMenu;
+        String finalNameMenu = nameMenu;*/
         /*assertAll("1. Редактируем точку входа " + oldTitleEntryPoint + " \n" +
                         "проверяем, что точка входа " + nameMenu + " отображается в таблице после редактирования",
                 () -> assertEquals(clickButtonTable(IVR_ENTRY_POINTS_TITLE, oldTitleEntryPoint, IVR_BUTTON_EDIT)
@@ -401,7 +374,7 @@ public class TestMenuPage extends SoundPage {
                 () -> assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, finalNameMenu, true),
                         "Меню " + finalNameMenu + " не найдено в таблице точек входа")
         );*/
-        TestStatusResult.setTestResult(true);
+        /*TestStatusResult.setTestResult(true);
     }
 
     @Story(value = "Удаляем точки входа с простым меню")
@@ -417,11 +390,9 @@ public class TestMenuPage extends SoundPage {
         if(TestStatusResult.getTestResult().get("Edit entry point=" + type) == null || ! TestStatusResult.getTestResult().get("Edit entry point=" + type)) titleSimpleMenu = type;
         else titleSimpleMenu = type + " отредактировано";
         clickButtonTable(IVR_ENTRY_POINTS_TITLE, titleSimpleMenu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления точки входа " + titleSimpleMenu);
-        clickButtonConfirmAction("Продолжить");
-        /*assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleSimpleMenu, false),
-                "Точка входа " + titleSimpleMenu + " найдена в таблице после удаления");*/
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Продолжить");
+        isItemTable(IVR_ENTRY_POINTS_TITLE, titleSimpleMenu, false);
     }
 
     @Story(value = "Удаляем точки входа с меню перехода в другое меню")
@@ -437,11 +408,9 @@ public class TestMenuPage extends SoundPage {
         if(TestStatusResult.getTestResult().get("Edit entry point with go to menu=" + type) == null || ! TestStatusResult.getTestResult().get("Edit entry point with go to menu=" + type)) titleGoToMenu = "Перейти в меню " + type;
         else titleGoToMenu = "Перейти в меню " + type + " отредактировано";
         clickButtonTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления точки входа " + titleGoToMenu);
-        clickButtonConfirmAction("Продолжить");
-        /*assertTrue(isItemTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, false),
-                "Точка входа " + titleGoToMenu + " найдена в таблице после удаления");*/
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Продолжить");
+        isItemTable(IVR_ENTRY_POINTS_TITLE, titleGoToMenu, false);
     }
 
     @Story(value = "Удаляем простое меню")
@@ -456,11 +425,9 @@ public class TestMenuPage extends SoundPage {
         if(TestStatusResult.getTestResult().get("Edit menu=" + type) == null || ! TestStatusResult.getTestResult().get("Edit menu=" + type)) menu = type;
         else menu = type + " отредактировано";
         clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления меню " + menu);
-        clickButtonConfirmAction("Удалить");
-        /*assertTrue(isItemTable(IVR_MENU_TITLE, menu, false),
-                "Название меню " + menu + " найдено в таблице меню после удаления");*/
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Удалить");
+        isItemTable(IVR_MENU_TITLE, menu, false);
         TestStatusResult.setTestResult(true);
     }
 
@@ -485,14 +452,12 @@ public class TestMenuPage extends SoundPage {
     @ParameterizedTest(name="Delete go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Go_To_Menu(String type){
-        String menu = "Перейти в меню " + type + " отредактировано";
+        String menu = "Перейти в меню " + type + " отредактировано";*/
         /*if(TestStatusResult.getTestResult().get("Edit go to menu=" + type) == null || ! TestStatusResult.getTestResult().get("Edit go to menu=" + type)) menu = "Перейти в меню " + type;
         else menu = "Перейти в меню " + type + " отредактировано";*/
-        clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления меню " + menu);
-        clickButtonConfirmAction("Удалить");
-        /*assertTrue(isItemTable(IVR_MENU_TITLE, menu, false),
-                "Название меню " + menu + " найдено в таблице меню после удаления");*/
-    }
+        /*clickButtonTable(IVR_MENU_TITLE, menu, IVR_BUTTON_DELETE);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Удалить");
+        isItemTable(IVR_MENU_TITLE, menu, false);
+    }*/
 }

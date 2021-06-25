@@ -49,7 +49,7 @@ public class TestUserASPage extends UserPage {
     @Order(1)
     void test_Add_New_User_AS(){
         addUser(mapInputValueUser).selectRoleUser(0).clickButtonSave();
-        assertTrue(isExistsTableText(USER_LOGIN_AS, true), "Пользователь " + USER_LOGIN_AS + " не был добавлен в систему");
+        isExistsTableText(USER_LOGIN_AS, true);
         TestStatusResult.setTestResult(true);
     }
 
@@ -73,6 +73,6 @@ public class TestUserASPage extends UserPage {
     @Order(3)
     void test_Delete_New_User_AS(){
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
-        assertTrue(isDeleteUser(USER_LOGIN_AS), "Не удалось удалить пользователя " + USER_LOGIN_AS);
+        isDeleteUser(USER_LOGIN_AS);
     }
 }

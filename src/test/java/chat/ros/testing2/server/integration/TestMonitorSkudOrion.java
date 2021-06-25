@@ -55,8 +55,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
     @Order(1)
     void test_Add_SKUD_Orion(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_ORION_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
-                "После добавления сервис СКУД ОРИОН не найден в тиблице 'Подключенные сервисы'");
+        skudPage.settingsSKUD(mapInputValueConnectOrion, INTEGRATION_SERVICE_ORION_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -99,8 +98,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
     @Order(4)
     void test_Change_Data_Disconnect_SKUD_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectOrion, INTEGRATION_SERVICE_ORION_TYPE),
-                "После редактирования настроек сервис СКУД ОРИОН не найден в таблице Подключенные сервисы");
+        skudPage.settingsSKUD(mapInputValueDisconnectOrion, INTEGRATION_SERVICE_ORION_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -123,8 +121,7 @@ public class TestMonitorSkudOrion implements IntegrationPage {
     @Order(6)
     void test_Delete_SKUD_Orion(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_ORION_TYPE);
-        assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE),
-                "После удаления, сервис СКУД ОРИОН найден в таблице Подключенные сервисы");
+        skudPage.deleteSKUD(INTEGRATION_SERVICE_ORION_TYPE);
         TestStatusResult.setTestResult(true);
     }
 

@@ -27,14 +27,18 @@ public class ResourcesProviderPage implements BeforeAllCallback, BeforeEachCallb
         if(classTest.contains("TestProviderWithoutRegPage")) {
             if (methodTest.equals("test_Add_Incoming_Rout_In_Simple_Mode")
                     || methodTest.equals("test_Add_Outgoing_Rout_In_Expert_Mode")
-                    || methodTest.equals("test_Show_Settings_Provider_Without_Reg")
+                    || methodTest.equals("test_View_Provider_Settings_Without_Registration")
                     || methodTest.equals("test_Edit_Provider_Without_Reg")
                     || methodTest.equals("test_Edit_Provider_With_Reg")
                     || methodTest.equals("test_Delete_Provider_With_Reg")
+                    || methodTest.equals("test_Check_Title_And_Subtitles_Modal_Window_When_Edit_Provider")
+                    || methodTest.equals("test_Check_Title_And_Subtitles_Modal_Window_When_Edit_Provider_From_View_Provider_Settings")
+                    || methodTest.equals("test_Headers_And_Titles_View_Provider_Settings_Without_Registration")
             )
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Provider_Without_Registration"),
                         "The provider without registration don't add. Skip the test!");
-            else if (methodTest.equals("test_Show_Settings_Provider_Without_Reg_After_Edit"))
+            else if (methodTest.equals("test_View_Provider_Settings_Without_Registration_After_Edit")
+                    || methodTest.equals("test_Headers_And_Titles_View_Provider_Settings_Without_Registration_After_Edit"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Edit_Provider_Without_Reg"),
                         "The provider without registration don't edit. Skip the test!");
             else if (methodTest.equals("test_Exist_Provider_With_Registration"))
@@ -75,17 +79,23 @@ public class ResourcesProviderPage implements BeforeAllCallback, BeforeEachCallb
         if(classTest.contains("TestProviderWithRegPage")) {
             if (methodTest.equals("test_Add_Incoming_Rout_In_Simple_Mode")
                     || methodTest.equals("test_Add_Outgoing_Rout_In_Expert_Mode")
-                    || methodTest.equals("test_Show_Settings_Provider_With_Reg")
+                    || methodTest.equals("test_View_Provider_Settings_With_Reg")
                     || methodTest.equals("test_Edit_Provider_With_Reg")
                     || methodTest.equals("test_Edit_Provider_Without_Reg")
                     || methodTest.equals("test_Delete_Provider_Without_Reg")
+                    || methodTest.equals("test_Headers_And_Titles_View_Provider_Settings_With_Registration")
+                    || methodTest.equals("test_Check_Title_And_Subtitles_Modal_Window_When_Edit_Provider")
+                    || methodTest.equals("test_Check_Title_And_Subtitles_Modal_Window_When_Edit_Provider_From_View_Provider_Settings")
             )
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Provider_With_Registration"),
                         "The provider with registration don't add. Skip the test!");
-            else if (methodTest.equals("test_Show_Settings_Provider_With_Reg_After_Edit"))
+            else if (methodTest.equals("test_View_Provider_Settings_With_Reg_After_Edit")
+                || methodTest.equals("test_Headers_And_Titles_View_Provider_Settings_With_Registration_After_Edit"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Edit_Provider_With_Reg"),
                         "The turning on registration of provider didn't edit. Skip the test!");
-            else if (methodTest.equals("test_Exist_Provider_Without_Registration_After_Edit"))
+            else if (methodTest.equals("test_Exist_Provider_Without_Registration_After_Edit")
+                    || methodTest.equals("test_Headers_And_Titles_View_Provider_Settings_Without_Registration_After_Edit")
+                    || methodTest.equals(""))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Edit_Provider_Without_Reg"),
                         "The provider without registration don't edit. Skip the test!");
             else if (methodTest.equals("test_Delete_Route_Out_With_Expert_Mode_Of_Provider_With_Reg"))

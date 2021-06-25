@@ -52,16 +52,11 @@ public class TestParametersTelephonyEmptySip extends TelephonyPage {
         setSettingsServer(mapInputValueSip, TELEPHONY_SIP_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         if(minPort.equals("")) field = TELEPHONY_SIP_INPUT_MIN_PORT;
         else field = TELEPHONY_SIP_INPUT_MAX_PORT;
-        assertAll("Проверяем настройки SIP сервера на пустые поля",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowValuesInField(
                 TELEPHONY_SIP_TITLE_FORM,
                 TELEPHONY_INPUT_SPEECH_PORTS,

@@ -22,7 +22,11 @@ public interface IRoutes {
 
     void closeModalWindowForEditRoute(String provider, String route, Map<String, String> dataRoute, boolean... simpleMode);
 
+    void checkHeaderModalWindowWhenAddRoute(String provider, String button);
+
     void addRoute(String provider, String direction, Map<String, String> dataRoute, String addButton, boolean simpleMode);
+
+    void checkHeaderModalWindowWhenEditRoute(String provider, String route);
 
     void editRouteSimpleMode(String provider, String direction, Map<String, String> dataRoute);
 

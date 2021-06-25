@@ -53,7 +53,7 @@ public class TestParametersServerPushValidPort extends ServerPage {
         }};
         setSettingsServer(this.mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
         clickButtonSave();
-        assertTrue(isFormConfirmActions(true), "Не появилась форма, Подтвердите свои действия");
-        clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
     }
 }

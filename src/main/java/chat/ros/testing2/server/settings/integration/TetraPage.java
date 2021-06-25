@@ -39,11 +39,12 @@ public class TetraPage implements IntegrationPage {
     }
 
 
-    public boolean addTetraServer(Map<String, String> mapInputValueTetra){
+    public TetraPage addTetraServer(Map<String, String> mapInputValueTetra){
         clickButtonAdd();
         sendInputsForm(mapInputValueTetra);
         clickButtonSave();
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        return isExistsTableText(INTEGRATION_SERVICE_TETRA_NAME, true);
+        isExistsTableText(INTEGRATION_SERVICE_TETRA_NAME, true);
+        return this;
     }
 }

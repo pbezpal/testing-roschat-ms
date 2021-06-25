@@ -54,8 +54,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
     @Order(1)
     void test_Add_SKUD_Perco(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_PERCO_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
-                "После добавления сервис СКУД PERCo не найден в тиблице 'Подключенные сервисы'");
+        skudPage.settingsSKUD(mapInputValueConnectPerco, INTEGRATION_SERVICE_PERCO_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -97,8 +96,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
     @Order(4)
     void test_Change_Data_Disconnect_SKUD_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectPerco, INTEGRATION_SERVICE_PERCO_TYPE),
-                "После редактирования настроек сервис СКУД PERCo не найден в таблице Подключенные сервисы");
+        skudPage.settingsSKUD(mapInputValueDisconnectPerco, INTEGRATION_SERVICE_PERCO_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -121,8 +119,7 @@ public class TestMonitorSkudPerco implements IntegrationPage {
     @Order(6)
     void test_Delete_SKUD_Perco(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_PERCO_TYPE);
-        assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_PERCO_TYPE),
-                "После удаления, сервис СКУД PERCo найден в таблице Подключенные сервисы");
+        skudPage.deleteSKUD(INTEGRATION_SERVICE_PERCO_TYPE);
         TestStatusResult.setTestResult(true);
     }
 

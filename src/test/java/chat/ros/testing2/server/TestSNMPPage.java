@@ -40,8 +40,7 @@ public class TestSNMPPage extends SNMPPage {
     void test_Refresh_Page(){
         Selenide.refresh();
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 
     @Story(value = "Переходим на страницу через адресную строку")
@@ -50,8 +49,7 @@ public class TestSNMPPage extends SNMPPage {
     @Test
     void test_Open_Page(){
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 
 }

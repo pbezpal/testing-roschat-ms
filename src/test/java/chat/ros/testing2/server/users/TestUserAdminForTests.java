@@ -34,6 +34,6 @@ public class TestUserAdminForTests extends UserPage {
     @Test
     void test_Add_New_User_Admin_MS(){
         addUser(mapInputValueUser).selectRoleUser(1).clickButtonSave();
-        assertTrue(isExistsTableText(USER_LOGIN_ADMIN, true), "Пользователь " + USER_LOGIN_ADMIN + " не был добавлен в систему");
+        isExistsTableText(USER_LOGIN_ADMIN, true);
     }
 }

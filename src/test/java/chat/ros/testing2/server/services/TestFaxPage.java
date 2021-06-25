@@ -73,9 +73,8 @@ public class TestFaxPage extends FaxPage {
     @Order(3)
     void test_Delete_Number_Fax_Without_Description(){
         clickButtonTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, IVR_BUTTON_DELETE);
-        assertTrue(isFormConfirmActions(true),
-                "Не появилась форма для удаления меню " + FAX_NUMBER_WITHOUT_DESCRIPTION);
-        clickButtonConfirmAction("Удалить");
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Удалить");
         isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, false);
     }
 

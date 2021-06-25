@@ -60,8 +60,7 @@ public class TestMonitorSkudOM implements IntegrationPage {
     @Order(2)
     void test_Add_SKUD_OM(){
         skudPage = (SKUDPage) addIntegrationService(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE),
-                "Сервис СКУД Офис-Монитор не найден в тиблице 'Подключенные сервисы'");
+        skudPage.settingsSKUD(mapInputValueConnectOM, INTEGRATION_SERVICE_OM_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -103,8 +102,7 @@ public class TestMonitorSkudOM implements IntegrationPage {
     @Order(5)
     void test_Change_Data_Disconnect_SKUD_OM(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(skudPage.settingsSKUD(mapInputValueDisconnectOM, INTEGRATION_SERVICE_OM_TYPE),
-                "После редактирования настроек сервис СКУД Офис-Монитор не найден в таблице Подключенные сервисы");
+        skudPage.settingsSKUD(mapInputValueDisconnectOM, INTEGRATION_SERVICE_OM_TYPE);
         TestStatusResult.setTestResult(true);
     }
 
@@ -127,8 +125,7 @@ public class TestMonitorSkudOM implements IntegrationPage {
     @Order(7)
     void test_Delete_SKUD_OM(){
         skudPage = (SKUDPage) clickServiceType(INTEGRATION_SERVICE_OM_TYPE);
-        assertTrue(skudPage.deleteSKUD(INTEGRATION_SERVICE_OM_TYPE),
-                "После удаления, сервис СКУД Офис-Мониторинг найден в таблице Подключенные сервисы");
+        skudPage.deleteSKUD(INTEGRATION_SERVICE_OM_TYPE);
         TestStatusResult.setTestResult(true);
     }
 

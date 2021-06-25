@@ -62,16 +62,11 @@ public class TelephonyParams extends TelephonyPage {
             }};
         }
         setSettingsServer(mapInputValueNetwork, TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем настройки сети на невалидные значения",
-                () -> assertEquals(isShowTextWrongValue(field),"Невалидный IP адрес",
-                        "Надпись 'Невалидный IP адрес' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Невалидный IP адрес",
+                "Надпись 'Невалидный IP адрес' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowFieldAndValue(
                 TELEPHONY_NETWORK_TITLE_FORM,
                 field,
@@ -96,16 +91,11 @@ public class TelephonyParams extends TelephonyPage {
             }};
         }
         setSettingsServer(mapInputValueSipPorts, TELEPHONY_SIP_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем настройки SIP сервера на пустые поля",
-                () -> assertEquals(isShowTextWrongValue(field),text_error,
-                        "Надпись " + text_error + " не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),text_error,
+                "Надпись " + text_error + " не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowValuesInField(
                 TELEPHONY_SIP_TITLE_FORM,
                 TELEPHONY_INPUT_SPEECH_PORTS,
@@ -132,16 +122,11 @@ public class TelephonyParams extends TelephonyPage {
             }};
         }
         setSettingsServer(mapInputValueTurn, TELEPHONY_TURN_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем настройи Turn/Stun сервера на пустые поля",
-                () -> assertEquals(isShowTextWrongValue(field),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         assertTrue(isShowValuesInField(
                 TELEPHONY_TURN_TITLE_FORM,
                 TELEPHONY_INPUT_SPEECH_PORTS,

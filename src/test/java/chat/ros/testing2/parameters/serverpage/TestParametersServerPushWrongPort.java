@@ -65,15 +65,11 @@ public class TestParametersServerPushWrongPort extends ServerPage {
             put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
         }};
         setSettingsServer(this.mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем значение порта больше максимального",
-                () -> assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_PORT),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Формы редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> { clickButtonClose(); },
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
+        assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_PORT),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем невалидные значения портов в настройках Лицензирование и обслуживание")
@@ -91,14 +87,10 @@ public class TestParametersServerPushWrongPort extends ServerPage {
             put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
         }};
         setSettingsServer(this.mapInputValuePush, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем невалидные значения порта Push сервера " + c.toString(),
-                () -> assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_PORT),"Невалидный порт",
-                        "Надпись 'Невалидный порт' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                        "Формы редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> { clickButtonClose(); },
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
+        assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_PORT),"Невалидный порт",
+                "Надпись 'Невалидный порт' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 }

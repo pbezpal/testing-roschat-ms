@@ -8,16 +8,18 @@ public class ActiveDirectoryPage implements IntegrationPage {
 
     public ActiveDirectoryPage() {}
 
-    public boolean settingsActiveDirectory(Map<String, String> mapInputValueAD){
+    public ActiveDirectoryPage settingsActiveDirectory(Map<String, String> mapInputValueAD){
         clickButtonActionService(SETTINGS_BUTTON_SETTING);
         sendInputsForm(mapInputValueAD);
         clickButtonSave();
-        return isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, true);
+        isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, true);
+        return this;
     }
 
-    public boolean deleteActiveDirectory(){
+    public ActiveDirectoryPage deleteActiveDirectory(){
         clickButtonActionService(SETTINGS_BUTTON_DELETE);
         clickButtonConfirmAction(SETTINGS_BUTTON_CONTINUE);
-        return isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, false);
+        isExistsTableText(INTEGRATION_SERVICE_AD_TYPE, false);
+        return this;
     }
 }

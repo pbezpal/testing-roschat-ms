@@ -100,17 +100,15 @@ public class UserPage implements BasePage {
         //Нажимаем кнопку создать аккаунт
         clickButtonAddAccount();
         //Проверяем, появилась ли форма для редактирования
-        assertTrue(isFormChange(), "Форма для добавления учётной записи не появилась");
-        //Вводим имя пользователя
-        sendInputForm(USER_ACCOUNT_INPUT_USERNAME, username);
+        isFormChange()
+            .sendInputForm(USER_ACCOUNT_INPUT_USERNAME, username);
         //Вводим пароль
         sendInputsPassword(password);
         //Вводим номер SIP
         //sendInputForm(inputNumberSIP, number);
         //Проверяем, что кнопка Сохранить активна
-        assertTrue(isActiveButtonSave(), "Невозможно сохранить настройки аккаунта, кнопка 'Сохранить' не активна");
-        //Нажимаем кнопку Сохранить
-        clickButtonSave();
+        isActiveButtonSave()
+                .clickButtonSave();
         //Ждем, когда пропадёт прогрессбар и проверяем добавлен ли аккаунт
         assertTrue(isWaitInvisibleProgressbar(), "Прогрессбар завис");
         //Проверяем, появилась ли учётная запись пользователя

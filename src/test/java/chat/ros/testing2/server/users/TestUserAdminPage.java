@@ -48,7 +48,7 @@ public class TestUserAdminPage extends UserPage {
     @Order(1)
     void test_Add_New_User_Admin(){
         addUser(mapInputValueUser).selectRoleUser(1).clickButtonSave();
-        assertTrue(isExistsTableText(USER_LOGIN_ADMIN_TEST, true), "Пользователь " + USER_LOGIN_ADMIN_TEST + " не был добавлен в систему");
+        isExistsTableText(USER_LOGIN_ADMIN_TEST, true);
         TestStatusResult.setTestResult(true);
     }
 
@@ -72,6 +72,6 @@ public class TestUserAdminPage extends UserPage {
     void test_Delete_New_User_Admin(){
         loginOnServer(LOGIN_AS_MS, PASSWORD_AS_MS);
         open("/settings/users");
-        assertTrue(isDeleteUser(USER_LOGIN_ADMIN_TEST), "Не удалось удалить пользователя " + USER_LOGIN_ADMIN_TEST);
+        isDeleteUser(USER_LOGIN_ADMIN_TEST);
     }
 }

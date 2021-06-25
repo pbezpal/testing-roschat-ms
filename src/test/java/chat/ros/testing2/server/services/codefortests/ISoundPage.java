@@ -26,11 +26,11 @@ public interface ISoundPage {
 
     void editMenu(String newNameMenu, String oldNameMenu, String type, String description, String pathSound, String numberOrTypeMenu);
 
-    void editEntryPoint(String number, String aon, String type, String schedule);
+    void editEntryPoint(String number, String aon, String oldMenu, String newMenu, String schedule);
 
     void checkLookModalWindowOfMenu(String title, String type, SelenideElement parent, String soundFile, boolean dtmf, String ...number);
 
-    void checkLookModalWindowOfMenu(String title, String textGoToMenu, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number);
+    void checkLookModalWindowOfMenu(String title, String textGoToMenu, String secondTextLink, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number);
 
     void deleteMenu(String name, String description);
 

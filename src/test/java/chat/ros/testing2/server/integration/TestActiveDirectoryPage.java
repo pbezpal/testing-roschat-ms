@@ -43,7 +43,7 @@ public class TestActiveDirectoryPage implements IntegrationPage {
     void test_Add_Service_Active_Directory(){
         testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) addIntegrationService(INTEGRATION_SERVICE_AD_TYPE);
-        assertTrue(activeDirectoryPage.settingsActiveDirectory(mapInputValueAD), "Сервис Active Directory не был добавлен");
+        activeDirectoryPage.settingsActiveDirectory(mapInputValueAD);
         TestStatusResult.setTestResult(true);
     }
 
@@ -76,6 +76,6 @@ public class TestActiveDirectoryPage implements IntegrationPage {
     void test_Delete_Active_Directory(){
         testsBase.openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Настройки","Интеграция");
         activeDirectoryPage = (ActiveDirectoryPage) clickServiceType(INTEGRATION_SERVICE_AD_TYPE);
-        assertTrue(activeDirectoryPage.deleteActiveDirectory(), "Сервис Active Directory не удалён");
+        activeDirectoryPage.deleteActiveDirectory();
     }
 }

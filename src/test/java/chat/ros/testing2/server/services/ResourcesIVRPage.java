@@ -54,10 +54,10 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
             else if(testMethod.equals("test_Add_Rules_With_Week_Days") || testMethod.equals("test_Add_Rules_With_Calendar_Date"))
                 verifyParamTest(testParams, "Add schedule=");
-            else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
+            //else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
             else if(testMethod.equals("test_Look_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
-            else if(testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
-            else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
+            //else if(testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
+            //else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
             else if(testMethod.equals("test_Look_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
             else if(testMethod.equals("test_Edit_Simple_Menu")) {
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
@@ -107,8 +107,8 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
         }else if(testClass.contains("TestMenuPage")){
             if(testMethod.equals("test_Upload_Sound_File") || testMethod.equals("test_Upload_Sound_File_2"))
                 TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Add_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
+            /*else if(testMethod.equals("test_Add_Simple_Menu"))
+                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());*/
             else if(testMethod.equals("test_Add_Entry_Point_With_Simple_Menu"))
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
             else if(testMethod.equals("test_Add_Go_To_Menu"))

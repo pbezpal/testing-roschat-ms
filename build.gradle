@@ -639,7 +639,7 @@ task paramtests_telephony_sip(type: Test){
         events "passed", "skipped", "failed"
     }
 
-    finalizedBy(paramtests_telephony_turn)
+    //finalizedBy(paramtests_telephony_turn)
 }
 
 task paramtests_telephony_network(type: Test) {
@@ -773,10 +773,11 @@ task roschativr(type: Test){
     filter {
         //include specific method in any of the tests
         includeTestsMatching "*.TestMenuPage"
-        /*includeTestsMatching "*.TestProviderWithoutRegPage"
-        includeTestsMatching "*.TestProviderWithRegPage"
-        includeTestsMatching "*.TestProviderRouteSimpleMode"
-        includeTestsMatching "*.TestProviderRouteExpertMode"*/
+        //includeTestsMatching "*.TestProviderWithoutRegPage"
+        //includeTestsMatching "*.TestProviderWithRegPage"
+        //includeTestsMatching "*.TestProviderRouteSimpleMode"
+        //includeTestsMatching "*.TestProviderRouteExpertMode"
+        //includeTestsMatching "*.TestMailPage"
         //includeTestsMatching "*.TestGeozonesPage"
     }
 

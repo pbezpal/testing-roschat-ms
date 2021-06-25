@@ -39,7 +39,7 @@ public class TestProviderRouteExpertMode extends Provider {
     }};
 
     //The data for add route in expert mode with empty values
-    private Map<String,String> dataRouteExpertModeWithEmptyValues = new HashMap(){{
+    private Map<String,String> dataRouteWithEmptyValues = new HashMap(){{
     }};
 
     //################# DATA INCOMING ROUTE ###############################
@@ -117,7 +117,7 @@ public class TestProviderRouteExpertMode extends Provider {
     void test_Close_Modal_Window_When_Add_Incoming_Route_With_Empty_Values(){
         closeModalWindowForAddRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_EXPERT_MODE,
                 TELEPHONY_PROVIDER_INCOMING_ROUTE,
-                dataRouteExpertModeWithEmptyValues,
+                dataRouteWithEmptyValues,
                 TELEPHONY_PROVIDER_BUTTON_CREATE_ROUTE,
                 false);
     }
@@ -133,7 +133,7 @@ public class TestProviderRouteExpertMode extends Provider {
     void test_Close_Modal_Window_When_Add_Outgoing_Route_With_Empty_Values(){
         closeModalWindowForAddRoute(TELEPHONY_PROVIDER_TITLE_ROUTE_EXPERT_MODE,
                 TELEPHONY_PROVIDER_OUTGOING_ROUTE,
-                dataRouteExpertModeWithEmptyValues,
+                dataRouteWithEmptyValues,
                 TELEPHONY_PROVIDER_BUTTON_NEW_ROUTE,
                 false);
     }

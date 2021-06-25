@@ -34,25 +34,10 @@ public class ContactsPage implements BasePage {
 
     public ContactsPage () {}
 
-    @Step(value = "Проверяем, что контакта {contact} нет в таблице")
-    public boolean isNotSearchContact(String contact){
-        try{
-            tdSearchContact.findBy(text(contact)).shouldBe(not(Condition.visible));
-        }catch (ElementShould element){
-            return false;
-        }
-        return true;
-    }
-
     @Step(value = "Проверяем, появилась ли форма для добавления нового контакта")
-    protected boolean isFormNewContact(){
-        try{
-            formNewContact.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
+    protected ContactsPage isFormNewContact(){
+        formNewContact.shouldBe(Condition.visible);
+        return this;
     }
 
     protected Map<String, String> getMapInputsValueContact(String lastName, String phoneJob){
@@ -103,16 +88,20 @@ public class ContactsPage implements BasePage {
         return trCountContacts.size();
     }
 
-    //Добавляем контакт
+    /**
+     * add contact
+     * @param contact the contact name and number telephone for contact
+     * @return
+     */
     public UserPage actionsContact(String contact){
         //Вводим фамилию в поле поиска
         sendInputSearchContact(contact);
         //Проверяем, что контакта нет в таблице
-        if(isNotSearchContact(contact)) {
+        if(!tdSearchContact.findBy(text(contact)).isDisplayed()) {
             //Нажимаем кнопку добавить
             clickButtonAdd();
             //Проверяем, появилась ли форма для добавления контакта
-            assertTrue(isFormNewContact(), "Форма для добаления контакта не появилась");
+            isFormNewContact();
             //Вводим данные контакта
             sendInputsContact(getMapInputsValueContact(contact, contact));
             clickButtonSaveContact();
@@ -120,7 +109,7 @@ public class ContactsPage implements BasePage {
             sendInputSearchContact(contact);
         }
         //Проверяем, добавился ли контакт в БД контактов
-        assertTrue(isExistsTableText(contact, true), "Контакт " + contact + " не добавлен в БД контактов");
+        isExistsTableText(contact, true);
         //Переходим к настройкам учётной записи контакта
         return clickContact(contact);
     }

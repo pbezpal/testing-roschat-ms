@@ -86,15 +86,10 @@ public class TestParametersMailEmptyValue extends MailPage {
         else if(password.equals("")) field = MAIL_CONNECT_INPUT_PASSWORD;
         else if(port.equals("")) field = MAIL_CONNECT_INPUT_EMAIL_PORT;
         else field = MAIL_CONTACT_INPUT_FROM_MAIL;
-        assertAll("Проверяем настройки почты с пустыми полями",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 }

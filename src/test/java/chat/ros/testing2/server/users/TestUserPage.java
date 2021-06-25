@@ -31,10 +31,8 @@ public class TestUserPage extends UserPage {
     void test_Refresh_Page(){
         Selenide.refresh();
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
-        assertTrue(isExistsTableText(LOGIN_AS_MS, true),
-                "Пользователь " + LOGIN_AS_MS + " не отображается после перезагрузки страницы");
+        isNotShowLoaderSettings();
+        isExistsTableText(LOGIN_AS_MS, true);
     }
 
 }

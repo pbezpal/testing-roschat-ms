@@ -31,40 +31,22 @@ public interface BasePage {
     SelenideElement divProgressBar = $(".modal-progress");
     SelenideElement modalWindow = $(".modal-wrapper");
 
-    default boolean isVisibleElement(SelenideElement element, boolean show){
-        if(show){
-            try {
-                element.shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try {
-                element.shouldNotBe(visible);
-            }catch (ElementShould e){
-                return false;
-            }
-        }
-
-        return true;
+    default BasePage isModalWindow(boolean show){
+        if(show) modalWindow.shouldBe(visible);
+        else modalWindow.shouldNotBe(visible);
+        return this;
     }
 
-    default boolean isVisibleElement(ElementsCollection elements, String text, boolean show){
-        if(show){
-            try {
-                elements.findBy(text(text)).shouldBe(visible);
-            }catch (ElementNotFound e){
-                return false;
-            }
-        }else{
-            try {
-                elements.findBy(text(text)).shouldNotBe(visible);
-            }catch (ElementShould e){
-                return false;
-            }
-        }
+    default BasePage isVisibleElement(SelenideElement element, boolean show){
+        if(show) element.shouldBe(visible);
+        else element.shouldNotBe(visible);
+        return this;
+    }
 
-        return true;
+    default BasePage isVisibleElement(ElementsCollection elements, String text, boolean show){
+        if(show) elements.findBy(text(text)).shouldBe(visible);
+        else elements.findBy(text(text)).shouldNotBe(visible);
+        return this;
     }
 
     @Step(value = "Переходим в раздел {itemMenu} меню слева")
@@ -98,14 +80,9 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем, что появилась форма редактирвоания")
-    default boolean isFormChange(){
-        try{
-            formChange.shouldBe(Condition.visible);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
+    default BasePage isFormChange(){
+        formChange.shouldBe(Condition.visible);
+        return this;
     }
 
     @Step(value = "Вводим в поле {input} значение {value}")
@@ -145,14 +122,9 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем, активна ли кнопка Сохранить")
-    default boolean isActiveButtonSave(){
-        try{
-            buttonSave.shouldBe(Condition.enabled);
-        }catch (ElementNotFound element){
-            return false;
-        }
-
-        return true;
+    default BasePage isActiveButtonSave(){
+        buttonSave.shouldBe(Condition.enabled);
+        return this;
     }
 
     @Step(value = "Нажимаем нопку Сохранить/Восстановить")
@@ -168,28 +140,16 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем есть ли {show} запись {text} в таблице")
-    default boolean isExistsTableText(String text, boolean show){
-        if(show) {
-            try {
-                tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible, Duration.ofMinutes(1));
-            } catch (ElementNotFound elementNotFound) {
-                return false;
-            }
-        }else{
-            try {
-                tdTableList.findBy(Condition.text(text)).shouldBe(not(Condition.visible));
-            } catch (ElementShould e) {
-                return false;
-            }
-        }
-
-        return true;
+    default BasePage isExistsTableText(String text, boolean show){
+        if(show) tdTableList.findBy(Condition.text(text)).shouldBe(Condition.visible, Duration.ofMinutes(1));
+        else tdTableList.findBy(Condition.text(text)).shouldNotBe(Condition.visible);
+        return this;
     }
 
     @Step(value = "Проверяем, отсутствует ли запись {text} в таблице")
     default boolean isNotExistsTableText(String user){
         try{
-            tdTableList.findBy(Condition.text(user)).shouldBe(Condition.not(Condition.visible));
+            tdTableList.findBy(Condition.text(user)).shouldNotBe(Condition.visible);
         }catch (ElementShould elementShould){
             return false;
         }

@@ -71,7 +71,7 @@ public class TelephonyPage implements SettingsPage {
         sendInputsForm(mapSettingsProviderServer);
         selectCheckboxProvider(registration);
         if(registration) sendInputsForm(mapSettingsRegProvider);
-        clickButtonSave();
+        clickButtonSave().isModalWindow(false);
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         return this;
     }
@@ -98,13 +98,15 @@ public class TelephonyPage implements SettingsPage {
     }
 
     @Step(value = "Проверяем, отображается ли подзаголовок {subtitle} модального окна")
-    public boolean isSubtitleModalWindow(String subtitle){
-        return isVisibleElement(subtitlesModalWindow, subtitle, true);
+    public TelephonyPage isSubtitleModalWindow(String subtitle){
+        isVisibleElement(subtitlesModalWindow, subtitle, true);
+        return this;
     }
 
     @Step(value = "Проверяем, отображаются ли {show} подзаголовки в разделе Провайдер")
-    public boolean isSubtitleProviderForm(String subtitle, boolean show){
-        return isVisibleElement(getParentProviderSection(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER).findAll("h3"), subtitle, show);
+    public TelephonyPage isSubtitleProviderForm(String subtitle, boolean show){
+        isVisibleElement(getParentProviderSection(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER).findAll("h3"), subtitle, show);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку {button} в таблице провайдеров у провайдера {provider}")
@@ -120,8 +122,9 @@ public class TelephonyPage implements SettingsPage {
     }
 
     @Step(value = "Проверяем отображается {visible} ли настройка {content} провайдера в форме настроек провайдера")
-    public boolean isContentSettingProvider(String content, boolean visible){
-        return isVisibleElement(printsSettingsProvider, content, visible);
+    public TelephonyPage isContentSettingProvider(String content, boolean visible){
+        isVisibleElement(printsSettingsProvider, content, visible);
+        return this;
     }
 
     @Step(value = "Создаём новый маршрут для направления {typeRoute}")
@@ -164,18 +167,21 @@ public class TelephonyPage implements SettingsPage {
     }
 
     @Step(value = "Проверяем, отобрается {visible} ли модальное окно с информацией")
-    public boolean isVisibleInfoWrapper(boolean visible){
-        return isVisibleElement(activeModalInfo, visible);
+    public TelephonyPage isVisibleInfoWrapper(boolean visible){
+        isVisibleElement(activeModalInfo, visible);
+        return this;
     }
 
     @Step(value = "Проверяем, отображается ли заголовок {title} модального окна с информацией")
-    public boolean isTitleInfoWrapper(String title){
-        return isVisibleElement(headersModalInfo, title, true);
+    public TelephonyPage isTitleInfoWrapper(String title){
+        isVisibleElement(headersModalInfo, title, true);
+        return this;
     }
 
     @Step(value = "Проверяем, отображается ли контент {content} модального окна с информацией")
-    public boolean isContentInfoWrapper(String content){
-        return isVisibleElement(contentModalInfo, content, true);
+    public TelephonyPage isContentInfoWrapper(String content){
+        isVisibleElement(contentModalInfo, content, true);
+        return this;
     }
 
     @Step(value = "Закрываем модальное окно с информацией")
@@ -191,7 +197,7 @@ public class TelephonyPage implements SettingsPage {
      */
     public TelephonyPage setTurnserver(Map<String, String> mapInputValueTurnServer){
         setSettingsServer(mapInputValueTurnServer, TELEPHONY_TURN_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        clickButtonSave();
+        clickButtonSave().isModalWindow(false);
         clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
         return this;
     }

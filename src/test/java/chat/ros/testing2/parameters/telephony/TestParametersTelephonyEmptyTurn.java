@@ -58,16 +58,11 @@ public class TestParametersTelephonyEmptyTurn extends TelephonyPage {
         else if(maxPort.equals("")) field = TELEPHONY_TURN_INPUT_MAX_PORT;
         else if(realm.equals("")) field = TELEPHONY_TURN_INPUT_REALM;
         else field = TELEPHONY_TURN_INPUT_SECRET;
-        assertAll("Проверяем настройи Turn/Stun сервера на пустые поля",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
-        if(isFormConfirmActions(true)) clickButtonConfirmAction(SETTINGS_BUTTON_RESTART);
-        else if(isFormChange()) clickButtonClose();
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
         if(field.equals(TELEPHONY_TURN_INPUT_SECRET)){
             assertTrue(isShowFieldAndValue(
                     TELEPHONY_TURN_TITLE_FORM,

@@ -57,15 +57,11 @@ public class TestParametersServerPushWrongHost extends ServerParams {
         else if(login.equals("")) field = SERVER_PUSH_INPUT_LOGIN;
         else if(port.equals("")) field = SERVER_PUSH_INPUT_PORT;
         else if(password.equals("")) field = SERVER_PUSH_INPUT_PASSWORD;
-        assertAll("Проверяем настройки Push сервер с пустыми значениями",
-                () -> assertEquals(isShowTextWrongValue(field),"Введите значение",
-                        "Надпись 'Введите значение' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> { clickButtonClose(); },
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
+        assertEquals(isShowTextWrongValue(field),"Введите значение",
+                "Надпись 'Введите значение' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 
     @Story(value = "Проверяем невалидные значение хоста в поле 'Адрес сервера' в настройках Лицензирование и обслуживание")
@@ -84,14 +80,10 @@ public class TestParametersServerPushWrongHost extends ServerParams {
             put(SERVER_PUSH_INPUT_PASSWORD, SERVER_PUSH_PASSWORD_SERVER);
         }};
         setSettingsServer(mapInputValueConnect, SERVER_PUSH_TITLE_FORM, SETTINGS_BUTTON_SETTING);
-        assertAll("Проверяем неправильный адрес Push сервера",
-                () ->assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_HOST),"Неверный адрес",
-                        "Надпись 'Неверный адрес' не появилась"),
-                () -> { clickButtonSave(); },
-                () -> assertTrue(isFormChange(),
-                "Форма редактирования настроек закрылась после нажатия кнопки Сохранить"),
-                () -> { clickButtonClose(); },
-                () -> assertTrue(isFormConfirmActions(false), "Появилась форма, Подтвердите свои действия")
-        );
+        assertEquals(isShowTextWrongValue(SERVER_PUSH_INPUT_HOST),"Неверный адрес",
+                "Надпись 'Неверный адрес' не появилась");
+        clickButtonSave()
+                .isFormChange()
+                .clickButtonClose();
     }
 }

@@ -198,8 +198,7 @@ public class TestTelephonyPage extends TelephonyPage {
     void test_Refresh_Page(){
         Selenide.refresh();
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 
     @Story(value = "Переходим на страницу через адресную строку")
@@ -208,7 +207,6 @@ public class TestTelephonyPage extends TelephonyPage {
     @Test
     void test_Open_Page(){
         sleep(3000);
-        assertTrue(isNotShowLoaderSettings(), "Настройки не загрузились, надпись" +
-                " 'Идет загрузка настроек...' не пропала");
+        isNotShowLoaderSettings();
     }
 }
