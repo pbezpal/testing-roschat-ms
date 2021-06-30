@@ -6,6 +6,8 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import java.time.Duration;
+
 import static chat.ros.testing2.data.SettingsData.IVR_MENU_TITLE;
 import static chat.ros.testing2.data.SettingsData.IVR_SOUND_FILES_TITLE;
 import static com.codeborne.selenide.Condition.*;
@@ -34,8 +36,8 @@ public class ServicesPage implements SettingsPage {
 
     @Step(value = "Проверяем, отображается {show} ли моадльное окно")
     public ServicesPage isModalWindow(boolean show){
-        if(show) modalWindow.shouldBe(visible);
-        else modalWindow.shouldNotBe(visible);
+        if(show) modalWindow.shouldBe(visible, Duration.ofSeconds(10));
+        else modalWindow.shouldNotBe(visible, Duration.ofSeconds(10));
         return this;
     }
 
@@ -69,6 +71,7 @@ public class ServicesPage implements SettingsPage {
         getServiceSection(section)
                 .$("table")
                 .find(byText(item))
+                .shouldHave(text(item))
                 .closest("tr")
                 .findAll(".layout i")
                 .findBy(text(button))

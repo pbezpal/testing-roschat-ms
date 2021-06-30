@@ -15,6 +15,7 @@ import java.util.Date;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class IVRPage extends ServicesPage {
@@ -404,6 +405,7 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Нажимаем кнопку добавить Расписание")
     public IVRPage clickButtonAddSchedule(){
+        scheduleForm.scrollIntoView(false);
         buttonAddSchedule.click();
         return this;
     }
@@ -425,18 +427,21 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Надимаем кнопку {button} у раписания {schedule}")
     public IVRPage clickButtonActionSchedule(String schedule, String button){
+        scheduleForm.scrollIntoView(false);
         scheduleItemsText.findBy(text(schedule)).parent().findAll("i").findBy(text(button)).click();
         return this;
     }
 
     @Step(value = "Проверяем заголовок в столбце Правила")
     public IVRPage isTitleRules(){
+        scheduleForm.scrollIntoView(false);
         titleScheduleColumnRight.shouldHave(text("Правила"));
         return this;
     }
 
     @Step(value = "Нажимаем кнопку добавить Правила")
     public IVRPage clickButtonAddRules(){
+        scheduleForm.scrollIntoView(false);
         buttonAddRules.click();
         return this;
     }
@@ -501,6 +506,17 @@ public class IVRPage extends ServicesPage {
         return listWeekDays;
     }
 
+    @Step(value = "Нажимаем кнопку {button} у правила {rules}")
+    public IVRPage clickActionButtonRules(String rules, String button){
+        scheduleColumnRight
+                .find("table")
+                .find(byText(rules))
+                .closest("tr")
+                .find(byText(button))
+                .click();
+        return this;
+    }
+
     private SelenideElement parentElement(String text){
         return getModalWindow()
                 .findAll(".content-item__title")
@@ -510,11 +526,18 @@ public class IVRPage extends ServicesPage {
 
     @Step(value = "Выбираем час {hour} и минуты {minute} для {typeTime}")
     public String getTimeRules(String typeTime, String hour, String minute){
-        ElementsCollection listTime = $$(".v-select-list .v-list__tile__title");
+        SelenideElement listMenuActive = $(".menuable__content__active .v-select-list");
+        ElementsCollection listTime = listMenuActive.findAll(".v-list__tile__title");
         parentElement(typeTime).find("input[aria-label='Час']").parent().click();
-        listTime.findBy(text(hour)).shouldBe(visible).click();
+        if(Integer.parseInt(hour) > 19)
+            listTime.findBy(text("19")).scrollIntoView(false);
+        listTime.findBy(text(hour)).click();
         parentElement(typeTime).find("input[aria-label='Минута']").parent().click();
-        listTime.findBy(text(hour)).shouldBe(visible).click();
+        if(Integer.parseInt(minute) > 19)
+            listTime.findBy(text("19")).scrollIntoView(false);
+        if(Integer.parseInt(minute) > 39)
+            listTime.findBy(text("39")).scrollIntoView(false);
+        listTime.findBy(text(minute)).click();
         return hour + ":" + minute;
     }
 
@@ -536,11 +559,17 @@ public class IVRPage extends ServicesPage {
     }
 
     @Step(value = "Проверяем параметры правила после добавления/редактирования")
-    public IVRPage isItemRules(String date, String time, boolean exception){
+    public IVRPage isItemRules(String date, String time, boolean exception, boolean show){
         scheduleForm.scrollIntoView(false);
-        if(exception) tableRulesOfSchedule.find(".schedule-except").shouldBe(visible);
-        tableRulesOfSchedule.findAll("td").findBy(text(date)).shouldBe(visible);
-        tableRulesOfSchedule.findAll("td").findBy(text(time)).shouldBe(visible);
+        if(show) {
+            if (exception) tableRulesOfSchedule.findAll("td").findBy(text(date)).parent().find(".schedule-except").find("i").shouldBe(visible);
+            else tableRulesOfSchedule.findAll("td").findBy(text(date)).parent().find(".schedule-except").find("i").shouldNotBe(visible);
+            tableRulesOfSchedule.findAll("td").findBy(text(date)).shouldBe(visible);
+            tableRulesOfSchedule.findAll("td").findBy(text(time)).shouldBe(visible);
+        }else{
+            tableRulesOfSchedule.findAll("td").findBy(text(date)).shouldNotBe(visible);
+            tableRulesOfSchedule.findAll("td").findBy(text(time)).shouldNotBe(visible);
+        }
         return this;
     }
 

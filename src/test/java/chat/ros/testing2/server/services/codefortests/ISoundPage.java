@@ -20,7 +20,7 @@ public interface ISoundPage {
 
     void addSchedule(String name);
 
-    void addRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except);
+    String actionOnRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except, String... rules);
 
     void addEntryPoint(String number, String aon, String menu, String schedule);
 
@@ -28,12 +28,18 @@ public interface ISoundPage {
 
     void editEntryPoint(String number, String aon, String oldMenu, String newMenu, String schedule);
 
+    void editSchedule(String oldSchedule, String newSchedule);
+
     void checkLookModalWindowOfMenu(String title, String type, SelenideElement parent, String soundFile, boolean dtmf, String ...number);
 
     void checkLookModalWindowOfMenu(String title, String textGoToMenu, String secondTextLink, String type, String soundFile, boolean action, boolean dtmfSimpleMenu, boolean dtmf, String... number);
 
     void deleteMenu(String name, String description);
 
-    void deleteEntryPoint(String number, String titleMenu);
+    void deleteEntryPoint(String titleMenu, String[] data);
+
+    void deleteSchedule(String schedule);
+
+    void deleteRules(String schedule, String date, String time);
 
 }

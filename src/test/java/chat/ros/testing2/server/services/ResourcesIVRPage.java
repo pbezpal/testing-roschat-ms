@@ -49,45 +49,66 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
                     || testMethod.equals("test_AudioPlayer_When_Edit_Sound_File")
             )
                 beforeVerifyTests("test_Audio_Player_When_Uploading_File", "The sound file don't add. Skip the test!");
-        }else if(testClass.contains("TestMenuPage")){
-            if(testMethod.equals("test_Add_Menu"))
+        }else if(testClass.contains("TestMenuPage")) {
+            if (testMethod.equals("test_Add_Menu"))
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
-            else if(testMethod.equals("test_Add_Rules_With_Week_Days") || testMethod.equals("test_Add_Rules_With_Calendar_Date"))
+            else if (testMethod.equals("test_Add_Rules_With_Week_Days")
+                    || testMethod.equals("test_Add_Rules_With_Calendar_Date")
+                    || testClass.equals("test_Edit_Schedule"))
                 verifyParamTest(testParams, "Add schedule=");
-            //else if(testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
-            else if(testMethod.equals("test_Look_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
-            //else if(testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
-            //else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
-            else if(testMethod.equals("test_Look_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
-            else if(testMethod.equals("test_Edit_Simple_Menu")) {
+            else if (testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu"))
+                verifyParamTest(testParams, "Add menu=");
+            else if (testMethod.equals("test_Look_Simple_Menu")) verifyParamTest(testParams, "Add menu=");
+            else if (testMethod.equals("test_Add_Go_To_Menu")) verifyParamTest(testParams, "Add menu=");
+            else if (testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu"))
+                verifyParamTest(testParams, "Add go to menu=");
+            else if (testMethod.equals("test_Look_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
+            else if (testMethod.equals("test_Edit_Simple_Menu")) {
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
                         "The sound file without description don't add. Skip the test!");
                 verifyParamTest(testParams, "Add menu=");
-            }else if(testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu"))
+            } else if (testMethod.equals("test_Edit_Rules_With_Calendar_Date")) {
+                verifyParamTest(testParams, "Edit schedule=");
+                verifyParamTest(testParams, "Add rule with calendar date=");
+            } else if (testMethod.equals("test_Edit_Rules_With_Week_Days")) {
+                verifyParamTest(testParams, "Edit schedule=");
+                verifyParamTest(testParams, "Add rule with week days=");
+            } else if (testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu")) {
+                //verifyParamTest(testParams, "Edit schedule=");
                 verifyParamTest(testParams, "Edit menu=");
-            else if(testMethod.equals("test_Look_Simple_Menu_After_Edit")) verifyParamTest(testParams, "Edit menu=");
-            else if(testMethod.equals("test_Edit_Go_To_Menu")){
+            } else if (testMethod.equals("test_Look_Simple_Menu_After_Edit")) verifyParamTest(testParams, "Edit menu=");
+            else if (testMethod.equals("test_Edit_Go_To_Menu")) {
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
                         "The sound file without description don't add. Skip the test!");
                 verifyParamTest(testParams, "Add go to menu=");
                 verifyParamTest(testParams, "Edit menu=");
-            }
-            else if(testMethod.equals("test_Look_Go_to_Menu_After_Edit")) verifyParamTest(testParams, "Edit go to menu=");
-            else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")) verifyParamTest(testParams, "Edit go to menu=");
-            else if(testMethod.equals("test_Delete_Sound_File"))
+            } else if (testMethod.equals("test_Look_Go_to_Menu_After_Edit"))
+                verifyParamTest(testParams, "Edit go to menu=");
+            else if (testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")) {
+                //verifyParamTest(testParams, "Edit schedule=");
+                verifyParamTest(testParams, "Edit go to menu=");
+            } else if (testMethod.equals("test_Delete_Sound_File"))
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"),
                         "The sound file don't add. Skip the test!");
-            else if(testMethod.equals("test_Delete_Entry_Point_With_Simple_Menu")) {
+            else if (testMethod.equals("test_Delete_Entry_Point_With_Simple_Menu")) {
                 verifyParamTest(testParams, "Add entry point with simple menu=");
                 verifyParamTest(testParams, "Edit entry point=");
-            }else if(testMethod.equals("test_Delete_Entry_Point_With_Go_To_Menu")) {
+            } else if (testMethod.equals("test_Delete_Entry_Point_With_Go_To_Menu")) {
                 verifyParamTest(testParams, "Add entry point with go to menu=");
-            }else if(testMethod.equals("test_Delete_Simple_Menu")) {
+            } else if (testMethod.equals("test_Delete_Simple_Menu")) {
                 verifyParamTest(testParams, "Add menu=");
-            }else if(testMethod.equals("test_No_Links_Go_To_Menu")) {
+            } else if (testMethod.equals("test_No_Links_Go_To_Menu")) {
                 verifyParamTest(testParams, "Add go to menu=");
                 verifyParamTest(testParams, "Delete menu=");
-            }else if(testMethod.equals("test_Delete_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
+            } else if (testMethod.equals("test_Delete_Go_To_Menu"))
+                verifyParamTest(testParams, "Add go to menu=");
+            else if(testMethod.equals("test_Delete_Rules_With_Week_Days"))
+                verifyParamTest(testParams, "Add rule with week days=");
+            else if(testMethod.equals("test_Delete_Rules_With_Calendar_Date"))
+                verifyParamTest(testParams, "Add rule with calendar date=");
+            else if(testMethod.equals("test_Delete_Schedule"))
+                verifyParamTest(testParams, "Add schedule=");
+
         }
 
         if(testClass.contains("TestSoundPage") || testClass.contains("TestMenuPage"))
@@ -107,27 +128,24 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
         }else if(testClass.contains("TestMenuPage")){
             if(testMethod.equals("test_Upload_Sound_File") || testMethod.equals("test_Upload_Sound_File_2"))
                 TestStatusResult.setTestResult(testMethod, TestStatusResult.getStatusResult());
-            /*else if(testMethod.equals("test_Add_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());*/
-            else if(testMethod.equals("test_Add_Entry_Point_With_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Add_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Edit_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Edit_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Delete_Simple_Menu"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Add_Schedule"))
-                TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
-            else if(testMethod.equals("test_Add_Rules"))
+            else if(testMethod.equals("test_Add_Simple_Menu")
+                    || testMethod.equals("test_Add_Entry_Point_With_Simple_Menu")
+                    || testMethod.equals("test_Add_Go_To_Menu")
+                    || testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu")
+                    || testMethod.equals("test_Edit_Simple_Menu")
+                    || testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu")
+                    || testMethod.equals("test_Edit_Go_To_Menu")
+                    || testMethod.equals("test_Edit_Entry_Point_With_Go_To_Menu")
+                    || testMethod.equals("test_Delete_Simple_Menu")
+                    || testMethod.equals("test_Add_Schedule")
+                    || testMethod.equals("test_Add_Rules")
+                    || testMethod.equals("test_Add_Rules_With_Week_Days")
+                    || testMethod.equals("test_Add_Rules_With_Calendar_Date")
+                    || testMethod.equals("test_Edit_Schedule")
+                    || testMethod.equals("test_Edit_Rules_With_Week_Days")
+                    || testMethod.equals("test_Edit_Rules_With_Calendar_Date")
+
+            )
                 TestStatusResult.setTestResult(testParams, TestStatusResult.getStatusResult());
         }
     }

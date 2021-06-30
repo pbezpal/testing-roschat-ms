@@ -30,6 +30,7 @@ public interface BasePage {
     ElementsCollection listItemMenuSettings = $$(".v-tabs__item");
     SelenideElement divProgressBar = $(".modal-progress");
     SelenideElement modalWindow = $(".modal-wrapper");
+    SelenideElement dialogWrapper = $(".dialog-wrapper");
 
     default BasePage isModalWindow(boolean show){
         if(show) modalWindow.shouldBe(visible);

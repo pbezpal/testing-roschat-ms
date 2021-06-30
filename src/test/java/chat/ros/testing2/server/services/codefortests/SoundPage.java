@@ -144,6 +144,7 @@ public class SoundPage extends IVRPage implements ISoundPage {
         clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_DELETE);
         isFormConfirmActions(true)
                 .clickButtonConfirmAction("Удалить");
+        isVisibleElement(dialogWrapper, false);
         isItemTable(IVR_SOUND_FILES_TITLE, filename, false);
     }
 
@@ -167,12 +168,21 @@ public class SoundPage extends IVRPage implements ISoundPage {
     }
 
     @Override
-    public void addRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except) {
+    public String actionOnRules(String schedule, String typeDate, String[] dates, String[] startTimes, String[] endTimes, boolean except, String... rules) {
         String date = null;
         String startTime;
         String endTime;
 
-        isTitleRules().clickSchedule(schedule).clickButtonAddRules().selectTypeDate(typeDate).selectException(except);
+        if(rules.length == 0)
+            clickSchedule(schedule)
+                    .clickButtonAddRules()
+                    .selectTypeDate(typeDate)
+                    .selectException(except);
+        else
+            clickSchedule(schedule)
+                    .clickActionButtonRules(rules[0], IVR_BUTTON_EDIT)
+                    .selectTypeDate(typeDate)
+                    .selectException(except);
 
         if(typeDate.equals(IVR_SCHEDULE_RULE_TYPE_WEEK_DAY)) date = getWeekDaysRules(dates);
         else {
@@ -190,7 +200,9 @@ public class SoundPage extends IVRPage implements ISoundPage {
 
         clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
 
-        isItemRules(date, startTime + " - " + endTime, except);
+        isItemRules(date, startTime + " - " + endTime, except, true);
+
+        return date;
     }
 
     @Override
@@ -220,6 +232,16 @@ public class SoundPage extends IVRPage implements ISoundPage {
         clickButtonTable(IVR_ENTRY_POINTS_TITLE, oldMenu, IVR_BUTTON_EDIT);
         sendModalWindowOfEntryPoint(number, aon, newMenu, schedule);
         saveAndVerifyEntryPoint(number, aon, newMenu, schedule);
+    }
+
+    @Override
+    public void editSchedule(String oldSchedule, String newSchedule) {
+        clickButtonActionSchedule(oldSchedule, IVR_BUTTON_EDIT)
+                .sendModalWindowOfSchedule(newSchedule);
+        clickActionButtonOfModalWindow("Сохранить")
+                .isModalWindow(false);
+        isVisibleSchedule(newSchedule, true);
+        //isItemTable(IVR_ENTRY_POINTS_TITLE, newSchedule, true);
     }
 
     @Override
@@ -339,11 +361,46 @@ public class SoundPage extends IVRPage implements ISoundPage {
 
     @Override
     public void deleteMenu(String name, String description) {
-
+        clickButtonTable(IVR_MENU_TITLE, name, IVR_BUTTON_DELETE);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Удалить");
+        isVisibleElement(dialogWrapper, false);
+        isItemTable(IVR_MENU_TITLE, name, false)
+                .isItemTable(IVR_MENU_TITLE, description, false);
     }
 
     @Override
-    public void deleteEntryPoint(String number, String titleMenu) {
+    public void deleteEntryPoint(String titleMenu, String[] data) {
+        clickButtonTable(IVR_ENTRY_POINTS_TITLE, titleMenu, IVR_BUTTON_DELETE);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Продолжить");
+        isVisibleElement(dialogWrapper, false);
+        String number = data[0];
+        String aon = data[1];
+        String schedule = data[2];
+        isItemTable(IVR_ENTRY_POINTS_TITLE, titleMenu, false)
+                .isItemTable(IVR_ENTRY_POINTS_TITLE, number, false)
+                .isItemTable(IVR_ENTRY_POINTS_TITLE, aon, false)
+                .isItemTable(IVR_ENTRY_POINTS_TITLE, schedule, false);
+    }
 
+    @Override
+    public void deleteSchedule(String schedule) {
+        clickButtonActionSchedule(schedule, IVR_BUTTON_DELETE);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Продолжить");
+        isVisibleElement(dialogWrapper, false);
+        isVisibleSchedule(schedule, false);
+    }
+
+    @Override
+    public void deleteRules(String schedule, String date, String time) {
+        isTitleRules()
+                .clickSchedule(schedule)
+                .clickActionButtonRules(date, IVR_BUTTON_DELETE);
+        isFormConfirmActions(true)
+                .clickButtonConfirmAction("Продолжить");
+        isVisibleElement(dialogWrapper, false);
+        isItemRules(date, time, false, false);
     }
 }
