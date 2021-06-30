@@ -1,16 +1,13 @@
 package chat.ros.testing2.server.services.codefortests;
 
-import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.server.settings.services.IVRPage;
 import com.codeborne.selenide.SelenideElement;
-import io.qameta.allure.Allure;
-import io.qameta.allure.model.Status;
 
 import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SoundPage extends IVRPage implements ISoundPage {
+public class TIVRPage extends IVRPage implements IIVRPage {
 
     private String sound_field = "Звуковой файл: ";
     private String timeout_field = "По таймауту";

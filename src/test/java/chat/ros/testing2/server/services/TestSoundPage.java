@@ -2,7 +2,7 @@ package chat.ros.testing2.server.services;
 
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
-import chat.ros.testing2.server.services.codefortests.SoundPage;
+import chat.ros.testing2.server.services.codefortests.TIVRPage;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesIVRPage.class)
 @ExtendWith(WatcherTests.class)
-public class TestSoundPage extends SoundPage {
+public class TestSoundPage extends TIVRPage {
 
     private final String wavFile1 = "conf-usermenu.wav";
     private final String pathWAVFile1 = getClass().

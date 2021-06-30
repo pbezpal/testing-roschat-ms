@@ -2,18 +2,53 @@ package chat.ros.testing2.server.services.codefortests;
 
 import com.codeborne.selenide.SelenideElement;
 
-public interface ISoundPage {
+public interface IIVRPage {
 
+    /**
+     * <p>upload music file and check what music file add to the table</p>
+     * @param pathToFile it is path to the music file
+     * @param filename
+     */
     void uploadMusicFile(String pathToFile, String filename);
 
+    /**
+     * <p>checks the operation the audio player when upload a music file</p>
+     * @param pathToFile
+     * @param filename
+     * @param durationFile
+     * @param volumePlayer
+     */
     void uploadMusicFile(String pathToFile, String filename, String durationFile, String volumePlayer);
 
+    /**
+     * <p>checks the start button of the audio player and the operation the audio player</p>
+     * @param oldFilename
+     * @param durationFile
+     * @param volumePlayer
+     */
     void verifyButtonAudioPlayer(String oldFilename, String durationFile, String volumePlayer);
 
+    /**
+     * <p>verifies editing a music file and the operation the audio player</>
+     * @param filename
+     * @param newFilename
+     * @param pathToFile
+     * @param durationFile
+     * @param volumePlayer
+     */
     void editMusicFile(String filename, String newFilename, String pathToFile, String durationFile, String volumePlayer);
 
+    /**
+     * <p>verifies the download of a music file to the computer</p>
+     * @param filename
+     */
     void downloadMusicFile(String filename);
 
+    /**
+     * <p>check the delete of a music file and verifies exists of a
+     * music file in the table of music files after deletion</p>
+     * @param filename
+     */
     void deleteMusicFile(String filename);
 
     void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu);

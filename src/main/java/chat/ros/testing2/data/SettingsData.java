@@ -271,6 +271,14 @@ public interface SettingsData {
     String SNMP_ADDRESS_SERVER = "10.10.199.249";
     String SNMP_PORT_SERVER = "10051";
 
+    /***************************************** Раздел Система оповещения *********************************************/
+
+    String ALERT_TITLE_SECTION_USERS = "Пользователи системы оповещения";
+
+    String ALERT_TITLE_SECTION_SIP_ALERT = "Росчат оповещение, SIP-оповещение";
+
+    String ALERT_TITLE_SECTION_SMS_ALERT = "";
+
     /******************************************* Раздел Голосовое меню ***********************************************/
 
     //General elements
