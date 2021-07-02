@@ -32,12 +32,16 @@ public class TestTetraPage implements IntegrationPage {
     }};
 
     @Story(value = "Добавляем сервис МиниКом TETRA")
-    @Description(value = "Переходим в раздел Интеграция, добавляем сервис МиниКом TETRA и проверяем," +
-            " что сервис был успешно добавлен на сервер")
+    @Description(value = "1. Переходим в раздел Настройки\n" +
+            "2. Переходим в раздел Интеграция\n" +
+            "3. Нажимаем кнопку Добавить\n" +
+            "4. Выбираем из контекстног меню сервис МиниКом TETRA" +
+            "5. Добавляем  сервер Тетра \n" +
+            "6. Проверяем, что сервис МиниКом Тетра отображается в таблице Сервисов")
     @Test
     void test_Add_Service_Tetra(){
         tetraPage = (TetraPage) addIntegrationService(INTEGRATION_SERVICE_TETRA_TYPE);
-        tetraPage.clickServiceType(INTEGRATION_SERVICE_TETRA_TYPE);
+        //tetraPage.clickServiceType(INTEGRATION_SERVICE_TETRA_TYPE);
         tetraPage.addTetraServer(mapInputValueTetra);
     }
 }

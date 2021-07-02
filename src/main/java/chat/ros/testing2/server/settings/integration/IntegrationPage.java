@@ -22,18 +22,13 @@ public interface IntegrationPage extends SettingsPage {
     SelenideElement divLoading = $("div.loader-wrapper");
 
     @Step(value = "Проверяем, доступен ли сервис {service} для выбора")
-    default boolean isAvailableTypeService(String service){
-        try{
-            listItems.findBy(Condition.text(service)).shouldBe(Condition.enabled);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    default IntegrationPage isAvailableTypeService(String service){
+        listItems.findBy(Condition.text(service)).shouldBe(Condition.enabled);
+        return this;
     }
 
     @Step(value = "Выбираем сервис {service}")
     default IntegrationPage clickTypeService(String service){
-        assertTrue(isAvailableTypeService(service), "Сервис " + service + " недоступен для выбора");
         listItems.findBy(Condition.text(service)).click();
         return this;
     }
@@ -91,8 +86,8 @@ public interface IntegrationPage extends SettingsPage {
 
     default Object addIntegrationService(String service){
         clickButtonAdd();
-        assertTrue(isAvailableTypeService(service), service + " недоступно для выбора");
-        clickTypeService(service);
+        isAvailableTypeService(service)
+            .clickTypeService(service);
         switch(service){
             case INTEGRATION_SERVICE_TETRA_TYPE:
                 return new TetraPage();

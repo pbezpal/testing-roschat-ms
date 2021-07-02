@@ -174,14 +174,11 @@ public class UserPage implements BasePage {
         return this;
     }
 
-    @Step(value = "Проверяем, появился сервир в списке сервисов")
-    public boolean isShowService(String element, String text){
-        try{
-            $$("div.service-info " + element).findBy(text(text)).shouldBe(visible);
-        }catch (ElementNotFound e){
-            return false;
-        }
-        return true;
+    @Step(value = "Проверяем, отображается ли {show} значение {text} в списке сервисов")
+    public UserPage isShowService(String element, String text, boolean show){
+        if(show) $$("div.service-info " + element).findBy(text(text)).shouldBe(visible);
+        else $$("div.service-info " + element).findBy(text(text)).shouldNotBe(visible);
+        return this;
     }
 
     /**
@@ -211,7 +208,13 @@ public class UserPage implements BasePage {
         return this;
     }
 
-    //Добавляем сервис SIP
+    /**
+     * add sip service fo contact
+     * @param itemMenu menu for add sip service
+     * @param type select sip service
+     * @param number sip number
+     * @return
+     */
     public UserPage addServices(String itemMenu, String type, String number){
         //Переходим в раздел Сервисы
         clickMenuItem(itemMenu)

@@ -3,7 +3,7 @@ package chat.ros.testing2.server.services;
 import chat.ros.testing2.TestStatusResult;
 import chat.ros.testing2.WatcherTests;
 import chat.ros.testing2.server.contacts.ContactsPage;
-import chat.ros.testing2.server.settings.services.FaxPage;
+import chat.ros.testing2.server.services.codefortests.TFaxPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -11,9 +11,10 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_ITEM_MENU;
-import static chat.ros.testing2.data.ContactsData.USER_ACCOUNT_PASSWORD;
+import static chat.ros.testing2.data.ContactsData.*;
+import static chat.ros.testing2.data.ContactsData.USER_SERVICES_TYPE_SIP;
 import static chat.ros.testing2.data.SettingsData.*;
+import static data.CommentsData.CLIENT_7009;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Epic(value = "Сервисы")
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(ResourcesFaxPage.class)
 @ExtendWith(WatcherTests.class)
-public class TestFaxPage extends FaxPage {
+public class TestFaxPage extends TFaxPage {
 
     private ContactsPage contactsPage = new ContactsPage();
 
@@ -31,7 +32,12 @@ public class TestFaxPage extends FaxPage {
     @Test
     @Order(1)
     void test_Add_Contact_For_Fax(){
-        contactsPage.actionsContact(CONTACT_FOR_FAX).addUserAccount(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU);
+        contactsPage
+                .actionsContact(CONTACT_FOR_FAX)
+                .addUserAccount(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, USER_ACCOUNT_ITEM_MENU)
+                .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CONTACT_FOR_FAX)
+                .isShowService("h4",USER_SERVICES_TYPE_SIP, true)
+                .isShowService("span", CONTACT_FOR_FAX, true);
         TestStatusResult.setTestResult(true);
     }
 
@@ -72,10 +78,7 @@ public class TestFaxPage extends FaxPage {
     @Test
     @Order(3)
     void test_Delete_Number_Fax_Without_Description(){
-        clickButtonTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, IVR_BUTTON_DELETE);
-        isFormConfirmActions(true)
-                .clickButtonConfirmAction("Удалить");
-        isItemTable(FAX_NUMBERS_TITLE, FAX_NUMBER_WITHOUT_DESCRIPTION, false);
+        deleteNumber(FAX_NUMBER_WITHOUT_DESCRIPTION);
     }
 
     @Story(value = "Добавление пользователя для факса")
@@ -88,26 +91,11 @@ public class TestFaxPage extends FaxPage {
     @Test
     @Order(4)
     void test_Add_User_For_Fax(){
-        assertAll("1. Ищем пользователя для факса\n" +
-                        "2. Проверяем, что пользователь найден\n" +
-                        "3. Сохраняем пользователя\n" +
-                        "4. Проверяем, что пользователь добавлен в таблице",
-                () -> assertEquals(clickButtonAdd(FAX_USERS_TITLE).getTextTitleModalWindow(),
-                        "Добавление пользователя",
-                        "Не найден заголовок модального окна при добавлении пользователя для факса"),
-                () -> {
-                    sendInputModalWindow("Поиск контакта", CONTACT_FOR_FAX);
-                    isContactName(CONTACT_FOR_FAX, true)
-                            .getContactName(CONTACT_FOR_FAX).click();
-                    clickActionButtonOfModalWindow("Сохранить")
-                            .isModalWindow(false)
-                            .isItemTable(FAX_USERS_TITLE, CONTACT_FOR_FAX, true);
-                }
-        );
+        addContact(FAX_USERS_TITLE, CONTACT_FOR_FAX);
         TestStatusResult.setTestResult(true);
     }
 
-    private void addNumberFax(String number, String description){
+    /*private void addNumberFax(String number, String description){
         assertAll("Добаялем номер факса с описанием и проверяем, что номер с описанием был добавлен",
                 () -> assertEquals(clickButtonAdd(FAX_NUMBERS_TITLE).getTextTitleModalWindow(),
                         "Добавление номера факса",
@@ -118,5 +106,5 @@ public class TestFaxPage extends FaxPage {
                     isItemTable(FAX_NUMBERS_TITLE, number, true);
                 }
         );
-    }
+    }*/
 }

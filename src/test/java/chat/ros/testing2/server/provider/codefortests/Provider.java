@@ -43,7 +43,7 @@ public class Provider extends Routes implements IProvider {
                 addressProvider = data.getValue().toString();
         }
 
-
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
         isExistsTableText(titleProvider, show)
                 .isExistsTableText(addressProvider, show);
         if (descriptionProvider != null && descriptionProvider.length() > 0)
@@ -73,6 +73,7 @@ public class Provider extends Routes implements IProvider {
 
     @Override
     public void addProvider(Map<String, String> dataProvider) {
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
         clickButtonSettings(TELEPHONY_PROVIDER_TITLE_FORM, "Добавить провайдера");
         isModalWindow(true);
         setProvider(dataProvider);
@@ -81,6 +82,7 @@ public class Provider extends Routes implements IProvider {
 
     @Override
     public void checkHeadersAndTitlesViewProviderSettings(String provider, boolean registration) {
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
         clickButtonTableProvider(provider, "Изменить");
         isSubtitleProviderForm("Общее", true)
                 .isContentSettingProvider("Название", true)
@@ -96,6 +98,7 @@ public class Provider extends Routes implements IProvider {
 
     @Override
     public void editProvider(String provider, Map<String, String> dataProvider, boolean registration, String buttonEdit) {
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
         clickButtonTableProvider(provider, buttonEdit);
         if(buttonEdit.equals("Изменить"))
             clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_PROVIDER, "Настроить");
@@ -133,6 +136,8 @@ public class Provider extends Routes implements IProvider {
             }
         }
 
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
+
         isContentSettingProvider(titleProvider, true)
                 .isContentSettingProvider(addressProvider, true);
 
@@ -156,6 +161,7 @@ public class Provider extends Routes implements IProvider {
 
     @Override
     public void deleteProvider(String provider, Map<String, String> dataProvider, boolean tableDelete) {
+        getParentProviderSection(TELEPHONY_PROVIDER_TITLE_FORM).scrollIntoView(false);
         if(tableDelete)
             clickButtonTableProvider(provider, "Удалить");
         else {

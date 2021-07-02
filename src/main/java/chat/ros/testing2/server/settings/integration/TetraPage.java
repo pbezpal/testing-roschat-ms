@@ -15,6 +15,7 @@ public class TetraPage implements IntegrationPage {
     SelenideElement buttonSaveTetra = $(".modal-wrapper button.v-btn.primary--text");
     private String locatorInput = "//div[@class='naming' and contains(text(), '%1$s')]" +
             "//ancestor::div[@class='modal-fields']//input";
+    //private SelenideElement addButtonTetraServer = $(".action-bar button.primary div");
 
     public TetraPage() {}
 
@@ -40,6 +41,7 @@ public class TetraPage implements IntegrationPage {
 
 
     public TetraPage addTetraServer(Map<String, String> mapInputValueTetra){
+        sleep(1000);
         clickButtonAdd();
         sendInputsForm(mapInputValueTetra);
         clickButtonSave();

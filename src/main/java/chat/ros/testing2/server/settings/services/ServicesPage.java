@@ -1,6 +1,7 @@
 package chat.ros.testing2.server.settings.services;
 
 import chat.ros.testing2.server.settings.SettingsPage;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
@@ -21,6 +22,7 @@ public class ServicesPage implements SettingsPage {
     private SelenideElement titleModalWindow = modalWindow.find("h2");
     private SelenideElement contentMenu = modalWindow.find(".modal-window__content");
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
+    private ElementsCollection itemTableContactName = $$(".contacts-box .contact-name");
 
     protected SelenideElement getContentWrapper(){
         return contentWrapper;
@@ -79,6 +81,19 @@ public class ServicesPage implements SettingsPage {
         return this;
     }
 
+    @Step(value = "Нажимаем кнопку удаления в разделе {section} у записи {item}")
+    public ServicesPage clickButtonTable(String section, String item){
+        getServiceSection(section).scrollIntoView(false);
+        getServiceSection(section)
+                .$("table")
+                .find(byText(item))
+                .shouldHave(text(item))
+                .closest("tr")
+                .find("button")
+                .click();
+        return this;
+    }
+
     @Step(value = "Проверяем, отображается ли заголовок модального окна")
     public String getTextTitleModalWindow(){
         return titleModalWindow.getText();
@@ -93,6 +108,19 @@ public class ServicesPage implements SettingsPage {
             input.sendKeys(Keys.BACK_SPACE);
             input.sendKeys(value);
         }
+        return this;
+    }
+
+    @Step(value = "Получаем элемент контакта {contact}")
+    public SelenideElement getContactName(String contact){
+        if(itemTableContactName.size() == 0) return null;
+        else return itemTableContactName.findBy(Condition.text(contact));
+    }
+
+    @Step(value = "Проверяем, что найден {search} контакт {contact}")
+    public ServicesPage isContactName(String contact, boolean search) {
+        if (search) getContactName(contact).shouldBe(Condition.visible);
+        else getContactName(contact).shouldNotBe(Condition.visible);
         return this;
     }
 

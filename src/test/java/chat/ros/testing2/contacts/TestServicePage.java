@@ -26,58 +26,52 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature(value = "Контакты")
 public class TestServicePage extends ContactsPage {
 
-    private UserPage userPage;
-
     @Story(value = "Добавляем у контакта сервис Компьютерный клиент")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Компьютерный клиент.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_PC_Contact(){
-        userPage = actionsContact(CLIENT_7009);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC);
-        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_PC), "Сервис " + USER_SERVICES_TYPE_PC + " не был добавлен");
+        actionsContact(CLIENT_7009)
+            .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_PC)
+            .isShowService("h4",USER_SERVICES_TYPE_PC, true);
     }
 
     @Story(value = "Добавляем у контакта сервис Мобильный клиент")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Мобильный клиент.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Mobile_Contact(){
-        userPage = actionsContact(CLIENT_7009);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_MOBILE);
-        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_MOBILE), "Сервис " + USER_SERVICES_TYPE_MOBILE + " не был добавлен");
+        actionsContact(CLIENT_7009)
+            .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_MOBILE)
+            .isShowService("h4",USER_SERVICES_TYPE_MOBILE, true);
     }
 
     @Story(value = "Добавляем у контакта сервис Рация")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис Рация.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Radio_Contact(){
-        userPage = actionsContact(CLIENT_7009);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_RADIO);
-        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_RADIO), "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен");
+        actionsContact(CLIENT_7009)
+            .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_RADIO)
+            .isShowService("h4",USER_SERVICES_TYPE_RADIO, true);
     }
 
     @Story(value = "Добавляем у контакта сервис SIP")
     @Description(value = "Переходим в раздель Пользователь и добавляем сервис SIP. Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_SIP_Contact(){
-        userPage = sendInputSearchContact(CLIENT_7009).clickContact(CLIENT_7009);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CLIENT_7009);
-        assertAll("Проверяем, добавляется ли сервис SIP",
-                () -> assertTrue(
-                userPage.isShowService("h4",USER_SERVICES_TYPE_SIP),
-                "Сервис " + USER_SERVICES_TYPE_RADIO + " не был добавлен"),
-                () -> assertTrue(
-                userPage.isShowService("span", CLIENT_7009),
-                "Не отображается SIP номер " + CLIENT_7009)
-        );
+        sendInputSearchContact(CLIENT_7009)
+                .clickContact(CLIENT_7009)
+                .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_SIP, CLIENT_7009)
+                .isShowService("h4",USER_SERVICES_TYPE_SIP, true)
+                .isShowService("span", CLIENT_7009, true);
     }
 
     @Story(value = "Добавляем у контакта сервис Тетра")
     @Description(value = "Переходим в раздел Пользователь и добавляем сервис Тетра.  Проверяем, что сервис был добавлен")
     @Test
     void test_Add_Service_Tetra_Contact(){
-        userPage = sendInputSearchContact(CLIENT_7009).clickContact(CLIENT_7009);
-        userPage.addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1");
-        assertTrue(userPage.isShowService("h4",USER_SERVICES_TYPE_TETRA), "Сервис " + USER_SERVICES_TYPE_TETRA + " не был добавлен");
+        sendInputSearchContact(CLIENT_7009)
+                .clickContact(CLIENT_7009)
+                .addServices(USER_SERVICES_ITEM_MENU, USER_SERVICES_TYPE_TETRA, INTEGRATION_SERVICE_TETRA_NAME, "1")
+                .isShowService("h4", USER_SERVICES_TYPE_TETRA, true);
     }
 
     @Story(value = "Проверяем количество пользователей")

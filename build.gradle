@@ -379,7 +379,9 @@ task testservice(type: Test){
         includeTestsMatching "*.TestServicePage"
     }
 
-    dependsOn testtetra,contactservice
+    //dependsOn testtetra,contactservice
+
+    dependsOn testtetra
 
     // Show test results.
     testLogging {
@@ -776,7 +778,7 @@ task roschativr(type: Test){
 
     filter {
         //include specific method in any of the tests
-        includeTestsMatching "*.TestMenuPage"
+        includeTestsMatching "*.TestTetraPage"
         //includeTestsMatching "*.TestProviderWithoutRegPage"
         //includeTestsMatching "*.TestProviderWithRegPage"
         //includeTestsMatching "*.TestProviderRouteSimpleMode"
