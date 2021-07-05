@@ -597,14 +597,14 @@ public class IVRPage extends ServicesPage {
     /**
      * This method add sound file
      * @param file path of sound file
-     * @param description
+     * @param filename
      * @return
      */
 
-    public IVRPage uploadSoundFile(String file, String ...description){
+    public ServicesPage uploadSoundFile(String file, String filename){
         getContentWrapper().scrollIntoView(false);
         uploadSoundFile(file);
-        sendInputModalWindow(IVR_SOUND_FILES_FIELD_NAME, description);
+        sendInputModalWindow(IVR_SOUND_FILES_FIELD_NAME, filename);
         return this;
     }
 

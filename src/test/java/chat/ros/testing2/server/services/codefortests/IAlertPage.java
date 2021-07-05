@@ -4,4 +4,5 @@ public interface IAlertPage {
 
     void addContactForRoschatAlertAndSipAlert(String contact);
 
+
 }

@@ -5,6 +5,37 @@ import com.codeborne.selenide.SelenideElement;
 public interface IIVRPage {
 
     /**
+     * <p>check title text of modal window when we upload sound file</p>
+     * @param pathFile path to sound file
+     * @param filename name sound file
+     * @param text title text of modal window
+     */
+    void checkTitleTextModalWindowWhenUploadFile(String pathFile, String filename, String text);
+
+    /**
+     * <p>check the title text of the modal window when we add an entry</p>
+     * @param section
+     * @param text
+     */
+    void checkTitleTextModalWindowWhenAddItem(String section, String text);
+
+    /**
+     * <p>check title text of modal window when we edit item</p>
+     * @param item the item of table
+     * @param text the title text of modal window
+     * @param button the name of the button we are pressing
+     */
+    void checkTitleTextWhenEditItem(String section, String item, String text, String button);
+
+    /**
+     * <p>check the title of the modal window when we add or edit rules</p>
+     * @param schedule the schedule name that we select
+     * @param text the title text of the modal window that we check
+     * @param rules the rules that we select if select not empty
+     */
+    void checkTitleTextModalWindowWhenActionRules(String schedule, String text, String... rules);
+
+    /**
      * <p>upload music file and check what music file add to the table</p>
      * @param pathToFile it is path to the music file
      * @param filename

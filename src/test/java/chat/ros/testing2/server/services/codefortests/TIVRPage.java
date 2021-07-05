@@ -50,90 +50,95 @@ public class TIVRPage extends IVRPage implements IIVRPage {
     }
 
     @Override
+    public void checkTitleTextModalWindowWhenUploadFile(String pathFile, String filename, String text) {
+        uploadSoundFile(pathFile, filename)
+                .isModalWindow(true)
+                .isTitleTextModalWindow(text)
+                .clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false)
+                .isItemTable(IVR_SOUND_FILES_TITLE, filename, false);
+    }
+
+    @Override
+    public void checkTitleTextModalWindowWhenAddItem(String section, String text) {
+        if(section.equals(IVR_SCHEDULE_TITLE))
+            clickButtonAddSchedule();
+        else
+            clickButtonAdd(section);
+        isModalWindow(true)
+                .isTitleTextModalWindow(text)
+                .clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
+    }
+
+    @Override
+    public void checkTitleTextWhenEditItem(String section, String item, String text, String button) {
+        if(section.equals(IVR_SCHEDULE_TITLE))
+            clickButtonActionSchedule(item, button);
+        else
+            clickButtonTable(section, item, button);
+        isModalWindow(true)
+                .isTitleTextModalWindow(text)
+                .clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
+    }
+
+    @Override
+    public void checkTitleTextModalWindowWhenActionRules(String schedule, String text, String... rules) {
+        if(rules.length == 0)
+            clickSchedule(schedule)
+                    .clickButtonAddRules();
+        else
+            clickSchedule(schedule)
+                    .clickActionButtonRules(rules[0], IVR_BUTTON_EDIT);
+        isModalWindow(true)
+                .isTitleTextModalWindow(text)
+                .clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
+    }
+
+    @Override
     public void uploadMusicFile(String pathToFile, String filename) {
-        assertAll("Проверяем добавление звукового файла " + filename,
-                () -> assertEquals(uploadSoundFile(pathToFile, filename)
-                        .getTextTitleModalWindow()
-                        , "Новый звуковой файл",
-                        "Не найден заголовок модального окна при добавлении звукового файла"),
-                () -> {
-                    clickActionButtonOfModalWindow("Сохранить")
-                            .isModalWindow(false)
-                            .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
-                }
-        );
+        uploadSoundFile(pathToFile, filename)
+                .clickActionButtonOfModalWindow("Сохранить")
+                .isModalWindow(false)
+                .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
     }
 
     @Override
     public void uploadMusicFile(String pathToFile, String filename, String durationFile, String volumePlayer) {
-        assertAll("Проверяем:\n" +
-                        "1. Заголовок модального окна\n" +
-                        "2. Функции аудиоплеера\n" +
-                        "3. Сохрание звукового файла",
-                () -> assertEquals(uploadSoundFile(pathToFile, filename)
-                        .getTextTitleModalWindow()
-                        ,"Новый звуковой файл",
-                        "Не найден заголовок модального окна при добавлении звукового файла " + filename),
-                () -> {
-                    verifyAudioPlayer(durationFile, volumePlayer);
-                },
-                () -> {clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);},
-                () -> {isItemTable(IVR_SOUND_FILES_TITLE, filename, true);}
-        );
+        uploadSoundFile(pathToFile, filename);
+        verifyAudioPlayer(durationFile, volumePlayer);
+        clickActionButtonOfModalWindow("Сохранить")
+                .isModalWindow(false)
+                .isItemTable(IVR_SOUND_FILES_TITLE, filename, true);
     }
 
     @Override
     public void verifyButtonAudioPlayer(String filename, String durationFile, String volumePlayer) {
-        assertAll("Проверяем:\n" +
-                "1. Заголовок модального окна\n" +
-                "2. Функции аудиоплеера\n" +
-                "3. Закрытие модального окна",
-                () -> assertEquals(
-                        clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_PLAY_AUDIO).getTextTitleModalWindow()
-                        , "Редактирование звукового файла"
-                        ,"Не найден заголовок модального окна при прослушивании звукового файла " + filename),
-                () -> {
-                    verifyAudioPlayer(durationFile, volumePlayer);
-                },
-                () -> {clickActionButtonOfModalWindow("Отменить").isModalWindow(false);}
-        );
+        clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_PLAY_AUDIO);
+        verifyAudioPlayer(durationFile, volumePlayer);
+        clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
     }
 
     @Override
     public void editMusicFile(String oldFilename, String newFilename, String pathToFile, String durationFile, String volumePlayer) {
-        assertAll("Проверяем:\n" +
-                        "1. Заголовок модального окна\n" +
-                        "2. Функции аудиоплеера\n" +
-                        "3. Закрытие модального окна",
-                () -> assertEquals(
-                        clickButtonTable(IVR_SOUND_FILES_TITLE, oldFilename, IVR_BUTTON_PLAY_AUDIO).getTextTitleModalWindow()
-                        , "Редактирование звукового файла"
-                        ,"Не найден заголовок модального окна при прослушивании звукового файла " + oldFilename),
-                () -> {
-                    uploadSoundFileByModalWindow(pathToFile, newFilename);
-                },
-                () -> {
-                    verifyAudioPlayer(durationFile, volumePlayer);
-                },
-                () -> {clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);},
-                () -> {isItemTable(IVR_SOUND_FILES_TITLE, newFilename, true);}
-        );
+        clickButtonTable(IVR_SOUND_FILES_TITLE, oldFilename, IVR_BUTTON_EDIT);
+        uploadSoundFileByModalWindow(pathToFile, newFilename);
+        verifyAudioPlayer(durationFile, volumePlayer);
+        clickActionButtonOfModalWindow("Сохранить")
+                .isModalWindow(false)
+                .isItemTable(IVR_SOUND_FILES_TITLE, newFilename, true);
     }
 
     @Override
     public void downloadMusicFile(String filename) {
-        assertAll("Проверяем:\n" +
-                        "1. Наличие заколовка модального окна\n" +
-                        "2. скачивание файла " + filename + "\n" +
-                        "3. Закрытие модального окна после нажатия кнопки Отмена",
-                () -> assertEquals(clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_EDIT)
-                                .getTextTitleModalWindow(),
-                        "Редактирование звукового файла",
-                        "Не найден заголовок модального окна при воспроизведение"),
-                () -> assertEquals(downloadSoundFile().getName(), filename,
-                        "Файл " + filename + " не удалось скачать"),
-                () -> {clickActionButtonOfModalWindow("Отменить").isModalWindow(false);}
-        );
+        clickButtonTable(IVR_SOUND_FILES_TITLE, filename, IVR_BUTTON_EDIT);
+        assertEquals(downloadSoundFile().getName(), filename,
+                "Файл " + filename + " не удалось скачать");
+        clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
     }
 
     @Override
@@ -148,8 +153,6 @@ public class TIVRPage extends IVRPage implements IIVRPage {
     @Override
     public void addMenu(String name, String type, String description, String pathSound, String number, String... goToMenu) {
         clickButtonAdd(IVR_MENU_TITLE);
-        /*if(!clickButtonAdd(IVR_MENU_TITLE).getTextTitleModalWindow().equals("Новое голосовое меню"))
-            Allure.step("Не найден заголовок модального окна при добавлении голосового меню", Status.FAILED);*/
         if(type.equals("Перейти в меню") && goToMenu.length > 0) addVoiceMenu(name, type, pathSound, number, goToMenu[0]);
         else addVoiceMenu(name, type, pathSound, number);
         saveAndVerifyMenu(name, description);
@@ -158,8 +161,6 @@ public class TIVRPage extends IVRPage implements IIVRPage {
     @Override
     public void addSchedule(String name) {
         clickButtonAddSchedule().sendModalWindowOfSchedule(name);
-        /*if(getTextTitleModalWindow().equals("Новое расписание"))
-            Allure.step("Не найден заголовок модального окна при добаление нового рапсписания", Status.FAILED);*/
         clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
         isVisibleSchedule(name, true);
     }
@@ -192,9 +193,6 @@ public class TIVRPage extends IVRPage implements IIVRPage {
         startTime = getTimeRules("Время начала", startTimes[0], startTimes[1]);
         endTime = getTimeRules("Время окончания", endTimes[0], endTimes[1]);
 
-        /*if( ! getTextTitleModalWindow().equals("Новое правило"))
-            Allure.step("Не найден заголовок модального окна при добаление нового правила", Status.FAILED);*/
-
         clickActionButtonOfModalWindow("Сохранить").isModalWindow(false);
 
         isItemRules(date, startTime + " - " + endTime, except, true);
@@ -211,17 +209,11 @@ public class TIVRPage extends IVRPage implements IIVRPage {
 
     @Override
     public void editMenu(String newNameMenu, String oldNameMenu, String type, String description, String pathSound, String numberOrTypeMenu) {
-        assertAll("Проверяем редактирование меню " + oldNameMenu,
-                () -> assertEquals(
-                        clickButtonTable(IVR_MENU_TITLE, oldNameMenu, IVR_BUTTON_EDIT).getTextTitleModalWindow(),
-                        "Редактирование голосового меню"
-                        , "Не найден заголовок модального окна при редактировании голосового меню " + oldNameMenu),
-                () -> {
-                    editVoiceMenu(newNameMenu, type, pathSound, numberOrTypeMenu);
-                    isInputNumberDTMF(false).isInputActionDTMF(false);
-                    saveAndVerifyMenu(newNameMenu, description);
-                }
-                );
+        clickButtonTable(IVR_MENU_TITLE, oldNameMenu, IVR_BUTTON_EDIT);
+        editVoiceMenu(newNameMenu, type, pathSound, numberOrTypeMenu)
+                .isInputNumberDTMF(false)
+                .isInputActionDTMF(false);
+        saveAndVerifyMenu(newNameMenu, description);
     }
 
     @Override
@@ -238,16 +230,13 @@ public class TIVRPage extends IVRPage implements IIVRPage {
         clickActionButtonOfModalWindow("Сохранить")
                 .isModalWindow(false);
         isVisibleSchedule(newSchedule, true);
-        //isItemTable(IVR_ENTRY_POINTS_TITLE, newSchedule, true);
     }
 
     @Override
     public void checkLookModalWindowOfMenu(String title, String type, SelenideElement parent, String soundFile, boolean dtmf, String... number) {
         if ( ! title.contains("Перейти в меню")) {
-            assertEquals(clickButtonTable(IVR_MENU_TITLE, title, IVR_MENU_BUTTON_LOOK_MENU)
-                            .getTextTitleModalWindow(),
-                    title,
-                    "Не найден заголовок модального окна при просмотре настроек меню " + title);
+            clickButtonTable(IVR_MENU_TITLE, title, IVR_MENU_BUTTON_LOOK_MENU)
+                    .isTitleTextModalWindow(title);
         }
         isIconSoundOfModalWindowVoiceMenu(parent)
                 .isIconTimeOutOfModalWindowMenu(parent)
@@ -287,10 +276,8 @@ public class TIVRPage extends IVRPage implements IIVRPage {
         if (dtmfSimpleMenu && dtmf) numberSimpleMenu = number[1];
         else if (dtmfSimpleMenu && !dtmf) numberSimpleMenu = number[0];
         else numberSimpleMenu = null;
-        assertEquals(clickButtonTable(IVR_MENU_TITLE, title, IVR_MENU_BUTTON_LOOK_MENU)
-                        .getTextTitleModalWindow(),
-                title,
-                "Не найден заголовок модального окна при просмотре настроек меню " + title);
+        clickButtonTable(IVR_MENU_TITLE, title, IVR_MENU_BUTTON_LOOK_MENU)
+                .isTitleTextModalWindow(title);
         isIconSoundOfModalWindowVoiceMenu(getModalWindow())
                 .isIconTimeOutOfModalWindowMenu(getModalWindow())
                 .isIconErrorOutlineOfModalWindowMenu(getModalWindow())
@@ -392,8 +379,7 @@ public class TIVRPage extends IVRPage implements IIVRPage {
 
     @Override
     public void deleteRules(String schedule, String date, String time) {
-        isTitleRules()
-                .clickSchedule(schedule)
+        clickSchedule(schedule)
                 .clickActionButtonRules(date, IVR_BUTTON_DELETE);
         isFormConfirmActions(true)
                 .clickButtonConfirmAction("Продолжить");

@@ -9,8 +9,7 @@ import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
-import static chat.ros.testing2.data.SettingsData.IVR_MENU_TITLE;
-import static chat.ros.testing2.data.SettingsData.IVR_SOUND_FILES_TITLE;
+import static chat.ros.testing2.data.SettingsData.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -40,6 +39,12 @@ public class ServicesPage implements SettingsPage {
     public ServicesPage isModalWindow(boolean show){
         if(show) modalWindow.shouldBe(visible, Duration.ofSeconds(10));
         else modalWindow.shouldNotBe(visible, Duration.ofSeconds(10));
+        return this;
+    }
+
+    @Step(value = "Получаем заголовок моадльного окна")
+    public ServicesPage isTitleTextModalWindow(String title){
+        modalWindow.find("h2").shouldHave(text(title));
         return this;
     }
 
@@ -121,6 +126,24 @@ public class ServicesPage implements SettingsPage {
     public ServicesPage isContactName(String contact, boolean search) {
         if (search) getContactName(contact).shouldBe(Condition.visible);
         else getContactName(contact).shouldNotBe(Condition.visible);
+        return this;
+    }
+
+    @Step(value = "Проверяем текст {text} с ссылкой {link} в разделе {section}")
+    public ServicesPage isInfoTextWithLink(String section, String text){
+        String hostServer = System.getProperty("hostserver");
+        if(section.equals(FAX_USERS_TITLE))
+            getServiceSection(section)
+                    .find(".fax-link")
+                    .shouldHave(text(text))
+                    .find("a[href=\"http://" + hostServer + ":5000\"]")
+                    .shouldBe(text("http://" + hostServer + ":5000"));
+        else
+            getServiceSection(section)
+                    .find(".alert-link")
+                    .shouldHave(text(text))
+                    .find("a[href=\"http://" + hostServer + ":3010]\"]")
+                    .shouldHave(text("http://" + hostServer + ":3010"));
         return this;
     }
 

@@ -8,6 +8,10 @@ public class TFaxPage extends TServicePage implements IFaxPage {
 
     private FaxPage faxPage = new FaxPage();
 
+    public FaxPage getInstanceFaxPage(){
+        return faxPage;
+    }
+
     @Override
     public void addNumberFax(String number, String description) {
         clickButtonAdd(FAX_NUMBERS_TITLE);

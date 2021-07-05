@@ -5,6 +5,15 @@ import chat.ros.testing2.server.settings.services.ServicesPage;
 public class TServicePage extends ServicesPage implements IServicePage {
 
     @Override
+    public void checkTitleTextModalWindowWhenAddItem(String section, String title) {
+        clickButtonAdd(section)
+                .isModalWindow(true)
+                .isTitleTextModalWindow(title)
+                .clickActionButtonOfModalWindow("Отменить")
+                .isModalWindow(false);
+    }
+
+    @Override
     public void addContact(String section, String contact) {
         clickButtonAdd(section)
                 .sendInputModalWindow("Поиск контакта", contact);

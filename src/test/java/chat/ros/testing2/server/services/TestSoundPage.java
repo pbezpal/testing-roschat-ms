@@ -7,6 +7,8 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static chat.ros.testing2.data.SettingsData.*;
+
 @Epic(value = "Сервисы")
 @Feature(value = "Голосовое меню")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -28,17 +30,41 @@ public class TestSoundPage extends TIVRPage {
 
     private String soundFile = null;
 
+    @Story(value = "Проверяем заголовок модального окна при добавление аудиофайла")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку Добавить файл\n" +
+            "3. Выбираем аудиофайл\n" +
+            "4. Проверяем текст в заголовке модального окна\n" +
+            "5. Нажимаем кнопку Отменить\n" +
+            "6. Проверяем, что аудиофайл не отобраджается в таблице звуковых файлов")
+    @Test
+    @Order(1)
+    void test_Check_Title_Text_Modal_Window_When_Uploading_File(){
+        checkTitleTextModalWindowWhenUploadFile(pathWAVFile1, wavFile1, "Новый звуковой файл");
+    }
+
 
     @Story(value = "Проверяем работу аудиплеера при добавлении аудиофайла")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем звуковой файл wav и название к нему\n" +
-            "3. Проверяем работу аудиплеера " +
+            "3. Проверяем работу аудиплеера\n" +
             "4. Проверяем, что звуковой файл wav и название к нему сохраняются в таблицу звуковых файлов")
     @Test
-    @Order(1)
+    @Order(2)
     void test_Audio_Player_When_Uploading_File(){
         uploadMusicFile(pathWAVFile1, wavFile1, "19.121625", "0.5");
         TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем текст модального окна, после нажатия кнопки Воспроихвести")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку Воспроизвести у аудиофайла\n" +
+            "3. Проверяем текст в заголовке модального окна\n" +
+            "4. Нажимаем кнопку Отменить")
+    @Test
+    @Order(3)
+    void test_Check_Title_Text_Modal_Window_After_Click_Button_Play(){
+        checkTitleTextWhenEditItem(IVR_SOUND_FILES_TITLE, wavFile1, "Редактирование звукового файла", IVR_BUTTON_PLAY_AUDIO);
     }
 
     @Story(value = "Проверяем работу аудиоплеера после нажатия кнопки Воспроизвести")
@@ -46,9 +72,20 @@ public class TestSoundPage extends TIVRPage {
             "2. Нажимаем кнопку Воспроизвести в таблице звуков\n" +
             "3. Проверяем работу аудиплеера")
     @Test
-    @Order(2)
+    @Order(4)
     void test_Button_Play_After_Add_Sound_File(){
         verifyButtonAudioPlayer(wavFile1, "19.121625", "0.5");
+    }
+
+    @Story(value = "Проверяем текст модального окна, после нажатия кнопки Изменить")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку Воспроизвести у аудиофайла\n" +
+            "3. Проверяем текст в заголовке модального окна\n" +
+            "4. Нажимаем кнопку Отменить")
+    @Test
+    @Order(5)
+    void test_Check_Title_Text_Modal_Window_After_Click_Button_Edit(){
+        checkTitleTextWhenEditItem(IVR_SOUND_FILES_TITLE, wavFile1, "Редактирование звукового файла", IVR_BUTTON_EDIT);
     }
 
     @Story(value = "Редактируем звуковой фал")
@@ -57,18 +94,20 @@ public class TestSoundPage extends TIVRPage {
             "3. Выбираем новый звуковой файл \n" +
             "4. Проверяем, что новый файл и описание добавлены в таблицу звуковых файлов")
     @Test
-    @Order(3)
+    @Order(6)
     void test_AudioPlayer_When_Edit_Sound_File() {
         editMusicFile(wavFile1, wavFile2, pathWAVFile2, "19.121625", "0.5");
         TestStatusResult.setTestResult(true);
     }
+
+
 
     @Story(value = "Проверяем работу аудиоплеера после нажатия кнопки Воспроизвести плосле редактирования файла")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем кнопку Воспроизвести в таблице звуков\n" +
             "3. Проверяем работу аудиплеера")
     @Test
-    @Order(4)
+    @Order(7)
     void test_Button_Play_After_Edit_Sound_File(){
         verifyButtonAudioPlayer(wavFile2, "20.349375", "0.5");
     }
@@ -80,7 +119,7 @@ public class TestSoundPage extends TIVRPage {
             "4. Проверяем, скачался ли звуковой файл"
     )
     @Test
-    @Order(5)
+    @Order(8)
     void test_Download_Sound_File() {
         soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;
@@ -93,7 +132,7 @@ public class TestSoundPage extends TIVRPage {
             "2. Удаляем звуковой файл \n" +
             "3. Проверяем, что в таблице звуковых файлов отсуствтует удленный звуковой файл")
     @Test
-    @Order(6)
+    @Order(9)
     void test_Delete_Sound_File(){
         soundFile = null;
         if(TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File") == null || ! TestStatusResult.getTestResult().get("test_AudioPlayer_When_Edit_Sound_File")) soundFile = wavFile1;

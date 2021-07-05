@@ -140,12 +140,66 @@ public class TestIVRPage extends TIVRPage {
         num++;
     }
 
+    @Story(value = "Проверяем текст заголовка модального окна при добавление Точки входа")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку Добавить в разделе Точки входа\n" +
+            "3. Проверяем правильно ли отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отмена\n" +
+            "5. Проверяепм, что модальное окно закрылось")
+    @Test
+    @Order(1)
+    void test_Check_Title_Text_Modal_Window_When_Add_Entry_Point(){
+        checkTitleTextModalWindowWhenAddItem(IVR_ENTRY_POINTS_TITLE, "Создание точки входа");
+    }
+
+    @Story(value = "Проверяем текст заголовка модального окна при добавление Меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку Добавить в разделе Меню\n" +
+            "3. Проверяем правильно ли отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отмена\n" +
+            "5. Проверяепм, что модальное окно закрылось")
+    @Test
+    @Order(2)
+    void test_Check_Title_Text_Modal_Window_When_Add_Menu(){
+        checkTitleTextModalWindowWhenAddItem(IVR_MENU_TITLE, "Новое голосовое меню");
+    }
+
+    @Story(value = "Проверяем отображается ли текст Расписане у леговго столбца в разделе Расписание")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Проверяем правильно ли отображается заголовок леовго столбца в разделе Расписание")
+    @Test
+    @Order(3)
+    void test_Check_Title_Text_Of_Left_Column_Schedule(){
+        isTitleSchedule();
+    }
+
+    @Story(value = "Проверяем отображается ли текст Правила у правого столбца в разделе Расписание")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Проверяем правильно ли отображается заголовок правого столбца в разделе Расписание")
+    @Test
+    @Order(4)
+    void test_Check_Title_Text_Of_Right_Column_Schedule(){
+        isTitleRules();
+    }
+
+    @Story(value = "Проверяем текст заголовка модального окна при добавление Меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню \n" +
+            "2. Нажимаем кнопку + в разделе Расписание в левом столбце\n" +
+            "3. Проверяем правильно ли отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отмена\n" +
+            "5. Проверяепм, что модальное окно закрылось")
+    @Test
+    @Order(5)
+    void test_Check_Title_Text_Modal_Window_When_Add_Schedule(){
+        checkTitleTextModalWindowWhenAddItem(IVR_SCHEDULE_TITLE, "Новое расписание");
+    }
+
     @Story(value = "Загружаем звуковой wav файл")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем звуковой файл wav и описание к нему\n" +
             "3. Проверяем, что звуковой файл wav и описание к нему добавлены в таблицу звуковых файлов")
     @Test
-    @Order(1)
+    @Order(6)
     void test_Upload_Sound_File(){
         uploadMusicFile(pathWAVFile1, wavFile1);
         TestStatusResult.setTestResult(true);
@@ -155,7 +209,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем Меню \n" +
             "3. Проверяем, что меню успешно добавлено")
-    @Order(2)
+    @Order(7)
     @ParameterizedTest(name="Add menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Simple_Menu(String type){
@@ -166,11 +220,24 @@ public class TestIVRPage extends TIVRPage {
         TestStatusResult.setTestResult(true);
     }
 
+    @Story(value = "Проверяем, правильно ли отображается текст заголовка модального окна при редактирование Меню")
+    @Description(value = "1. Переходим в раздел Голосовое меню\n" +
+            "2. Нажимаем кнопку редактировать у меню\n" +
+            "3. Проверяем, что отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отменить\n" +
+            "5. Проверяем, что модальное окно закрылось")
+    @Test
+    @Order(8)
+    void test_Check_Title_Text_Modal_Window_When_Edit_Menu(){
+        String nameMenu = "Меню " + IVR_MENU_ITEMS[0];
+        checkTitleTextWhenEditItem(IVR_MENU_TITLE, nameMenu, "Редактирование голосового меню", IVR_BUTTON_EDIT);
+    }
+
     @Story(value = "Проверяем отображение настроек простого меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
-    @Order(3)
+    @Order(9)
     @ParameterizedTest(name="Look simple menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Simple_Menu(String type){
@@ -185,12 +252,36 @@ public class TestIVRPage extends TIVRPage {
             "3. Вводим название расписания\n" +
             "4. Сохраняем расписания\n" +
             "5. Проверяем, что расписание сохранилось в списке расписаний")
-    @Order(4)
+    @Order(10)
     @ParameterizedTest(name="Add schedule={0}")
     @MethodSource(value = "receiveScheduleItems")
     void test_Add_Schedule(String schedule){
         addSchedule(schedule);
         TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем, правильно ли отображается текст заголовка модального окна при редактирование Расписания")
+    @Description(value = "1. Переходим в раздел Голосовое меню\n" +
+            "2. Нажимаем кнопку редактировать у Расписания\n" +
+            "3. Проверяем, что отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отменить\n" +
+            "5. Проверяем, что модальное окно закрылось")
+    @Test
+    @Order(11)
+    void test_Check_Title_Text_Modal_Window_When_Edit_Schedule(){
+        checkTitleTextWhenEditItem(IVR_SCHEDULE_TITLE, IVR_SCHEDULE_ITEMS[0], "Редактирование расписания", IVR_BUTTON_EDIT);
+    }
+
+    @Story(value = "Проверяем, правильно ли отображается текст заголовка модального окна при добавление Правила")
+    @Description(value = "1. Переходим в раздел Голосовое меню\n" +
+            "2. Нажимаем кнопку + в столбце Правила\n" +
+            "3. Проверяем, что отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отменить\n" +
+            "5. Проверяем, что модальное окно закрылось")
+    @Test
+    @Order(12)
+    void test_Check_Title_text_Modal_Window_When_Add_Rules(){
+        checkTitleTextModalWindowWhenActionRules(IVR_SCHEDULE_ITEMS[0], "Новое правило");
     }
 
     @Story(value = "Добавление правила по дням недели")
@@ -203,7 +294,7 @@ public class TestIVRPage extends TIVRPage {
             "7. Проверяем, что правило сохранилось в таблице правил")
     @ParameterizedTest(name="Add rule with week days={0}")
     @MethodSource(value = "receiveScheduleItems")
-    @Order(5)
+    @Order(13)
     void test_Add_Rules_With_Week_Days(String schedule){
         String[] fullWeekDays;
         if(schedule.equals("Расписание 1")
@@ -233,6 +324,19 @@ public class TestIVRPage extends TIVRPage {
         TestStatusResult.setTestResult(true);
     }
 
+    @Story(value = "Проверяем, правильно ли отображается текст заголовка модального окна при редактирование Правила")
+    @Description(value = "1. Переходим в раздел Голосовое меню\n" +
+            "2. Нажимаем кнопку редактировать у правила\n" +
+            "3. Проверяем, что отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отменить\n" +
+            "5. Проверяем, что модальное окно закрылось")
+    @Test
+    @Order(14)
+    void test_Check_Title_text_Modal_Window_When_Edit_Rules(){
+        String date = mapScheduleWeekDays.get(IVR_SCHEDULE_ITEMS[0])[0];
+        checkTitleTextModalWindowWhenActionRules(IVR_SCHEDULE_ITEMS[0], "Редактирование правила", date);
+    }
+
     @Story(value = "Добавляем правила с календарными датами")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Выбираем расписание\n" +
@@ -244,7 +348,7 @@ public class TestIVRPage extends TIVRPage {
             "8. Проверяем, что правило сохранилось в таблице правил")
     @ParameterizedTest(name="Add rule with calendar date={0}")
     @MethodSource(value = "receiveScheduleItems")
-    @Order(6)
+    @Order(15)
     void test_Add_Rules_With_Calendar_Date(String schedule){
         String[] typeDate = {"Дата начала", "Дата окончания"};
         if(h > 23) h = 0;
@@ -270,7 +374,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем точку входа обычным меню\n" +
             "3. Проверяем, что точка входа успешно добавлена")
-    @Order(7)
+    @Order(16)
     @ParameterizedTest(name="Add entry point with simple menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Entry_Point_With_Simple_Menu(String menuItems){
@@ -285,12 +389,25 @@ public class TestIVRPage extends TIVRPage {
         TestStatusResult.setTestResult(true);
     }
 
+    @Story(value = "Проверяем, правильно ли отображается текст заголовка модального окна при редактирование Точки входа")
+    @Description(value = "1. Переходим в раздел Голосовое меню\n" +
+            "2. Нажимаем кнопку редактировать у Точки входа\n" +
+            "3. Проверяем, что отображается заголовок модального окна\n" +
+            "4. Нажимаем кнопку Отменить\n" +
+            "5. Проверяем, что модальное окно закрылось")
+    @Test
+    @Order(17)
+    void test_Check_Title_Text_Modal_Window_When_Edit_Entry_Point(){
+        String nameMenu = "Меню " + IVR_MENU_ITEMS[0];
+        checkTitleTextWhenEditItem(IVR_ENTRY_POINTS_TITLE, nameMenu, "Редактирование точки входа", IVR_BUTTON_EDIT);
+    }
+
     @Story(value = "Добавление меню с переходом в другое меню")
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем Меню \n" +
             "3. Выбираем тип Перейти в меню\n" +
             "4. Проверяем, что меню успешно добавлено")
-    @Order(8)
+    @Order(18)
     @ParameterizedTest(name="Add go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Go_To_Menu(String type){
@@ -305,7 +422,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
-    @Order(9)
+    @Order(19)
     @ParameterizedTest(name="Look go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Go_To_Menu(String type){
@@ -320,7 +437,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Добавляем точку входа \n" +
             "3. Проверяем, что точка входа успешно добавлена")
-    @Order(10)
+    @Order(20)
     @ParameterizedTest(name="Add entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Add_Entry_Point_With_Go_To_Menu(String type){
@@ -340,7 +457,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Добавляем звуковой файл \n" +
             "3. Проверяем, что новый файл добавлен в таблицу звуковых файлов")
     @Test
-    @Order(11)
+    @Order(21)
     void test_Upload_Sound_File_2(){
         uploadMusicFile(pathWAVFile2, wavFile2);
         TestStatusResult.setTestResult(true);
@@ -350,7 +467,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем Меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
-    @Order(12)
+    @Order(22)
     @ParameterizedTest(name="Edit menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Simple_Menu(String type){
@@ -367,7 +484,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
-    @Order(13)
+    @Order(23)
     @ParameterizedTest(name="Look simple menu after edit={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Simple_Menu_After_Edit(String type){
@@ -381,7 +498,7 @@ public class TestIVRPage extends TIVRPage {
             "3. Вводим новое название расписания\n" +
             "4. Сохраняем новое название расписания\n" +
             "5. Проверяем, что изменения сохранились в списке расписаний")
-    @Order(14)
+    @Order(24)
     @ParameterizedTest(name="Edit schedule={0}")
     @MethodSource(value = "receiveScheduleItems")
     void test_Edit_Schedule(String schedule){
@@ -401,7 +518,7 @@ public class TestIVRPage extends TIVRPage {
             "8. Проверяем, что изменения сохранились в таблице правил")
     @ParameterizedTest(name="Edit rule with calendar date={0}")
     @MethodSource(value = "receiveScheduleItems")
-    @Order(15)
+    @Order(25)
     void test_Edit_Rules_With_Calendar_Date(String schedule){
         String titleSchedule = schedule + " отредактировано";
         String[] fullWeekDays = new String[]{"Пн.", "Вт.", "Ср.", "Чт.", "Пт.", "Сб.", "Вс."};
@@ -436,7 +553,7 @@ public class TestIVRPage extends TIVRPage {
             "8. Проверяем, что изменения сохранились в таблице правил")
     @ParameterizedTest(name="Edit rule with week days={0}")
     @MethodSource(value = "receiveScheduleItems")
-    @Order(16)
+    @Order(26)
     void test_Edit_Rules_With_Week_Days(String schedule){
         String[] typeDate = {"Дата начала", "Дата окончания"};
         if(h > 23) h = 0;
@@ -463,7 +580,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем точку входа \n" +
             "3. Проверяем, что точка входа успешно отредактирована")
-    @Order(17)
+    @Order(27)
     @ParameterizedTest(name="Edit entry point={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Entry_Point_With_Simple_Menu(String typeMenu){
@@ -485,7 +602,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Редактируем меню - переход в меню \n" +
             "3. Проверяем, что меню было успешно отредактировано")
-    @Order(18)
+    @Order(28)
     @ParameterizedTest(name="Edit go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Go_To_Menu(String type){
@@ -502,7 +619,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Нажимаем у меню кнопку Показать \n" +
             "3. Проверяем, что настройки отображаются корректно")
-    @Order(19)
+    @Order(29)
     @ParameterizedTest(name="Look go to menu after edit={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Look_Go_to_Menu_After_Edit(String type){
@@ -519,7 +636,7 @@ public class TestIVRPage extends TIVRPage {
             "5. Выбираем отредактированное расписание\n" +
             "6. Нажимаем кнопку Сохранить\n" +
             "3. Проверяем, что изменения сохранились в таблице Точек входа")
-    @Order(20)
+    @Order(30)
     @ParameterizedTest(name="Edit entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Edit_Entry_Point_With_Go_To_Menu(String typeMenu){
@@ -542,7 +659,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Нажимаем кнопку удалить у точки входа с простым меню" +
             "3. Подтверждаем удаление точки входа\n" +
             "4. Проверяем, что в таблице удалённые точки входа не отображается")
-    @Order(21)
+    @Order(31)
     @ParameterizedTest(name="Delete entry point with simple menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Entry_Point_With_Simple_Menu(String type){
@@ -558,7 +675,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Нажимаем кнопку удалить у точки входа с переходом в другое меню" +
             "3. Подтверждаем удаление точки входа\n" +
             "4. Проверяем, что в таблице удалённые точки входа не отображается")
-    @Order(22)
+    @Order(32)
     @ParameterizedTest(name="Delete entry point with go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Entry_Point_With_Go_To_Menu(String type){
@@ -573,7 +690,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем Меню \n" +
             "3. Проверяем, что в таблице удалённое меню не отображается")
-    @Order(23)
+    @Order(33)
     @ParameterizedTest(name="Delete menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Simple_Menu(String type){
@@ -588,7 +705,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Открываем просмотр настроек меню перехода в другое меню\n" +
             "3. Проверяем, что отсутствуют ссылки в настройках меню")
-    @Order(24)
+    @Order(34)
     @ParameterizedTest(name="Check links go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_No_Links_Go_To_Menu(String type){
@@ -605,7 +722,7 @@ public class TestIVRPage extends TIVRPage {
     @Description(value = "1. Переходим в раздел Голосовое меню \n" +
             "2. Удаляем Меню \n" +
             "3. Проверяем, что в таблице удалённое меню не отображается")
-    @Order(25)
+    @Order(35)
     @ParameterizedTest(name="Delete go to menu={0}")
     @MethodSource(value = "receiveMenuItems")
     void test_Delete_Go_To_Menu(String type){
@@ -620,7 +737,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Нажимаем кнопку удалить у правила\n" +
             "3. Подтверждаем удаление правила\n" +
             "4. Проверяем, что правило не отображается в таблице правил после удаления")
-    @Order(26)
+    @Order(36)
     @ParameterizedTest(name="Delete rules with week days={0}")
     @MethodSource(value = "receiveScheduleItems")
     void test_Delete_Rules_With_Week_Days(String schedule){
@@ -636,7 +753,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Нажимаем кнопку удалить у правила\n" +
             "3. Подтверждаем удаление правила\n" +
             "4. Проверяем, что правило не отображается в таблице правил после удаления")
-    @Order(27)
+    @Order(37)
     @ParameterizedTest(name="Delete rules with calendar date={0}")
     @MethodSource(value = "receiveScheduleItems")
     void test_Delete_Rules_With_Calendar_Date(String schedule){
@@ -652,7 +769,7 @@ public class TestIVRPage extends TIVRPage {
             "2. Нажимаем кнопку удалить у расписания\n" +
             "3. Подтверждаем удаление расписания\n" +
             "4. Проверяем, что расписание не отображается в в разделе расписание")
-    @Order(28)
+    @Order(38)
     @ParameterizedTest(name="Delete schedule={0}")
     @MethodSource(value = "receiveScheduleItems")
     void test_Delete_Schedule(String schedule){

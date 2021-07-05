@@ -54,7 +54,10 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"), "The sound file don't add. Skip the test!");
             else if (testMethod.equals("test_Add_Rules_With_Week_Days")
                     || testMethod.equals("test_Add_Rules_With_Calendar_Date")
-                    || testClass.equals("test_Edit_Schedule"))
+                    || testClass.equals("test_Edit_Schedule")
+                    || testMethod.equals("test_Check_Title_text_Modal_Window_When_Edit_Schedule")
+                    || testMethod.equals("test_Check_Title_text_Modal_Window_When_Add_Rules")
+            )
                 verifyParamTest(testParams, "Add schedule=");
             else if (testMethod.equals("test_Add_Entry_Point_WIth_Simple_Menu"))
                 verifyParamTest(testParams, "Add menu=");
@@ -63,14 +66,19 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
             else if (testMethod.equals("test_Add_Entry_Point_With_Go_To_Menu"))
                 verifyParamTest(testParams, "Add go to menu=");
             else if (testMethod.equals("test_Look_Go_To_Menu")) verifyParamTest(testParams, "Add go to menu=");
-            else if (testMethod.equals("test_Edit_Simple_Menu")) {
+            else if (testMethod.equals("test_Edit_Simple_Menu")
+                    || testMethod.equals("test_Check_Title_text_Modal_Window_When_Edit_Menu")) {
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File_2"),
                         "The sound file without description don't add. Skip the test!");
                 verifyParamTest(testParams, "Add menu=");
-            } else if (testMethod.equals("test_Edit_Rules_With_Calendar_Date")) {
+            }else if(testMethod.equals("test_Check_Title_text_Modal_Window_When_Edit_Rules"))
+                verifyParamTest(testParams, "Add rule with week days=");
+            else if (testMethod.equals("test_Edit_Rules_With_Calendar_Date")) {
                 verifyParamTest(testParams, "Edit schedule=");
                 verifyParamTest(testParams, "Add rule with calendar date=");
-            } else if (testMethod.equals("test_Edit_Rules_With_Week_Days")) {
+            } else if (testMethod.equals("test_Edit_Rules_With_Week_Days")
+                    || testMethod.equals("test_Check_Title_text_Modal_Window_When_Add_Rules")
+            ) {
                 verifyParamTest(testParams, "Edit schedule=");
                 verifyParamTest(testParams, "Add rule with week days=");
             } else if (testMethod.equals("test_Edit_Entry_Point_With_Simple_Menu")) {
@@ -90,6 +98,8 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
             } else if (testMethod.equals("test_Delete_Sound_File"))
                 assumeTrue(TestStatusResult.getTestResult().get("test_Upload_Sound_File"),
                         "The sound file don't add. Skip the test!");
+            else if(testMethod.equals("test_Check_Title_Text_Modal_Window_When_Edit_Entry_Point"))
+                verifyParamTest(testParams, "Add entry point with simple menu=");
             else if (testMethod.equals("test_Delete_Entry_Point_With_Simple_Menu")) {
                 verifyParamTest(testParams, "Add entry point with simple menu=");
                 verifyParamTest(testParams, "Edit entry point=");
@@ -111,8 +121,7 @@ public class ResourcesIVRPage extends StartWebDriver implements BeforeEachCallba
 
         }
 
-        if(testClass.contains("TestSoundPage") || testClass.contains("TestMenuPage"))
-            getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
+        getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Голосовое меню");
     }
 
     @Override

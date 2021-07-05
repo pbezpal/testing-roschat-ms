@@ -190,7 +190,6 @@ public interface SettingsData {
     String MAIL_CONTACT_INPUT_FROM_MAIL = "Почтовый адрес";
     String MAIL_CONNECT_TEXT_CHECK= "Настройки почты корректны.";
 
-
     /****** Порты почтового сервера ******/
     String MAIL_PORT_NO_SECURITY = "25";
     String MAIL_PORT_SSL = "465";
@@ -277,7 +276,9 @@ public interface SettingsData {
 
     String ALERT_TITLE_SECTION_SIP_ALERT = "Росчат оповещение, SIP-оповещение";
 
-    String ALERT_TITLE_SECTION_SMS_ALERT = "";
+    String ALERT_TITLE_SECTION_SMS_ALERT = "SMS-оповещение";
+
+    String ALERT_TITLE_SECTION_EMAIL_ALERT = "EMAIL-оповещение";
 
     /******************************************* Раздел Голосовое меню ***********************************************/
 

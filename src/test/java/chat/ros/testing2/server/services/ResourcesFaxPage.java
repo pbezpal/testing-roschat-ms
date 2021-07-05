@@ -25,9 +25,9 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
             if(methodTest.equals("test_Delete_Number_Fax_Without_Description"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Number_Fax_Without_Description"),
                         "The number fax without description don't add. Skip the test!");
-            else if(methodTest.equals("test_Add_User_For_Fax"))
+            /*else if(methodTest.equals("test_Add_User_For_Fax"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Contact_For_Fax"),
-                        "The contact for fax don't created. Skip the test!");
+                        "The contact for fax don't created. Skip the test!");*/
             if(methodTest.equals("test_Add_Contact_For_Fax"))
                 getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
             else
