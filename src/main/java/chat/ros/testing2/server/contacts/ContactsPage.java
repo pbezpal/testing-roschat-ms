@@ -13,8 +13,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_LASTNAME;
-import static chat.ros.testing2.data.ContactsData.CONTACT_INPUT_PHONE_JOB;
+import static chat.ros.testing2.data.ContactsData.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -40,12 +39,21 @@ public class ContactsPage implements BasePage {
         return this;
     }
 
-    protected Map<String, String> getMapInputsValueContact(String lastName, String phoneJob){
-        Map<String, String> mapInputValueContact = new HashMap() {{
-            put(CONTACT_INPUT_LASTNAME, lastName);
-            put(CONTACT_INPUT_PHONE_JOB, phoneJob);
-        }};
-        return mapInputValueContact;
+    protected Map<String, String> getMapInputsValueContact(String... values){
+        switch (values.length) {
+            case 1:
+                return new HashMap() {{
+                    put(CONTACT_INPUT_LASTNAME, values[0]);
+                    put(CONTACT_INPUT_PHONE_JOB, values[0]);
+                }};
+            case 2:
+                return new HashMap() {{
+                    put(CONTACT_INPUT_LASTNAME, values[0]);
+                    put(CONTACT_INPUT_PHONE_JOB, values[0]);
+                    put(CONTACT_INPUT_EMAIL, values[1]);
+                }};
+        }
+        return null;
     }
 
     @Step(value = "Вводим в поле {field} значение {value}")
@@ -93,25 +101,25 @@ public class ContactsPage implements BasePage {
      * @param contact the contact name and number telephone for contact
      * @return
      */
-    public UserPage actionsContact(String contact){
+    public UserPage actionsContact(String... contact){
         //Вводим фамилию в поле поиска
-        sendInputSearchContact(contact);
+        sendInputSearchContact(contact[0]);
         //Проверяем, что контакта нет в таблице
-        if(!tdSearchContact.findBy(text(contact)).isDisplayed()) {
+        if(!tdSearchContact.findBy(text(contact[0])).isDisplayed()) {
             //Нажимаем кнопку добавить
             clickButtonAdd();
             //Проверяем, появилась ли форма для добавления контакта
             isFormNewContact();
             //Вводим данные контакта
-            sendInputsContact(getMapInputsValueContact(contact, contact));
+            sendInputsContact(getMapInputsValueContact(contact));
             clickButtonSaveContact();
             //Вводим фамилию в поле поиска
-            sendInputSearchContact(contact);
+            sendInputSearchContact(contact[0]);
         }
         //Проверяем, добавился ли контакт в БД контактов
-        isExistsTableText(contact, true);
+        isExistsTableText(contact[0], true);
         //Переходим к настройкам учётной записи контакта
-        return clickContact(contact);
+        return clickContact(contact[0]);
     }
 
 }

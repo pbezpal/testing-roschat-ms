@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static chat.ros.testing2.data.ContactsData.*;
 import static chat.ros.testing2.data.ContactsData.USER_SERVICES_TYPE_SIP;
 import static chat.ros.testing2.data.SettingsData.*;
+import static com.codeborne.selenide.Selenide.refresh;
 
 @Epic(value = "Сервисы")
 @Feature(value = "Факс")
@@ -43,7 +44,7 @@ public class TestFaxPage extends TFaxPage {
         checkTitleTextModalWindowWhenAddItem(FAX_USERS_TITLE, "Добавление пользователя");
     }
 
-    @Step(value = "Проверяем информационный текст с ссылкой дял входя в систему управления факсом")
+    @Step(value = "Проверяем информационный текст с ссылкой для входя в систему управления факсом")
     @Description(value = "1. Переходим в раздел Факс\n" +
             "2. Проверяем в разделе Пользователи факсов текст с ссылкой")
     @Test
@@ -51,11 +52,22 @@ public class TestFaxPage extends TFaxPage {
         getInstanceFaxPage().isLinkText();
     }
 
+    @Story(value = "Проверяем элементы на странице авторизации в усправление факсами")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс \n" +
+            "2. Переходим по ссылке на страницу авторизации в управление факсами\n" +
+            "3. Проверяем элементы на старнице авторизации\n" +
+            "4. Закрываем вкладку со страницей авторизации в управление факсами")
+    @Test
+    @Order(1)
+    void test_Check_Elements_Auth_Fax_Page(){
+        checkElementsInAuthPage();
+    }
+
     @Story(value = "Добавление контакта для проверки факса")
     @Description(value = "Переходим в раздел Справочник, добавляем пользователя, переходим настройки пользователя и " +
             "создаём учётную запись для пользователя")
     @Test
-    @Order(1)
+    @Order(2)
     void test_Add_Contact_For_Fax(){
         contactsPage
                 .actionsContact(CONTACT_FOR_FAX)
@@ -88,7 +100,7 @@ public class TestFaxPage extends TFaxPage {
             "5. Проверяем, что номер сохранён в таблице Номер факсов"
     )
     @Test
-    @Order(2)
+    @Order(3)
     void test_Add_Number_Fax_Without_Description(){
         addNumberFax(FAX_NUMBER_WITHOUT_DESCRIPTION, "");
         TestStatusResult.setTestResult(true);
@@ -101,9 +113,22 @@ public class TestFaxPage extends TFaxPage {
             "4. Проверяем, что номер отсутствует в таблице Номер факсов"
     )
     @Test
-    @Order(3)
+    @Order(4)
     void test_Delete_Number_Fax_Without_Description(){
         deleteNumber(FAX_NUMBER_WITHOUT_DESCRIPTION);
+    }
+
+    @Story(value = "Проверяем авторизацию в управление факсами перед добавлением пользователя")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
+            "2. Переходим по ссылке на страницу управления факсами\n" +
+            "3. Авторизуемся под учётной записью тестового пользователя\n" +
+            "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
+            "5. Заурываем вкладку со страницей управлением факсами")
+    @Test
+    @Order(5)
+    void test_Check_Auth_System_Fax_Before_Add_User_Fax(){
+        String textLoginFailed = "Данный пользователь не имеет доступа к факсу";
+        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true, false, textLoginFailed);
     }
 
     @Story(value = "Добавление пользователя для факса")
@@ -114,9 +139,46 @@ public class TestFaxPage extends TFaxPage {
             "5. Сохраняем пользователя\n" +
             "6. Проверяем, что пользователь добавлен в таблице Пользователи факсов")
     @Test
-    @Order(4)
+    @Order(6)
     void test_Add_User_For_Fax(){
         addContact(FAX_USERS_TITLE, CONTACT_FOR_FAX);
         TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем авторизацию в управление факсами после добавления пользователя")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
+            "2. Переходим по ссылке на страницу управления факсами\n" +
+            "3. Авторизуемся под учётной записью тестового пользователя\n" +
+            "4. Проверяем, авторизовались мы для в системе для управления факсами\n" +
+            "5. Заурываем вкладку со страницей управлением факсами")
+    @Test
+    @Order(7)
+    void test_Check_Auth_System_Fax_After_Add_User_Fax_With_Stay_System(){
+        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true);
+    }
+
+    @Story(value = "Удаляем пользователя для управления факсами")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс \n" +
+            "2. Нажимаем кнопку Удалить у пользователя в разделе Пользователи факсов\n" +
+            "3. Подтверждаем удаление пользователя\n" +
+            "4. Проверяем, что пользователь удалён из таблицы Пользователи факсов")
+    @Test
+    @Order(8)
+    void test_Delete_User_For_Fax(){
+        deleteContact(FAX_USERS_TITLE, CONTACT_FOR_FAX);
+        TestStatusResult.setTestResult(true);
+    }
+
+    @Story(value = "Проверяем авторизацию в управление факсами после удаления пользователя")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
+            "2. Переходим по ссылке на страницу управления факсами\n" +
+            "3. Авторизуемся под учётной записью тестового пользователя\n" +
+            "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
+            "5. Заурываем вкладку со страницей управлением факсами")
+    @Test
+    @Order(9)
+    void test_Check_Auth_System_Fax_After_Delete_User_Fax(){
+        String textLoginFailed = "Данный пользователь не имеет доступа к факсу";
+        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true, false, textLoginFailed);
     }
 }

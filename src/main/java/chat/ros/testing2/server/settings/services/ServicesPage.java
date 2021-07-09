@@ -23,6 +23,32 @@ public class ServicesPage implements SettingsPage {
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
     private ElementsCollection itemTableContactName = $$(".contacts-box .contact-name");
 
+    //Login
+    private SelenideElement loginForm = $(".login-wrapper");
+    private SelenideElement imgLogo = $("img[src='/img/logo.4ec202cf.png']");
+    private SelenideElement loginTitle = loginForm.find("h1");
+    private SelenideElement mainRight = $(".main-right");
+    private SelenideElement inputLogin = $("input[type='text']");
+    private SelenideElement inputPassword = $("input[type='password']");
+    private SelenideElement buttonNotSeePassword = $(".mdi-eye-off");
+    private SelenideElement buttonSeePassword = $(".mdi-eye");
+    private SelenideElement buttonLogin = $("button .v-btn__content");
+    private SelenideElement inputChecBoxStaySystem = $("input[type='checkbox']");
+    private SelenideElement selectCheckBoxStaySystem = $(".v-input--selection-controls__ripple");
+
+    //Failed login
+    private SelenideElement modalSheet = $(".v-sheet");
+    private SelenideElement iconFailedLogin = modalSheet.find("i.error--text");
+    private SelenideElement titleFailedLogin = modalSheet.find("h3");
+    private SelenideElement msgFailedLogin = modalSheet.find(".msg-body p");
+
+    //Logout
+    private SelenideElement logoutButton = $(".logout-wrapper button");
+    private SelenideElement logoutConfirm = $(".logout-text");
+
+    //Fax page
+
+
     protected SelenideElement getContentWrapper(){
         return contentWrapper;
     }
@@ -35,7 +61,78 @@ public class ServicesPage implements SettingsPage {
         return modalWindow;
     }
 
-    @Step(value = "Проверяем, отображается {show} ли моадльное окно")
+    @Step(value = "Проверяем логотип Росчат в окне авторизации")
+    public ServicesPage isImgLogo(){
+        imgLogo.shouldBe(visible);
+        return this;
+    }
+
+    @Step(value = "Проверяем текст загоовка {title} в форме авторизации")
+    public ServicesPage isTextTitle(String title){
+        loginTitle.shouldHave(text(title));
+        return this;
+    }
+
+    @Step(value = "Проверяем наличие кнопки показать пароль и её функционал")
+    public ServicesPage isButtonSeePassword(){
+        SelenideElement inputPassword = $$("label").findBy(text("Пароль")).parent();
+        inputPassword.find("input[type='password']").shouldBe(visible);
+        buttonNotSeePassword.click();
+        buttonSeePassword.shouldBe(visible);
+        inputPassword.find("input[type='password']").shouldNotBe(visible);
+        inputPassword.find("input[type='text']").shouldBe(visible);
+        buttonSeePassword.click();
+        buttonNotSeePassword.shouldBe(visible);
+        inputPassword.find("input[type='text']").shouldNotBe(visible);
+        inputPassword.find("input[type='password']").shouldBe(visible);
+        return this;
+    }
+
+    @Step(value = "Вводим логин {login} и пароль {password}, выбираем остаться ли в системе {stay} и нажимаем кнопку Войти")
+    public ServicesPage loginService(String login, String password, boolean stay){
+        inputLogin.click();
+        inputLogin.sendKeys(login + "@ros.chat");
+        inputPassword.click();
+        inputPassword.sendKeys(password);
+        if(stay){
+            if( ! inputChecBoxStaySystem.isSelected())
+                selectCheckBoxStaySystem.click();
+            inputChecBoxStaySystem.shouldBe(selected);
+        }else{
+            if(inputChecBoxStaySystem.isSelected())
+                selectCheckBoxStaySystem.click();
+            inputChecBoxStaySystem.shouldNotBe(selected);
+        }
+        buttonLogin.click();
+        return this;
+    }
+
+    @Step(value = "Проверяем, появилось ли информационное модальное окно при неудачной авторизации")
+    public ServicesPage isInfoModalFormWhenLoginFailed(String text){
+        iconFailedLogin.shouldBe(visible);
+        titleFailedLogin.shouldHave(text("Неудачная попытка авторизации"));
+        msgFailedLogin.shouldHave(text(text));
+        return this;
+    }
+
+    @Step(value = "Проверяем, прошла ли авторизация в сервис {service}")
+    public ServicesPage isLoginService(boolean auth, String... textLoginFailed){
+        if(auth) mainRight.shouldBe(visible);
+        else {
+            isInfoModalFormWhenLoginFailed(textLoginFailed[0]);
+            mainRight.shouldNotBe(visible);
+        }
+        return this;
+    }
+
+    @Step(value = "Выходим из управления ссистемой оповещения/факсами")
+    public ServicesPage logoutService(){
+        logoutButton.click();
+        logoutConfirm.shouldBe(visible).click();
+        return this;
+    }
+
+    @Step(value = "Проверяем, отображается {show} ли модальное окно")
     public ServicesPage isModalWindow(boolean show){
         if(show) modalWindow.shouldBe(visible, Duration.ofSeconds(10));
         else modalWindow.shouldNotBe(visible, Duration.ofSeconds(10));

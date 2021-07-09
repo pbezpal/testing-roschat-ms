@@ -272,9 +272,13 @@ public interface SettingsData {
 
     /***************************************** Раздел Система оповещения *********************************************/
 
+    String CONTACT_FOR_ALERT = "7200";
+    String EMAIL_CONTACT_FOR_ALERT = "test@test.ru";
+
     String ALERT_TITLE_SECTION_USERS = "Пользователи системы оповещения";
 
     String ALERT_TITLE_SECTION_SIP_ALERT = "Росчат оповещение, SIP-оповещение";
+    String ALERT_BUTTON_SELECT_CONTACT_SIP = "Выбрать контакт";
 
     String ALERT_TITLE_SECTION_SMS_ALERT = "SMS-оповещение";
 

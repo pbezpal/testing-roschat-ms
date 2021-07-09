@@ -5,6 +5,7 @@ public interface ContactsData {
     /***** Общие параметры контактов ******/
     String CONTACT_INPUT_LASTNAME = "Фамилия";
     String CONTACT_INPUT_PHONE_JOB = "Номер";
+    String CONTACT_INPUT_EMAIL = "Адрес";
 
     /******************************************** Раздел Пользователь ************************************************/
 

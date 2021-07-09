@@ -22,4 +22,17 @@ public interface IServicePage {
      * @param contact
      */
     void deleteContact(String section, String contact);
+
+    /**
+     * <p>check auth to ms alert</p>
+     * @param login
+     * @param password
+     * @param auth if true then check that auth was successful
+     *             if false then check that auth failed
+     */
+     void checkAuthToService(String login, String password, boolean stay, boolean auth, String... textLoginFailed);
+
+     void checkAuthToService(String login, String password, boolean stay);
+
+     void checkElementsInAuthPage();
 }

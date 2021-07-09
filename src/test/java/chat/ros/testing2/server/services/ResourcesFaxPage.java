@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.*;
 
 import static chat.ros.testing2.data.SettingsData.USER_LOGIN_ADMIN;
 import static chat.ros.testing2.data.SettingsData.USER_PASSWORD_ADMIN;
+import static com.codeborne.selenide.Selenide.switchTo;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallback, AfterEachCallback {
 
@@ -14,6 +16,14 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
     public void afterEach(ExtensionContext context) throws Exception {
         String methodTest = context.getRequiredTestMethod().getName();
         TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
+        if(methodTest.equals("test_Check_Auth_System_Fax_Before_Add_User_Fax")
+                || methodTest.equals("test_Check_Auth_System_Fax_After_Add_User_Fax_With_Stay_System")
+                || methodTest.equals("test_Check_Auth_System_Fax_After_Delete_User_Fax")
+                || methodTest.equals("test_Check_Elements_Auth_Fax_Page")
+        ){
+            switchTo().window(getWebDriver().getWindowHandle()).close();
+            switchTo().window(0);
+        }
     }
 
     @Override
@@ -25,9 +35,12 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
             if(methodTest.equals("test_Delete_Number_Fax_Without_Description"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Number_Fax_Without_Description"),
                         "The number fax without description don't add. Skip the test!");
-            /*else if(methodTest.equals("test_Add_User_For_Fax"))
+            else if(methodTest.equals("test_Add_User_For_Fax"))
                 Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Contact_For_Fax"),
-                        "The contact for fax don't created. Skip the test!");*/
+                        "The contact for fax don't created. Skip the test!");
+            else if(methodTest.equals("test_Check_Auth_System_Fax_After_Delete_User_Fax"))
+                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Delete_User_For_Fax"),
+                        "The user for fax not been deleted. Skip the test!");
             if(methodTest.equals("test_Add_Contact_For_Fax"))
                 getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
             else

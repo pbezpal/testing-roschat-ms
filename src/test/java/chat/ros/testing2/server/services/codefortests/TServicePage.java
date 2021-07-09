@@ -2,7 +2,7 @@ package chat.ros.testing2.server.services.codefortests;
 
 import chat.ros.testing2.server.settings.services.ServicesPage;
 
-public class TServicePage extends ServicesPage implements IServicePage {
+public abstract class TServicePage extends ServicesPage implements IServicePage {
 
     @Override
     public void checkTitleTextModalWindowWhenAddItem(String section, String title) {
@@ -26,7 +26,8 @@ public class TServicePage extends ServicesPage implements IServicePage {
 
     @Override
     public void deleteContact(String section, String contact) {
-        clickButtonTable(section, contact)
-                .isItemTable(section, contact, false);
+        clickButtonTable(section, contact);
+        clickButtonConfirmAction("Продолжить");
+        isItemTable(section, contact, false);
     }
 }
