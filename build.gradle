@@ -805,7 +805,7 @@ task roschativr(type: Test){
 
     filter {
         //include specific method in any of the tests
-        includeTestsMatching "*.TestIVRPage"
+        includeTestsMatching "*.TestFaxPage"
         //includeTestsMatching "*.TestProviderWithoutRegPage"
         //includeTestsMatching "*.TestProviderWithRegPage"
         //includeTestsMatching "*.TestProviderRouteSimpleMode"
