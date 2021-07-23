@@ -16,13 +16,21 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
     public void afterEach(ExtensionContext context) throws Exception {
         String methodTest = context.getRequiredTestMethod().getName();
         TestStatusResult.setTestResult(methodTest, TestStatusResult.getStatusResult());
-        if(methodTest.equals("test_Check_Auth_System_Fax_Before_Add_User_Fax")
-                || methodTest.equals("test_Check_Auth_System_Fax_After_Add_User_Fax_With_Stay_System")
-                || methodTest.equals("test_Check_Auth_System_Fax_After_Delete_User_Fax")
-                || methodTest.equals("test_Check_Elements_Auth_Fax_Page")
-        ){
-            switchTo().window(getWebDriver().getWindowHandle()).close();
-            switchTo().window(0);
+        switch (methodTest){
+            case "test_Add_Contact_For_Fax":
+            case "test_Check_Title_Text_Modal_Window_When_Add_Users_Fax":
+            case "test_Check_Title_Text_Modal_Window_When_Add_Number_Fax":
+            case "test_Create_Contact_For_Alert":
+            case "test_Info_Text_With_Link_Of_Users_Fax":
+            case "test_Add_Number_Fax_With_Description":
+            case "test_Add_Number_Fax_Without_Description":
+            case "test_Delete_Number_Fax_Without_Description":
+            case "test_Add_User_For_Fax":
+            case "test_Delete_User_For_Fax":
+                break;
+            default:
+                switchTo().window(getWebDriver().getWindowHandle()).close();
+                switchTo().window(0);
         }
     }
 
@@ -32,19 +40,34 @@ public class ResourcesFaxPage extends StartWebDriver implements BeforeEachCallba
         String classTest = context.getTestClass().toString();
         TestStatusResult.setTestResult(false);
         if(classTest.contains("TestFaxPage")){
-            if(methodTest.equals("test_Delete_Number_Fax_Without_Description"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Number_Fax_Without_Description"),
-                        "The number fax without description don't add. Skip the test!");
-            else if(methodTest.equals("test_Add_User_For_Fax"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Contact_For_Fax"),
-                        "The contact for fax don't created. Skip the test!");
-            else if(methodTest.equals("test_Check_Auth_System_Fax_After_Delete_User_Fax"))
-                Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Delete_User_For_Fax"),
-                        "The user for fax not been deleted. Skip the test!");
-            if(methodTest.equals("test_Add_Contact_For_Fax"))
-                getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
-            else
-                getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Факс");
+            switch (methodTest){
+                case "test_Delete_Number_Fax_Without_Description":
+                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Number_Fax_Without_Description"),
+                            "The number fax without description don't add. Skip the test!");
+                    break;
+                case "test_Add_User_For_Fax":
+                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_Contact_For_Fax"),
+                            "The fax's contact not been created. Skip the test!");
+                    break;
+                case "test_Check_Auth_System_Fax_With_Wrong_Login":
+                case "test_Check_Auth_System_Fax_With_Wrong_Password":
+                case "test_Check_Auth_System_Fax_After_Add_User_Fax_With_Stay_System":
+                case "test_Delete_User_For_Fax":
+                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Add_User_For_Fax"),
+                            "No fax user has been added. Skip the test!");
+                    break;
+                case "test_Check_Auth_System_Fax_After_Delete_User_Fax":
+                    Assumptions.assumeTrue(TestStatusResult.getTestResult().get("test_Delete_User_For_Fax"),
+                            "The user for fax not been deleted. Skip the test!");
+            }
+
+            switch (methodTest){
+                case "test_Add_Contact_For_Fax":
+                    getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Справочник");
+                    break;
+                default:
+                    getInstanceTestBase().openMS(USER_LOGIN_ADMIN, USER_PASSWORD_ADMIN,"Сервисы","Факс");
+            }
         }
     }
 }

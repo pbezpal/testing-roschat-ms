@@ -7,7 +7,7 @@ import static chat.ros.testing2.data.SettingsData.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TIVRPage extends IVRPage implements IIVRPage {
+public class TIVRPage extends IVRPage implements ITIVRPage {
 
     private String sound_field = "Звуковой файл: ";
     private String timeout_field = "По таймауту";

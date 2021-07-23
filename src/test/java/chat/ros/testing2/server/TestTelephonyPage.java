@@ -67,8 +67,8 @@ public class TestTelephonyPage extends TelephonyPage {
     @Test
     void test_Settings_Network(){
         setNetwork(mapInputValueNetwork);
-        clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK);
-        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
+        clickButtonSettings(TELEPHONY_NETWORK_TITLE_FORM, SETTINGS_BUTTON_CHECK)
+            .isFormCheckSettings();
         assertAll("Проверка настроек сети",
                 () -> assertTrue(isShowIconModalWindow(".success--text"),
                         "Нет иконки успешной проверки Сети"),

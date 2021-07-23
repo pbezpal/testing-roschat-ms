@@ -1,6 +1,6 @@
 package chat.ros.testing2.server.services.codefortests;
 
-public interface IFaxPage {
+public interface ITFaxPage {
 
     void addNumberFax(String number, String description);
 

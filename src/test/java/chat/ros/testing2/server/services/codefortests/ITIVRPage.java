@@ -2,7 +2,7 @@ package chat.ros.testing2.server.services.codefortests;
 
 import com.codeborne.selenide.SelenideElement;
 
-public interface IIVRPage {
+public interface ITIVRPage {
 
     /**
      * <p>check title text of modal window when we upload sound file</p>

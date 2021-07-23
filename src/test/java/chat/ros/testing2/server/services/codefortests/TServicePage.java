@@ -2,7 +2,17 @@ package chat.ros.testing2.server.services.codefortests;
 
 import chat.ros.testing2.server.settings.services.ServicesPage;
 
-public abstract class TServicePage extends ServicesPage implements IServicePage {
+public abstract class TServicePage extends ServicesPage implements ITServicePage {
+
+    public void isElementsLeftMenu(String item, String classNameIcon, String... dataLogin){
+        if( ! isLoginService()) {
+            String login = dataLogin[0];
+            String password = dataLogin[1];
+            loginService(login, password);
+        }
+        clickItemLeftMenu(item, true)
+                .isIconLeftMenu(item, classNameIcon);
+    }
 
     @Override
     public void checkTitleTextModalWindowWhenAddItem(String section, String title) {

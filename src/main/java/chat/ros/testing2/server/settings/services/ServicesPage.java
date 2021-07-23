@@ -3,10 +3,12 @@ package chat.ros.testing2.server.settings.services;
 import chat.ros.testing2.server.settings.SettingsPage;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
+import java.io.File;
 import java.time.Duration;
 
 import static chat.ros.testing2.data.SettingsData.*;
@@ -14,7 +16,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class ServicesPage implements SettingsPage {
+public class ServicesPage implements SettingsPage, IServicePage {
 
     private SelenideElement contentWrapper = $(".v-content__wrap");
     private SelenideElement modalWindow = $(".modal-window");
@@ -22,6 +24,11 @@ public class ServicesPage implements SettingsPage {
     private SelenideElement contentMenu = modalWindow.find(".modal-window__content");
     private ElementsCollection buttonActionOfModalWindow = modalWindow.$$(".modal-window__actions button div");
     private ElementsCollection itemTableContactName = $$(".contacts-box .contact-name");
+
+    //Upload sound file
+    private SelenideElement inputUploadSoundFile = $("#upload");
+    private SelenideElement audioPlayer = $(".modal-window__content audio");
+
 
     //Login
     private SelenideElement loginForm = $(".login-wrapper");
@@ -46,8 +53,9 @@ public class ServicesPage implements SettingsPage {
     private SelenideElement logoutButton = $(".logout-wrapper button");
     private SelenideElement logoutConfirm = $(".logout-text");
 
-    //Fax page
-
+    //MS Service
+    //List items left menu
+    private ElementsCollection listTitleMenuLeft = $$(".v-list--dense .list-item__content-title");
 
     protected SelenideElement getContentWrapper(){
         return contentWrapper;
@@ -59,6 +67,62 @@ public class ServicesPage implements SettingsPage {
 
     public SelenideElement getModalWindow() {
         return modalWindow;
+    }
+
+    public SelenideElement getModalSheet() { return modalSheet; }
+
+    @Step(value = "Добавляем звуковой файл {file}")
+    @Override
+    public ServicesPage uploadSoundFile(String file){
+        inputUploadSoundFile.uploadFile(new File(file));
+        return this;
+    }
+
+    @Step(value = "Проверяем, отображается ли плеер")
+    public ServicesPage isAudioPlayer(){
+        audioPlayer.shouldBe(visible);
+        return this;
+    }
+
+    @Step(value = "Нажимаем кнопку проигрывания звукового файла")
+    public ServicesPage clickPlayAudio(){
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").play();");
+        return this;
+    }
+
+    @Step(value = "Проверяем функцию проигрывания аудио")
+    public Double isPlayAudioPlayer(){
+        sleep(5000);
+        return (Double) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
+    }
+
+    @Step(value = "Проверяем функцию паузы в аудиоплеере")
+    public boolean isPauseAudioPlayer(){
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").pause();");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").paused;");
+    }
+
+    @Step(value = "Проверяем длину звукового файла")
+    public String isDurationAudio(){
+        return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").duration").toString();
+    }
+
+    @Step(value = "Проверяем функцию изменения уровня звука в аудиоплеере")
+    public String isVolumeAudioPlayer(){
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").volume = 0.5;");
+        return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").volume;").toString();
+    }
+
+    @Step(value = "Проверяем функцию выключения звука")
+    public boolean isMutedAudioPlayer(){
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = true;");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
+    }
+
+    @Step(value = "Проверяем функцию включения звука")
+    public boolean isOutMutedAudioPlayer(){
+        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = false;");
+        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
     }
 
     @Step(value = "Проверяем логотип Росчат в окне авторизации")
@@ -90,8 +154,11 @@ public class ServicesPage implements SettingsPage {
 
     @Step(value = "Вводим логин {login} и пароль {password}, выбираем остаться ли в системе {stay} и нажимаем кнопку Войти")
     public ServicesPage loginService(String login, String password, boolean stay){
+        if(getModalSheet().isDisplayed() && iconFailedLogin.isDisplayed()){
+            getModalSheet().sendKeys(Keys.ESCAPE);
+        }
         inputLogin.click();
-        inputLogin.sendKeys(login + "@ros.chat");
+        inputLogin.sendKeys(login);
         inputPassword.click();
         inputPassword.sendKeys(password);
         if(stay){
@@ -107,19 +174,38 @@ public class ServicesPage implements SettingsPage {
         return this;
     }
 
-    @Step(value = "Проверяем, появилось ли информационное модальное окно при неудачной авторизации")
-    public ServicesPage isInfoModalFormWhenLoginFailed(String text){
+    @Step(value = "Вводим логин {login} и пароль {password} и нажимаем кнопку Войти")
+    public ServicesPage loginService(String login, String password){
+        inputLogin.click();
+        inputLogin.sendKeys(login);
+        inputPassword.click();
+        inputPassword.sendKeys(password);
+        buttonLogin.click();
+        return this;
+    }
+
+    @Step(value = "Проверяем, отображается ли модальное окно с заголовком {title} и текстом {text}")
+    public ServicesPage isInfoModalFormWhenLoginFailed(String title, String text){
         iconFailedLogin.shouldBe(visible);
-        titleFailedLogin.shouldHave(text("Неудачная попытка авторизации"));
+        //titleFailedLogin.shouldHave(text("Неудачная попытка авторизации"));
+        titleFailedLogin.shouldHave(text(title));
         msgFailedLogin.shouldHave(text(text));
         return this;
     }
 
-    @Step(value = "Проверяем, прошла ли авторизация в сервис {service}")
+    @Step(value = "Проверяем, авторизованы ли мы в сервисе")
+    public boolean isLoginService(){
+        if(mainRight.isDisplayed())
+            return true;
+        return false;
+    }
+
+    @Step(value = "Проверяем, прошла ли авторизация в сервис")
     public ServicesPage isLoginService(boolean auth, String... textLoginFailed){
         if(auth) mainRight.shouldBe(visible);
         else {
-            isInfoModalFormWhenLoginFailed(textLoginFailed[0]);
+            if(textLoginFailed.length > 0)
+                isInfoModalFormWhenLoginFailed(textLoginFailed[0], textLoginFailed[1]);
             mainRight.shouldNotBe(visible);
         }
         return this;
@@ -156,6 +242,12 @@ public class ServicesPage implements SettingsPage {
         getServiceSection(title).scrollIntoView(false);
         getServiceSection(title).find(".action-bar button").click();
         return this;
+    }
+
+    public boolean isItemTable(String section, String item){
+        getServiceSection(section).scrollTo();
+        getServiceSection(section).$("table").scrollIntoView(false);
+        return getServiceSection(section).$("table").$(byText(item)).isDisplayed();
     }
 
     @Step(value = "Проверяем, отображается {show} ли запись {item] в разделе {section}")
@@ -244,4 +336,27 @@ public class ServicesPage implements SettingsPage {
         return this;
     }
 
+    @Step(value = "Переходим в раздел {item}")
+    @Override
+    public ServicesPage clickItemLeftMenu(String item, boolean checkMenu) {
+        SelenideElement itemMenu = listTitleMenuLeft.findBy(text(item));
+        itemMenu.click();
+        if(checkMenu) {
+            itemMenu
+                    .closest(".v-list-item--link")
+                    .shouldHave(cssClass("active"));
+            $(".align-center h1").shouldHave(text(item));
+        }
+        return this;
+    }
+
+    @Step(value = "Проверяем, что у меню {item} есть иконка")
+    public ServicesPage isIconLeftMenu(String item, String className) {
+        SelenideElement itemMenu = listTitleMenuLeft.findBy(text(item));
+        itemMenu
+                .closest(".v-list-item--link")
+                .find("." + className)
+                .shouldBe(visible);
+        return this;
+    }
 }

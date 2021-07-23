@@ -20,7 +20,6 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class IVRPage extends ServicesPage {
 
-    private SelenideElement inputUploadSoundFile = $("#upload");
     private SelenideElement modalWindowContent = getModalWindow().find(".modal-window__content");
     private SelenideElement inputUploadSoundFileByModalWindow = getModalWindow().find("#upload");
     private SelenideElement buttonClose = getModalWindow().find(".v-btn--flat");
@@ -29,7 +28,6 @@ public class IVRPage extends ServicesPage {
     private SelenideElement buttonDeleteDTMF = $(".mx-0");
     private SelenideElement inputNumberDTMF = $(".flex.xs2");
     private SelenideElement inputActionDTMF = $(".flex.xs8");
-    private SelenideElement audioPlayer = $(".modal-window__content audio");
     private SelenideElement buttonDownloadFile = getModalWindow().$(".melody-buttons").find("button[title='Скачать']");
 
     //Elements for entry point
@@ -69,63 +67,10 @@ public class IVRPage extends ServicesPage {
 
     /************** Загрузка музыкальных файлов **************************/
 
-    @Step(value = "Добавляем звуковой файл {file}")
-    private IVRPage uploadSoundFile(String file){
-        inputUploadSoundFile.uploadFile(new File(file));
-        return this;
-    }
-
     @Step(value = "Заменяем звуковой файл на {file}")
     private IVRPage uploadSoundFileByModalWindow(String file){
         inputUploadSoundFileByModalWindow.uploadFile(new File(file));
         return this;
-    }
-
-    @Step(value = "Проверяем, отображается ли плеер")
-    public IVRPage isAudioPlayer(){
-        audioPlayer.shouldBe(visible);
-        return this;
-    }
-
-    @Step(value = "Нажимаем кнопку проигрывания звукового файла")
-    public IVRPage clickPlayAudio(){
-        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").play();");
-        return this;
-    }
-
-    @Step(value = "Проверяем функцию проигрывания аудио")
-    public Double isPlayAudioPlayer(){
-        sleep(5000);
-        return (Double) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").currentTime;");
-    }
-
-    @Step(value = "Проверяем функцию паузы в аудиоплеере")
-    public boolean isPauseAudioPlayer(){
-        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").pause();");
-        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").paused;");
-    }
-
-    @Step(value = "Проверяем длину звукового файла")
-    public String isDurationAudio(){
-        return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").duration").toString();
-    }
-
-    @Step(value = "Проверяем функцию изменения уровня звука в аудиоплеере")
-    public String isVolumeAudioPlayer(){
-        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").volume = 0.5;");
-            return Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").volume;").toString();
-    }
-
-    @Step(value = "Проверяем функцию выключения звука")
-    public boolean isMutedAudioPlayer(){
-        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = true;");
-        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
-    }
-
-    @Step(value = "Проверяем функцию включения звука")
-    public boolean isOutMutedAudioPlayer(){
-        Selenide.executeJavaScript("document.querySelector(\".modal-window__content audio\").muted = false;");
-        return (boolean) Selenide.executeJavaScript("return document.querySelector(\".modal-window__content audio\").muted;");
     }
 
     @Step(value = "Скачиваем звуковой файл")
@@ -408,6 +353,11 @@ public class IVRPage extends ServicesPage {
         scheduleForm.scrollIntoView(false);
         buttonAddSchedule.click();
         return this;
+    }
+
+    public boolean isVisibleSchedule(String schedule){
+        scheduleForm.scrollIntoView(false);
+        return scheduleItemsText.findBy(text(schedule)).isDisplayed();
     }
 
     @Step(value = "Проверяем, отображается ли {show} расписание {schedule}")

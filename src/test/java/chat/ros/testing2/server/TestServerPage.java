@@ -69,8 +69,8 @@ public class TestServerPage extends ServerPage {
             put(SERVER_CONNECT_INPUT_WEBSOCKET_PORT, websocket);
         }};
         setSectionConnect(mapInputValueConnect);
+        isFormCheckSettings();
         assertAll("Проверяем настройки портов подключения",
-                () -> assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась"),
                 () -> assertTrue(isShowIconModalWindow(".success--text"),
                         "Нет иконки успешной проверки Сети"),
                 () -> assertEquals(getTextModalWindow("h3"), "Проверка настроек",

@@ -58,33 +58,6 @@ public class TestsBase implements ClientPage {
         Configuration.browserPosition = "2x2";
         Configuration.fileDownload = FileDownloadMode.FOLDER;
         Configuration.screenshots = false;
-
-        /*DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("chrome");
-        capabilities.setVersion("88.0");
-        capabilities.setCapability("enableVNC", true);
-        capabilities.setCapability("enableVideo", false);
-        capabilities.setCapability("acceptInsecureCerts", true);
-
-        LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
-        capabilities.setCapability("goog:loggingPrefs", logPrefs);
-
-        try {
-            driver = new RemoteWebDriver(URI.create("http://" + HOST_HUB + ":4444/wd/hub").toURL(), capabilities);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        driver.manage().window().setSize(new Dimension(1920, 1080));
-        driver.manage().window().setPosition(new Point(2,2));
-        driver.setFileDetector(new LocalFileDetector());
-        WebDriverRunner.setWebDriver(driver);
-        Configuration.browserSize = "1920x1080";
-        Configuration.browserPosition = "2x2";
-        Configuration.fileDownload = FileDownloadMode.FOLDER;
-
-        Configuration.screenshots = false;*/
     }
 
     public String getSshCommandIsContact(){

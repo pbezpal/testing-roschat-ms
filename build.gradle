@@ -101,6 +101,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.icegreen/greenmail
     testImplementation group: 'com.icegreen', name: 'greenmail', version: '1.6.4'
 
+    //the client mail
+    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+    implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+
     //local library
     implementation fileTree(dir: 'libs', include: '*.jar')
 }
@@ -169,7 +174,7 @@ task contactspublicchannels(type: Test) {
 
     description "Тестирование добавления пользователя для тестирования публичных каналов"
 
-    //dependsOn 'cleanTest'
+    dependsOn 'cleanTest'
 
     //Parametrized Test
 
@@ -192,7 +197,7 @@ task contactspublicprovenchannels(type: Test) {
 
     description "Тестирование добавления пользователя для тестирования проверенных каналов"
 
-    //dependsOn 'cleanTest'
+    dependsOn 'cleanTest'
 
     //Parametrized Test
 
@@ -329,6 +334,24 @@ task testclosedchannels(type: Test){
     finalizedBy(testpublicchannels,testpublicprovenchannels)
 }
 
+task testservermail(type: Test){
+
+    useJUnitPlatform()
+
+    systemProperties System.getProperties()
+
+    description "Тестирование сервиса Почты"
+
+    include("**/TestMailPage.class")
+
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
 task testintegration(type: Test){
 
     useJUnitPlatform()
@@ -342,7 +365,7 @@ task testintegration(type: Test){
     include("**/TestMonitorSkudOrion.class")
     include("**/TestMonitorSkudPerco.class")
 
-    //dependsOn 'cleanTest'
+    dependsOn 'cleanTest'
 
     // Show test results.
     testLogging {
@@ -470,7 +493,7 @@ task roschatservices(type: Test){
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled':'true',
             'junit.jupiter.execution.parallel.config.strategy':'fixed',
-            'junit.jupiter.execution.parallel.config.fixed.parallelism':'3',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism':'4',
             'junit.jupiter.execution.parallel.mode.default':'same_thread',
             'junit.jupiter.execution.parallel.mode.classes.default':'concurrent'
     ]
@@ -478,6 +501,7 @@ task roschatservices(type: Test){
     systemProperties System.getProperties()
 
     filter {
+        includeTestsMatching "*.TestAlertPage"
         includeTestsMatching "*.TestFaxPage"
         includeTestsMatching "*.TestMenuPage"
         includeTestsMatching "*.TestSoundPage"
@@ -487,6 +511,8 @@ task roschatservices(type: Test){
     testLogging {
         events "passed", "skipped", "failed"
     }
+
+    finalizedBy(testservermail)
 }
 
 task test_roschatservices(type: Test){
@@ -505,6 +531,7 @@ task roschatserver(type: Test){
         //include specific method in any of the tests
         includeTestsMatching "*.server.*"
         excludeTestsMatching "*.server.integration.*"
+        excludeTestsMatching "*.TestMailPage"
         excludeTestsMatching "*.TestServerPage.test_Settings_Connect"
         excludeTestsMatching "*.TestServerPage.test_Settings_Push_Server"
         excludeTestsMatching "*.services.*"
@@ -778,7 +805,7 @@ task roschativr(type: Test){
 
     filter {
         //include specific method in any of the tests
-        includeTestsMatching "*.TestFaxPage"
+        includeTestsMatching "*.TestIVRPage"
         //includeTestsMatching "*.TestProviderWithoutRegPage"
         //includeTestsMatching "*.TestProviderWithRegPage"
         //includeTestsMatching "*.TestProviderRouteSimpleMode"

@@ -1,6 +1,7 @@
-package chat.ros.testing2.server;
+package chat.ros.testing2.server.mailpage;
 
 import chat.ros.testing2.WatcherTests;
+import chat.ros.testing2.server.ResourcesServerPage;
 import chat.ros.testing2.server.settings.MailPage;
 import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Description;
@@ -23,29 +24,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(WatcherTests.class)
 @Epic(value = "Настройки")
 @Feature(value = "Почта")
-public class TestMailPage extends MailPage {
-
-    private void checkMail(Map<String, String> values, String typeSecurity){
-        settingsMailServerWithCheck(values, typeSecurity);
-        assertTrue(isFormCheckSettings(), "Форма проверки настроек не появилась");
-        assertAll("Проверяем, появилась ли форма проверок настроек и корректны ли настройки",
-                () -> assertTrue(isShowIconModalWindow(".success--text"),
-                        "Нет иконки успешной проверки почты"),
-                () -> assertEquals(getTextModalWindow("h3"),
-                        "Проверка настроек",
-                        "Заголовок модального окна не совпадает с ожидаемым"),
-                () -> assertEquals(getTextModalWindow("h4"),
-                        "Настройки почты корректны.",
-                        "Текст модального окна не совпадает с ожидаемым")
-        );
-        clickButtonCloseCheckSettingsForm();
-    }
+public class TestMailPage extends TMailPage {
 
     @Story(value = "Проверяем настройки почты без защищённого соединения")
     @Description(value = "Вводим параметры почтового сервера infotek с незащищённым соединением и проверяем настройки")
     @Test
     void test_Settings_Mail_No_Security(){
-        checkMail(getSettingsMailServer(MAIL_INFOTEK_SERVER,
+        settingsMail(getSettingsMailServer(MAIL_INFOTEK_SERVER,
                 MAIL_INFOTEK_USERNAME,
                 MAIL_INFOTEK_PASSWORD,
                 MAIL_PORT_NO_SECURITY,
@@ -58,7 +43,7 @@ public class TestMailPage extends MailPage {
     @Description(value = "Вводим параметры почтового сервера google с защищённым соединением SSL и проверяем настройки")
     @Test
     void test_Settings_Mail_SSL_Security(){
-        checkMail(getSettingsMailServer(MAIL_GOOGLE_SERVER,
+        settingsMail(getSettingsMailServer(MAIL_GOOGLE_SMTP_SERVER,
                 MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD,
                 MAIL_PORT_SSL,
@@ -71,7 +56,7 @@ public class TestMailPage extends MailPage {
     @Description(value = "Вводим параметры почтового сервера google с защищённым соединением STARTTLS и проверяем настройки")
     @Test
     void test_Settings_Mail_STARTTLS_Security(){
-        checkMail(getSettingsMailServer(MAIL_GOOGLE_SERVER,
+        settingsMail(getSettingsMailServer(MAIL_GOOGLE_SMTP_SERVER,
                 MAIL_GOOGLE_USERNAME,
                 MAIL_GOOGLE_PASSWORD,
                 MAIL_PORT_STARTTLS,

@@ -148,10 +148,11 @@ public interface SettingsPage extends BasePage {
         return true;
     }
 
-    @Step(value = "Провкручиваем внизу до формы {form}")
+    @Step(value = "Прокручиваем внизу до формы {form}")
     default SelenideElement scrollDownForm(String form){
         SelenideElement element = $$("h2").findBy(text(form)).parent();
-        if(isShowElement(element,false)) $(".v-content__wrap").scrollIntoView(false);
+        if( ! element.isDisplayed())
+            $(".v-content__wrap").scrollIntoView(false);
         element.scrollIntoView(false);
         return element;
     }
@@ -209,9 +210,9 @@ public interface SettingsPage extends BasePage {
     }
 
     @Step(value = "Проверяем, появилась ли форма Проверки настроек")
-    default boolean isFormCheckSettings(){
-        if(isShowElement(modalWindow, true)) return true;
-        else return false;
+    default SettingsPage isFormCheckSettings(){
+        isShowElement(modalWindow, true);
+        return this;
     }
 
     @Step(value = "Нажимаем кнопку Закрыть на форме проверки настроек")

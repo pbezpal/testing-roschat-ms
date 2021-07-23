@@ -208,7 +208,8 @@ public interface SettingsData {
     String MAIL_INFOTEK_FROM_MAIL = "Noreply.roschat@infotek.ru";
 
     /****** Параметры настройки постового сервера Google ******/
-    String MAIL_GOOGLE_SERVER = "smtp.gmail.com";
+    String MAIL_GOOGLE_SMTP_SERVER = "smtp.gmail.com";
+    String MAIL_GOOGLE_IMAP_SERVER = "impa.gmail.com";
     String MAIL_GOOGLE_USERNAME = "testroschat";
     String MAIL_GOOGLE_PASSWORD = "Nimd@123";
     String MAIL_GOOGLE_FROM_USER = "testroschat";
@@ -273,7 +274,6 @@ public interface SettingsData {
     /***************************************** Раздел Система оповещения *********************************************/
 
     String CONTACT_FOR_ALERT = "7200";
-    String EMAIL_CONTACT_FOR_ALERT = "test@test.ru";
 
     String ALERT_TITLE_SECTION_USERS = "Пользователи системы оповещения";
 
@@ -283,6 +283,42 @@ public interface SettingsData {
     String ALERT_TITLE_SECTION_SMS_ALERT = "SMS-оповещение";
 
     String ALERT_TITLE_SECTION_EMAIL_ALERT = "EMAIL-оповещение";
+
+    String ALERT_TITLE_ITEM_LEFT_MENU_TASKS = "Задания";
+    String ALERT_TITLE_ITEM_LEFT_MENU_JOURNALS = "Журналы";
+
+    String[] ALERT_TITLE_LEST_MENU_ITEMS = {
+            ALERT_TITLE_ITEM_LEFT_MENU_TASKS
+            , ALERT_TITLE_ITEM_LEFT_MENU_JOURNALS
+    };
+
+    String ALERT_TITLE_ITEM_TOP_MENU_TASKS = "Список заданий";
+    String ALERT_TITLE_ITEM_TOP_MENU_LIST_ALERT = "Списки оповещения";
+    String ALERT_TITLE_ITEM_TOP_MENU_MESSAGES = "Сообщения";
+    String ALERT_TITLE_ITEM_TOP_MENU_SOUND_FILES = "Звуковые файлы";
+
+    String[] ALERT_TITLE_TOP_MENU_ITEMS = {ALERT_TITLE_ITEM_TOP_MENU_TASKS
+            , ALERT_TITLE_ITEM_TOP_MENU_LIST_ALERT
+            , ALERT_TITLE_ITEM_TOP_MENU_MESSAGES
+            , ALERT_TITLE_ITEM_TOP_MENU_SOUND_FILES
+    };
+
+    String ALERT_INPUT_NAME = "Название";
+    String ALERT_INPUT_DESCRIPTION = "Описание";
+    String ALERT_INPUT_MESSAGE = "Текст сообщения";
+    String ALERT_INPUT_TELEPHONE_CODE = "Телефонный код доступа";
+
+    String ALERT_VALUE_NAME_FOR_MESSAGE = "Тестовое название";
+    String ALERT_VALUE_DESCRIPTION_FOR_MESSAGE = "Тестовое описание";
+    String ALERT_VALUE_TEXT_FOR_MESSAGE = "Тестовое сообщение для системы оповещения";
+
+    String ALERT_VALUE_NAME_FOR_ALERT = "Тестовое название оповещание";
+    String ALERT_VALUE_DESCRIPTION_FOR_ALERT = "Тестовое описание оповещения";
+
+    String[] ALERT_LIST_ICONS_ALERT = {"mdi-phone", "mdi-email-outline", "mdi-message-processing", "mdi-cellphone-message"};
+
+    String ALERT_VALUE_NAME_FOR_TASK = "Тестовое задание";
+    String ALERT_VALUE_DESCRIPTION_FOR_TASK = "Тестовое описание задания";
 
     /******************************************* Раздел Голосовое меню ***********************************************/
 
@@ -325,6 +361,16 @@ public interface SettingsData {
     String FAX_DESCRIPTION_FAX = "Это тестовый номер для факса";
 
     String FAX_USERS_TITLE = "Пользователи факсов";
+
+    String FAX_TITLE_LEFT_MENU_ITEM_INCOMING = "Полученные";
+    String FAX_TITLE_LEFT_MENU_ITEM_OUTGOING = "Отправленные";
+    String FAX_TITLE_LEFT_MENU_ITEM_SEND_FAX = "Отправить факс";
+
+    String[] FAX_TITLE_LEFT_MENU_ITEMS = {
+            FAX_TITLE_LEFT_MENU_ITEM_INCOMING
+            , FAX_TITLE_LEFT_MENU_ITEM_OUTGOING
+            , FAX_TITLE_LEFT_MENU_ITEM_SEND_FAX
+    };
 
     /******************************************* Раздел Пользователи СУ **********************************************/
 

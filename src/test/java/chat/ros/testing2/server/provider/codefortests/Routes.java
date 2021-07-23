@@ -107,8 +107,8 @@ public class Routes extends TelephonyPage implements IRoutes {
         clickButtonTableProvider(provider, "Изменить");
         clickButtonSettings(TELEPHONE_PROVIDER_EDIT_TITLE_ROUTE, button);
         createRoute(direction, simpleMode, dataRoute);
-        assertTrue(clickButtonClose().isShowElement(modalWindow, false),
-                "Модальное окно для добавления маршрута не заркылось после нажатия кнопки Закрыть");
+        clickButtonClose()
+                .isShowElement(modalWindow, false);
         String patternReplace = checkAddRoute(direction, dataRoute, simpleMode, false);
         if(patternReplace != null)
             isExistsTableText(patternReplace, false);
@@ -121,16 +121,16 @@ public class Routes extends TelephonyPage implements IRoutes {
                 .clickButtonTableRoute(direction, "edit");
         if(simpleMode.length > 0) {
             editRoute(dataRoute, simpleMode[0]);
-            assertTrue(clickButtonClose().isShowElement(modalWindow, false),
-                    "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
+            clickButtonClose()
+                    .isShowElement(modalWindow, false);
             if (simpleMode[0])
                 patternReplace = checkEditRoute(direction, false, dataRoute, true, false);
             else
                 patternReplace = checkEditRoute(direction, false, dataRoute, false, false);
         }else {
             editRoute(dataRoute);
-            assertTrue(clickButtonClose().isShowElement(modalWindow, false),
-                    "Модальное окно для редактирования маршрута не заркылось после нажатия кнопки Закрыть");
+            clickButtonClose()
+                    .isShowElement(modalWindow, false);
             patternReplace = checkEditRoute(direction, false, dataRoute, false, false);
         }
         if(patternReplace != null)

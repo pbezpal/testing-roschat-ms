@@ -21,6 +21,10 @@ import static com.codeborne.selenide.Selenide.refresh;
 public class TestFaxPage extends TFaxPage {
 
     private ContactsPage contactsPage = new ContactsPage();
+    private String loginFax = CONTACT_FOR_FAX + "@ros.chat";
+    private String wrongLogin = "7000ros.chat";
+    private String wrongPassword = "87654321";
+    private String titleFailedLogin = "Неудачная попытка авторизации";
 
     @Step(value = "Проверяем заголовок модального окна при добавление Номера факса")
     @Description(value = "1. Переходим в раздел Факс\n" +
@@ -123,12 +127,12 @@ public class TestFaxPage extends TFaxPage {
             "2. Переходим по ссылке на страницу управления факсами\n" +
             "3. Авторизуемся под учётной записью тестового пользователя\n" +
             "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
-            "5. Заурываем вкладку со страницей управлением факсами")
+            "5. Закрываем вкладку со страницей управлением факсами")
     @Test
     @Order(5)
     void test_Check_Auth_System_Fax_Before_Add_User_Fax(){
         String textLoginFailed = "Данный пользователь не имеет доступа к факсу";
-        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true, false, textLoginFailed);
+        checkAuthToService(loginFax, USER_ACCOUNT_PASSWORD, true, false, titleFailedLogin, textLoginFailed);
     }
 
     @Story(value = "Добавление пользователя для факса")
@@ -145,16 +149,44 @@ public class TestFaxPage extends TFaxPage {
         TestStatusResult.setTestResult(true);
     }
 
+    @Story(value = "Проверяем авторизацию в управление факсами с некорректным логином")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
+            "2. Переходим по ссылке на страницу управления факсами\n" +
+            "3. Авторизуемся под учётной записью с некорректным логином\n" +
+            "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
+            "5. Закрываем вкладку со страницей управлением факсами")
+    @Test
+    @Order(7)
+    void test_Check_Auth_System_Fax_With_Wrong_Login(){
+        String textLoginFailed = "Нет такого пользователя";
+        checkAuthToService(wrongLogin, USER_ACCOUNT_PASSWORD, true, false, titleFailedLogin, textLoginFailed);
+    }
+
+    @Story(value = "Проверяем авторизацию в управление факсами с некорректным паролем")
+    @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
+            "2. Переходим по ссылке на страницу управления факсами\n" +
+            "3. Авторизуемся под учётной записью с некорректным паролем\n" +
+            "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
+            "5. Закрываем вкладку со страницей управлением факсами")
+    @Test
+    @Order(7)
+    void test_Check_Auth_System_Fax_With_Wrong_Password(){
+        String textLoginFailed = "Проверьте правильность введенного пароля";
+        checkAuthToService(loginFax, wrongPassword, true, false, titleFailedLogin, textLoginFailed);
+    }
+
     @Story(value = "Проверяем авторизацию в управление факсами после добавления пользователя")
     @Description(value = "1. Переходим в раздел Сервисы -> Факс\n" +
             "2. Переходим по ссылке на страницу управления факсами\n" +
             "3. Авторизуемся под учётной записью тестового пользователя\n" +
             "4. Проверяем, авторизовались мы для в системе для управления факсами\n" +
-            "5. Заурываем вкладку со страницей управлением факсами")
+            "5. Нажимаем на иконку или имя пользователя в управление факсами\n" +
+            "6. Нажимаем кнопку Выход и подтверждаем выход\n" +
+            "7. Закрываем вкладку со страницей управлением факсами")
     @Test
-    @Order(7)
+    @Order(8)
     void test_Check_Auth_System_Fax_After_Add_User_Fax_With_Stay_System(){
-        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true);
+        checkAuthToService(loginFax, USER_ACCOUNT_PASSWORD, true);
     }
 
     @Story(value = "Удаляем пользователя для управления факсами")
@@ -163,7 +195,7 @@ public class TestFaxPage extends TFaxPage {
             "3. Подтверждаем удаление пользователя\n" +
             "4. Проверяем, что пользователь удалён из таблицы Пользователи факсов")
     @Test
-    @Order(8)
+    @Order(9)
     void test_Delete_User_For_Fax(){
         deleteContact(FAX_USERS_TITLE, CONTACT_FOR_FAX);
         TestStatusResult.setTestResult(true);
@@ -174,11 +206,11 @@ public class TestFaxPage extends TFaxPage {
             "2. Переходим по ссылке на страницу управления факсами\n" +
             "3. Авторизуемся под учётной записью тестового пользователя\n" +
             "4. Проверяем, появилась ли окно с ошибкой при авторизации\n" +
-            "5. Заурываем вкладку со страницей управлением факсами")
+            "5. Закрываем вкладку со страницей управлением факсами")
     @Test
-    @Order(9)
+    @Order(10)
     void test_Check_Auth_System_Fax_After_Delete_User_Fax(){
         String textLoginFailed = "Данный пользователь не имеет доступа к факсу";
-        checkAuthToService(CONTACT_FOR_FAX, USER_ACCOUNT_PASSWORD, true, false, textLoginFailed);
+        checkAuthToService(loginFax, USER_ACCOUNT_PASSWORD, true, false, titleFailedLogin, textLoginFailed);
     }
 }

@@ -2,7 +2,7 @@ package chat.ros.testing2.server.services.codefortests;
 
 import chat.ros.testing2.server.settings.services.ServicesPage;
 
-public interface IServicePage {
+public interface ITServicePage {
 
     /**
      * <p>check the title text of the modal window when we add an entry<p/>
@@ -24,7 +24,9 @@ public interface IServicePage {
     void deleteContact(String section, String contact);
 
     /**
-     * <p>check auth to ms alert</p>
+     * <p>
+     *     authorization check to the ms service
+     * </p>
      * @param login
      * @param password
      * @param auth if true then check that auth was successful
@@ -32,7 +34,29 @@ public interface IServicePage {
      */
      void checkAuthToService(String login, String password, boolean stay, boolean auth, String... textLoginFailed);
 
+    /**
+     * <p>
+     *     authorization check with and without stay in the system
+     * </p>
+     * @param login
+     * @param password
+     * @param stay
+     */
      void checkAuthToService(String login, String password, boolean stay);
 
-     void checkElementsInAuthPage();
+    /**
+     * <p>
+     *     elements check on the authorization page
+     * </p>
+     */
+    void checkElementsInAuthPage();
+
+    /**
+     * <p>
+     *     elements check in the left menu of service page
+     * </p>
+     * @param itemMenu is the item menu
+     * @param classNameIcon is the icon's class of the item menu
+     */
+     void checkElementsLeftMenu(String itemMenu, String classNameIcon, String... dataLogin);
 }

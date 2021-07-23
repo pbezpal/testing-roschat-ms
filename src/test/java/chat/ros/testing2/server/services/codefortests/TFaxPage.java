@@ -3,11 +3,10 @@ package chat.ros.testing2.server.services.codefortests;
 import chat.ros.testing2.server.settings.services.FaxPage;
 
 import static chat.ros.testing2.data.SettingsData.*;
-import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.Selenide.switchTo;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
-public class TFaxPage extends TServicePage implements IFaxPage {
+public class TFaxPage extends TServicePage implements ITFaxPage {
 
     private FaxPage faxPage = new FaxPage();
 
@@ -71,5 +70,12 @@ public class TFaxPage extends TServicePage implements IFaxPage {
                 .isImgLogo()
                 .isTextTitle("ФАКС")
                 .isButtonSeePassword();
+    }
+
+    @Override
+    public void checkElementsLeftMenu(String itemMenu, String classNameIcon, String... dataLogin) {
+        faxPage
+                .clickLinkToGoMSFax();
+        isElementsLeftMenu(itemMenu, classNameIcon, dataLogin);
     }
 }

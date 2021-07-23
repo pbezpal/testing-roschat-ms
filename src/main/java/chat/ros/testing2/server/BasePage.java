@@ -181,22 +181,12 @@ public interface BasePage {
     }
 
     @Step(value = "Проверяем, виден ли элемент {element}")
-    default boolean isShowElement(SelenideElement element, boolean show){
-        if(show){
-            try{
+    default BasePage isShowElement(SelenideElement element, boolean show){
+        if(show)
                 element.shouldBe(visible, Duration.ofSeconds(15));
-            }catch (ElementNotFound error){
-                return false;
-            }
-        }else{
-            try{
-                element.shouldBe(not(visible));
-            }catch (ElementShould error){
-                return false;
-            }
-        }
-
-        return true;
+        else
+            element.shouldBe(not(visible));
+        return this;
     }
 
     @Step(value = "Проверяем, отображается ли иконка {locator}")
